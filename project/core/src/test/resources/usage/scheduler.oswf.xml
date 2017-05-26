@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE workflow SYSTEM "OSWf-3.0.dtd">
+
+
+
+<workflow>
+
+  <trigger-functions>
+    <trigger-function id="10">
+      <function type="beanshell">
+        <arg name="script">
+          propertySet.setString("testTrigger", "blahblah");
+        </arg>
+      </function>
+    </trigger-function>
+  </trigger-functions>
+
+  <initial-actions>
+
+    <action id="1" name="Fire the trigger function via Quartz">
+      <pre-functions>
+        <function type="class" name='org.informagen.oswf.quartz.ScheduleJob'>
+          <arg name="jobName">Scheduler Test</arg>
+          <arg name="triggerName">SchedulerTestTrigger</arg>
+          <arg name="triggerId">10</arg>
+          <arg name="schedulerStart">true</arg>
+          <arg name="local">true</arg>
+        </function>
+      </pre-functions>
+      <results>
+        <default-result status="Underway" step="1"/>
+      </results>
+    </action>
+
+    <action id="2" name="Fire the trigger function programatically">
+      <pre-functions>
+        <function type="class">
+          <arg name="classname">usage.FireTriggerFunction</arg>
+          <arg name="triggerId">10</arg>
+        </function>
+      </pre-functions>
+      <results>
+        <default-result status="Underway" step="1"/>
+      </results>
+    </action>
+
+
+  </initial-actions>
+
+  <steps>
+    <step id="1" name="First Step">
+      <actions>
+        <action id="3" name="The first action" auto="true" finish="true">
+          <results>
+            <default-result/>
+          </results>
+        </action>
+      </actions>
+    </step>
+  </steps>
+
+</workflow>
+

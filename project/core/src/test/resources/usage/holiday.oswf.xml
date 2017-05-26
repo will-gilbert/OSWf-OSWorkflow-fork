@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE workflow SYSTEM 'OSWf-3.0.dtd'>
+
+<workflow>
+
+
+	<initial-actions>
+		<action id='1' name='Start Workflow'>
+			<results>
+				<default-result status='Underway' step='100' owner="${actor}"/>
+			</results>
+		</action>
+	</initial-actions>
+
+
+	<steps>
+
+		<step id='100' name='Employee request'>
+			<actions>
+				<action id='101' name='Request holidays'>
+					<results>
+						<default-result step='200' status='Underway'/>
+					</results>
+				</action>
+			</actions>
+		</step>
+
+
+		<step id='200' name='Manager Approval'>
+			<actions>
+
+                <!-- Manager approves holiday ============================================= -->
+				<action id='201' name='Approve' finish='true'>
+					<results>
+						<default-result exit-status='Revised' />
+					</results>
+                    <post-functions>
+                        <function type='beanshell'>
+                           <arg name='script'>propertySet.setString("result", "approved");</arg>
+                        </function>
+                    </post-functions>
+				</action>
+
+                <!-- Manager denies holiday =============================================== -->
+				<action id='202' name='Deny' finish='true'>
+					<results>
+						<default-result exit-status='Revised' />
+					</results>
+                    <post-functions>
+                        <function type='beanshell'>
+                           <arg name='script'>propertySet.setString("result", "denied");</arg>
+                        </function>
+                    </post-functions>
+				</action>
+			</actions>
+		</step>
+
+	</steps>
+
+</workflow>

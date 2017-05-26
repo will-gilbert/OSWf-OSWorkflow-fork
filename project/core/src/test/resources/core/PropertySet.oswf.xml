@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE workflow SYSTEM "OSWf-3.0.dtd">
+<workflow>
+
+
+  <initial-actions> 
+ 
+    <action id="1" name="Set PropertySet to 'Hello, World'">
+
+      <meta name='title'>Test Set/GetStringProperty functions</meta>  
+      <meta name='description'><![CDATA[  
+        Use 'SetStringProperty' function to add the string of 'Hello, World" as
+        the value referenced by the string 'test-name' into the PropertySet.
+      ]]></meta>
+    
+      <pre-functions>
+        <function type='alias' name='setString'>
+          <arg name="name">test-name</arg>
+          <arg name="value">Hello, World</arg>
+        </function>
+      </pre-functions>
+      <results> <default-result step="100"/> </results>
+    </action> 
+
+    <action id="2" name="Set PropertySet to 'Hello, World'">
+
+      <meta name='title'>Test Set/GetStringProperty functions</meta>  
+      <meta name='description'><![CDATA[]]></meta>
+      <pre-functions>
+        <function type='alias' name='setString'>
+          <arg name="name">test-name</arg>
+          <arg name="value">Hello, World</arg>
+        </function>
+      </pre-functions>
+      <results> <default-result step="200"/> </results>
+    </action> 
+ 
+    <action id="3" name="PropertySet 'name' not defined">
+      <results> <default-result step="300"/> </results>
+    </action> 
+ 
+    <action id="4" name="Set PropertySet to 'Hello, World'">
+      <pre-functions>
+        <function type='alias' name='setString'>
+          <arg name="name">test-name</arg>
+          <arg name="value">Hello, World</arg>
+        </function>
+      </pre-functions>
+      <results> <default-result step="400"/> </results>
+    </action> 
+    
+  </initial-actions>
+
+
+
+  <steps>
+
+    <step id="100" name="Test getStringProperty Function">
+
+      <meta name='description'><![CDATA[  
+        Use 'getStringProperty' function to copy the value reference by 'test-name'
+        in the PropertySet into the transient variable 'test'.  Use the core test
+        function, 'assertEquals' to test this transient variable
+      ]]></meta>
+
+
+      <actions>
+        <action id="100" name="action" auto='true' finish='true'>
+
+          <pre-functions> 
+              
+            <function type='alias' name='getString'>
+              <arg name="name">test-name</arg>
+              <arg name="variable">test</arg>
+            </function>
+                        
+            <function type='alias' name='assertEquals'>
+              <arg name='expected'>${test}</arg>
+              <arg name='actual'>Hello, World</arg>
+            </function> 
+            
+          </pre-functions>
+
+          <results><default-result/></results>
+        </action>
+      </actions>
+    </step>
+
+
+    <step id="200" name="Test hasProperty Condition, exists">
+
+      <meta name='description'><![CDATA[
+          Test that a property exists but does not test the its value
+      ]]></meta>
+
+
+      <actions>
+
+        <action id="200" name="action" auto='true' finish='true'>
+          <restrict-to>
+            <conditions>
+              <condition type='alias' name='hasProperty'>
+              <arg name="name">test-name</arg>
+              </condition>
+            </conditions>
+          </restrict-to>
+          <results><default-result/></results>
+        </action>
+
+      </actions>
+    </step> 
+    
+    <step id="300" name="Test hasProperty Condition, no-args">
+
+
+      <meta name='description'><![CDATA[ 
+          Should throws an 'IllegalArgumentException' 
+      ]]></meta>
+
+      <actions>
+
+        <action id="300" name="action" auto='true' finish='true'>
+          <restrict-to>
+            <conditions>
+              <condition type='alias' name='hasProperty'></condition>
+            </conditions>
+          </restrict-to>
+          <results><default-result/></results>
+        </action>
+
+      </actions>
+    </step>
+
+    <step id="400" name="Test hasProperty Condition, matches">
+
+      <meta name='description'><![CDATA[
+          Test that a property exists and it matches 'value' 
+      ]]></meta>
+
+
+      <actions>
+
+        <action id="400" name="action" auto='true' finish='true'>
+          <restrict-to>
+            <conditions>
+              <condition type='alias' name='hasProperty'>
+                <arg name='name'>test-name</arg>
+                <arg name='value'>Hello, World</arg>
+              </condition>
+            </conditions>
+          </restrict-to>
+          <results><default-result/></results>
+        </action>
+
+      </actions>
+    </step> 
+
+
+  </steps>
+
+</workflow>
+

@@ -1,0 +1,10 @@
+/**
+ **  This setting is used to specify the project name in case the 
+ **     parent directory is renamed other than 'oswf-store'.
+ **
+ **  A future version of Gradle should move this setting into the
+ **    build.gradle file
+ */
+
+
+rootProject.name = 'oswf-store'

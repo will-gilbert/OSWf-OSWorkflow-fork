@@ -1,0 +1,54 @@
+digraph abstract {
+
+graph [ landscape="false" labeljust="center" labelloc="top" fontsize=24 bgcolor="#f6f6DE" label="Holiday"]
+node [ color="black" fillcolor="#f0ffff" fontcolor="black" style="filled" fontname="Arial" fontsize=14 shape=egg]
+edge [ fontname="Arial" fontsize=8 arrowtype="normal"]
+
+InitialAction1 [label=<<table border='0'><tr><td><font point-size='8.0'>Initial Action: 1</font></td></tr><tr><td>Start Workflow</td></tr></table>>
+   shape=box
+   fontsize=10
+   fillcolor="#ccebc5"]
+
+
+Step100 [label=<<table border='0'><tr><td><font point-size='8.0'>Step: 100</font></td></tr><tr><td>Employee request</td></tr></table>>]
+
+Action101 [label=<<table border='0'><tr><td><font point-size='8.0'>Action: 101</font></td></tr><tr><td>Request holidays</td></tr></table>>
+   shape=box
+   fontsize=10
+   fillcolor="#f2f2f2"]
+
+
+Step200 [label=<<table border='0'><tr><td><font point-size='8.0'>Step: 200</font></td></tr><tr><td>Manager Approval</td></tr></table>>]
+
+Action201 [label=<<table border='0'><tr><td><font point-size='8.0'>Action: 201</font></td></tr><tr><td>Approve</td></tr></table>>
+   shape=box
+   fontsize=10
+   fillcolor="#f2f2f2"]
+Action202 [label=<<table border='0'><tr><td><font point-size='8.0'>Action: 202</font></td></tr><tr><td>Deny</td></tr></table>>
+   shape=box
+   fontsize=10
+   fillcolor="#f2f2f2"]
+
+
+
+InitialAction1->Step100 [label="Underway\nowner: ${actor}"]
+
+Step100->Action101
+Action101->Step200 [label="Underway"]
+
+Step200->Action201
+Finish1 [label="Finish"
+   shape=octagon
+   fontsize=8
+   fillcolor="#fbb4ae"]
+Action201->Finish1
+
+Step200->Action202
+Finish2 [label="Finish"
+   shape=octagon
+   fontsize=8
+   fillcolor="#fbb4ae"]
+Action202->Finish2
+
+
+}

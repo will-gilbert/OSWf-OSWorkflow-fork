@@ -1,0 +1,66 @@
+/*
+  The OSWf syntax colorizer acts by nesting 'span' element; That is steps -> step ->
+     actions -> action -> defualt-result.  Style classes are defined base on the
+     element name.
+     
+  Most of the singular class styles listed below inherit from their plural enclosing
+     class.  To further colorize nested elements change 'inherited' to specific values.
+
+*/
+
+.oswf-default          { 
+                        color: #333333; 
+                        white-space: nowrap;
+                        background-color: #f5f4ec;
+                        font-family: monospace; 
+                       }                           
+
+.oswf-workflow         { color: #003300; font-weight: normal;  }
+
+.oswf-text             { color: #5C5C5C; font-weight: normal;  }
+
+.oswf-meta             { color: #444444; font-weight: normal;  }
+
+.oswf-registers        { color: #CC9900; font-weight: normal;  }
+.oswf-register         { color: inherit; font-weight: inherit; }
+
+.oswf-initial-actions  { color: #00688B; font-weight: bold;  }
+.oswf-actions          { color: #00688B; font-weight: bold;  }
+.oswf-action           { color: #00688B; font-weight: normal; }
+
+.oswf-steps            { color: #8B0000; font-weight: bold;  }
+.oswf-step             { color: inherit; font-weight: normal; }
+
+.oswf-splits           { color: ##8A2BE2; font-weight: bold;  }
+.oswf-split            { color: inherit; font-weight: normal; }
+
+.oswf-joins            { color: #8B4513; font-weight: normal;  }
+.oswf-join             { color: inherit; font-weight: inherit; }
+
+.oswf-conditions       { color: #8B8878; font-weight: normal;  }
+.oswf-condition        { color: inherit; font-weight: inherit; }
+
+.oswf-results          { color: #000099; font-weight: bold;  }
+.oswf-result           { color: inherit; font-weight: normal; }
+.oswf-default-result   { color: inherit; font-weight: bold; }
+
+.oswf-pre-functions    { color: #556B2F; font-weight: bold;  }
+.oswf-post-functions   { color: #556B2F; font-weight: bold;  }
+.oswf-function         { color: inherit; font-weight: normal; }
+
+.oswf-conditions       { color: #CC6600; font-weight: normal;  }
+.oswf-condition        { color: inherit; font-weight: inherit; }
+
+.oswf-arg              { color: inherit; font-weight: inherit; }
+
+.oswf-attr_value       { color: #5C5C5C; font-weight: normal;  }
+.oswf-attr-id          { color: inherit; font-weight: inherit; }
+.oswf-attr-name        { color: inherit; font-weight: inherit; }
+.oswf-attr-type        { color: inherit; font-weight: inherit; }
+.oswf-attr-finish      { color: inherit; font-weight: inherit; }
+.oswf-attr-split       { color: inherit; font-weight: inherit; }
+.oswf-attr-join        { color: inherit; font-weight: inherit; }
+.oswf-attr-step        { color: inherit; font-weight: inherit; }
+.oswf-attr-owner       { color: inherit; font-weight: inherit; }
+.oswf-attr-status      { color: inherit; font-weight: inherit; }
+.oswf-attr-exit-status { color: inherit; font-weight: inherit; }

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE web-app
+    PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+    "http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<web-app>
+
+  <display-name>@name@, v@version@</display-name>
+
+  <!--  S E R V L E T S =================================================================== -->
+
+  <!-- OSWfSimulatorServlet: Provides the services for OSWf Simulator -->
+
+      <servlet>
+        <servlet-name>OSWfSimulatorServlet</servlet-name>
+        <servlet-class>org.informagen.oswf.simulator.server.OSWfSimulatorServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+      </servlet>
+
+      <servlet>
+        <servlet-name>OSWfReSTServlet</servlet-name>
+        <servlet-class>org.informagen.oswf.simulator.server.OSWfReSTServlet</servlet-class>
+        <load-on-startup>2</load-on-startup>
+      </servlet>
+    
+  <!-- Servlet to Services Mappings ======================================================= -->  
+
+      <servlet-mapping>
+        <servlet-name>OSWfSimulatorServlet</servlet-name>
+        <url-pattern>/app/oswfSimulatorService</url-pattern>
+      </servlet-mapping>
+
+      <servlet-mapping>
+        <servlet-name>OSWfReSTServlet</servlet-name>
+        <url-pattern>/workflows/*</url-pattern>
+      </servlet-mapping>
+
+
+  <!-- Startup Listener;  Creates Injector, SessionFactory, OSWfConfiguration ============= -->
+ 
+       <listener>
+           <listener-class>org.informagen.oswf.simulator.server.StartupContextListener</listener-class>
+       </listener>
+  
+   <!-- S E R V L E T   C O N F I G U R A T I O N  ======================================== -->
+  
+      <welcome-file-list>
+          <welcome-file>index.html</welcome-file>
+      </welcome-file-list>
+
+      <session-config>
+          <session-timeout>30</session-timeout>
+      </session-config>
+
+
+</web-app>

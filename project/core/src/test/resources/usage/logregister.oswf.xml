@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE workflow SYSTEM "OSWf-3.0.dtd">
+
+<workflow>
+
+    <meta name="title">Log Register Usage</meta>
+    <meta name="descirption"><![CDATA[
+        
+       This workflow contains log messages at many of the allowed locations. 
+       That is, wherever a 'function' tag is allowed.
+       
+             initial-actions/action/pre-functions
+             initial-actions/action/post-functions
+             initial-actions/action/results/results/default-result/pre-functions
+             initial-actions/action/results/results/default-result/post-functions
+             initial-actions/actions/action/results/result/pre-functions *
+             initial-actions/actions/action/results/result/post-functions *
+             
+             steps/step/pre-functions
+             steps/step/post-functions
+             steps/step/actions/action/pre-functions
+             steps/step/actions/action/post-functions
+             steps/step/actions/action/results/default-result/pre-functions
+             steps/step/actions/action/results/default-result/post-functions
+             steps/step/actions/action/results/result/pre-functions *
+             steps/step/actions/action/results/result/post-functions *
+             
+             splits/split/default-result/pre-functions *
+             splits/split/default-result/post-functions *
+             
+             joins/join/default-result/pre-functions *
+             joins/join/default-result/post-functions *
+             
+        * indicates no example has been provided in this workflow
+
+       
+       To change the Logging levels edit the resource file 'log4j.properties'
+          and set the following entries:
+       
+          log4j.logger.usage.LogRegisterTest           ALL
+          log4j.logger.logregister.workflow            ALL
+          
+       Note that the logger is create in the OSWf Register and does not have
+       any relation to the logger created in the Unit Test.
+             
+    ]]>
+    </meta>
+
+    <registers>
+        <register type="slf4jLogger" variable-name="logger">
+			<arg name="loggerName">logregister.workflow</arg>
+        </register>
+    </registers>
+
+
+
+	<initial-actions>
+		<action id="1" name="Start Workflow">
+		    
+            <pre-functions>
+                
+                 <function type="beanshell">
+                   <arg name="script">transientVars.get("logger").debug("Reporting DEBUG Level");</arg>
+                </function>
+                
+                <function type="beanshell">
+                   <arg name="script">transientVars.get("logger").info("Reporting INFO Level");</arg>
+                </function>
+                
+                <function type="beanshell">
+                   <arg name="script">transientVars.get("logger").error("Reporting ERROR Level");</arg>
+                </function>
+                                
+                <function type="beanshell">
+                   <arg name="script">transientVars.get("logger").debug("Inital Action 1: Pre-Function");</arg>
+                </function>
+                
+            </pre-functions>
+            
+			<results>
+				<default-result step="100" status="Underway">
+				                    
+                    <pre-functions>
+                        <function type="beanshell">
+                           <arg name="script">transientVars.get("logger").debug("Inital Action 1/Result: Pre-Function");</arg>
+                        </function>
+                    </pre-functions>
+				                    
+                    <post-functions>
+                        <function type="beanshell">
+                           <arg name="script">transientVars.get("logger").debug("Inital Action 1/Result: Post-Function");</arg>
+                        </function>
+                    </post-functions>
+                    
+				</default-result>
+			</results>
+			
+            <post-functions>
+                <function type="beanshell">
+                   <arg name="script">transientVars.get("logger").debug("Inital Action 1: Post-Function");</arg>
+                </function>
+            </post-functions>
+            
+		</action>
+	</initial-actions>
+
+
+	<steps>
+
+		<step id="100" name="Employee request">
+		    
+            <pre-functions>
+                <function type="beanshell">
+                   <arg name="script">transientVars.get("logger").debug("Step 100: Pre-Function");</arg>
+                </function>
+            </pre-functions>
+
+			<actions>
+				<action id="101" name="Request holidays">
+				    
+                    <pre-functions>
+                        <function type="beanshell">
+                           <arg name="script">transientVars.get("logger").debug("Step 100/Action 101:Pre-Function");</arg>
+                        </function>
+                    </pre-functions>
+                    
+					<results>
+						<default-result step="200" status="Underway">
+						    
+                            <pre-functions>
+                                <function type="beanshell">
+                                   <arg name="script">transientVars.get("logger").debug("Step 100/Action 101/Result:Pre-Function");</arg>
+                                </function>
+                            </pre-functions>
+						    
+                            <post-functions>
+                                <function type="beanshell">
+                                   <arg name="script">transientVars.get("logger").debug("Step 100/Action 101/Result: Post-Function");</arg>
+                                </function>
+                            </post-functions>
+						    
+						</default-result>
+					</results>
+					
+                    <post-functions>
+                        <function type="beanshell">
+                           <arg name="script">transientVars.get("logger").debug("Step 100/Action 101: Post-Function");</arg>
+                        </function>
+                    </post-functions>
+                    
+				</action>
+			</actions>
+
+            <post-functions>
+                <function type="beanshell">
+                   <arg name="script">transientVars.get("logger").debug("Step 100: Post-Function");</arg>
+                </function>
+            </post-functions>
+
+
+		</step>
+
+
+		<step id="200" name="Manager Approval">
+		    
+            <pre-functions>
+                <function type="beanshell">
+                   <arg name="script">transientVars.get("logger").debug("Step 200: Pre-Function");</arg>
+                </function>
+            </pre-functions>
+            
+			<actions>
+
+
+                <!-- Manager approves holiday ============================================= -->
+				<action id="201" name="Approve" finish="true">
+				    
+                    <pre-functions>
+                        <function type="beanshell">
+                           <arg name="script">transientVars.get("logger").debug("Step 200/Action 201:Pre-Function (Approve)");</arg>
+                        </function>
+                    </pre-functions>
+
+					<results>
+						<default-result exit-status="Revised">
+						    
+                            <pre-functions>
+                                <function type="beanshell">
+                                   <arg name="script">transientVars.get("logger").debug("Step 200/Action 201/Result:Pre-Function");</arg>
+                                </function>
+                            </pre-functions>
+						    
+                            <post-functions>
+                                <function type="beanshell">
+                                   <arg name="script">transientVars.get("logger").debug("Step 200/Action 201/Result: Post-Function");</arg>
+                                </function>
+                            </post-functions>
+						</default-result>
+					</results>
+                    <post-functions>
+                        
+                        <function type="beanshell">
+                           <arg name="script">transientVars.get("logger").debug("Step 200/Action 201: Post-Function");</arg>
+                        </function>
+                        
+                       <function type="beanshell">
+                           <arg name="script">
+                               propertySet.setString("Step 200/Action 201: Post-Function", "executed");
+                               propertySet.setString("result","approved");
+                           </arg>
+                        </function>
+                    </post-functions>
+
+				</action>
+
+                <!-- Manager denies holiday =============================================== -->
+				<action id="202" name="Deny" finish="true">
+				    
+                    <pre-functions>
+                        <function type="beanshell">
+                           <arg name="script">transientVars.get("logger").debug("Step 200/Action 202:Pre-Function (Deny)");</arg>
+                        </function>
+                    </pre-functions>
+				    
+					<results>
+						<default-result exit-status="Revised">
+						    
+                            <pre-functions>
+                                <function type="beanshell">
+                                   <arg name="script">
+                                       transientVars.get("logger").debug("Step 200/Action 202/Result:Pre-Function");
+                                       propertySet.setString("Step 200/Action 202/Result:Pre-Function","executed");
+                                  </arg>
+                                </function>
+                            </pre-functions>
+						    
+                            <post-functions>
+                                <function type="beanshell">
+                                   <arg name="script">
+                                       transientVars.get("logger").debug("Step 200/Action 202/Result:Post-Function");
+                                  </arg>
+                                </function>
+                            </post-functions>
+						</default-result>
+					</results>
+					
+                    <post-functions>
+                        
+                        <function type="beanshell">
+                           <arg name="script">
+                               transientVars.get("logger").debug("Step 200/Action 202: Post-Function");
+                               propertySet.setString("Step 200/Action 202: Post-Function", "executed");
+                               propertySet.setString("result","denied");
+                           </arg>
+                        </function>
+                        
+                    </post-functions>
+                    
+				</action>
+			</actions>
+
+            <post-functions>
+                <function type="beanshell">
+                   <arg name="script">transientVars.get("logger").debug("Step 200: Post-Function");</arg>
+                </function>
+            </post-functions>
+
+		</step>
+
+	</steps>
+
+</workflow>

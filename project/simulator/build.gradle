@@ -1,0 +1,442 @@
+task usage << { print """
+NB: On MacOS X where Safari is v5.1 or greater use OmniWeb as the default
+   browser in order to work with 'devMode'
+
+gradle javaCompile
+  Compile Java source code displaying warnings and error to the terminal console. Does not
+  cross compile Java to JavaScript
+
+gradle devMode
+  Launched GWT DevMode which in turn can launch the default browser.  Does not cross compile
+  the Java to JavaScript, rather, it creates hot complied environment such that changes to the
+  Java client source can be incrementally recompiled.  Server side source code change need to
+  be relaunched.  DevMode run an embedded version of Jetty. This is not related to the 'jettyRun'
+  task
+
+gradle clean jettyRun
+gradle clean jettyRun -P db=<database>
+  Cross compiles the client side Java into JavaScript; launches Jetty.  Use any browser to 
+  connect to the localhost on the port defined by 'jettyRun.httpPort'. The default database
+  is H2, an in-memory database. Local database configurations are set in the site specific
+  'gradle.properties' file
+
+gradle clean war -P db=<database> -P locality=remote
+gradle clean war -P db=MySQL -P locality=MacBookAir
+gradle clean war -P db=AWS -P locality=AWS
+  Build a WAR for deployment.  Be sure to 'clean' after the WAR is deployed in order to
+  reset the filtered property resources to their defaults.
+
+gradle clean
+  Delete working files in 'project.buildDir'; invokes 'cleanGWT' to remove the directory 
+  used by the GWT DevMode environment
+
+-----------------------------------------------------------------------------------------------
+After running the simulator into a database you can execute the following SQL commands 
+  to cleanup the OSWf & Property Set tables. NB: Execution order is important.
+
+TRUNCATE TABLE xmldescriptor;
+TRUNCATE TABLE processvariable;
+TRUNCATE TABLE historystep;
+TRUNCATE TABLE currentstep;
+DELETE FROM processinstance;
+
+""" }
+
+import org.apache.tools.ant.filters.ReplaceTokens
+
+apply plugin: 'java'
+apply plugin: 'jetty'
+apply plugin: 'war'
+
+defaultTasks 'devMode'
+
+
+// C O N F I G U R A T I O N ------------------------------------------------------------------
+
+// Project Configuration ----------------------------------------------------------------------
+
+group = 'net.sf.oswf'
+version = '1.0.0'
+
+ext.applicationName = "OSWf Simulator"
+
+
+// GWT Configuration
+ext.gwtModule = 'org.informagen.oswf.simulator.Application'      // Path to module descriptor
+ext.gwtModuleRenamedTo = 'app'                           // 'rename-to' within module descriptor
+ext.gwtRunTarget = 'index.html'                          // HTML launching file
+ext.gwtDevModeDir = 'devMode'                            // GWT build directory and devMode
+
+// GWT and Java Compilers Configuration -------------------------------------------------------
+
+// GWT SDK
+ext.gwtVersion = '2.5.0'
+
+// Dependency Versions
+ext.oswfCore = "3.2.0-SNAPSHOT"
+ext.oswfStore = "1.1.0-SNAPSHOT"
+ext.smartgwtVersion = '4.0'   // was 3.1
+ext.ginVersion   = '1.5.0'
+ext.guiceVersion = '3.0'
+
+// Java SDK
+sourceCompatibility = 1.6
+targetCompatibility = sourceCompatibility
+compileJava.options.compilerArgs = [
+//    '-Xlint:unchecked', 
+//    '-Xlint:deprecation',
+] 
+// Dont't add Java compiled client side classes to the WAR
+ext.excludedClasses = [
+ '**/simulator/client/**',
+ '**/simulator/public/**',
+ '**/simulator/Application.gwt.xml'
+]
+
+// We aren't using these skins or SmartGWT tools
+ext.excludedResources = [ 
+  'WEB-INF/deploy',
+  gwtModuleRenamedTo + '/sc/skins/Enterprise',
+  gwtModuleRenamedTo + '/sc/skins/EnterpriseBlue',
+  gwtModuleRenamedTo + '/sc/skins/ToolSkin',
+  gwtModuleRenamedTo + '/tools'
+]
+
+
+// Properties Configuration -------------------------------------------------------------------
+// Re: locality.properties, log4j.properties, <database>.hibernate.xml
+
+ext.log4jProperties = [
+    'log4j.logger'  : findProperty('log4j.logger', 'CONSOLE'), 
+    'log4j.pathname': findProperty('log4j.pathname', '.')
+]
+
+// Get there properties from the command line
+ext.hibernateDatabase = findProperty('db'); 
+ext.locality = findProperty('locality', 'local'); 
+
+// Use the command line property 'db' to load the intended set of properties from 
+//  the 'gradle.properties' file
+ext.hibernateProperties = [
+    'hibernate.connection.driver_class': findProperty(hibernateDatabase + '.connection.driver_class', 'org.h2.Driver'),
+    'hibernate.dialect'                : findProperty(hibernateDatabase + '.dialect', 'org.hibernate.dialect.H2Dialect'),
+    'hibernate.connection.url'         : findProperty(hibernateDatabase + '.connection.url', 'jdbc:h2:mem:workflow;DB_CLOSE_ON_EXIT=FALSE') ,
+    'hibernate.hbm2ddl.auto'           : findProperty(hibernateDatabase + '.hbm2ddl.auto', 'create-drop') ,
+    'hibernate.connection.autocommit'  : findProperty(hibernateDatabase + '.connection.autocommit', 'false') ,
+    'hibernate.connection.username'    : findProperty(hibernateDatabase + '.connection.username', 'sa'),
+    'hibernate.connection.password'    : findProperty(hibernateDatabase + '.connection.password', ''),
+    'hibernate.connection.pool_size'   : findProperty(hibernateDatabase + '.connection.pool_size', '1'),
+]
+
+
+ext.localityProperties = [
+    'project.version'                : project.version,
+    'project.name'                   : applicationName,
+    'user.agent'                     : (locality == 'local') ? 'safari' : 'gecko1_8,safari,ie8,ie9,opera',
+    'deployment.name'                : findProperty('deployment.name'),
+    'servlet.janitor.repeatInterval' : findProperty('servlet.janitor.repeatInterval', '30'),
+    'servlet.janitor.leakWarning'    : findProperty('servlet.janitor.leakWarning', '3'),
+    'executable.graphviz'            : findProperty(locality + '.executable.graphviz', 'dot'), 
+]
+
+// U T I L I T Y   M E T H O D S -------------------------------------------------------------- 
+
+def String findProperty(String propertyName, defaultValue='') {
+    def property = rootProject.hasProperty(propertyName) ? rootProject.getProperty(propertyName) : defaultValue
+    return property?.trim()
+}
+
+
+// R e p o s i t o r i e s   &   D e p e n d e n c i e s --------------------------------------
+
+configurations { [devMode] }
+
+configurations.compile.resolutionStrategy { 
+    cacheChangingModulesFor 0, 'seconds'
+}
+
+
+repositories {
+    
+    maven {
+        url "http://oswf.sourceforge.net/maven2"                  // OSWf artifacts 
+        artifactUrls "http://www.smartclient.com/maven2/"  // Isomorphic, SmartGWT
+    }
+
+    mavenLocal()                                       // User's local
+    mavenCentral()                                     // Maven Central repository; GWT
+}
+
+dependencies {
+
+    compile project(':core')
+    compile project(':store')
+
+
+    compile ([
+        
+        // OSWf - Core; OpenSymphony Quartz 
+        "opensymphony:quartz:1.6.0",
+
+        // OSWf Store & PropertySet extensions
+        
+        // Google GWT
+        "com.google.gwt:gwt-user:$gwtVersion",
+        "com.google.gwt:gwt-servlet:$gwtVersion",
+
+        // Isomorphic SmartGWT ==========================================
+        "com.smartgwt:smartgwt:$smartgwtVersion",
+        "com.smartgwt:smartgwt-skins:$smartgwtVersion",
+        
+        // Google Dependency Injection
+        "com.google.gwt.inject:gin:$ginVersion",
+        "com.google.inject:guice:$guiceVersion",
+
+        // Hibernate 3.x
+        "org.hibernate:hibernate-core:3.3.2.GA",
+
+        // Simple Logging Facade for Java    
+        'org.slf4j:slf4j-api:1.6.4',
+        
+        // J2EE Servlet
+        "javax.servlet:servlet-api:2.4",
+
+    ])
+    
+    runtime ([
+    
+        // Hibernate - runtime, needs cglib v2.2.2 with Guice
+        'org.hibernate:hibernate-entitymanager:3.4.0.GA',
+        'cglib:cglib:2.2.2',
+        
+        // BeanShell - used by Workflow Descriptions for step/action scripts
+        "bsh:bsh:1.3.0",
+        
+        // Logging Runtime 
+        "org.slf4j:slf4j-log4j12:1.6.1",
+        "log4j:log4j:1.2.16",
+
+        // C3P0 - Connection Pooling  
+        "c3p0:c3p0:0.9.1",
+
+        // Various database drivers; Add or remove accordingly
+        "mysql:mysql-connector-java:5.1.25",
+        'com.h2database:h2:1.3.170'
+        
+    ])
+
+    // Libraries used by GWT DevMode and GWT Compile but not for production or testing
+    devMode([
+        "com.google.gwt:gwt-dev:$gwtVersion", 
+        "com.google.gwt:gwt-servlet:$gwtVersion"
+    ])
+
+    testCompile([
+        "junit:junit:4.10",
+    ])
+
+    testRuntime([
+
+         // Use log4j for as the Logger
+         'org.slf4j:slf4j-log4j12:1.6.4',
+         'log4j:log4j:1.2.16',
+    ])
+
+
+}
+
+
+
+
+// G W T   T A S K S --------------------------------------------------------------------------
+
+task compileGWT(dependsOn: ['compileJava', 'copyWebAppResources'], type:JavaExec) {
+
+    description ='Cross compiles Java into JavaScript for each browser specified'
+
+    // Don't invoke GWT compiler if no source code has changed; 
+    //  Gradle Goodness at work here!!
+
+    outputs.upToDateSpec = new org.gradle.api.specs.AndSpec()
+    inputs.dir sourceSets.main.java.srcDirs
+    outputs.dir new File("${gwtDevModeDir}/${gwtModuleRenamedTo}")
+
+    // Define the properties for the 'JavaExec' task
+    main ='com.google.gwt.dev.Compiler'
+    
+    jvmArgs = ['-Xmx512M']                 // 256M Memory, increase for larger Apps
+
+    classpath = files([
+        sourceSets.main.java.srcDirs,      // Contains Java sources to be compiled into JavaScript
+        sourceSets.main.runtimeClasspath,  // Contains .gwt.xml file
+        configurations.devMode.files       // Contains the GWT compiler JAR
+    ])
+
+    args = [ "-war", gwtDevModeDir,  gwtModule]
+
+}
+
+
+
+task devMode(dependsOn: ['compileJava', 'copyWebAppResources', 'copyLibraries'], type:JavaExec) {
+
+    description = "Launches the 'devMode' environment"
+
+    main ='com.google.gwt.dev.DevMode'
+    
+    jvmArgs = [
+      '-Xmx512M',                      // 256M Memory, increase for larger Apps
+      '-Dgwt.nowarn.webapp.classpath'  // Supress DevMode console warnings
+    ]  
+
+    classpath = files([
+        sourceSets.main.java.srcDirs,      // Contains Java sources to be compiled into JavaScript
+        sourceSets.main.runtimeClasspath,  // Contains .gwt.xml file
+        configurations.devMode.files       // Contains the GWT compiler JAR
+    ])
+
+    args = [ "-startupUrl", gwtRunTarget,  "-war", gwtDevModeDir,  gwtModule]
+}
+
+
+jettyRun.doFirst {
+    println '=================================================================================='
+    println '|'
+    println "| Jetty running, open a browser and enter the URL->   http://localhost:${jettyRun.httpPort}/${project.name}/"
+    println '|'
+}
+
+
+// U T I L I T Y   T A S K S  =================================================================
+
+task copyWebAppResources(type:Copy) {
+    description = 'Copies resources into the "devMode" directory'
+
+    // Modify the web.xml file to provide name and version in the Servlet display
+    from('src/main/webapp') {
+        include '**/web.xml'
+        filter(ReplaceTokens, 
+               tokens:[version: project.version, name: applicationName ])
+    }
+
+    // Copy the other unmodified files as well
+    from('src/main/webapp') {
+       exclude '**/web.xml'
+    } into gwtDevModeDir
+}    
+
+
+task copyLibraries(type:Copy) {
+    description = 'Copies server side libraries into the "devMode" WEB-INF/lib directory'
+    from (sourceSets.main.runtimeClasspath) { include '**/*.jar'}
+    into "${gwtDevModeDir}/WEB-INF/lib"
+}
+
+
+task cleanGWT(type:Delete) {
+    description = 'Cleans the \'Development Mode\' JavaScript directory; does not delete webapp resources'
+    delete = [
+        "${gwtDevModeDir}/${gwtModuleRenamedTo}", 
+        "${gwtDevModeDir}/WEB-INF/deploy",
+        "${gwtDevModeDir}/WEB-INF/lib",
+        'gwt-unitCache'
+    ]   
+}
+
+task cleanDevMode(type:Delete) {
+    delete gwtDevModeDir  
+    delete 'gwt-unitCache'  
+}
+
+
+// G R A D L E   C O N F I G U R A T I O N ====================================================
+
+// WAR and Jetty builds; requires results of 'compileGWT' task rather than 'src/main/webapp'
+webAppDirName = "${gwtDevModeDir}"
+
+// Jetty Configuration
+jettyRun.httpPort = 9090           // Avoid potential conflicts with 8080
+
+
+// P L U G I N   C O N F I G U R A T I O N ====================================================
+
+// Must execute the 'compileGWT' task before 'war' and 'jettyRun';  By adding a 'dependsOn'
+//   to the 'war' and 'jettyRun' task configuration we don't have to remember to do this
+//   on the command line.  Same idea with the 'clean' task to clean up the 'devMode' directory
+
+war {dependsOn 'compileGWT'}
+
+jettyRun { dependsOn 'compileGWT' }
+
+clean { dependsOn 'cleanDevMode'}
+
+
+// Custom build our WAR in order to remove GWT compiler and unused SmartGWT resources and skins
+
+war {
+
+    // Undefine the default 'war' classpath; we'll build our own
+    classpath = [] 
+
+    // Copy everything except the excluded classes and the jars which are going into 'lib'
+    from (sourceSets.main.runtimeClasspath) {
+        into 'WEB-INF/classes'
+        excludes = excludedClasses
+        exclude  '*.jar'
+
+    }
+
+    // Put all of the JAR files into 'lib' except those used by the GWT DevMode and
+    //   the Java/JavaScript cross compiler
+    from (sourceSets.main.runtimeClasspath) {
+        into 'WEB-INF/lib'
+        include '*.jar'
+        exclude  'gwt-dev-*.jar'
+        exclude  'gwt-user-*.jar'
+    }
+
+    // Exclude resources which we don't want in the WAR
+    excludes = excludedResources
+}
+
+
+// Augment the 'processResources' task from the 'java' plugin.  Use filtering to replace 
+//   '@...@' tags with properties in order to customize the running environment
+
+processResources {
+    filter(ReplaceTokens, tokens: log4jProperties)
+    filter(ReplaceTokens, tokens: hibernateProperties)
+    filter(ReplaceTokens, tokens: localityProperties)
+}
+
+
+// U N I T   T E S T I N G --------------------------------------------------------------------
+
+test {
+    
+   forkEvery = 5
+   maxParallelForks = 5
+
+   // Display the test results as HTML if any test fails; 'ignoreFailure'
+   //   must ge set to false in order for the 'doLast' to be executed 
+   ignoreFailures = true
+   def showReport = false
+   afterTest { descr, result -> 
+        if (result.resultType.toString() =='FAILURE') 
+            showReport = true
+   }
+   
+   // Display the report in the users favorite browser
+   //     'defaultBrowser' can definded in ~/.gradle/gradle.properties file
+   def defaultBrowser = findProperty('defaultBrowser','safari')
+   
+   // NB: 'open' is available on MacOSX; Modify or remove for other OSes
+   doLast {
+        if(showReport)
+            exec {commandLine "/usr/bin/open", "-a", defaultBrowser, 
+                  "$testReportDir/index.html"}
+   }
+   
+}
+
+

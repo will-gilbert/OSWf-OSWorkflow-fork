@@ -1,0 +1,15 @@
+.xml-default          { color: #333333; 
+                        white-space: nowrap;
+                        background-color: #f5f4ec;
+                        font-family: monospace; 
+                      }                           
+.xml-element-name     { color: #8B0000; }
+.xml-element-nsprefix { color: #666600; }
+.xml-attr-name        { color: #00688B; }
+.xml-attr-content     { color: #000099; font-weight: bold; }
+.xml-ns-name          { color: #666600; }
+.xml-ns-uri           { color: #330099; }
+.xml-text             { color: #444444; font-weight: normal;}
+.xml-comment          { color: #006600; font-style: italic; }
+.xml-pi-name          { color: #006600; font-style: italic; }
+.xml-pi-content       { color: #006666; font-style: italic; }

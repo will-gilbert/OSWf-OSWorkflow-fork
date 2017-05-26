@@ -1,0 +1,455 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE workflow SYSTEM "OSWf-3.0.dtd">
+
+<workflow>
+
+  <meta name="workflow-meta1">workflow-meta1-value</meta>
+  <meta name="workflow-meta2">workflow-meta2-value</meta>
+
+  <initial-actions>
+    <action id="100" name="Start Workflow">
+      <!-- This initial-action is restricted to member of the 'foos' group -->  
+      <restrict-to>
+        <conditions>
+          <condition type='alias' name='hasRole'>
+            <arg name="role">foos</arg>
+          </condition>
+          
+        </conditions>
+      </restrict-to>
+      
+
+      <results>
+        <default-result status="Underway" step="1" owner="${actor}"/>
+      </results>
+    </action>
+
+    <!-- An illegal initial action, we use just for testing -->
+
+    <action id="200" name="Start Workflow - illegal">
+      <restrict-to>
+        <conditions>
+          <condition type="beanshell" name="bsh.condition">
+            <arg name="script">true</arg>
+          </condition>
+          <condition  type='alias' name='hasRole'>
+            <arg name="role">foos</arg>
+          </condition>
+        </conditions>
+      </restrict-to>
+
+      <results>
+        <!-- bad result step here, we can't stay in current step from initial action -->
+        <default-result status="Underway" step="-1" owner="${actor}"/>
+      </results>
+    </action>
+
+  </initial-actions>
+
+  <!-- S T E P S ========================================================================== -->
+
+  <steps>
+    <step id="1" name="First Draft">
+        
+      <meta name="step-meta1">step-meta1-value</meta>
+      <meta name="step-meta2">step-meta2-value</meta>
+      
+      <step-conditions>
+          
+        <step-condition name="permA">
+          <restrict-to>
+            <conditions>
+              <condition type='alias' name='hasStatusOf'><arg name="status">Underway</arg></condition>
+              <condition type='alias' name='isStepOwner' />
+            </conditions>
+          </restrict-to>
+        </step-condition>
+      </step-conditions>
+      
+      <actions>
+
+        <action id="1" name="Finish First Draft">
+          <meta name="action-meta1">action-meta1-value</meta>
+          <meta name="action-meta2">action-meta2-value</meta>
+          
+          <restrict-to>
+            <conditions>
+              <condition type="beanshell">
+                <arg name="script">true</arg>
+              </condition>
+              <condition type='alias' name='hasStatusOf'>
+                <arg name="status">Underway</arg>
+              </condition>
+              <condition type='alias' name='isStepOwner'>
+              </condition>
+            </conditions>
+          </restrict-to>
+          
+          <pre-functions>
+            <function type="beanshell" name="bsh.function">
+              <arg name="script">
+                    String actor = context.getActor();
+                    propertySet.setString("actor", actor);
+              </arg>
+            </function>
+          </pre-functions>
+          
+          <results>
+              
+            <result split="1">
+              <conditions>
+                <condition type="beanshell" name="bsh.condition">
+                  <arg name="script">
+						propertySet.getString("actor").equals("test")
+                  </arg>
+                </condition>
+              </conditions>
+            </result>
+            
+            <default-result step="2"/>
+            
+          </results>
+        </action>
+ 
+      </actions>
+ 
+  </step>
+    
+    
+    <step id="2" name="Edit Doc">
+        
+      <step-conditions>
+        <step-condition name="permB">
+          <restrict-to>
+            <conditions>
+              <condition type='alias' name='hasStatusOf'>
+                <arg name="status">Underway</arg>
+              </condition>
+              <condition type='alias' name='isStepOwner'>
+              </condition>
+            </conditions>
+          </restrict-to>
+
+        </step-condition>
+      </step-conditions>
+      
+      <actions>
+        <action id="2" name="Sign Up For Editing">
+          <restrict-to>
+            <conditions>
+              <condition type='alias' name='hasStatusOf'>
+                <arg name="status">Queued</arg>
+              </condition>
+              <condition  type='alias' name='hasRole'>
+                <arg name="role">bars</arg>
+              </condition>
+            </conditions>
+          </restrict-to>
+          <pre-functions>
+        <function type='alias' name='setActor'  />
+          </pre-functions>
+          <results>
+            <default-result status="Underway" step="2" owner="${actor}"/>
+          </results>
+        </action>
+        <action id="3" name="Finish Editing">
+          <restrict-to>
+            <conditions>
+              <condition type='alias' name='hasStatusOf'>
+                <arg name="status">Underway</arg>
+              </condition>
+              <condition type='alias' name='isStepOwner'>
+              </condition>
+            </conditions>
+          </restrict-to>
+          <pre-functions>
+            <function type='alias' name='mostRecentOwner'>
+              <arg name="stepId">1</arg>
+            </function>
+          </pre-functions>
+          <results>
+            <default-result status="Underway" step="3" owner="${mostRecentOwner}"/>
+          </results>
+        </action>
+        <action id="4" name="Requeue Editing">
+          <restrict-to>
+            <conditions>
+              <condition type='alias' name='hasStatusOf'>
+                <arg name="status">Underway</arg>
+              </condition>
+              <condition type='alias' name='isStepOwner'>
+              </condition>
+            </conditions>
+          </restrict-to>
+          <results>
+            <default-result status="Queued" step="2"/>
+          </results>
+        </action>
+      </actions>
+    </step>
+    <step id="3" name="Review Doc">
+      <step-conditions>
+        <step-condition name="permA">
+          <restrict-to>
+            <conditions>
+              <condition type='alias' name='hasStatusOf'>
+                <arg name="status">Underway</arg>
+              </condition>
+              <condition type='alias' name='isStepOwner'>
+              </condition>
+            </conditions>
+          </restrict-to>
+        </step-condition>
+      </step-conditions>
+      <actions>
+        <action id="5" name="More Edits">
+          <restrict-to>
+            <conditions>
+              <condition type='alias' name='hasStatusOf'>
+                <arg name="status">Underway</arg>
+              </condition>
+              <condition type='alias' name='isStepOwner'>
+              </condition>
+            </conditions>
+          </restrict-to>
+          <pre-functions>
+            <function type='alias' name='mostRecentOwner'>
+              <arg name="stepId">2</arg>
+            </function>
+          </pre-functions>
+          <results>
+            <default-result status="Underway" step="2" owner="${mostRecentOwner}"/>
+          </results>
+        </action>
+        <action id="6" name="Peer Review">
+          <restrict-to>
+            <conditions>
+              <condition type='alias' name='hasStatusOf'>
+                <arg name="status">Underway</arg>
+              </condition>
+              <condition type='alias' name='isStepOwner'>
+              </condition>
+            </conditions>
+          </restrict-to>
+          <results>
+            <default-result status="Queued" step="4"/>
+          </results>
+        </action>
+        <action id="7" name="Publish Doc">
+          <restrict-to>
+            <conditions>
+              <condition type='alias' name='hasStatusOf'>
+                <arg name="status">Underway</arg>
+              </condition>
+              <condition type='alias' name='isStepOwner'>
+              </condition>
+            </conditions>
+          </restrict-to>
+          <pre-functions>
+            <function type='alias' name='mostRecentOwner'>
+              <arg name="stepId">2</arg>
+            </function>
+          </pre-functions>
+          <results>
+            <default-result status="Underway" step="5" owner="${mostRecentOwner}"/>
+          </results>
+        </action>
+      </actions>
+    </step>
+    <step id="4" name="Second Review">
+      <step-conditions>
+        <step-condition name="permC">
+          <restrict-to>
+            <conditions>
+              <condition type='alias' name='hasStatusOf'>
+                <arg name="status">Underway</arg>
+              </condition>
+              <condition type='alias' name='isStepOwner'>
+              </condition>
+            </conditions>
+          </restrict-to>
+        </step-condition>
+      </step-conditions>
+      <actions>
+        <action id="8" name="Finish Second Review">
+          <restrict-to>
+            <conditions>
+              <condition type='alias' name='hasStatusOf'>
+                <arg name="status">Underway</arg>
+              </condition>
+              <condition type='alias' name='isStepOwner'>
+              </condition>
+            </conditions>
+          </restrict-to>
+          <pre-functions>
+            <function type='alias' name='mostRecentOwner'>
+              <arg name="stepId">3</arg>
+            </function>
+          </pre-functions>
+          <results>
+            <default-result  status="Underway" step="3" owner="${mostRecentOwner}"/>
+          </results>
+        </action>
+        <action id="9" name="Sign Up For Second Review">
+          <restrict-to>
+            <conditions>
+              <condition type='alias' name='hasStatusOf'>
+                <arg name="status">Queued</arg>
+              </condition>
+              <condition  type='alias' name='hasRole'>
+                <arg name="role">bazs</arg>
+              </condition>
+            </conditions>
+          </restrict-to>
+          <pre-functions>
+              <function type='alias' name='setActor'  />
+          </pre-functions>
+          <results>
+            <default-result  status="Underway" step="4" owner="${actor}"/>
+          </results>
+        </action>
+        <action id="10" name="Queue Second Review">
+          <restrict-to>
+            <conditions>
+              <condition type='alias' name='hasStatusOf'>
+                <arg name="status">Underway</arg>
+              </condition>
+              <condition type='alias' name='isStepOwner'>
+              </condition>
+            </conditions>
+          </restrict-to>
+          <results>
+            <default-result  status="Queued" step="4"/>
+          </results>
+        </action>
+      </actions>
+    </step>
+    <step id="5" name="Publish Doc">
+      <actions>
+        <action id="11" name="Publish Document">
+          <restrict-to>
+            <conditions>
+              <condition type='alias' name='hasStatusOf'>
+                <arg name="status">Underway</arg>
+              </condition>
+              <condition type='alias' name='isStepOwner'>
+              </condition>
+            </conditions>
+          </restrict-to>
+          <pre-functions>
+              <function type='alias' name='setActor'  />
+          </pre-functions>
+          <results>
+            <default-result  status="Finished" step="5" owner="${actor}"/>
+          </results>
+        </action>
+      </actions>
+    </step>
+    <step id="6" name="Foo">
+      <actions>
+        <action name="Finish Foo" id="12">
+          <restrict-to>
+            <conditions>
+              <condition type='alias' name='hasStatusOf'>
+                <arg name="status">Underway</arg>
+                <arg name="stepId">6</arg>
+              </condition>
+              <condition type='alias' name='isStepOwner'>
+                <arg name="stepId">6</arg>
+              </condition>
+            </conditions>
+          </restrict-to>
+          <results>
+            <default-result  join="1"/>
+          </results>
+        </action>
+      </actions>
+    </step>
+    <step id="7" name="Bar">
+      <actions>
+        <action name="Finish Bar" id="13">
+          <restrict-to>
+            <conditions>
+              <condition type='alias' name='hasStatusOf'>
+                <arg name="status">Underway</arg>
+                <arg name="stepId">7</arg>
+              </condition>
+              <condition type='alias' name='isStepOwner'>
+                <arg name="stepId">7</arg>
+              </condition>
+            </conditions>
+          </restrict-to>
+          <results>
+            <default-result  owner="test" status="Underway" step="8"/>
+          </results>
+        </action>
+        <!-- an action used purely to test staying in the same step with magic -1 step id -->
+        <action name="Stay in Bar" id="113">
+          <restrict-to>
+            <conditions>
+              <condition type='alias' name='hasStatusOf'>
+                <arg name="status">Underway</arg>
+                <arg name="stepId">7</arg>
+              </condition>
+              <condition type='alias' name='isStepOwner'>
+                <arg name="stepId">7</arg>
+              </condition>
+            </conditions>
+          </restrict-to>
+          <results>
+            <default-result  owner="test" status="Underway" step="-1"/>
+          </results>
+        </action>
+      </actions>
+    </step>
+    <step id="8" name="Baz">
+      <actions>
+        <action name="Finish Baz" id="14">
+          <restrict-to>
+            <conditions>
+              <condition type='alias' name='hasStatusOf'>
+                <arg name="status">Underway</arg>
+                <arg name="stepId">8</arg>
+              </condition>
+              <condition type='alias' name='isStepOwner'>
+                <arg name="stepId">8</arg>
+              </condition>
+            </conditions>
+          </restrict-to>
+          <results>
+            <default-result  join="1"/>
+          </results>
+        </action>
+      </actions>
+    </step>
+  </steps>
+
+  <!-- S P L I T S =======================================================================  -->
+
+  <splits>
+    <split id="1">
+      <default-result  status="Underway" owner="test" step="6"/>
+      <default-result  status="Underway" owner="test" step="7"/>
+    </split>
+  </splits>
+
+  <!-- J O I N S ========================================================================== -->
+  
+  <joins>
+    <join id="1">
+      <conditions>
+        <condition type="beanshell" name="bsh.condition">
+          <arg name="script"><![CDATA[
+              // Not ready for evaluation
+              if(jn.get(6) == null || jn.get(8) == null)
+                return false;
+              
+	          "Finished".equals(jn.get(6).getStatus()) && "Finished".equals(jn.get(8).getStatus())
+          ]]></arg>
+        </condition>
+      </conditions>
+      <default-result  status="Underway" owner="test" step="2"/>
+    </join>
+  </joins>
+</workflow>
+

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE workflow SYSTEM "OSWf-3.0.dtd">
+<workflow>
+	<initial-actions>
+		<action id="1" name="Start Workflow">
+
+			<pre-functions>
+				<function type="beanshell">
+					<arg name="script">
+					    // Save 'something' into the propery set as 'myvar'
+					     propertySet.setString("myvar","anything");
+					</arg>
+				</function>
+			</pre-functions>
+			
+			<results>
+				<default-result status="Underway" step="0"/>
+			</results>
+		</action>
+	</initial-actions>
+
+	<steps>
+    <step id="0" name="Start">
+      <actions>
+        <action id="50" name="Start Workflow" auto="true">
+					<pre-functions>
+						<function type="beanshell">
+							<arg name="script"><![CDATA[
+							    // Copy 'myvar' into the list
+                               List list = transientVars.get("list");
+						       list.add(propertySet.getString("myvar"));
+ 							]]></arg>
+						</function>
+					</pre-functions>
+					<results>
+						<default-result status="Underway" step="1"/>
+					</results>
+        </action>
+      </actions>
+    </step>
+
+    <step id="1" name="Step 1">
+      <actions>
+        <action id="101" name="Stop Workflow">
+          <results>
+            <default-result step='1' />
+          </results>
+        </action>
+      </actions>
+    </step>
+	</steps>
+
+</workflow>
+

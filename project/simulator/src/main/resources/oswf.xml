@@ -1,0 +1,52 @@
+<oswf>
+
+    <persistence>
+        <workflow-store class="org.informagen.oswf.impl.stores.HibernateStore"/>  
+        <propertyset-store class="org.informagen.oswf.impl.HibernatePropertySetStore">
+            <parameter name="propertySet" value="simulator" />
+        </propertyset-store>    
+    </persistence>
+
+    <type-resolver class='org.informagen.oswf.testing.StubTypeResolver' />
+
+	<loader class="org.informagen.oswf.impl.loaders.URLLoader">
+
+        <!-- CST -->
+        <workflow name="Ab Pipeline"         type="resource" location="usage/AntigenDesign.oswf.xml"/>
+
+        <!-- From Integration unit testing -->
+        <workflow name="ATM"                 type="resource" location="usage/ATM.oswf.xml"/>
+        <workflow name="Elevator"            type="resource" location="usage/Elevator.oswf.xml"/>
+        <workflow name="Holiday"             type="resource" location="usage/holiday.oswf.xml"/>
+        <workflow name="IC-Jira"             type="resource" location="usage/IC-Jira.oswf.xml"/>
+        <workflow name="Default Jira"        type="resource" location="usage/JIRA-Default.oswf.xml"/>
+        <workflow name="LeaveRequest"        type="resource" location="usage/LeaveRequest.oswf.xml"/>
+        <workflow name="LeaveRequest Alt"    type="resource" location="usage/LeaveRequest-alt.oswf.xml"/>
+        <workflow name="LogRegister"         type="resource" location="usage/logregister.oswf.xml"/>
+        <workflow name="Join-Nodes"          type="resource" location="core/joinnodes.oswf.xml"/>
+
+        <!-- From Core unit testing -->
+        <workflow name="Auto-split"          type="resource" location="core/auto-split.oswf.xml"/> 
+        <workflow name="Early-Split"         type="resource" location="core/earlysplit.oswf.xml"/>
+        <workflow name="Early-Join"          type="resource" location="core/earlyjoin.oswf.xml"/>
+        <workflow name="Join-Order"          type="resource" location="core/joinorder.oswf.xml"/>
+        <workflow name="Join-Split"          type="resource" location="core/joinsplit.oswf.xml"/>
+        <workflow name="Re-enter Split"      type="resource" location="core/reenter-split.oswf.xml"/>
+        <workflow name="Step-Post"           type="resource" location="core/step-post.oswf.xml"/>
+        <workflow name="Step-Pre"            type="resource" location="core/step-pre.oswf.xml"/>
+        <workflow name="WF-315"              type="resource" location="core/WF-315.oswf.xml"/>
+        <workflow name="WF-373"              type="resource" location="core/WF-373.oswf.xml"/>
+
+	</loader>
+
+    <propertysets>
+    
+        <propertyset name="simulator" class="org.informagen.oswf.propertyset.HibernatePropertySet" >    
+            <parameter name="timeZone" value="US/Eastern" />
+            <parameter name="dateFormat" value="yyyy-MMM-dd HH:mm" />
+        </propertyset>
+
+    </propertysets>
+
+
+</oswf>

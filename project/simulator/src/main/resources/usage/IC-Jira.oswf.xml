@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE workflow PUBLIC 
+            "-//OpenSymphony Group//DTD OSWorkflow 2.6//EN" 
+            "http://www.opensymphony.com/osworkflow/workflow_2_8.dtd">
+
+<workflow>
+	
+  <meta name="jira.description">IC Software Development Workflow (Enhancements, bugs, etc)</meta>
+
+  <initial-actions>
+ 
+   <action id="1" name="Create Issue">
+
+      <meta name="jira.i18n.title">common.forms.create</meta>
+
+
+      <results>
+
+        <unconditional-result old-status="Finished" status="Open" step="1">
+
+
+        </unconditional-result>
+
+      </results>
+
+    </action>
+
+  </initial-actions>
+
+
+  <common-actions>
+
+    <action id="2" name="Close Issue" view="resolveissue">
+
+      <meta name="jira.i18n.title">closeissue.title</meta>
+      <meta name="jira.i18n.submit">closeissue.close</meta>
+      <meta name="jira.i18n.description">closeissue.desc</meta>
+
+
+      <results>
+        <unconditional-result old-status="Finished" status="Closed" step="6">
+        </unconditional-result>
+      </results>
+    </action>
+
+    <action id="4" name="Start Progress">
+      <meta name="jira.i18n.title">startprogress.title</meta>
+      <results>
+        <unconditional-result old-status="Finished" status="Underway" step="3">
+        </unconditional-result>
+      </results>
+    </action>
+
+    <action id="3" name="Reopen Issue" view="commentassign">
+      <meta name="jira.i18n.title">issue.operations.reopen.issue</meta>
+      <meta name="jira.i18n.submit">issue.operations.reopen.issue</meta>
+      <meta name="jira.i18n.description">issue.operations.reopen.description</meta>
+      <results>
+        <unconditional-result old-status="Finished" status="Reopened" step="5">
+        </unconditional-result>
+      </results>
+    </action>
+ 
+   <action id="5" name="Resolve Issue" view="resolveissue">
+
+      <meta name="jira.i18n.title">resolveissue.title</meta>
+      <meta name="jira.i18n.submit">resolveissue.resolve</meta>
+      <meta name="jira.i18n.description">resolveissue.desc.line1</meta>
+
+
+      <results>
+        <unconditional-result old-status="Finished" status="Resolved" step="4">
+        </unconditional-result>
+      </results>
+    </action>
+  </common-actions>
+  
+
+
+<steps>
+
+    <step id="1" name="Open">
+      <meta name="jira.status.id">1</meta>
+      <actions>
+		<common-action id="4" />
+		<common-action id="5" />
+		<common-action id="2" />
+      </actions>
+    </step>
+
+
+    <step id="3" name="In Progress">
+
+      <meta name="jira.status.id">3</meta>
+
+      <actions>
+
+		<common-action id="2" />
+
+        <action id="301" name="Stop Progress">
+
+          <meta name="jira.i18n.title">stopprogress.title</meta>
+
+
+          <results>
+
+            <unconditional-result old-status="Finished" status="Assigned" step="1">
+            </unconditional-result>
+
+          </results>
+
+        </action>
+
+
+        <action id="711" name="Development Complete">
+
+          <meta name="jira.description">Development on the issue is complete, and is being sent to QA for migration / testing.</meta>
+
+
+          <results>
+
+            <unconditional-result old-status="Not Done" status="Done" step="8">
+            </unconditional-result>
+          </results>
+        </action>
+ 
+     </actions>
+    </step>
+
+
+    <step id="4" name="Resolved">
+
+      <meta name="jira.status.id">5</meta>
+
+      <actions>
+
+		<common-action id="3" />
+
+        <action id="701" name="Close Issue" view="commentassign">
+
+          <meta name="jira.i18n.title">closeissue.title</meta>
+          <meta name="jira.i18n.submit">closeissue.close</meta>
+          <meta name="jira.i18n.description">closeissue.desc</meta>
+          <meta name="jira.description">Closing an issue indicates there is no more work to be done on it, and it has been verified as complete.</meta>
+
+
+          <results>
+            <unconditional-result old-status="Finished" status="Closed" step="6">
+            </unconditional-result>
+          </results>
+
+        </action>
+      </actions>
+    </step>
+
+
+
+    <step id="5" name="Reopened">
+
+      <meta name="jira.status.id">4</meta>
+
+      <actions>
+		<common-action id="5" />
+		<common-action id="2" />
+		<common-action id="4" />
+      </actions>
+
+    </step>
+
+
+
+    <step id="6" name="Closed">
+
+      <meta name="jira.issue.editable">false</meta>
+      <meta name="jira.status.id">6</meta>
+
+      <actions>
+		<common-action id="3" />
+      </actions>
+
+    </step>
+
+
+
+    <step id="7" name="In QA">
+
+      <meta name="jira.status.id">10003</meta>
+
+      <actions>
+
+        <action id="731" name="QA Passed" view="fieldscreen">
+
+          <meta name="jira.fieldscreen.id">10010</meta>
+          <meta name="jira.description">QA has been completed and passed.</meta>
+
+
+          <results>
+            <unconditional-result old-status="Not Done" status="Done" step="9">
+            </unconditional-result>
+          </results>
+        </action>
+
+        <action id="741" name="QA Failed">
+
+          <meta name="jira.description">QA has been completed and failed, routing back to developer</meta>
+
+
+          <results>
+            <unconditional-result old-status="Not Done" status="Done" step="10">
+            </unconditional-result>
+          </results>
+        </action>
+      </actions>
+    </step>
+
+
+
+    <step id="8" name="Requested Migration to QA">
+
+      <meta name="jira.status.id">10004</meta>
+
+      <actions>
+
+        <action id="721" name="Migrated to QA">
+
+          <meta name="jira.description">QA Manager has migrated the related release / build to QA</meta>
+
+
+          <results>
+
+            <unconditional-result old-status="Not Done" status="Done" step="7">
+            </unconditional-result>
+
+          </results>
+        </action>
+
+      </actions>
+    </step>
+
+
+    <step id="9" name="QA Passed">
+
+      <meta name="jira.status.id">10005</meta>
+
+      <actions>
+
+        <action id="761" name="Migrating to Production" view="fieldscreen">
+
+          <meta name="jira.fieldscreen.id">3</meta>
+          <meta name="jira.description">Request is being migrated to production</meta>
+
+
+          <results>
+
+            <unconditional-result old-status="Not Done" status="Done" step="4">
+            </unconditional-result>
+          </results>
+        </action>
+      </actions>
+    </step>
+
+
+    <step id="10" name="QA Failed">
+
+      <meta name="jira.status.id">10006</meta>
+
+      <actions>
+
+        <action id="751" name="Restart Progress">
+
+          <meta name="jira.description">Reopen the case for development</meta>
+
+          <results>
+
+            <unconditional-result old-status="Not Done" status="Done" step="3">
+            </unconditional-result>
+          </results>
+
+        </action>
+      </actions>
+    </step>
+  </steps>
+
+
+
+</workflow>

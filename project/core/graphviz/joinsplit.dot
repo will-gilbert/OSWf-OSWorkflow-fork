@@ -1,0 +1,48 @@
+digraph abstract {
+
+graph [ landscape="false", labeljust="center", labelloc="top", bgcolor="#f6f6DE", label="Join-Split"]
+node [ color="black", fillcolor="#f0ffff", fontcolor="black", style="filled", fontname="Arial", fontsize="14", shape="egg"]
+edge [ fontname = "Arial", fontsize = "8", arrowtype= "normal"]
+
+IA100 [label="Initiate", shape="box", fontsize="10", fillcolor="#D1FBCB"]
+
+Step1 [label="Mail Documents"]
+Action1 [label="Documents Mailed", shape="box", fontsize="8", fillcolor="#eeeeee"]
+Step2 [label="Receive Completed Documents"]
+Action2 [label="Completed Documents Received", shape="box", fontsize="8", fillcolor="#eeeeee"]
+Step3 [label="Receive Letter"]
+Action3 [label="Letter Received", shape="box", fontsize="8", fillcolor="#eeeeee"]
+Step4 [label="Receive Wire"]
+Action4 [label="Wire Received", shape="box", fontsize="8", fillcolor="#eeeeee"]
+Step5 [label="Finished"]
+
+Split1 [label="Split ID #1", shape="trapezium", fontsize="10" fillcolor="#FFFF99"]
+
+Join1 [label="Join ID #1", shape="invtrapezium", fontsize="10" fillcolor="#FFFF99"]
+
+IA100->Step1
+
+
+Step1->Action1
+Action1->Split1
+
+
+Step2->Action2
+Action2->Join1
+
+
+Step3->Action3
+Action3->Join1
+
+
+Step4->Action4
+Action4->Join1
+
+
+
+Join1->Step5
+Split1->Step2
+Split1->Step3
+Split1->Step4
+
+}

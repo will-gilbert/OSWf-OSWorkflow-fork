@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+          "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+          "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+
+    <session-factory>
+        
+        <!-- OSWf 3.0.0 Custom HBM files============================================ -->
+
+        <mapping resource="org/informagen/oswf/hbm/HibernateCurrentStep.hbm.xml" />
+        <mapping resource="org/informagen/oswf/hbm/HibernateHistoryStep.hbm.xml" />
+        <mapping resource="org/informagen/oswf/hbm/HibernateProcessInstance.hbm.xml" />
+
+        <!-- OSWf Process Description as XML -->
+        <mapping resource="org/informagen/oswf/hbm/HibernateProcessDescription.hbm.xml" /> 
+
+
+    </session-factory>
+
+</hibernate-configuration>

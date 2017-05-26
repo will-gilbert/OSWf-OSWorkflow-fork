@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE workflow SYSTEM "OSWf-3.0.dtd">
+
+<workflow>
+    
+    <meta name='Jira Ticket'><![CDATA[
+    
+        This workflow is missing a 'default-result' element as part 
+        of the 'results' in the initial-actions and should throw 
+        an 'InvalidWorkflowDescriptorException' when loaded.    
+        
+    ]]>    
+    </meta>    
+                
+
+	<initial-actions>
+		<action id="1" name="Start Workflow">
+			<results>
+				<!-- <default-result status="Pending" step="1" owner="${actor}"/> -->
+				<default-result status="Underway"/>
+			</results>
+		</action>
+	</initial-actions>
+
+	<steps>
+		<step id="1" name="First Draft">
+			<actions>
+				<action id="1" name="Finish First Draft">
+					<results>
+					    
+						<result>
+							<conditions>
+								<condition type="beanshell">
+									<arg name="script">true</arg>
+								</condition>
+							</conditions>
+						</result>
+						<default-result/>
+					</results>
+				</action>
+			</actions>
+		</step>
+	</steps>
+</workflow>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE workflow SYSTEM "OSWf-3.0.dtd">
+
+<workflow>
+
+  <initial-actions>
+    <action id="100" name="Start Workflow">
+      <pre-functions>
+        <function type="class">
+          <arg name="classname">org.informagen.oswf.functions.SetActor</arg>
+        </function>
+      </pre-functions>
+
+      <results>
+        <default-result status="Underway" step="1" owner="${actor}"/>
+      </results>
+
+    </action>
+  </initial-actions>
+
+  <steps>
+    <step id="1" name="First Step">
+      <actions>
+        <action id="1" name="The first action" finish="true">
+          <results>
+            <default-result />
+          </results>
+        </action>
+      </actions>
+    </step>
+  </steps>
+</workflow>
+

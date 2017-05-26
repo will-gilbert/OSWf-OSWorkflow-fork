@@ -1,0 +1,93 @@
+digraph abstract {
+
+graph [ landscape="false" labeljust="center" labelloc="top" fontsize=24 bgcolor="#f6f6DE" label="LeaveRequest"]
+node [ color="black" fillcolor="#f0ffff" fontcolor="black" style="filled" fontname="Arial" fontsize=14 shape=egg]
+edge [ fontname="Arial" fontsize=8 arrowtype="normal"]
+
+InitialAction1 [label=<<table border='0'><tr><td><font point-size='8.0'>Initial Action: 1</font></td></tr><tr><td>Start Workflow</td></tr></table>>
+   shape=box
+   fontsize=10
+   fillcolor="#ccebc5"]
+
+
+Step100 [label=<<table border='0'><tr><td><font point-size='8.0'>Step: 100</font></td></tr><tr><td>Employee request</td></tr></table>>]
+
+Action101 [label=<<table border='0'><tr><td><font point-size='8.0'>Action: 101</font></td></tr><tr><td>Request holidays</td></tr></table>>
+   shape=box
+   fontsize=10
+   fillcolor="#f2f2f2"]
+
+
+Step200 [label=<<table border='0'><tr><td><font point-size='8.0'>Step: 200</font></td></tr><tr><td>Line Manager revision</td></tr></table>>]
+
+Action201 [label=<<table border='0'><tr><td><font point-size='8.0'>Action: 201</font></td></tr><tr><td>Approve</td></tr></table>>
+   shape=box
+   fontsize=10
+   fillcolor="#f2f2f2"]
+Action202 [label=<<table border='0'><tr><td><font point-size='8.0'>Action: 202</font></td></tr><tr><td>Deny</td></tr></table>>
+   shape=box
+   fontsize=10
+   fillcolor="#f2f2f2"]
+
+
+Step300 [label=<<table border='0'><tr><td><font point-size='8.0'>Step: 300</font></td></tr><tr><td>HR Manager revision</td></tr></table>>]
+
+Action301 [label=<<table border='0'><tr><td><font point-size='8.0'>Action: 301</font></td></tr><tr><td>HR Approve</td></tr></table>>
+   shape=box
+   fontsize=10
+   fillcolor="#f2f2f2"]
+Action302 [label=<<table border='0'><tr><td><font point-size='8.0'>Action: 302</font></td></tr><tr><td>HR Deny</td></tr></table>>
+   shape=box
+   fontsize=10
+   fillcolor="#f2f2f2"]
+
+
+Step400 [label=<<table border='0'><tr><td><font point-size='8.0'>Step: 400</font></td></tr><tr><td>Notify employee</td></tr></table>>]
+
+Action401 [label=<<table border='0'><tr><td><font point-size='8.0'>Action: 401</font></td></tr><tr><td>Notify</td></tr></table>>
+   shape=box
+   fontsize=10
+   fillcolor="#f2f2f2"]
+
+
+
+Split10000 [label="Split: 10000"
+   shape=trapezium
+   fontsize=10
+   fillcolor="#fddaec"]
+
+Join10000 [label="Join: 10000"
+   shape=invtrapezium
+   fontsize=10
+   fillcolor="#decbe4"]
+
+
+InitialAction1->Step100 [label="Underway"]
+
+Step100->Action101
+Action101->Split10000 [label="Requested"]
+
+Step200->Action201
+Action201->Join10000 [label="joining"]
+
+Step200->Action202
+Action202->Join10000 [label="joining"]
+
+Step300->Action301
+Action301->Join10000 [label="joining"]
+
+Step300->Action302
+Action302->Join10000 [label="joining"]
+
+Step400->Action401
+Finish1 [label="Finish"
+   shape=octagon
+   fontsize=8
+   fillcolor="#fbb4ae"]
+Action401->Finish1
+
+Join10000->Step400 [label="${result}"]
+Split10000->Step200 [label="Underway"]
+Split10000->Step300 [label="Underway"]
+
+}

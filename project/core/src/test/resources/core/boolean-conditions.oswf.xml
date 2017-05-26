@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE workflow SYSTEM "OSWf-3.0.dtd">
+<workflow>
+
+  <meta name='Test Pupose'><![CDATA[
+
+
+  ]]></meta>
+
+  <initial-actions>
+      
+    <action id="1" name="OR Test">
+      <results><default-result step="100"/></results>
+    </action>
+    
+    <action id="2" name="AND Test">
+      <results><default-result step="200"/></results>
+    </action>
+    
+    <action id="3" name="NOT Test">
+      <results><default-result step="300"/></results>
+    </action>
+ 
+    <action id="6" name="Failed OR Test">
+      <results><default-result step="600"/></results>
+    </action>
+ 
+    <action id="7" name="Failed AND Test">
+      <results><default-result step="700"/></results>
+    </action>
+
+    
+  </initial-actions>
+  
+  
+  <steps>
+
+    <step id="100" name="OR Test Step">
+
+      <actions>
+        <action id="100" name="test" auto='true' finish='true'>
+            
+          <restrict-to>
+            <conditions type="OR">
+              <condition type="beanshell"><arg name="script">false</arg></condition>
+              <condition type="beanshell"><arg name="script">false</arg></condition>
+              <condition type="beanshell"><arg name="script">false</arg></condition>
+              <condition type="beanshell"><arg name="script">false</arg></condition>
+              <condition type="beanshell"><arg name="script">true</arg></condition>
+            </conditions>
+          </restrict-to> 
+          
+          <results><default-result/></results>
+        </action>
+      </actions>
+    </step>
+
+    <step id="600" name="Failed OR Test Step">
+
+      <actions>
+        <action id="600" name="test" auto='true' finish='true'>
+            
+          <restrict-to>
+            <conditions type="OR">
+              <condition type="beanshell"><arg name="script">false</arg></condition>
+              <condition type="beanshell"><arg name="script">false</arg></condition>
+              <condition type="beanshell"><arg name="script">false</arg></condition>
+              <condition type="beanshell"><arg name="script">false</arg></condition>
+            </conditions>
+          </restrict-to> 
+          
+          <results><default-result/></results>
+        </action>
+      </actions>
+    </step>
+
+    <step id="200" name="AND Test Step">
+
+      <actions>
+        <action id="200" name="test" auto='true' finish='true'>
+            
+          <restrict-to>
+            <conditions type="AND">
+              <condition type="beanshell"><arg name="script">true</arg></condition>
+              <condition type="beanshell"><arg name="script">true</arg></condition>
+              <condition type="beanshell"><arg name="script">true</arg></condition>
+              <condition type="beanshell"><arg name="script">true</arg></condition>
+              <condition type="beanshell"><arg name="script">true</arg></condition>
+            </conditions>
+          </restrict-to> 
+          
+          <results><default-result/></results>
+        </action>
+      </actions>
+    </step>
+
+    <step id="700" name="Failed AND Test Step">
+
+      <actions>
+        <action id="700" name="test" auto='true' finish='true'>
+            
+          <restrict-to>
+            <conditions type="AND">
+              <condition type="beanshell"><arg name="script">true</arg></condition>
+              <condition type="beanshell"><arg name="script">true</arg></condition>
+              <condition type="beanshell"><arg name="script">true</arg></condition>
+              <condition type="beanshell"><arg name="script">true</arg></condition>
+              <condition type="beanshell"><arg name="script">false</arg></condition>
+            </conditions>
+          </restrict-to> 
+          
+          <results><default-result/></results>
+        </action>
+      </actions>
+    </step>
+
+    <step id="300" name="NOT Test Step">
+
+      <actions>
+        <action id="300" name="test" auto='true' finish='true'>
+            
+          <restrict-to>
+            <conditions type="AND">
+              <condition type="beanshell" negate='true'><arg name="script">false</arg></condition>
+            </conditions>
+          </restrict-to> 
+          
+          <results><default-result/></results>
+        </action>
+      </actions>
+    </step>
+
+  </steps>
+</workflow>
+

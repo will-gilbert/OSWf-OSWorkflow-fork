@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!-- ==========================================================================================
+
+    XML to HTML syntax highlighter
+
+=========================================================================================== -->
+
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+   <xsl:output method="html" omit-xml-declaration="yes" indent="no"/>
+
+   <!-- Document Root ===================================================================== -->
+
+   <xsl:template match="/">
+
+      <!-- HTML 'div' bounds everything used to control background, font re: css  -->
+      <div class="xml-default">
+         <xsl:apply-templates />
+      </div>
+
+   </xsl:template>
+
+   <!-- All XML elements ================================================================== -->
+
+   <xsl:template match="*">
+
+      <!-- Opening angle bracket ======== -->
+      <xsl:text>&lt;</xsl:text>
+
+      <!-- Parse optional namespace ===== -->
+      <xsl:variable name="ns-prefix" select="substring-before(name(),':')" />
+
+      <xsl:if test="$ns-prefix != ''">
+         <span class="xml-element-nsprefix">
+            <xsl:value-of select="$ns-prefix"/>
+         </span>
+         <xsl:text>:</xsl:text>
+      </xsl:if>
+
+      <!-- Opening 'span' for color highlighting of this element -->
+      <span class="xml-element-name">
+         <xsl:value-of select="local-name()"/>
+      </span>
+
+      <!--  Write namespace, if exists ============ -->
+      <xsl:variable name="pns" select="../namespace::*"/>
+
+      <xsl:if test="$pns[name()=''] and not(namespace::*[name()=''])">
+         <span class="xml-ns-name">
+            <xsl:text> xmlns</xsl:text>
+         </span>
+         <xsl:text>=&quot;&quot;</xsl:text>
+      </xsl:if>
+
+      <xsl:for-each select="namespace::*">
+         <xsl:if test="not($pns[name()=name(current()) and .=current()])">
+            <xsl:call-template name="xml-ns" />
+         </xsl:if>
+      </xsl:for-each>
+
+      <!-- Process each of this element's attributes ================== -->
+
+      <xsl:for-each select="@*">
+         <xsl:call-template name="xml-attrs" />
+      </xsl:for-each>
+
+      <!-- Process each element node ================================== -->
+      
+      <xsl:choose>
+         <xsl:when test="node()">
+
+             <!-- Open element angle bracket -->
+            <xsl:text>&gt;</xsl:text>
+
+            <!-- Recursive invocation of this template -->
+            <xsl:apply-templates />
+            
+            <xsl:text>&lt;/</xsl:text>
+
+            <xsl:if test="$ns-prefix != ''">
+               <span class="xml-element-nsprefix">
+                  <xsl:value-of select="$ns-prefix"/>
+               </span>
+               <xsl:text>:</xsl:text>
+            </xsl:if>
+
+            <!-- Write out colorized element name... -->
+            <span class="xml-element-name">
+               <xsl:value-of select="local-name()"/>
+            </span>
+
+            <!-- ...and close element angle bracket -->
+            <xsl:text>&gt;</xsl:text>
+            
+         </xsl:when>
+
+         <xsl:otherwise>
+            <xsl:text> /&gt;</xsl:text>
+         </xsl:otherwise>
+
+      </xsl:choose>
+
+   </xsl:template>
+
+   <!-- X M L  - A T T R S : Element attributes =========================================== -->
+   <!--  Write a space and a new 'span' for colorizing; A single quote, clean up the        -->
+   <!--    the attribute, convert to HTML, add a closing single quote                       -->
+
+   <xsl:template name="xml-attrs">
+       
+      <xsl:text> </xsl:text>
+
+      <span class="xml-attr-name">
+         <xsl:value-of select="name()"/>
+      </span>
+
+      <xsl:text>=&quot;</xsl:text>
+
+      <span class="xml-attr-content">
+         <xsl:call-template name="html-replace-entities">
+            <xsl:with-param name="text" select="normalize-space(.)" />
+            <xsl:with-param name="attrs" select="true()" />
+         </xsl:call-template>
+      </span>
+      
+      <xsl:text>&quot;</xsl:text>
+      
+   </xsl:template>
+
+   <!-- X M L - N S  :  Namespace prefixes ================================================ -->
+
+   <xsl:template name="xml-ns">
+
+      <xsl:if test="name()!='xml'">
+
+         <span class="xml-ns-name">
+            <xsl:text> xmlns</xsl:text>
+            <xsl:if test="name()!=''">
+               <xsl:text>:</xsl:text>
+            </xsl:if>
+            <xsl:value-of select="name()"/>
+         </span>
+
+         <xsl:text>=&quot;</xsl:text>
+
+         <span class="xml-ns-uri">
+            <xsl:value-of select="."/>
+         </span>
+
+         <xsl:text>&quot;</xsl:text>
+
+      </xsl:if>
+   </xsl:template>
+
+
+   <!-- All text() nodes ================================================================== -->
+
+   <xsl:template match="text()">
+
+         <xsl:call-template name="preformatted-output">
+            <xsl:with-param name="text">
+               <xsl:call-template name="html-replace-entities">
+                  <xsl:with-param name="text" select="." />
+               </xsl:call-template>
+            </xsl:with-param>
+         </xsl:call-template>
+
+   </xsl:template>
+
+   <!-- All comment() nodes =============================================================== -->
+
+   <xsl:template match="comment()">
+       
+      <span class="xml-comment">
+         <xsl:text>&lt;!--</xsl:text>
+
+         <xsl:call-template name="preformatted-output">
+            <xsl:with-param name="text" select="." />
+         </xsl:call-template>
+
+        <xsl:text>--&gt;</xsl:text>
+      </span>
+
+   </xsl:template>
+
+   <!-- All processing-instruction() nodes ================================================ -->
+
+   <xsl:template match="processing-instruction()">
+
+      <xsl:text>&lt;?</xsl:text>
+
+      <span class="xml-pi-name">
+         <xsl:value-of select="name()"/>
+      </span>
+
+      <xsl:if test=".!=''">
+         <xsl:text> </xsl:text>
+         <span class="xml-pi-content">
+            <xsl:value-of select="."/>
+         </span>
+      </xsl:if>
+
+      <xsl:text>?&gt;</xsl:text>
+
+   </xsl:template>
+
+
+   <!-- =================================================================================== -->
+   <!--                             Procedures / Functions                                  -->
+   <!-- =================================================================================== -->
+
+   <!-- H T M L - R E P L A C E - E N T I T I E S  ======================================== -->
+   <!-- generate entities by replacing &, ", < and > in $text -->
+
+   <xsl:template name="html-replace-entities">
+
+      <xsl:param name="text" />
+      <xsl:param name="attrs" />
+
+      <!-- Create a temporary 'subroutine'; use below -->
+      <xsl:variable name="tmp">
+
+         <xsl:call-template name="replace-substring">
+             
+            <!-- Opening angle bracket -->
+            
+            <xsl:with-param name="from" select="'&gt;'" />
+            <xsl:with-param name="to" select="'&amp;gt;'" />
+            <xsl:with-param name="value">
+
+               <xsl:call-template name="replace-substring">
+
+                  <!-- Closing angle bracket -->
+
+                  <xsl:with-param name="from" select="'&lt;'" />
+                  <xsl:with-param name="to" select="'&amp;lt;'" />
+                  <xsl:with-param name="value">
+
+                     <!-- Ampersand symbol -->
+                     <xsl:call-template name="replace-substring">
+                        <xsl:with-param name="from" select="'&amp;'" />
+                        <xsl:with-param name="to" select="'&amp;amp;'" />
+                        <xsl:with-param name="value" select="$text" />
+                     </xsl:call-template>
+
+                  </xsl:with-param>
+               </xsl:call-template>
+               
+            </xsl:with-param>
+         </xsl:call-template>
+         
+      </xsl:variable>
+
+      <!-- If $text is an attribute value do ... -->
+
+      <xsl:choose>
+         <xsl:when test="$attrs">
+            <xsl:call-template name="replace-substring">
+               <xsl:with-param name="from" select="'&#xA;'" />
+               <xsl:with-param name="to" select="'&amp;#xA;'" />
+               <xsl:with-param name="value">
+                  <xsl:call-template name="replace-substring">
+                     <xsl:with-param name="from" select="'&quot;'" />
+                     <xsl:with-param name="to" select="'&amp;quot;'" />
+                     <xsl:with-param name="value" select="$tmp" /> <!-- Temp routine -->
+                  </xsl:call-template>
+               </xsl:with-param>
+            </xsl:call-template>
+         </xsl:when>
+
+         <!-- Else execute the Temporary routine here -->
+         <xsl:otherwise>
+            <xsl:value-of select="$tmp" />
+         </xsl:otherwise>
+
+      </xsl:choose>
+   </xsl:template>
+
+   <!-- R E P L A C E - S U B S T R I N G :  Replace in $value substring $from with $to -->
+
+   <xsl:template name="replace-substring">
+
+      <xsl:param name="value" />
+      <xsl:param name="from" />
+      <xsl:param name="to" />
+
+      <xsl:choose>
+
+         <xsl:when test="contains($value,$from)">
+            <xsl:value-of select="substring-before($value,$from)" />
+            <xsl:value-of select="$to" />
+            <xsl:call-template name="replace-substring">
+               <xsl:with-param name="value" select="substring-after($value,$from)" />
+               <xsl:with-param name="from" select="$from" />
+               <xsl:with-param name="to" select="$to" />
+            </xsl:call-template>
+         </xsl:when>
+
+         <xsl:otherwise>
+            <xsl:value-of select="$value" />
+         </xsl:otherwise>
+
+      </xsl:choose>
+   </xsl:template>
+
+
+   <!-- P R E F O R M A T T E D - O U T P U T : Space as &nbsp; Tab as 4 &nbsp; NL as <br> -->
+
+   <xsl:template name="preformatted-output">
+
+      <xsl:param name="text" />
+
+      <xsl:call-template name="output-nl">
+         <xsl:with-param name="text">
+            <xsl:call-template name="replace-substring">
+               <xsl:with-param name="value" select="translate($text,' ','&#xA0;')" />
+               <xsl:with-param name="from" select="'&#09;'" />
+               <xsl:with-param name="to" select="'&#xA0;&#xA0;'" />
+            </xsl:call-template>
+         </xsl:with-param>
+      </xsl:call-template>
+   </xsl:template>
+
+
+   <!-- O U T P U T - N L  : NL as <br> =================================================== -->
+   
+   <xsl:template name="output-nl">
+
+      <xsl:param name="text" />
+
+      <xsl:choose>
+
+         <xsl:when test="contains($text,'&#x0A;')">
+            <!-- Output string before 'nl' -->
+            <xsl:value-of select="substring-before($text,'&#x0A;')" />
+            
+            <xsl:element name="br"/>
+          
+            <!-- Recursvely output string after 'nl' -->
+            <xsl:call-template name="output-nl">
+               <xsl:with-param name="text" select="substring-after($text,'&#x0A;')" />
+            </xsl:call-template>
+
+         </xsl:when>
+
+         <xsl:otherwise>
+            <xsl:value-of select="$text" />
+         </xsl:otherwise>
+
+      </xsl:choose>
+   </xsl:template>
+
+</xsl:stylesheet>

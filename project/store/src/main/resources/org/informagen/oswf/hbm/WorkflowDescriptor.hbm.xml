@@ -1,0 +1,358 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+            "-//Hibernate/Hibernate Mapping DTD//EN" 
+            "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+
+<hibernate-mapping default-cascade="all">
+
+	<!-- org.informagen.oswf.descriptors.WorkflowDescriptorWorkflows -->
+
+<!--
+	<class name="org.informagen.oswf.impl.hibernate.WorkflowName" >
+		<id name="workflowName" unsaved-value="any">
+			<generator class="assigned"/>
+		</id>
+		<many-to-one name="workflowDescriptor" cascade="save-update" />
+	</class>
+-->
+
+	<!-- org.informagen.oswf.descriptors.AbstractDescriptor root -->
+
+	<class name="org.informagen.oswf.descriptors.AbstractDescriptor" >
+
+		<id name="id" unsaved-value="0">
+			<generator class="native"/>
+		</id>
+		
+		<!-- discriminator column="class"/-->
+		<property name="id" column="id" />
+
+		<many-to-one name="parent" class="org.informagen.oswf.descriptors.AbstractDescriptor" cascade="none"/>
+
+		<!-- org.informagen.oswf.descriptors.ActionDescriptor -->
+
+		<joined-subclass name="org.informagen.oswf.descriptors.ActionDescriptor">
+
+			<key column="abstractDescriptorId"/>
+
+			<property name="view" column="viewProperty" />
+			<property name="name" column="name"/>
+			<property name="finish" column="finish"/>
+			<property name="autoExecute" column="autoExecute" />
+			<property name="common" column="common"/>
+
+			<many-to-one name="restriction" class="org.informagen.oswf.descriptors.RestrictionDescriptor" />
+
+			<many-to-one name="unconditionalResult" class="org.informagen.oswf.descriptors.ConditionalResultDescriptor"/>
+
+			<list name="conditionalResults" lazy="false" access="field" cascade="all-delete-orphan">
+				<key column="parentActionDescr"/>
+				<index column="listOrder"/>
+				<one-to-many class="org.informagen.oswf.descriptors.ConditionalResultDescriptor" />					
+			</list>			
+
+			<list name="validators" lazy="false" access="field" cascade="all-delete-orphan">
+				<key column="parentActionDescr"/>
+				<index column="listOrder"/>
+				<one-to-many class="org.informagen.oswf.descriptors.ValidatorDescriptor" />					
+			</list>			
+
+			<list name="postFunctions" lazy="false" access="field" cascade="all-delete-orphan">
+				<key column="parentActionDescrPost"/>
+				<index column="listOrder"/>
+				<one-to-many class="org.informagen.oswf.descriptors.FunctionDescriptor" />					
+			</list>			
+
+			<list name="preFunctions" lazy="false" access="field" cascade="all-delete-orphan">
+				<key column="parentActionDescrPre"/>
+				<index column="listOrder"/>
+				<one-to-many class="org.informagen.oswf.descriptors.FunctionDescriptor" />					
+			</list>						
+
+			<map name="metaAttributes" table="actionMetaAttributes" lazy="false" >
+				<key column="entityCode"/>
+				<index column="keyName" type ="string"/>
+				<element column="value" type="string" length="4000"/>
+			</map>
+
+		</joined-subclass>
+
+
+		<!-- org.informagen.oswf.descriptors.ResultDescriptor -->
+		<joined-subclass name="org.informagen.oswf.descriptors.ResultDescriptor">
+
+			<key column="abstractDescriptorId"/>
+
+			<property name="owner" />
+			<property name="exitStatus" access="field"/>
+			<property name="displayName" access="field"/>
+			<property name="status"/>
+			<property name="split"/>
+			<property name="step" />
+			<property name="join" column="join_id" />
+
+			<list name="postFunctions" lazy="false" cascade="all-delete-orphan" access="field">
+				<key column="parentResultDescrPost"/>
+				<index column="listOrder"/>
+				<one-to-many class="org.informagen.oswf.descriptors.FunctionDescriptor" />					
+			</list>			
+
+			<list name="preFunctions" lazy="false" cascade="all-delete-orphan" access="field">
+				<key column="parentResultDescrPre"/>
+				<index column="listOrder"/>
+				<one-to-many class="org.informagen.oswf.descriptors.FunctionDescriptor" />					
+			</list>						
+
+
+			<!-- org.informagen.oswf.descriptors.ConditionalResultDescriptor -->
+			<joined-subclass name="org.informagen.oswf.descriptors.ConditionalResultDescriptor">
+				<key column="conditionalResultDescriptorId"/>
+				<list name="conditions" lazy="false" access="field" cascade="all-delete-orphan">
+					<key column="parentConditionalResultDesc"/>
+					<index column="listOrder"/>
+					<one-to-many class="org.informagen.oswf.descriptors.ConditionsDescriptor" />					
+				</list>
+			</joined-subclass>
+
+		</joined-subclass>
+
+		<!-- org.informagen.oswf.descriptors.ConditionDescriptor -->
+
+		<joined-subclass name="org.informagen.oswf.descriptors.ConditionDescriptor">
+
+			<key column="abstractDescriptorId"/>
+
+			<property name="name" column="name" />
+			<property name="type" column="type" />
+			<property name="negate" column="negate" />
+
+			<map name="args" table="conditionsargs" lazy="false" access="field">
+				<key column="entityCode"/>
+				<index column="name" type ="string"/>
+				<element column="value" type="string" length="4000"/>
+			</map>			
+		</joined-subclass>
+
+		<!-- org.informagen.oswf.descriptors.ConditionsDescriptor -->
+
+		<joined-subclass name="org.informagen.oswf.descriptors.ConditionsDescriptor">
+			<key column="abstractDescriptorId"/>
+			<property name="type" column="type" />
+			
+			<list name="conditions" lazy="false" cascade="all-delete-orphan">
+				<key column="parentConditionsDescriptor"/>
+				<index column="listOrder"/>
+				<one-to-many class="org.informagen.oswf.descriptors.AbstractDescriptor" />					
+			</list>
+		</joined-subclass>
+
+		<!-- org.informagen.oswf.descriptors.FunctionDescriptor -->
+
+		<joined-subclass name="org.informagen.oswf.descriptors.FunctionDescriptor">
+			<key column="abstractDescriptorId"/>
+			<property name="name" column="name" />
+			<property name="type" column="type" />
+			<map name="args" table="functionsargs" lazy="false" access="field">
+				<key column="entityCode"/>
+				<index column="name" type ="string"/>
+				<element column="value" type="string" length="4000"/>
+			</map>			
+		</joined-subclass>
+
+		<!-- org.informagen.oswf.descriptors.JoinDescriptor -->
+
+		<joined-subclass name="org.informagen.oswf.descriptors.JoinDescriptor">
+			<key column="abstractDescriptorId"/>
+			<many-to-one name="result" column="result" class="org.informagen.oswf.descriptors.ResultDescriptor"/>
+			<list name="conditions" lazy="false" access="field" cascade="all-delete-orphan">
+				<key column="parentJoinDescriptor"/>
+				<index column="listOrder"/>
+				<one-to-many class="org.informagen.oswf.descriptors.ConditionsDescriptor" />					
+			</list>			
+		</joined-subclass>
+
+		<!-- org.informagen.oswf.descriptors.StepConditionDescriptor -->
+
+		<joined-subclass name="org.informagen.oswf.descriptors.StepConditionDescriptor">
+			<key column="abstractDescriptorId"/>
+			<many-to-one name="restriction" class="org.informagen.oswf.descriptors.RestrictionDescriptor" />
+			<property name="name" column="name" />
+		</joined-subclass>
+
+		<!-- org.informagen.oswf.descriptors.RegisterDescriptor -->
+
+		<joined-subclass name="org.informagen.oswf.descriptors.RegisterDescriptor">
+			<key column="abstractDescriptorId"/>
+			<property name="type" column="type" />
+			<property name="variableName" column="variableName" />
+			<map name="args" table="registersargs" lazy="false" access="field">
+				<key column="entityCode"/>
+				<index column="name" type ="string"/>
+				<element column="value" type="string" length="4000"/>
+			</map>			
+		</joined-subclass>
+
+		<!-- org.informagen.oswf.descriptors.RestrictionDescriptor -->
+
+		<joined-subclass name="org.informagen.oswf.descriptors.RestrictionDescriptor">
+			<key column="abstractDescriptorId"/>
+			<list name="conditions" lazy="false" access="field" cascade="all-delete-orphan">
+				<key column="parentRestrictionDescriptor"/>
+				<index column="listOrder"/>
+				<one-to-many class="org.informagen.oswf.descriptors.ConditionsDescriptor" />					
+			</list>			
+		</joined-subclass>
+
+		<!-- org.informagen.oswf.descriptors.SplitDescriptor -->
+
+		<joined-subclass name="org.informagen.oswf.descriptors.SplitDescriptor">
+			<key column="abstractDescriptorId"/>
+			<list name="resultDescriptors" lazy="false" access="field" cascade="all-delete-orphan">
+				<key column="parentSplitDescriptor"/>
+				<index column="listOrder"/>
+				<one-to-many class="org.informagen.oswf.descriptors.ResultDescriptor" />					
+			</list>			
+		</joined-subclass>
+
+		<!-- org.informagen.oswf.descriptors.StepDescriptor -->
+
+		<joined-subclass name="org.informagen.oswf.descriptors.StepDescriptor">
+
+			<key column="abstractDescriptorId"/>
+
+			<property name="name" />
+			<property name="hasActions" access="field" />
+
+			<list name="actions" lazy="false" access="field" cascade="all-delete-orphan">
+				<key column="parentStepDescriptor"/>
+				<index column="listOrder"/>
+				<one-to-many class="org.informagen.oswf.descriptors.ActionDescriptor" />					
+			</list>			
+
+			<list name="stepConditions" lazy="false" access="field" cascade="all-delete-orphan">
+				<key column="parentStepDescriptor"/>
+				<index column="listOrder"/>
+				<one-to-many class="org.informagen.oswf.descriptors.StepConditionDescriptor" />					
+			</list>			
+
+			<list name="commonActions" table="commonactions2step" lazy="false" access="field">
+				<key column="parentStepDescriptor"/>
+				<index column="listOrder"/>
+				<element column="value" type="integer"/>
+			</list>			
+
+			<list name="postFunctions" lazy="false" cascade="all-delete-orphan">
+				<key column="parentStepDescriptorPost"/>
+				<index column="listOrder"/>
+				<one-to-many class="org.informagen.oswf.descriptors.FunctionDescriptor" />					
+			</list>			
+
+			<list name="preFunctions" lazy="false" cascade="all-delete-orphan">
+				<key column="parentStepDescriptorPre"/>
+				<index column="listOrder"/>
+				<one-to-many class="org.informagen.oswf.descriptors.FunctionDescriptor" />					
+			</list>			
+
+			<map name="metaAttributes" table="stepMetaAttributes" lazy="false" >
+				<key column="entityCode"/>
+				<index column="keyName" type ="string"/>
+				<element column="value" type="string" length="4000"/>
+			</map>
+
+		</joined-subclass>
+
+		<!-- org.informagen.oswf.descriptors.ValidatorDescriptor -->
+
+		<joined-subclass name="org.informagen.oswf.descriptors.ValidatorDescriptor">
+
+			<key column="abstractDescriptorId"/>
+
+			<property name="name" column="name" />
+			<property name="type" column="type" />
+
+			<map name="args" table="validatorsargs" lazy="false" access="field">
+				<key column="entityCode"/>
+				<index column="name" type ="string"/>
+				<element column="value" type="string" length="4000"/>
+			</map>			
+
+		</joined-subclass>
+
+
+		<!-- org.informagen.oswf.descriptors.WorkflowDescriptor -->
+
+		<joined-subclass name="org.informagen.oswf.descriptors.WorkflowDescriptor">
+
+			<key column="abstractDescriptorId"/>
+
+			<property name="workflowName" />
+
+			<many-to-one name="globalConditions" class="org.informagen.oswf.descriptors.ConditionsDescriptor" access="field"/>
+
+			<list name="commonActionsList" lazy="false" access="field" cascade="all-delete-orphan">
+				<key column="parentWorkflowDescrCommonList"/>
+				<index column="listOrder"/>
+				<one-to-many class="org.informagen.oswf.descriptors.ActionDescriptor" />					
+			</list>			
+
+			<list name="globalActions" lazy="false" access="field" cascade="all-delete-orphan">
+				<key column="parentWorkflowDescGlobal"/>
+				<index column="listOrder"/>
+				<one-to-many class="org.informagen.oswf.descriptors.ActionDescriptor" />					
+			</list>			
+
+			<list name="initialActions" lazy="false" access="field" cascade="all-delete-orphan">
+				<key column="parentWorkflowDescrInitial"/>
+				<index column="listOrder"/>
+				<one-to-many class="org.informagen.oswf.descriptors.ActionDescriptor" />					
+			</list>			
+
+			<list name="joins" lazy="false" access="field" cascade="all-delete-orphan">
+				<key column="parentWorkflowDescr"/>
+				<index column="listOrder"/>
+				<one-to-many class="org.informagen.oswf.descriptors.JoinDescriptor" />					
+			</list>			
+
+			<list name="registers" lazy="false" access="field" cascade="all-delete-orphan">
+				<key column="parentWorkflowDescr"/>
+				<index column="listOrder"/>
+				<one-to-many class="org.informagen.oswf.descriptors.RegisterDescriptor" />
+			</list>			
+
+			<list name="splits" lazy="false" access="field" cascade="all-delete-orphan">
+				<key column="parentWorkflowDescr"/>
+				<index column="listOrder"/>
+				<one-to-many class="org.informagen.oswf.descriptors.SplitDescriptor" />					
+			</list>			
+
+			<list name="steps" lazy="false" outer-join="true" batch-size="10" access="field" cascade="all-delete-orphan">
+				<key column="parentWorkflowDescr"/>
+				<index column="listOrder"/>
+				<one-to-many class="org.informagen.oswf.descriptors.StepDescriptor" />					
+			</list>			
+
+			<map name="commonActions" lazy="false" access="field" cascade="all-delete-orphan">
+				<key column="parentWorkflowDescrCommonMap"/>
+				<index column="id" type="integer"/>
+				<one-to-many class="org.informagen.oswf.descriptors.ActionDescriptor" />					
+			</map>			
+
+			<map name="metaAttributes" table="workflowMetaAttributes" lazy="false" access="field">
+				<key column="entityCode"/>
+				<index column="keyName" type ="string"/>
+				<element column="value" type="string" length="4000"/>
+			</map>
+
+			<map name="timerFunctions" lazy="false" access="field" cascade="all-delete-orphan">
+				<key column="parentWorkflowDescr"/>
+				<index column="id" type="integer"/>
+				<one-to-many class="org.informagen.oswf.descriptors.FunctionDescriptor" />					
+			</map>						
+
+		</joined-subclass>
+
+	</class>
+
+</hibernate-mapping>
+

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE workflow SYSTEM "OSWf-3.0.dtd">
+
+  <workflow>
+
+    <initial-actions>
+      <action id="0" name="start">
+        <results>
+          <default-result id="10" exit-status="finished" status="todo" step="0"/>
+        </results>
+      </action>
+    </initial-actions>
+
+    <steps>
+
+      <step id="0" name="A">
+        <actions>
+          <action id="20" name="to_B_C">
+            <results>
+              <default-result id="40" exit-status="finished" split="100"/>
+            </results>
+          </action>
+        </actions>
+      </step>
+
+      <step id="10" name="B">
+        <actions>
+          <action id="65" name="to_A">
+            <results>
+              <default-result id="80" exit-status="finished" join="10"/>
+            </results>
+          </action>
+        </actions>
+      </step>
+
+      <step id="20" name="C">
+        <actions>
+          <action id="75" name="to_a">
+            <results>
+              <default-result id="85" exit-status="finished" join="10"/>
+            </results>
+          </action>
+        </actions>
+      </step>
+    </steps>
+
+    <splits>
+      <split id="100">
+        <default-result id="150" exit-status="finished" status="todo" step="10"/>
+        <default-result id="160" exit-status="finished" status="todo" step="20"/>
+      </split>
+    </splits>
+
+    <joins>
+      <join id="10">
+        <conditions>
+          <condition negate="true" type='alias' name='hasStatusOf'>
+            <arg name="status">todo</arg>
+          </condition>
+        </conditions>
+        <default-result exit-status="" status="todo" step="0"/>
+      </join>
+    </joins>
+
+  </workflow>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE workflow SYSTEM "OSWf-3.0.dtd">
+
+
+<workflow>
+
+  <initial-actions>
+
+    <action id="1" name="Start Workflow">
+
+      <validators>
+        <validator type="beanshell">
+          <arg name="script">
+               if( transientVars.get("input1") == null) 
+                throw new org.informagen.oswf.exceptions.InvalidInputException("Missing arg input1");
+          </arg>
+        </validator>
+      </validators>
+
+      <pre-functions>
+        <function type="class">
+          <arg name="classname">org.informagen.oswf.functions.SetActor</arg>
+        </function>
+      </pre-functions>
+
+      <results>
+        <default-result status="Underway" step="1" owner="${actor}"/>
+      </results>
+
+    </action>
+
+  </initial-actions>
+
+
+    <!-- Single step required only as place for the initial-action to go -->
+  <steps>
+    <step id="1" name="First Step">
+      <actions>
+        <action id="2" name="The first action">
+          <results>
+            <default-result status="Finished" step="1"/>
+          </results>
+        </action>
+      </actions>
+    </step>
+  </steps>
+</workflow>
+

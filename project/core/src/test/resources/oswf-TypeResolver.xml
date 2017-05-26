@@ -1,0 +1,22 @@
+<oswf>
+
+    <persistence>
+        <workflow-store class="org.informagen.oswf.impl.stores.MemoryStore"/>
+        <propertyset-store class="org.informagen.oswf.impl.MemoryPropertySetStore"/>
+    </persistence>
+
+	<loader class="org.informagen.oswf.impl.loaders.URLLoader">
+        <workflow name="TypeResolver Test"   type="resource" location="core/type-resolver.oswf.xml"/>
+	</loader>
+
+    <type-resolver class='org.informagen.oswf.impl.DefaultTypeResolver'>
+        
+        <function alias='NullFunction' class='tests.util.NullFunction' />
+        <function alias='X'            class='tests.util.NullFunction' />
+        <function alias='VerifyArg'    class='tests.util.NullFunction' />
+        
+        <condition alias='hasStatusOf' class='tests.util.TrueCondition' />        
+                
+    </type-resolver>
+
+</oswf>

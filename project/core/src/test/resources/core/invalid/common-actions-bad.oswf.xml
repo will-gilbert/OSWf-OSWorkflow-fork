@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE workflow SYSTEM "OSWf-3.0.dtd">
+<workflow>
+    <initial-actions>
+        <action id="1" name="Start Workflow">
+            <results>
+                <default-result status="Underway" step="1" owner="${actor}" />
+            </results>
+        </action>
+    </initial-actions>
+
+    <common-actions>
+        <action id="100" name="Restart Workflow">
+            <results>
+                <default-result step="1"  exit-status="Restarted" status="Underway" owner="bob" />
+            </results>
+        </action>
+        <action id="101" name="Hose Workflow">
+            <results>
+                <default-result step="1"  exit-status="Hosed" status="Corrupt" owner="evil bob" />
+            </results>
+        </action>       
+    </common-actions>
+        
+    <steps>
+        <step id="1" name="First Draft">
+            <actions>
+                
+                <common-action id="100" />                              
+                <!-- undefined common-action! -->
+                <common-action id="999" />
+                                
+                <action id="1" name="Finish First Draft">
+                    <results>
+                        <conditional-result status="Finished" step="1">
+                            <conditions>
+                                <condition type="beanshell">
+                                    <arg name="script">
+                                    //variables.get("actor").equals("test")
+                                    </arg>
+                                </condition>
+                            </conditions>
+                        </conditional-result>
+                        <default-result status="Finished" step="1" />
+                    </results>
+                </action>
+
+            </actions>
+        </step>
+    </steps>
+</workflow>

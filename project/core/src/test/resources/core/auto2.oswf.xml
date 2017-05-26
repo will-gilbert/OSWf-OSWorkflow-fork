@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE workflow SYSTEM "OSWf-3.0.dtd">
+<workflow>
+  <initial-actions>
+    <action id="100" name="Start Workflow">
+      <pre-functions>
+        <function type='class' name='org.informagen.oswf.functions.SetActor' />
+      </pre-functions>
+      <results>
+        <default-result status="Underway" step="2" owner="${actor}"/>
+      </results>
+    </action>
+  </initial-actions>
+  <steps>
+    <step id="1" name="First Step">
+      <actions>
+        <action id="1" name="The first action" auto="true">
+          <restrict-to>
+            <conditions>
+              <condition type='alias' name='hasStatusOf'>
+                <arg name="status">Underway</arg>
+              </condition>
+            </conditions>
+          </restrict-to>
+          <results>
+            <default-result status="Queued" step="3"/>
+          </results>
+        </action>
+      </actions>
+    </step>
+    <step id="2" name="Second Step">
+      <actions>
+        <action id="2" name="The second action" auto="true">
+          <restrict-to>
+            <conditions>
+              <condition type='alias' name='hasStatusOf'>
+                <arg name="status">Underway</arg>
+              </condition>
+            </conditions>
+          </restrict-to>
+          <results>
+            <default-result status="Queued" step="4"/>
+          </results>
+        </action>
+        <action id="3" name="The third action" auto="true">
+          <restrict-to>
+            <conditions>
+              <condition type='alias' name='hasStatusOf'>
+                <arg name="status">Underway</arg>
+              </condition>
+            </conditions>
+          </restrict-to>
+          <results>
+            <default-result status="Queued" step="2"/>
+          </results>
+        </action>
+      </actions>
+    </step>
+    <step id="3" name="Third Step">
+      <actions>
+        <action id="4" name="The fourth action">
+          <restrict-to>
+            <conditions>
+              <condition type='alias' name='hasStatusOf'>
+                <arg name="status">Queued</arg>
+              </condition>
+            </conditions>
+          </restrict-to>
+          <results>
+            <default-result status="Finished" step="3"/>
+          </results>
+        </action>
+      </actions>
+    </step>
+    <step id="4" name="Fourth Step">
+      <actions>
+        <action id="5" name="The fifth action">
+          <restrict-to>
+            <conditions>
+              <condition type='alias' name='hasStatusOf'>
+                <arg name="status">Queued</arg>
+              </condition>
+            </conditions>
+          </restrict-to>
+          <results>
+            <default-result status="Finished" step="4"/>
+          </results>
+        </action>
+      </actions>
+    </step>
+  </steps>
+</workflow>
+

@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+            "-//Hibernate/Hibernate Mapping DTD//EN" 
+            "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.informagen.oswf.impl.stores">
+
+    <class name="HibernateCurrentStep" table="currentstep">
+
+        <id name="id" unsaved-value="-1">
+            <generator class="native"/>
+        </id>
+
+        <property name="startDate"  column="startdate"/>
+        <property name="dueDate"    column="duedate"/>
+        <property name="owner"      column="owner"/>
+        <property name="status"     column="status"/>
+        <property name="stepId"     column="step"/>
+
+        <many-to-one name="entry" 
+            class="HibernateProcessInstance" 
+            column="piid" 
+            cascade="none"
+        />
+        
+    </class>
+</hibernate-mapping>

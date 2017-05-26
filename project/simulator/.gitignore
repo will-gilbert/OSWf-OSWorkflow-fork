@@ -1,0 +1,6 @@
+gradle.properties
+.gradle/
+build/
+devMode/
+gwt-unitCache/
+.DS_Store

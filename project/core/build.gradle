@@ -1,0 +1,271 @@
+task usage doLast { print """
+====================================================================================================
+
+gradle javaCompile
+  Compile Java source code displaying warnings and error to the terminal console.
+
+gradle test
+  Run the Unit Tests. If an error occurs an attempt will be made to launch your browser.
+
+gradle clean
+  Delete build files and targets
+
+gradle install
+  Install the JAR and POM files into the local Maven repository.  Gradle will pick these
+  up and copy them into its own repository as needed. If a Maven artifact has '-SNAPSHOT'
+  appended to the version Gradle will check each build for a changed file.
+
+gradle uploadArchives
+    Update the JAR and POM files to a remote Maven repository.  The upload parameters
+    are specified in a local 'gradle.properties' file.  This file is stored in the
+    code repository but is created and maintained locally.
+
+gradle graphviz -P workflow=\"usage/example\"
+  Create a Graphviz 'dot' file in the current directory and open it if the current OS
+  supports the 'open' command (Mac OSX) and Graphviz has been installed.
+
+====================================================================================================
+"""}
+
+/* C O N F I G U R A T I O N  ======================================================================
+Site specific variables such as the upload repository can be specified in a a file name
+   'gradle.properties'.  This properties file should not be uploaded into the SCM. For GIT the
+   .gitignore file should be set to exclude it from consideration.
+
+================================================================================================= */
+
+apply plugin: 'java'    // Used to compile and create JAR artifacts
+apply plugin: 'maven'   // Used to install in the local MAVEN repository
+
+// C O N F I G U R A T I O N ==================================================================
+
+// Project Configuration ----------------------------------------------------------------------
+group = 'org.informagen.oswf'
+version = '3.2.0-SNAPSHOT'
+
+ext.applicationName = "OSWf Core"
+
+// Java Compiler Configuration ----------------------------------------------------------------
+
+// Java SDK
+sourceCompatibility = 1.8
+targetCompatibility = sourceCompatibility
+compileJava.options.compilerArgs = [
+//    '-Xlint:unchecked', 
+//    '-Xlint:deprecation',
+] 
+
+compileTestJava.options.compilerArgs = compileJava.options.compilerArgs;
+
+configurations { 
+    graphvizRuntime 
+    repoUploadFTP 
+}
+
+// R E P O S I T O R I E S   &   D E P E N D E N C I E S ======================================
+
+repositories {
+
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+
+    compile ([
+
+        // BeanShell - used by Workflow Processes for step/action scripts
+        'org.beanshell:bsh:1.3.0',
+        
+        // Simple Logging Facade for Java - Used by 'OSWfTestCase'   
+        'org.slf4j:slf4j-api:1.6.4',
+
+        // JUnit 4.x - Used by 'OSWfTestCase' and 'OSWfAssertions'
+        'junit:junit:4.10'
+        
+    ])
+
+    runtime ([ ])
+    
+    testCompile([
+        
+        // Simple JNDI - Used for JDBCProperySet testing
+        'simple-jndi:simple-jndi:0.11.4.1'
+        
+    ])
+
+    testRuntime([
+                        
+         // Use 'log4j' with the SL4J logger
+         'org.slf4j:slf4j-log4j12:1.6.4',
+         'log4j:log4j:1.2.16',
+         
+        // H2 Database driver, formerly HSQLDB
+        "com.h2database:h2:1.0.77",
+    ])
+
+    
+    graphvizRuntime([
+         // Use 'log4j' with the SL4J logger
+         'org.slf4j:slf4j-log4j12:1.6.4',
+         'log4j:log4j:1.2.16',
+    ])
+
+    repoUploadFTP([
+        'org.apache.maven.wagon:wagon-ftp:2.2',
+        'org.apache.maven.wagon:wagon-http:2.2',
+    ])
+
+}
+
+task graphviz(dependsOn: ['jar'], type:JavaExec) {
+
+    description ='Create a dot file and launch Graphviz on Mac OSX systems' 
+    
+    // Define the properties for the 'JavaExec' task; 256M Memory, increase for larger Apps
+    main ='org.informagen.oswf.util.Graphviz'
+    jvmArgs = ['-Xmx256M']
+    classpath = files([ 
+        sourceSets.main.runtimeClasspath, 
+        configurations.graphvizRuntime.files,
+    ])
+
+    // args[0] : -P  workflow="path.../name"
+    def workflow = findProperty("workflow", 'usage/example')
+    def inputFile = new File("src/test/resources/${workflow}.oswf.xml")
+    def outputFile = new File("${inputFile.getName()}.dot")
+
+    args = [inputFile]
+
+    // Mac OS X: 'open' launch Graphviz if available; Otherwize remove
+    //  this line or modify for your operating system
+    //
+    //  See also:  http://www.graphviz.org/
+
+    doLast {
+      if ( outputFile.exists() )
+        exec { commandLine '/usr/local/bin/dot', '-Tpng', '-O', outputFile}
+        exec { commandLine  '/usr/bin/open', "${outputFile.name}.png" }
+    }
+
+}
+
+// D E P L O Y I N G --------------------------------------------------------------------------
+
+uploadArchives {
+    
+    // These values can be defined in a local 'gradle.properties' file
+    def uploadURL = findProperty('upload.url', null)
+    def username  = findProperty('upload.username', null)
+    def password  = findProperty('upload.password', null)
+
+    // Fail silently if all properties are not set
+    if(uploadURL != null && username != null && password != null) {
+        repositories.mavenDeployer {
+            configuration = configurations.repoUploadFTP
+            repository(url: uploadURL) {
+                authentication(userName: username, password: password)
+            }
+        }
+    }
+}
+
+// U T I L I T Y   M E T H O D S -------------------------------------------------------------- 
+
+def String findProperty(String propertyName, defaultValue='') {
+    def property = rootProject.hasProperty(propertyName) ? rootProject.getProperty(propertyName) : defaultValue
+    return property?.trim()
+}
+
+// U N I T   T E S T I N G --------------------------------------------------------------------
+
+// Launch the browser if any test fails and display the report 
+gradle.taskGraph.afterTask { task, taskState ->
+    if (task.name == 'test' && taskState.failure)
+        java.awt.Desktop.desktop.browse(new File(testReportDir, 'index.html').toURI())
+}
+
+/* ============================================================================================
+Change log for OSWorkflow to OSWf 3.0.0
+
+- Gradle build system; clean, compileJava, test, install; See top of 'build.gradle' file
+
+- Use SL4J instead of Apache commons-logging
+
+- JUnit 4.x testing with annotations
+
+- Remove all deprecated OSWorkflow 2.x methods and classes
+
+- Change top-level package from 'com.opensymphony.workflow' to 'org.informagen.oswf'
+
+- Remove EJB, ofbiz, Soap. This is not deprecation but separation.
+  These implementations can/should be provided as plugins.
+
+- Massive refactoring of packages
+  - All major Workflow interfaces to top level
+  - A seperate package for homogenous sets of classses; e.g. conditions, descriptors, 
+    exceptions, functions, registers and validators.  Used plural in package  
+    names to indicate the homogeneity of the classes contain in each package
+
+- 'util' contains only helper, support and static classes
+
+- 'spi' directory (Service Provider Interface)  contains 'Default/Built-in'  
+   implementations of major interfaces such as process description 
+   (WorkflowDescriptor) loaders, workflow store implmentations and
+   PropertySetDelegate implementation
+
+- Rename Condition FunctionProviders to use boolean verbs, is*, has*
+  as specified for boolean JavaBean properties; Dropped 'Condition' suffix
+
+- Rename Workflow to OSWfEngine for in order to avoid confusion with
+  a WorkflowDescriptor (Process Description) or WorkflowEntity (Process Instance)
+  Will probably rename these in the future
+
+- Rename 'unconditional-result' to 'default-result' for clarity
+
+- Rename 'old-status' to 'exit-status' for clarity; not required, defaults to 'Finished'
+
+- Default 'status' is set to 'Pending'
+
+- Use default type of 'AND' for 'conditions'; require 'type' if more than one condition
+
+- Rename all Workflow Description XML files to end with .oswf.xml
+
+- Use and return typed class, i.e. generics, for all/most collections
+
+- Convert the use of arrays to List<T>; This required changes to some of
+  the 'Workflow' interface methods
+
+- Remove the use of Iterator; replace with Java 1.5 'for' loop constructs
+
+- Removed Hibernate 2.x support; Created Hibernate 3.x WorkflowStore as seperate JAR;
+   Moved to OSWf Store; Core has no dependencies on Hibernate
+
+- Merge WorkflowStore interface methods 'markFinished' and 'moveHistory' into a single
+   method named 'moveHistory' with 'markFinished' parameters
+
+- Publish via SourceForge as 'OSWf'
+
+- Remove dependency on OpenSymphony 'osuser' authentication framework; Created simple
+   interfaces 'SecurityProvider', 'User' & 'Role' within OSWf with Default implementations.
+   Changed 'Group' to 'Role' in order to allow for abstract assosciation i.e. e-mail lists,
+   group membership, allowed actions, etc.
+
+- Incorporated OpenSymphony's PropertySet v1.4 source and tests into OSWf in order to 
+   both modernize its codebase and remove dependicies on older frameworks
+
+- Rename 'JoinNodes' to 'JoinSteps'; behaves like a Collection; S/B Set or List? How to
+   handle reentrant Splits?
+   
+== Ideas or To Do =============================================================================
+
+- Perhaps the defaults for 'exit-status' of "Finished" and 'status' of "Pending" could be 
+  specified via external properties in the future
+
+- Remove Quartz; implement as plugin
+  Allows Quartz 1.x and 2.x implementations as separate plugins
+      
+============================================================================================ */
+
+
+

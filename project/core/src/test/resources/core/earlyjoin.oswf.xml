@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE workflow SYSTEM "OSWf-3.0.dtd">
+
+<workflow>
+  <initial-actions>
+    <action id="100" name="Initiate">
+      <pre-functions>
+        <function type='class' name='org.informagen.oswf.functions.SetActor' />
+      </pre-functions>
+      <results>
+        <default-result status="Underway" split="1" owner="${actor}"/>
+      </results>
+    </action>
+  </initial-actions>
+  <steps>
+    <step id="1" name="Receive Completed Documents">
+      <actions>
+        <action id="1" name="Completed Documents Received">
+          <restrict-to>
+            <conditions>
+              <condition type='alias' name='hasStatusOf'>
+                <arg name="status">Underway</arg>
+                <arg name="stepId">2</arg>
+              </condition>
+            </conditions>
+          </restrict-to>
+          <results>
+            <default-result status="Underway" join="1"/>
+          </results>
+        </action>
+      </actions>
+    </step>
+    <step id="2" name="Receive Letter">
+      <actions>
+        <action id="2" name="Letter Received">
+          <restrict-to>
+            <conditions>
+              <condition type='alias' name='hasStatusOf'>
+                <arg name="status">Underway</arg>
+                <arg name="stepId">2</arg>
+              </condition>
+            </conditions>
+          </restrict-to>
+          <results>
+            <default-result status="Underway" join="1"/>
+          </results>
+        </action>
+      </actions>
+    </step>
+
+    <step id="3" name="Finished">
+    </step>
+
+  </steps>
+  <splits>
+    <split id="1">
+      <default-result status="Underway" step="1"/>
+      <default-result status="Underway" step="2"/>
+    </split>
+  </splits>
+  <joins>
+    <join id="1">
+      <!-- This is the join that says that the subscription doc AND the hot issue letter are received -->
+      <conditions>
+        <condition type="beanshell">
+          <arg name="script"><![CDATA[
+"Finished".equals(jn.get(1).getStatus())
+|| "Finished".equals(jn.get(2).getStatus())
+          ]]></arg>
+        </condition>
+      </conditions>
+      <default-result status="Underway" owner="test" step="3"/>
+    </join>
+  </joins>
+</workflow>

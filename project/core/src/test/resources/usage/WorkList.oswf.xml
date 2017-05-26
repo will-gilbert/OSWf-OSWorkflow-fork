@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE workflow SYSTEM "OSWf-3.0.dtd">
+
+
+<workflow>
+
+  <meta name="title">Step Claim</meta>
+  <meta name="description"><![CDATA[
+	
+	            TBD
+	
+  ]]></meta>
+
+    <!--  List of possible starting points in the workflow ===============================  -->
+
+	<initial-actions>
+	
+		<action id="1" name="Start">
+
+		    <!-- Must be an employee to submit a request; Line Managers and HR Director are employees too -->
+		    <restrict-to>
+		        <conditions>
+					<condition type='alias' name='hasRole'>
+						<arg name='role'>Employees</arg>
+				    </condition>
+		        </conditions>
+		    </restrict-to>
+
+			<results>
+				<default-result step="100" status="Underway" owner="${actor}"/>
+			</results>
+		</action>
+
+	</initial-actions>
+
+
+    <!-- Steps ============================================================================ -->
+    
+	<steps>
+	
+	    <!-- Employee submits a leave request  ================================= -->
+	    
+		<step id="100" name="Employee Request">
+			<actions>
+				<action id="101" name="Request Leave">
+					<results>
+						<default-result split="10000" status="Requested"/>
+					</results>
+				</action>
+			</actions>
+		</step>
+
+
+
+	    
+		<step id="250" name="Manager Pending Task">
+
+			<actions>
+				<action id="251" name="Claim" >
+					
+				    <!-- Managers can claim a task from the task list -->
+				    <restrict-to>
+				        <conditions >
+							<condition type='alias' name='hasRole'>
+								<arg name='role'>Managers</arg>
+						    </condition>
+				        </conditions>
+				    </restrict-to>
+					
+					<results>
+						<default-result exit-status="claimed" status="pending" step="200" owner='${actor}' />
+					</results>
+
+				</action>
+			</actions>
+		</step>
+
+	    <!-- Manager approves or denies request based on labor needs. Or releases the request for another manager  ========= -->
+	    
+		<step id="200" name="Manager Approval">
+
+			<actions>
+				<action id="201" name="Approve" >
+					
+				    <!-- Line Managers and HR Directors can approve requests -->
+				    <restrict-to>
+				        <conditions>
+							<condition type='alias' name='hasRole'>
+								<arg name='role'>Managers</arg>
+						    </condition>
+							<condition type='alias' name='isStepOwner' />
+				        </conditions>
+				    </restrict-to>
+					
+					<results>
+						<default-result exit-status="Manager approved" status="joining" join="10000" />
+					</results>
+				</action>
+
+				<action id="202" name="Deny" >
+				    <!-- Managers and Payroll can approve requests -->
+				    <restrict-to>
+				        <conditions>
+							<condition type='alias' name='hasRole'>
+								<arg name='role'>Managers</arg>
+						    </condition>
+							<condition type='alias' name='isStepOwner' />
+				        </conditions>
+				    </restrict-to>
+					<results>
+						<default-result exit-status="Manager denied" status="joining" join="10000"/>
+					</results>
+				</action>
+
+				<action id="203" name="Release" >
+				    <!-- Release the request for another manager -->
+				    <restrict-to>
+				        <conditions>
+							<condition type='alias' name='hasRole'>
+								<arg name='role'>Managers</arg>
+						    </condition>
+							<condition type='alias' name='isStepOwner' />
+				        </conditions>
+				    </restrict-to>
+					<results>
+						<default-result exit-status="Manager released" status="pending" step="250" owner='Managers'/>
+					</results>
+				</action>
+
+
+			</actions>
+		</step>
+
+	    <!-- HR Manager approves or denies request based on employee record ==== -->
+
+		<step id="300" name="Payroll Approval">
+
+			<actions>
+				<action id="301" name="Payroll Approve" >
+					
+				    <!-- Only HR Directors can approve requests -->
+				    <restrict-to>
+				        <conditions>
+							<condition type='alias' name='hasRole'>
+								<arg name='role'>HR Director</arg>
+						    </condition>
+				        </conditions>
+				    </restrict-to>
+					
+					<results>
+						<default-result exit-status="Payroll approved" status="joining" join="10000"/>
+					</results>
+				</action>
+
+				<action id="302" name="Payroll Deny" >
+					
+				    <!-- Only HR Directors can approve requests -->
+				    <restrict-to>
+				        <conditions>
+							<condition type='alias' name='hasRole'>
+								<arg name='role'>Payroll</arg>
+						    </condition>
+				        </conditions>
+				    </restrict-to>
+					
+					<results>
+						<default-result exit-status="Payroll denied" status="joining" join="10000"/>
+					</results>
+				</action>
+			</actions>
+		</step>
+
+	    <!-- System sends e-mail to employee =================================== -->
+
+		<step id="400" name="Notify employee">
+
+			<actions>
+				<action id="401" name="Notify" auto="true" finish="TRUE" >
+					<results>
+						<default-result status="complete"/>
+					</results>
+
+				</action>
+
+			</actions>
+
+		</step>
+	</steps>
+
+    <!-- Splits =========================================================================== -->
+
+    <!-- The leave approval goes to both the line manager and the HR manager ======= -->
+    
+	<splits>
+		<split id="10000">
+			<default-result status="Underway" step="250" owner="Managers"/>
+			<default-result status="Underway" step="300" owner="Payroll"/>
+		</split>
+	</splits>
+
+
+    <!-- Joins ============================================================================ -->
+
+    <!-- The line manager and HR manager's decisions are combined here ============= -->
+	<joins>
+		<join id="10000">
+			<conditions>
+				<condition type="beanshell">
+					<arg name="script"><![CDATA[
+					
+                        propertySet.setString("result", "denied");
+                        
+                        if(jn.get(200).getStatus().endsWith("approved") && 
+                           jn.get(300).getStatus().endsWith("approved")) {
+                            propertySet.setString("result", "approved");
+                        }
+                        
+                        // Final result
+                        !("Underway".equals(jn.get(200).getStatus())) && 
+                        !("Underway".equals(jn.get(300).getStatus()));
+                        
+					]]></arg>
+				</condition>
+			</conditions>
+			
+			<default-result exit-status="JoinFinished" status="${result}" step="400"/>
+			
+		</join>
+	</joins>
+	
+	
+</workflow>

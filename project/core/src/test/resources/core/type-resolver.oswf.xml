@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE workflow SYSTEM "OSWf-3.0.dtd">
+<workflow>
+
+  <initial-actions>
+
+    <action id="1" name="Full Package Path">
+      <results><default-result step="10"/></results>
+    </action>
+
+    <action id="2" name="Type Resolver API">
+      <results><default-result step="20"/></results>
+    </action>
+
+    <action id="3" name="Type Resolver API">
+      <results><default-result step="30"/></results>
+    </action>
+
+    <action id="4" name="VerifyArg">
+        
+      <!-- Set 'message' to 'foo' and check --> 
+       
+      <pre-functions>
+        <function type="beanshell">
+          <arg name="script">
+            propertySet.setString("message", "foo");
+          </arg>
+        </function>        
+      </pre-functions>
+      
+      <results>
+        <default-result step="40"/>
+      </results>
+    </action>
+
+    <action id="5" name="Condition">
+      <results>
+        <default-result status="Underway" step="50"/>
+      </results>
+    </action>
+
+    <action id="6" name="Condition defining">
+      <results>
+        <default-result status="Underway" step="60"/>
+      </results>
+    </action>
+    
+    <action id="7" name="Fake Condition">
+      <results>
+        <default-result status="Anything but Underway" step="70"/>
+      </results>
+    </action>
+
+
+  </initial-actions>
+
+
+  <steps>
+      
+    <step id="10" name="Full Package Path">
+      <actions>
+        <action id="10" name="action" finish="true" auto="true">
+          <pre-functions>
+            <function type="class">
+              <arg name="classname">tests.util.NullFunction</arg>
+            </function>
+          </pre-functions>
+          
+          <results><default-result/></results>
+          
+        </action>
+      </actions>
+    </step>
+      
+    <step id="20" name="Type Resolver API">
+      <actions>
+        <action id="20" name="action" finish="true" auto="true">
+          <pre-functions>
+            <function  type='alias' name='NullFunction' />
+          </pre-functions>
+          
+          <results><default-result/></results>
+          
+        </action>
+      </actions>
+    </step>
+      
+    <step id="30" name="Type Resolver API">
+      <actions>
+        <action id="30" name="action" finish="true" auto="true">
+          <pre-functions>
+            <function type='alias' name='X' />
+          </pre-functions>
+          
+          <results><default-result/></results>
+          
+        </action>
+      </actions>
+    </step>
+
+    <step id="40" name="VerifyArgs">
+      <actions>
+        <action id="40" name="action" finish="true" auto="true">
+            
+          <pre-functions>
+
+            <function type='alias' name="VerifyArg">
+              <arg name="expected">foo</arg>
+              <arg name="actual">${message}</arg>
+            </function>
+          </pre-functions>
+          
+          <results>
+            <default-result/>
+          </results>
+          
+        </action>
+      </actions>
+    </step>
+
+    <step id="50" name="Testing hasStatusOf Condition">
+      <actions>
+        <action id="50" name="action" finish="true" auto="true">
+          <restrict-to>
+            <conditions>
+              <condition type='alias' name='hasStatusOf'>
+                <arg name="status">Underway</arg>
+              </condition>
+            </conditions>
+          </restrict-to>
+          <results><default-result/></results>
+        </action>
+      </actions>
+    </step>
+
+    <step id="60" name="Testing hasStatusOf Condition">
+      <actions>
+        <action id="60" name="action" finish="true" auto="true">
+          <restrict-to>
+              
+            <!-- Multiple ways to invoke 'HasStatusOf' Condition -->
+            <conditions type='AND'>
+
+              <!-- As 'class' specifying classname as 'arg' -->
+              <condition type="class">
+                  <arg name="classname">org.informagen.oswf.conditions.HasStatusOf</arg>
+                  <arg name="status">Underway</arg>
+              </condition>
+
+              <!-- As 'class' specify classname in 'name' attribute -->
+              <condition type="class" name="org.informagen.oswf.conditions.HasStatusOf">
+                  <arg name="status">Underway</arg>
+              </condition>
+                
+              <!-- Use Built-in 'alias' shortcut -->
+              <condition type='alias' name='hasStatusOf'>
+                <arg name="status">Underway</arg>
+              </condition>
+              
+            </conditions>
+          </restrict-to>
+          <results><default-result/></results>
+        </action>
+      </actions>
+    </step>
+
+
+
+    <step id="70" name="Testing TrueCondition aliased as hasStatusOf">
+      <actions>
+        <action id="70" name="action" finish="true" auto="true">
+          <restrict-to>
+            <conditions>
+              
+              <!-- This test has 'hasStatusOf' alias redefined to 'TrueCondition' Condition -->  
+              <condition type='alias' name='hasStatusOf'>
+                <arg name="status">Doesn't matter</arg>
+              </condition>
+              
+            </conditions>
+          </restrict-to>
+          <results><default-result/></results>
+        </action>
+      </actions>
+    </step>
+
+ 
+  </steps>
+  
+</workflow>
+

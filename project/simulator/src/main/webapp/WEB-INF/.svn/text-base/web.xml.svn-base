@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE web-app
+    PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+    "http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<web-app>
+
+  <display-name>@name@, v@version@</display-name>
+
+    <!-- F I L T E R S ==================================================================== -->
+    <!-- Dynamic Compression -->
+    <filter>
+        <filter-name>CompressionFilter</filter-name>
+        <filter-class>com.isomorphic.servlet.CompressionFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>CompressionFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+
+  <!-- P L M   P o r t a l   S E R V L E T S ============================================== -->
+
+  <!-- PLMPortal: initializes ISC framework, loads at startup -->
+
+  <servlet>
+    <servlet-name>Init</servlet-name>
+    <servlet-class>com.cellsignal.plm.portal.server.PLMPortal</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  
+  <!-- TargetManagerServlet: Provides the services for Target Manager -->
+  <servlet>
+    <servlet-name>TargetManagerServlet</servlet-name>
+    <servlet-class>com.cellsignal.plm.portal.server.TargetManagerServlet</servlet-class>
+    <load-on-startup>2</load-on-startup>
+  </servlet>
+  
+  
+  <!-- ARMServlet: Provides the services for Assay Request Manager (ARM) -->
+  <servlet>
+    <servlet-name>ARMServlet</servlet-name>
+    <servlet-class>com.cellsignal.plm.portal.server.ARMServlet</servlet-class>
+    <load-on-startup>3</load-on-startup>
+  </servlet>
+
+  <!-- TableDataServlet: Creates Excel output; deprecated will use SmartGWT
+  <servlet>
+    <servlet-name>TableDataServlet</servlet-name>
+    <servlet-class>com.cellsignal.plm.portal.server.TableDataServlet</servlet-class>
+  </servlet>
+-->
+
+  <!-- PLM Portal Services to Servlet Mappings ============================================ -->  
+
+  <servlet-mapping>
+    <servlet-name>TargetManagerServlet</servlet-name>
+    <url-pattern>/app/proteinSearchService</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>TargetManagerServlet</servlet-name>
+    <url-pattern>/app/targetService</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>TargetManagerServlet</servlet-name>
+    <url-pattern>/app/tprService</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>TargetManagerServlet</servlet-name>
+    <url-pattern>/app/proteinRequestService</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>TargetManagerServlet</servlet-name>
+    <url-pattern>/app/pubMedQueryService</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>TargetManagerServlet</servlet-name>
+    <url-pattern>/app/pubMedQueryService</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>TargetManagerServlet</servlet-name>
+    <url-pattern>/app/workflowService</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>TargetManagerServlet</servlet-name>
+    <url-pattern>/app/authenticationService</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>TargetManagerServlet</servlet-name>
+    <url-pattern>/app/configurationService</url-pattern>
+
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>TargetManagerServlet</servlet-name>
+    <url-pattern>/app/projectService</url-pattern>
+  </servlet-mapping>
+
+
+  <servlet-mapping>
+    <servlet-name>ARMServlet</servlet-name>
+    <url-pattern>/app/armService</url-pattern>
+  </servlet-mapping>
+
+
+  <!--
+  <servlet-mapping>
+    <servlet-name>TableDataServlet</servlet-name>
+    <url-pattern>/app/tabledata</url-pattern>
+  </servlet-mapping>
+  -->
+
+    <!-- S m a r t G W T   E E   S E R V L E T S ========================================== -->
+
+    <!-- The DataSourceLoader servlet handles loading and parsing of DataSources -->
+    <servlet>
+        <servlet-name>DataSourceLoader</servlet-name>
+        <servlet-class>com.isomorphic.servlet.DataSourceLoader</servlet-class>
+    </servlet>
+
+    <!-- The IDACall servlet handles all Built-in DataSource operations -->
+    <servlet>
+        <servlet-name>IDACall</servlet-name>
+        <servlet-class>com.isomorphic.servlet.IDACall</servlet-class>
+    </servlet>
+
+<!--
+    <servlet>
+        <servlet-name>PreCache</servlet-name>
+        <servlet-class>com.isomorphic.servlet.PreCache</servlet-class>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+-->
+    <!-- S m a r t G W T   E E   S E R V L E T   M A P P I N G S  ========================= -->
+    <servlet-mapping>
+        <servlet-name>IDACall</servlet-name>
+        <url-pattern>/app/sc/IDACall/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>DataSourceLoader</servlet-name>
+        <url-pattern>/sc/DataSourceLoader</url-pattern>
+    </servlet-mapping>
+  
+   <!-- S E R V L E T   C O N F I G U R A T I O N  ======================================= -->
+  
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+  </welcome-file-list>
+
+    <session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
+
+
+</web-app>

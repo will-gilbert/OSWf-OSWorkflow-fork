@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE workflow PUBLIC "-//Open Source Workflow//DTD OSWf 3.0//EN" "http://oswf.sourceforge.net/OSWf-3.0.dtd">
+
+<workflow>
+
+    <!--  List of possible starting points in the workflow ===============================  -->
+
+	<initial-actions>
+		<action id="1" name="Start Workflow">
+			<results>
+				<default-result step="100" owner='Employee'/>
+			</results>
+		</action>
+	</initial-actions>
+
+
+    <!-- Steps ============================================================================ -->
+    
+	<steps>
+	
+	    <!-- Employee submits leave request  =================================== -->
+	    
+		<step id="100" name="Employee Request">
+			<actions>
+				<action id="101" name="Request day off">
+					<results>
+						<default-result split="10000" status="Leave Requested"/>
+					</results>
+				</action>
+				<action id="102" name="cancel" finish="true" >
+					<results>
+						<default-result exit-status="Cancelled"/>
+					</results>
+				</action>
+			</actions>
+		</step>
+
+
+	    <!-- Line Manager approves or denies request based on labor needs  ===== -->
+	    
+		<step id="200" name="Manager Revision">
+		
+			<actions>
+			
+				<action id="201" name="Manager approves" >
+		    
+		            <pre-functions>
+		                <function type="alias" name='setString'>
+		                   <arg name="name">Manager Result</arg>
+		                   <arg name="value">approved</arg>
+		                </function>
+		            </pre-functions>
+		
+					<results>
+						<default-result join="10000" />
+					</results>
+				</action>
+				
+				<action id="202" name="Manager denies" >
+		    
+		            <pre-functions>
+		                <function type="alias" name='setString'>
+		                   <arg name="name">Manager Result</arg>
+		                   <arg name="value">denied</arg>
+		                </function>
+		            </pre-functions>
+		
+					<results>
+						<default-result join="10000"/>
+					</results>
+				</action>
+			</actions>
+		</step>
+
+	    <!-- HR Manager approves or denies request based on employee record ==== -->
+
+		<step id="300" name="HR Revision">
+
+			<actions>
+				<action id="301" name="HR approves" >
+		    
+		            <pre-functions>
+		                <function type="alias" name='setString'>
+		                   <arg name="name">HR Result</arg>
+		                   <arg name="value">approved</arg>
+		                </function>
+		            </pre-functions>
+		
+					<results>
+						<default-result join="10000"/>
+					</results>
+				</action>
+
+				<action id="302" name="HR denies" >
+		    
+		            <pre-functions>
+		                <function type="alias" name='setString'>
+		                   <arg name="name">HR Result</arg>
+		                   <arg name="value">denied</arg>
+		                </function>
+		            </pre-functions>
+		
+					<results>
+						<default-result join="10000"/>
+					</results>
+				</action>
+			</actions>
+		</step>
+
+	    <!-- System sends e-mail to employee =================================== -->
+
+		<step id="400" name="Notify Employee">
+		    
+			<actions>
+				<action id="401" name="send e-mail" auto='true' finish="true" >
+		            <pre-functions>
+		                <function type="alias" name='now'>
+		                   <arg name="name">E-Mail Sent</arg>
+		                </function>
+		            </pre-functions>
+					<results>
+						<default-result step="-1"/>
+					</results>
+				</action>
+			</actions>
+
+            <!-- Override the 'actor' for an automated step or System step action   -->
+            <!-- Must be set in a 'post-function' in order to be assigned the actor -->
+            <!--     in the History Step                                            -->
+            <post-functions>
+		        <function type="alias" name="setActor">
+		            <arg name="name">E-Mailer</arg>
+		        </function>
+            </post-functions>
+
+		</step>
+	</steps>
+
+    <!-- Splits =========================================================================== -->
+
+    <!-- The leave approval goes to both the line manager and the HR manager ======= -->
+    
+	<splits>
+		<split id="10000">
+			<default-result step="200" owner='Manager'/>
+			<default-result step="300" owner='HR Dept'/>
+		</split>
+	</splits>
+
+
+    <!-- Joins ============================================================================ -->
+
+    <!-- The line manager and HR manager's decisions are combined here ============= -->
+	<joins>
+	    
+	    <!-- The 'AND/OR' join -->
+	    
+		<join id="10000">
+			<conditions>
+				<condition type="beanshell">
+					<arg name="script"><![CDATA[
+        //=====================================================================================						
+
+        String managerResult = propertySet.getString("Manager Result");
+        String hrResult = propertySet.getString("HR Result");
+    					    
+        //========================================================
+        // Behave like an OR join if either the Manager or the
+        //  HR Director 'denied' the request.
+    
+        if( "denied".equals(managerResult) || "denied".equals(hrResult) ) {
+            propertySet.setString("Employee Request", "denied");
+            return true;
+        } 
+    
+        //========================================================
+        // Behave like an AND join when both decisions are 'approved'
+        
+        if("approved".equals(managerResult) && "approved".equals(hrResult)) {
+          propertySet.setString("Employee Request", "approved");
+          return true;
+        }
+          
+        return false;
+       //======================================================================================                        
+					]]></arg>
+				</condition>
+			</conditions>
+			
+			<default-result exit-status="JoinFinished" status="Queued" step="400" owner="E-Mailer"/>
+			
+		</join>
+	</joins>
+	
+</workflow>

@@ -1,0 +1,9 @@
+<oswf>
+
+    <persistence>
+        <workflow-store class="org.informagen.oswf.impl.stores.JDBCStore"/>
+        <propertyset-store class="org.informagen.oswf.impl.MemoryPropertySetStore"/>
+    </persistence>
+
+
+</oswf>

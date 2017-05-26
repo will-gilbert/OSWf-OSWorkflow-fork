@@ -1,0 +1,225 @@
+/* U S A G E ==================================================================================
+
+gradle javaCompile
+  Compile Java source code displaying warnings and error to the terminal console.
+
+gradle test; open target/reports/tests/index.html
+      Run the unit test then show the report
+
+gradle clean
+  Delete build files and targets
+
+gradle install
+  Install the JAR and POM files into the local Maven repository.  Gradle will pick them
+  up and copy them into its repository as needed. If a Maven artifact has '-SNAPSHOT'
+  appended to the version. Gradle will check each build for a changed file.
+
+gradle uploadArchives
+    Update the JAR and POM files to a remote Maven repository.  The upload parameters
+    are specified in a local 'gradle.properties' file.  This file is stored in the
+    code repository but is created and maintained locally.
+
+ --refresh-dependencies
+
+-----------------------------------------------------------------------------------------------
+
+After running tests into a database you can execute the following SQL commands to cleanup;
+
+TRUNCATE TABLE xmldescriptor;
+TRUNCATE TABLE propertyset;
+TRUNCATE TABLE historystep;
+TRUNCATE TABLE currentstep;
+DELETE FROM processinstance;
+
+
+============================================================================================ */
+
+apply plugin: 'java'
+apply plugin: 'maven'
+
+// C O N F I G U R A T I O N ==================================================================
+
+group = 'org.informagen.oswf'
+version = '1.1.0-SNAPSHOT'
+
+ext.applicationName = "Hibernate WorkflowStore and PropertySet"
+
+// Java Compiler Configuration ----------------------------------------------------------------
+
+// Java SDK
+compileJava.options.compilerArgs = [
+    '-Xlint:unchecked', 
+    '-Xlint:deprecation',
+] 
+
+compileTestJava.options.compilerArgs = compileJava.options.compilerArgs;
+
+configurations { 
+    repoUploadFTP 
+}
+
+configurations.all {
+  resolutionStrategy {
+      
+    // cache dynamic versions for 10 minutes
+    cacheDynamicVersionsFor 0, 'seconds'
+    
+    // don't cache changing modules at all
+    cacheChangingModulesFor 0, 'seconds'
+  }
+} 
+// R E P O S I T O R I E S   &   D E P E N D E N C I E S ======================================
+
+repositories {
+
+    maven {
+        url "http://informagen.org/maven"   // OSWf artifacts
+    }
+
+    mavenLocal();
+    mavenCentral();
+}
+
+
+dependencies {
+
+    compile project(':core')
+
+    compile ([
+        // Hibernate 3.x
+        "org.hibernate:hibernate-core:3.3.2.GA",
+        
+        // Simple Logging Facade for Java 
+        'org.slf4j:slf4j-api:1.6.4',
+    ])
+    
+    runtime ([
+        
+        // BeanShell
+        "bsh:bsh:1.3.0",
+    ])
+
+    testCompile([ ])
+
+    testRuntime([
+    
+        // Hibernate - runtime components
+        'org.hibernate:hibernate-entitymanager:3.4.0.GA',
+
+         // Use log4j for as the SLF4J Logger
+         'org.slf4j:slf4j-log4j12:1.6.4',
+         'log4j:log4j:1.2.16',
+
+        // Database drivers: H2 and MySQL
+        "mysql:mysql-connector-java:5.1.25",
+        'com.h2database:h2:1.3.170',
+    ])
+
+    repoUploadFTP([
+        'org.apache.maven.wagon:wagon-ftp:2.2'
+    ])
+
+}
+
+// D E P L O Y I N G --------------------------------------------------------------------------
+
+uploadArchives {
+    
+    // These values can be defined in a local 'gradle.properties' file
+    def uploadURL = findProperty('upload.url', null)
+    def username  = findProperty('upload.username', null)
+    def password  = findProperty('upload.password', null)
+
+    // Fail silently if all properties are not set
+    if(uploadURL != null && username != null && password != null) {
+        repositories.mavenDeployer {
+            configuration = configurations.repoUploadFTP
+            repository(url: uploadURL) {
+                authentication(userName: username, password: password)
+            }
+        }
+    }
+}
+
+// U T I L I T Y   M E T H O D S -------------------------------------------------------------- 
+
+def String findProperty(String propertyName, defaultValue='') {
+    def property = rootProject.hasProperty(propertyName) ? rootProject.getProperty(propertyName) : defaultValue
+    return property?.trim()
+}
+
+// U N I T   T E S T I N G --------------------------------------------------------------------
+
+test {
+    
+   forkEvery = 5
+   maxParallelForks = 4
+
+   // Display the test results as HTML if any test fails; 'ignoreFailure'
+   //   must ge set to false in order for the 'doLast' to be executed 
+   ignoreFailures = true
+   def showReport = false
+   afterTest { descr, result -> 
+        if (result.resultType.toString() =='FAILURE') 
+            showReport = true
+   }
+   
+   // Display the report in the users favorite browser
+   //     'defaultBrowser' definded in ~/.gradle/gradle.properties file
+   def defaultBrowser = findProperty('defaultBrowser','safari')
+   
+   // NB: 'open' is only available on MacOSX
+   doLast {
+        if(showReport)
+            exec {commandLine "/usr/bin/open", "-a", defaultBrowser, "$testReportDir/index.html"}
+   }
+   
+}
+
+
+// R U N   T A S K S ==========================================================================
+
+
+task schemaExport(dependsOn: ['jar'], type:JavaExec) {
+
+    description ='Create schema DDL from a set of HBM files' 
+    
+    // Define the properties for the 'JavaExec' task; 256M Memory, increase for larger Apps
+
+    main ='org.hibernate.tool.hbm2ddl.SchemaExport'
+    jvmArgs = ['-Xmx256M']
+    classpath = files([sourceSets.main.runtimeClasspath])
+
+    // Select a hibernate dialect; Pass as a system property
+    //    Re: http://www.javabeat.net/qna/163-list-of-hibernate-sql-dialects/
+
+    systemProperties = [
+       //"hibernate.dialect" : "org.hibernate.dialect.H2Dialect"
+       "hibernate.dialect" : "org.hibernate.dialect.OracleDialect"
+       //"hibernate.dialect" : "org.hibernate.dialect.MySQLInnoDBDialect"
+    ]    
+
+    // See Hibernate Toolset Guide, Section 20.1.2. Running the tool
+    // http://docs.jboss.org/hibernate/orm/3.3/reference/en/html/toolsetguide.html#toolsetguide-s1-3
+
+    args = [
+      "--create",                // Will create 'create table' statements
+      "--text",                  // Used with --output but DDL is also sent to STDOUT
+      "--format",                // Pretty print
+      "--delimiter=;",           // Statement terminator
+      "--output=oswf-store.sql", // DDL output file
+      
+      // HBM files as referenced on the file system not resource files
+      "src/main/resources/org/informagen/oswf/hbm/HibernateCurrentStep.hbm.xml",
+      "src/main/resources/org/informagen/oswf/hbm/HibernateHistoryStep.hbm.xml",
+      "src/main/resources/org/informagen/oswf/hbm/HibernateProcessInstance.hbm.xml",
+      "src/main/resources/org/informagen/oswf/hbm/XmlWorkflowDescriptor.hbm.xml",
+      "src/main/resources/org/informagen/oswf/hbm/HibernatePropertySetItem.hbm.xml",
+      "src/main/resources/org/informagen/oswf/hbm/WorkflowDescriptor.hbm.xml",
+   ]
+    
+}
+
+
+
+

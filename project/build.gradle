@@ -1,0 +1,38 @@
+task usage doLast { println """   
+==== U S A G E =====================================================================================
+
+  
+===============================================================================================
+
+gradle clean
+    Remove all built artifacts from all projects e.g. class files, JARs, WARs
+
+gradle test
+gradle :<project>:test
+    Build main and test classes; Execute unit tests and create HTML test report
+
+
+=================================================================================================
+"""
+}
+
+subprojects {
+
+    apply plugin: 'java'
+
+    repositories {
+        mavenLocal()     // User's local Maven repository e.g. SNAPSHOTs
+        mavenCentral()   // Maven Central repositories
+    }
+
+    // Java SDK version,  Compiler flags
+    sourceCompatibility = 1.8
+    targetCompatibility = sourceCompatibility
+    compileJava.options.compilerArgs = [
+        // '-Xlint:unchecked', 
+        // '-Xlint:deprecation'
+    ]
+
+}
+
+

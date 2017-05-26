@@ -1,0 +1,34 @@
+
+.oswf-Title {
+    font-family:Arial,Verdana,tahoma,serif;
+    color:#507693;
+    font-weight: bold;
+    font-size:20px;
+}
+
+.oswf-InitalActions-label {
+    padding: 3px; 
+    text-align:center;
+    border:3px outset #f0ffff;
+    background-color:#f0ffff;
+    font-size: 1.2em;
+}
+
+.oswf-InitialAction-button {
+    width : 100%;
+    min-height : 33px;
+}                  
+
+.oswf-StepName-label {
+    padding: 3px; 
+    text-align:center;
+    border:3px outset #f0ffff;
+    background-color:#f0ffff;
+    font-size: 1.2em;
+}
+
+.oswf-StepAction-button {
+    margin : 3px 1px;
+}
+
+

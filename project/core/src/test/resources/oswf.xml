@@ -1,0 +1,42 @@
+<oswf>
+
+    <persistence>
+        <workflow-store class="org.informagen.oswf.impl.stores.MemoryStore"/>
+        <propertyset-store class="org.informagen.oswf.impl.MemoryPropertySetStore"/>
+    </persistence>
+
+	<loader class="org.informagen.oswf.impl.loaders.URLLoader"/>
+
+    <propertysets>
+        
+        <!-- <propertyset name="proxy" class="org.informagen.oswf.propertyset.ProxyPropertySet"/> -->
+
+        <propertyset name="jdbc-jndi" class="org.informagen.oswf.propertyset.JDBCPropertySet">
+            <parameter name="jndi"          value="jdbc/H2"/>
+            <parameter name="table.name"    value="OS_PROPERTYENTRY"/>
+            <parameter name="col.globalKey" value="GLOBAL_KEY"/>
+            <parameter name="col.itemKey"   value="ITEM_KEY"/>
+            <parameter name="col.itemType"  value="ITEM_TYPE"/>
+            <parameter name="col.string"    value="STRING_VALUE"/>
+            <parameter name="col.date"      value="DATE_VALUE"/>
+            <parameter name="col.data"      value="DATA_VALUE"/>
+            <parameter name="col.float"     value="FLOAT_VALUE"/>
+            <parameter name="col.number"    value="NUMBER_VALUE"/>
+        </propertyset>
+
+
+        <propertyset name="jdbc" class="org.informagen.oswf.propertyset.JDBCPropertySet">
+            <parameter name="table.name"    value="OS_PROPERTYENTRY"/>
+            <parameter name="col.globalKey" value="GLOBAL_KEY"/>
+            <parameter name="col.itemKey"   value="ITEM_KEY"/>
+            <parameter name="col.itemType"  value="ITEM_TYPE"/>
+            <parameter name="col.string"    value="STRING_VALUE"/>
+            <parameter name="col.date"      value="DATE_VALUE"/>
+            <parameter name="col.data"      value="DATA_VALUE"/>
+            <parameter name="col.float"     value="FLOAT_VALUE"/>
+            <parameter name="col.number"    value="NUMBER_VALUE"/>
+        </propertyset>
+
+    </propertysets>
+
+</oswf>

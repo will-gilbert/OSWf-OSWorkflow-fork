@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE workflow PUBLIC "-//Open Source Workflow//DTD OSWf 3.0//EN" "http://oswf.sourceforge.net/OSWf-3.0.dtd">
+<workflow>
+  <initial-actions>
+    <action id="1" name="Start Workflow">
+      <results>
+        <default-result status="Underway" step="1" owner="crazybob"/>
+      </results>
+    </action>
+  </initial-actions>
+  <steps>
+    <step id="1" name="First Step">
+      <pre-functions>
+        <function type="beanshell" name="bsh.function">
+          <arg name="script">propertySet.setString("prekey", "prevalue")</arg>
+        </function>
+      </pre-functions>
+    </step>
+  </steps>
+</workflow>
+

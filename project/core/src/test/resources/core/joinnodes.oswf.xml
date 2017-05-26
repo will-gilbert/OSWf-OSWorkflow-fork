@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE workflow SYSTEM "OSWf-3.0.dtd">
+
+<workflow version='1.0'>
+    
+    <description><![CDATA[
+     
+       This test is designed to look at the order in which a Join is entered. There
+         should be no difference in when the Join proceeds to its 'default-result'
+         or exiting Step.
+     
+       Step 100 action 101 - 'Employee request' into split 10000
+       Split 10000 into Steps 200 & 300
+       Step 200 action 201 - 'LM Approve' into Join 10000
+       Step 200 action 202 - 'LM Deny' into Join 10000
+       Step 300 action 301 - 'HR Approve' into Join 10000
+       Step 300 action 302 - 'HR Deny' into Join 10000
+       Join 10000 into Step 400
+       Step 400 action 401 - 'Notify Employee' and finish
+       
+       To turn on Logging edit the resource file 'log4j.properties'
+          and set the following entry to the DEBUG level
+       
+           log4j.logger.workflow.joinnodes      DEBUG
+           
+    ]]></description>    
+
+    <registers>
+        <register type="slf4jLogger" variable-name="logger">
+			<arg name="loggerName">workflow.joinnodes</arg>
+        </register>
+    </registers>
+
+    <!--  List of possible starting points in the workflow ===============================  -->
+	<initial-actions>
+		<action id="1" name="Start Workflow">
+			<results>
+				<default-result step="100"/>
+			</results>
+		</action>
+	</initial-actions>
+
+
+    <!-- Steps ============================================================================ -->
+    
+	<steps>
+	
+	    <!-- Employee submits leave request  =================================== -->
+	    
+		<step id="100" name="Employee request">
+			<actions>
+				<action id="101" name="Request holidays">
+					<results>
+						<default-result split="10000" status="Requested"/>
+					</results>
+				</action>
+			</actions>
+		</step>
+
+
+	    <!-- Line Manager approves or denies request based on labor needs  ===== -->
+	    
+		<step id="200" name="Line Manager revision">
+			<actions>
+				<action id="201" name="LM Approve" >
+
+		            <pre-functions>
+		                <function type="beanshell">
+		                   <arg name="script">propertySet.setBoolean("Manager Result", true);</arg>
+		                </function>
+		            </pre-functions>
+		            
+					<results>
+						<default-result join="10000" />
+					</results>
+				</action>
+				<action id="202" name="LM Deny" >
+		            <pre-functions>
+		                <function type="beanshell">
+		                   <arg name="script">propertySet.setBoolean("Manager Result", false);</arg>
+		                </function>
+		            </pre-functions>
+
+					<results>
+						<default-result join="10000" />
+					</results>
+				</action>
+			</actions>
+		</step>
+
+	    <!-- HR Manager approves or denies request based on employee record ==== -->
+
+		<step id="300" name="HR Manager revision">
+
+			<actions>
+				<action id="301" name="HR Approve" >
+				    
+		            <pre-functions>
+		                <function type="beanshell">
+		                   <arg name="script">propertySet.setBoolean("HR Result", true);</arg>
+		                </function>
+		            </pre-functions>
+
+					<results>
+						<default-result join="10000"/>
+					</results>
+				</action>
+				<action id="302" name="HR Deny" >
+
+		            <pre-functions>
+		                <function type="beanshell">
+		                   <arg name="script">propertySet.setBoolean("HR Result", false);</arg>
+		                </function>
+		            </pre-functions>
+
+					<results>
+						<default-result join="10000"/>
+					</results>
+				</action>
+			</actions>
+		</step>
+
+	    <!-- System could send e-mail to employee ============================= -->
+
+		<step id="400" name="Notify employee">
+
+			<actions>
+				<action id="401" name="Notify" finish="true" >
+					<results> <default-result/> </results>
+				</action>
+
+			</actions>
+
+		</step>
+	</steps>
+
+    <!-- Splits =========================================================================== -->
+
+    <!-- The leave approval goes to both the line manager and the HR manager ======= -->
+    
+	<splits>
+		<split id="10000">
+			<default-result step="200"/>
+			<default-result step="300"/>
+		</split>
+	</splits>
+
+
+    <!-- Joins ============================================================================ -->
+
+    <!-- The line manager and HR manager's decisions are combined here ============= -->
+	<joins>
+		<join id="10000">
+
+			<!-- 'AND-Join', all incoming steps must be completed i.e. status of 'Finished' -->
+
+			<conditions type="AND">
+                
+                <!-- Testing for Step 300 before Step 200 intentional; no effect on unit test -->
+
+				<condition type="beanshell">
+					<arg name="script"><![CDATA[
+					    logger = transientVars.get("logger");
+					    
+					    if(jn.get(300) == null) {
+					       logger.debug("Step 300 (HR) not yet reached");
+                            return false;
+                        }
+                            
+                       logger.debug("Join Condition HR Finished: " + jn.get(300).getStatus().equals("Finished"));
+                       return jn.get(300).getStatus().equals("Finished");
+					]]></arg>
+				</condition>
+				
+				<condition type="beanshell">
+					<arg name="script"><![CDATA[
+					    logger = transientVars.get("logger");
+
+					    if(jn.get(200) == null) {
+					       logger.debug("Step 200 (Manager) not yet reached");
+                            return false;
+                        }
+                            
+                        logger.debug("Join Condition Manager Finished: " + jn.get(200).getStatus().equals("Finished"));
+                        return jn.get(200).getStatus().equals("Finished");
+                        
+					]]></arg>
+				</condition>
+				
+			</conditions>
+						
+			<!-- Generate the 'result' after all inputs from the join have arrived -->
+			
+			<default-result exit-status="JoinFinished" status="Underway" step="400">
+				<pre-functions>
+					<function type='beanshell'> <arg name='script'><![CDATA[
+				    logger = transientVars.get("logger");
+				    result = propertySet.getBoolean("HR Result") &&
+				             propertySet.getBoolean("Manager Result");
+				    
+                    logger.debug("Join 10000 finished - setting result to " + result);
+         	        propertySet.setBoolean("Request Approved", result);
+				]]></arg> </function>
+				</pre-functions>
+			</default-result>
+			
+		</join>
+	</joins>
+	
+	
+</workflow>
