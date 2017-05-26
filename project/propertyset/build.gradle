@@ -72,8 +72,6 @@ repositories {
 
 dependencies {
 
-    compile project(':propertyset')
-
     compile ([
 
         // BeanShell - used by Workflow Processes for step/action scripts

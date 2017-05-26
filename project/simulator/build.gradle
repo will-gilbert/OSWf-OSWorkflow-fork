@@ -1,4 +1,4 @@
-task usage << { print """
+task usage doLast { print """
 NB: On MacOS X where Safari is v5.1 or greater use OmniWeb as the default
    browser in order to work with 'devMode'
 
@@ -170,6 +170,7 @@ repositories {
 dependencies {
 
     compile project(':core')
+    compile project(':propertyset')
     compile project(':store')
 
 

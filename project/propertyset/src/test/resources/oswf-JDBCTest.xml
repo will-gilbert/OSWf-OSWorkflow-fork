@@ -1,0 +1,18 @@
+<oswf>
+
+    <persistence>
+        <workflow-store class="org.informagen.oswf.impl.stores.MemoryStore"/>
+        <propertyset-store class="org.informagen.oswf.impl.MemoryPropertySetStore"/>
+    </persistence>
+
+	<loader class="org.informagen.oswf.impl.loaders.JDBCLoader">
+	    <parameter name='datasource' value='jdbc/H2' />
+	    <parameter name='table' value='workflow' />
+	    <parameter name='identifier-column' value='identifier' />
+	    <parameter name='definition-column' value='definition' />
+	    
+        <workflow name="Holiday as JDBC"  type="jdbc" location="Holiday-0001" />
+	</loader>
+
+
+</oswf>

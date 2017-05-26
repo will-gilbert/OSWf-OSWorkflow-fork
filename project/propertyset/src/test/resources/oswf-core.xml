@@ -1,0 +1,17 @@
+<oswf>
+
+    <persistence>
+        <workflow-store class="org.informagen.oswf.impl.stores.MemoryStore"/>
+        <propertyset-store class="org.informagen.oswf.impl.MemoryPropertySetStore"/>
+    </persistence>
+
+	<loader class="org.informagen.oswf.impl.loaders.URLLoader">
+        <workflow name="Validator"           type="resource" location="core/validator.oswf.xml"/>
+        <workflow name="TypeResolver Test"   type="resource" location="core/type-resolver.oswf.xml"/>
+        <workflow name="Holiday as resource"  type="resource" location="usage/holiday.oswf.xml"/>
+        <workflow name="Holiday as URL"       type="url"      location="http://oswf.sourceforge.net/tutorial/workflows/holiday.oswf.xml"/>
+        <workflow name="Holiday as file"      type="file"     location="src/test/resources/usage/holiday.oswf.xml"/>
+	</loader>
+
+
+</oswf>

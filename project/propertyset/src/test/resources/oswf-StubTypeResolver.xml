@@ -1,0 +1,14 @@
+<oswf>
+
+    <persistence>
+        <workflow-store class="org.informagen.oswf.impl.stores.MemoryStore"/>
+        <propertyset-store class="org.informagen.oswf.impl.MemoryPropertySetStore"/>
+    </persistence>
+
+	<loader class="org.informagen.oswf.impl.loaders.URLLoader">
+        <workflow name="JIRA-Default" type="resource" location="core/JIRA-Default.oswf.xml"/>
+	</loader>
+
+    <type-resolver class='org.informagen.oswf.testing.StubTypeResolver' />
+
+</oswf>

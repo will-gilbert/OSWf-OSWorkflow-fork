@@ -1,0 +1,55 @@
+digraph abstract {
+
+graph [ landscape="false", labeljust="center", labelloc="top", bgcolor="#f6f6DE", label="Join-Order"]
+node [ color="black", fillcolor="#f0ffff", fontcolor="black", style="filled", fontname="Arial", fontsize="14", shape="egg"]
+edge [ fontname = "Arial", fontsize = "8", arrowtype= "normal"]
+
+IA1 [label="Start Workflow", shape="box", fontsize="10", fillcolor="#D1FBCB"]
+
+Step1 [label="First Part"]
+Action2 [label="Finish First Part", shape="box", fontsize="8", fillcolor="#eeeeee"]
+Step2 [label="Second Part"]
+Action3 [label="Back to First Part", shape="box", fontsize="8", fillcolor="#eeeeee"]
+Action4 [label="Finish", shape="box", fontsize="8", fillcolor="#eeeeee"]
+Step3 [label="Another Second Part"]
+Action5 [label="Back to First Part", shape="box", fontsize="8", fillcolor="#eeeeee"]
+Action6 [label="Finish", shape="box", fontsize="8", fillcolor="#eeeeee"]
+Step4 [label="End"]
+Action7 [label="Finish", shape="box", fontsize="8", fillcolor="#eeeeee"]
+
+Split1 [label="Split ID #1", shape="trapezium", fontsize="10" fillcolor="#FFFF99"]
+
+Join1 [label="Join ID #1", shape="invtrapezium", fontsize="10" fillcolor="#FFFF99"]
+
+IA1->Step1
+
+
+Step1->Action2
+Action2->Split1
+
+
+Step2->Action3
+Action3->Step1
+
+Step2->Action4
+Action4->Join1
+
+
+Step3->Action5
+Action5->Step1
+
+Step3->Action6
+Action6->Join1
+
+
+Step4->Action7
+Action7->Finish1
+Finish1 [label="Finish", shape="octagon", fontsize="8", fillcolor="#FFDFDF"]
+
+
+Join1->Step4
+Split1->Step2
+Split1->Step3
+
+}
+

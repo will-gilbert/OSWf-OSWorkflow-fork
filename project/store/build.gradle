@@ -84,6 +84,7 @@ repositories {
 dependencies {
 
     compile project(':core')
+    compile project(':propertyset')
 
     compile ([
         // Hibernate 3.x

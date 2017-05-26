@@ -1,14 +1,20 @@
 task usage doLast { println """   
 ==== U S A G E =====================================================================================
 
+Modules:
+
+     core - 
+     store - 
+     simulator - 
   
 ===============================================================================================
 
 gradle clean
+gradle :<module>:clean
     Remove all built artifacts from all projects e.g. class files, JARs, WARs
 
 gradle test
-gradle :<project>:test
+gradle :<module>:test
     Build main and test classes; Execute unit tests and create HTML test report
 
 
