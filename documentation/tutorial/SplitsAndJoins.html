@@ -1,0 +1,264 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<title>OSWf - Documentation</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<link rel="stylesheet" href="../style.css" type="text/css" charset="utf-8" />
+    <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+	
+</head>
+
+<body>
+  <div id="wrapper">
+
+    <!--  Start of 'left' column div =================================================== -->
+
+    <div id="sidebar">
+       <script type='text/javascript' src="includes/branding.js"> </script>
+       <script type='text/javascript' src="includes/jumplist.js"> </script>
+       <script type='text/javascript' src="includes/contactInfo.js"> </script>
+    </div>
+
+    <!--  Start of 'Content' column div =================================================== -->
+    
+    <div id="content">
+
+      <div>
+        <h2>Parallel Workflows - Splits and Joins</h2>
+        <p>
+        In early office environment, 'work' was often contained in a paper folder, that folder
+        was passed around the office going into 'IN' baskets. Each 'actor' operated on the work
+        and passed it to the next actor's 'IN' basket.  This was a physical implemetation of a
+        workflow process.  With computers we don't have those paper folders which to pass around
+        but use a workflow process, this is called a 'Process Instance' and is
+        worked on by actors assigned to each step.  These assignments are called 'an actors worklist or
+        task list'.  With our computer workflow system we can also have work performed in
+        parallel by multiple actors particpating in the workflow after it is split into steps.
+        As these parallel steps are completed they are recombined by the 
+        workflow.  This process is implemented using splits and joins. Which is the topic
+        of this page.
+        </p>
+
+        <p>
+        Take a quick scroll to bottom of this page and take a look a diagram of our next
+        next workflow using a split and a join. <a id='intro' href='#workflowImage'>Go to workflow diagram</a> 
+        </p>
+        
+        <p>
+        This process is similar to the workflow for requesting a holiday but in this process we
+        need the manager to determine if current workload can allow the employee to take some
+        leave <b>AND</b> the the Human Resources department must also determine if that
+        employee has sufficient leave time available or is restricted by some policy.  The
+        result is a boolean AND decision where both the manager and HR must 'allow' in order to
+        grant the request.
+        </b>
+        
+        <p>
+        You can download the entire workflow description using the link located just
+        above the workflow diagram.  We'll only be looking at the split and joins in details.
+        The Manager and HR step are similar to those described in the first workflow.
+        </b>
+    
+        <h3>Employee Request</h3>
+        <p>
+        Not much new here, we've added an additional action for the Employee to cancel
+        a request and terminate the process after started to fill out the form. Notice
+        the attribute <code>finish='true'</code> so that the process instance gets set
+        to completed.
+        Instead of the 'Request day off' action going to a step it goes to a split.
+        </p>
+
+        <pre class='code'>
+      &lt;action id='101' name='Request day off'>
+        &lt;results>
+          &lt;default-result split='1' status='Requested'/>
+        &lt;/results>
+      &lt;/action>
+      
+      &lt;action id="102" name="cancel" finish="true" >
+        &lt;results>
+          &lt;default-result exit-status="Cancelled"/>
+        &lt;/results>
+      &lt;/action></pre>
+
+
+        <h3>Splitting the Workflow</h3>
+
+        <p>
+        Defining a split is pretty easy, you just specify the multiple steps which need to 
+        be created.  Here step 200 is for the Managers decision and step 300 is the 
+        HR Departments decision. Each of these actors now has a work item in their 'worklist'.
+        </p>
+            
+        <pre class=code>
+  &lt;!-- The leave approval goes to both the line manager and the HR Dept. ======= -->
+
+  &lt;splits>
+    &lt;split id='1'>
+      &lt;default-result step='200'/>
+      &lt;default-result step='300'/>
+    &lt;/split>
+  &lt;/splits> </pre>
+
+
+    <h3>Joining - Making the Decision</h3>
+    
+    <p>
+    Each time an action arrives at the join all of conditions are evaluated.  Here we are using
+    the name/value pairs recorded in the PropertySet. The PackPub book and some of the original
+    OSWorkflow examples used step <code>exit-status</code> in the conditions.  I personally
+    find these fragile and prefer to use PropertySet values.
+    </b>
+    
+    <p>
+    By the way... I also like to delimit my scripts, no matter how small, with CDATA
+    tags in case I need to add more code in the future.
+    </p>
+     
+    <p>
+    OK, so the join waits until both the Manager decides and Human Resources decides.  This is
+    easily done within a join using an AND set of conditions. The join tests each result for
+    non-null which means that it as been decided.  Only when both decisions have been made will
+    the join allow the workflow to proceed.
+    </p>
+    
+    <pre class='code'>
+  &lt;!-- Joins ================================================================ -->
+
+    &lt;joins>
+
+    &lt;!-- The manager and HR decisions have been made in order to proceed -->
+    &lt;join id="1">
+      &lt;conditions type="AND">
+      
+        &lt;condition type="beanshell">
+          &lt;arg name="script">&lt;![CDATA[
+            propertySet.getString("Manager Result") != null;
+          ]]>&lt;/arg>
+        &lt;/condition>
+        
+        &lt;condition type="beanshell">
+          &lt;arg name="script">&lt;![CDATA[
+            propertySet.getString("HR Result") != null;
+          ]]>&lt;/arg>
+        &lt;/condition>
+        
+      &lt;/conditions>
+
+    &lt;/join>
+
+  &lt;/joins>
+    </pre>
+
+    
+    <p>
+    But wait!  We said it was a boolean AND decision such that if either denies the decision of
+    the other will not matter.  So why make them go through the process of looking up records
+    and balancing schedules.  Here is where OSWorkflow and OSWf really shine becuase the we get
+    to write the code in order to implement the join decision and not rely on some vendor to
+    implement joins their way.  And we get to use Java to write the decision logic.
+    </p>
+    
+    <p>
+    Let's take a look. I've put the Java decision code in red and commented it. You do use
+    comments in your code, don't you?  As soon as we get our first 'deny' the join will 
+    proceed to the next step, any steps waiting to enter the join will be removed from the
+    worklist of the respective actors.  For other workflow system this would be an advanced
+    topic, here we use it in our first split/join.
+    </p>
+      
+    <pre class='code'>
+
+  &lt;!-- Joins ========================================================= -->
+
+    &lt;joins>
+
+    &lt;!-- The line manager and HR manager's decisions are combined here -->
+    &lt;join id="1">
+      &lt;conditions type="AND">
+        &lt;condition type="beanshell">
+          &lt;arg name="script">&lt;![CDATA[<span style='color:red;'>
+//===========================================================================						
+
+    String managerResult = propertySet.getString("Manager Result");
+    String hrResult = propertySet.getString("HR Result");
+    					    
+    //========================================================
+    // Behave like an OR join if either the Manager or the
+    //  HR Director denied the request.
+    
+    if( managerResult != null && managerResult.equals("denied") ) {
+        propertySet.setString("Employee Request", "denied");
+        return true;
+    } 
+
+    if( hrResult != null && hrResult.equals("denied") ) {
+        propertySet.setString("Employee Request", "denied");
+        return true;
+    }
+    
+    //========================================================
+    // Behave like an AND join and wait for both decisions.
+
+    // Ensure that both properties have been defined i.e. both steps
+    //   have arrived at the join
+
+    if(managerResult == null || hrResult == null)
+        return false;
+    
+    // If we arrive here both arrived and neither have 'denied'; But
+    //   we check explicitly for both approved
+    
+    if(managerResult.equals("approved") &&  hrResult.equals("approved"))
+      propertySet.setString("Employee Request", "approved");
+    
+    // We return 'true' here to allow the workflow to proceed; this
+    //  return value is not related to our 'Day off' decisions
+      
+    return true;
+        
+//==========================================================================                        
+       </span>]]>&lt;/arg>
+        &lt;/condition>
+      &lt;/conditions>
+
+      &lt;default-result exit-status="JoinFinished" status="Queued" step="400"/>
+
+    &lt;/join>
+
+  &lt;/joins>
+    </pre>
+
+
+    <a id='workflowImage' href='#intro'>Return to top</a> 
+    <p>Download the 'Leave Request' workflow, click <a href='workflows/LeaveRequest.oswf.xml'>here</a>.</p>
+
+      </div>
+
+<div class='clear' align='center' style='margin-top:3em;'>
+ <img src='images/LeaveRequest.png'>
+</div>
+
+
+ 
+      <div class="clear"> </div>
+      
+    </div>
+
+  </div>
+
+  <!--  End of 'right' div ============================================================= -->
+
+  <div class="clear"> </div>
+
+  <div id="footer">
+    <div id="copyright">
+      Copyright &copy; 2012-2017 Will Gilbert, All rights reserved.
+    </div>
+  </div>
+	
+</body>
+</html>

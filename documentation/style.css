@@ -1,0 +1,266 @@
+html, body, h1, h2, h3, h4 {
+	margin: 0;
+	padding: 0;
+}
+
+img {
+	border: 0;
+}
+
+a {
+	color: #464544;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+code {font-size:larger; font-weight:bold; color:#555;}
+
+
+a:hover {
+	color: #FFA405;
+}
+
+.more {
+	padding-right: 100px;
+	text-align: right;
+}
+
+.clear {
+	clear: both;
+}
+
+.topic {margin-left: 244px;}
+
+
+
+body {
+	background: #E0D5B7 url(images/background.png) repeat-x;
+	font: 11px verdana, arial, sans-serif;
+	color: black; 
+	padding-bottom: 0px;
+	padding-top: 0px;
+}
+
+
+/** wrapper - contains all of web content **/
+div#wrapper {
+  text-align: left;
+  min-width: 600px;
+}
+
+/* 
+Sidebar is 265px wide, which is the width of the 'logo.jpg' and a bit of 
+  left margin for the content 'div'
+*/
+
+div#sidebar {
+  float: left;
+  width: 265px;
+}
+
+/* Logo - Page ID ------------------------------------------------------------------------ */
+
+div#logo {
+  width: 244px;
+  height: 120px;
+  background: url(images/logo.png) no-repeat;
+  text-align: center;
+  color: #595959;
+}
+
+div#logo h1 {
+  padding-top: 10px;
+  letter-spacing: 0.2em;
+  font: 24px "arial narrow", arial, sans-serif;
+}
+
+div#logo p {
+  margin: 8px 25px 8px 25px;
+  border-top: 1px solid #B8B8B8;
+  padding-top: 8px;
+  padding-bottom: 0px;
+  letter-spacing: 0.2em;
+  font-weight: bold;
+}
+
+
+/* Jump menu list -------------------------------------------------------------------------- */
+
+div#jumpList {
+   background: url(images/jumpListLeft.png) repeat-y;
+   display:;
+}
+
+div#jumpListTop {
+  background: url(images/jumpListTop.png) no-repeat; 
+  height: 24px;
+}
+
+
+div#jumpList ul {
+  margin-left: 9px;
+  padding-left: 1px;
+  width: 233px;
+  background-color: #2A2A2A;
+}
+
+div#jumpList li {
+  list-style: none;
+  color: #fff;
+  font: 14px "arial narrow", arial, sans-serif;
+  font-weight: bold;
+  letter-spacing: 0.2em;
+  border-top: 1px solid #959595;
+  padding: 6px 0 6px 14px;
+}
+
+div#jumpList li a {
+  color: #fff;
+  text-decoration: none;
+  display: block;
+  width: 90%;
+}
+
+div#jumpList a:hover {
+  color: #E9C379;
+  text-decoration: none;
+}
+
+div#jumpListBottom {
+  background: url(images/jumpListBottom.png) no-repeat; 
+  height: 24px;
+}
+
+
+/* News in the left column ----------------------------------------------------------------- */
+
+
+div#news {
+  background: url(images/news.png) repeat-y;
+  padding-left: 25px;
+  padding-right: 25px;
+  padding-bottom: 3px;
+  text-align: left;
+  display:;
+}
+
+div#news h2 {
+  font-size: 12px;
+  color: #BE8B06;
+}
+
+div#news h3, #news p {
+  font-size: 11px;
+  margin: 1em 8px 1em 0;
+}
+
+div#news a {
+  color: #74653D;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+div#news a:hover {
+  color: #38301A;
+}
+
+div#news .more {
+  font-size: 9px;
+}
+
+div#news .hr-dots {
+  border-bottom: 1px dotted #74653D;
+  margin: 10px 8px 10px 0;
+  height: 1px;
+}
+
+/* Contact/Support Info -------------------------------------------------------------------- */
+
+div#contact {
+  background: url(images/support.png) repeat-y;
+  font: 14px "arial narrow", arial, sans-serif;
+  padding-top: 1px;
+  padding-left: 25px;
+  height: 70px;
+  display:;
+}
+
+div#contact-small {
+  background: url(images/support.png) repeat-y;
+  font: 14px "arial narrow", arial, sans-serif;
+  padding-top: 1px;
+  padding-left: 25px;
+  height: 10px;
+  display:;
+}
+
+div#contact p {
+  margin-top: 10px;
+  letter-spacing: 0.1em;
+  font-weight: bold;
+}
+
+div#contact p a {
+  color: #74653D;
+}
+
+div#contact a:hover {
+  color: #38301A;
+}
+
+/* ========================================================================================= */
+
+/* 'content' column  ----------------------------------------------------------------------- */
+
+div#content {
+  padding-left: 2em;
+  padding-right: 2em;
+  padding-top: 2em;
+}
+
+
+div#content h2 {
+  font: 18px arial, sans-serif;
+  color: #BE8B06;
+  padding-bottom: 6px;
+  margin-bottom: 1em;
+}
+
+div#content h3 {
+  font: 14px arial, sans-serif;
+  color: #BE8B06;
+  margin-top: 1.5em;
+}
+
+div#content .more {
+  margin-top: 0px;
+  padding-top: 0px;
+  padding-right: 10px;
+  font-weight: bold;
+  font-size: 10px;
+}
+
+pre.code {
+    color:#1f6f1f;
+    background-color:#effff7;
+    margin:1em 1em 0 0;
+    border:2px dotted #bfcfc7;
+    padding:5px;
+    overflow:auto;
+}
+
+
+
+
+/* Footer and Copyright -------------------------------------------------------------------- */
+
+div#footer {
+  padding: 20px 0px 5px 0px;
+}
+
+div#copyright {
+  text-align: center;
+  font-size: 10px;
+  color: #BE8B06;
+  font-weight: bold;
+}

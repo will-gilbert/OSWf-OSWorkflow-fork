@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<title>OSWf - Documentation</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<link rel="stylesheet" href="../style.css" type="text/css" charset="utf-8" />
+    <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+	
+</head>
+
+<body>
+  <div id="wrapper">
+
+    <!--  Start of 'left' column div =================================================== -->
+
+    <div id="sidebar">
+       <script type='text/javascript' src="includes/branding.js"> </script>
+       <script type='text/javascript' src="includes/jumplist.js"> </script>
+       <script type='text/javascript' src="includes/contactInfo.js"> </script>
+    </div>
+
+    <!--  Start of 'Content' column div =================================================== -->
+    
+    <div id="content">
+    
+        <div class="topic">
+
+        <p>Conditions in OSWF are similar to functions except that 
+                they return a value that equates to boolean <b>true</b> or <b>false</b>.
+                <!-- 
+                For Beanshell scripts in addition to boolean values
+                return values can includes a String "true" or a Boolean that evaluates to true, 
+                or any other object that has a toString() method that returns the String 
+                "true" in some manner (TRUE, True, true, etc); False otherwise.</p>
+                -->
+
+        <p>Each <b>condition</b> must be defined as a child of the <b>conditions</b> element. 
+            This element has one attribute called <b>type</b>, which can either be <b>AND</b> or 
+            <b>OR</b>. When using the type AND all the condition elements must evaluate to 
+            true or the overall condition will return as false. When using the type OR only 
+            one condition element must evaluate to true for the overall condition to pass. 
+            If you require more complex conditional logic, then consider implementing it 
+            yourself using the <b>Condition</b> interface. Note that the type can be 
+            omitted if the conditions element contains only one condition.
+            </p>
+
+        <p>It is possible to nest conditions by simply specifying 
+            additional &lt;conditions&gt; children elements under a &lt;conditions&gt; element, 
+            which enables you to express more complex logical operations than a 
+            simple AND or OR on a set of conditions on the same level.</p>
+
+
+        <h2>Below is a list of some of the builtin Conditions</h2>
+        </div>
+
+        <div class="topic">
+        <h3>HasPropertySetValue;  (<i>hasProperty</i>)</h3>
+        <ul>
+          <li>name (argument) - The name of a PropertySet to assign a value to
+          <li>value (argument) - The String value to be tested
+        </ul>
+        <p>Test a PropertySet value for String equality.  If the value is not a String
+            the 'toString' method will be invoke prior to the 'equals'. If the 'name'
+            is not found in the PropertySet an IllegalArgumentException exception
+            will be thrown </p>
+        </div>
+
+        <div class="topic">
+        <h3>HasRole;  (<i>hasRole</i>)</h3>
+        <ul>
+          <li>actor (transient) - The actor's role to tested
+          <li>role (argument) - The actor's role to tested
+        </ul>
+        <p>Gets the current actor from the transient variables map then uses the
+            SecurityManager to test if this actor has this role; return true or false</p>
+        </div>
+
+        <div class="topic">
+        <h3>HasStatusOf;  (<i>hasStatusOf</i>)</h3>
+        <ul>
+          <li>stepId (argument) - The stepId to be tested
+          <li>status (argument) - The status of the stepId
+        </ul>
+        <p>Returns true or false if the stepId has this status.</p>
+        </div>
+
+        <div class="topic">
+        <h3>IsStepOwner;  (<i>isStepOwner</i>)</h3>
+        <ul>
+          <li>actor (transient) - The current actor
+          <li>stepId (argument) - The stepId to be tested
+        </ul>
+        <p>Returns true or false if the stepId is owned by the actor.</p>
+        </div>
+
+        <div class="topic">
+        <h3>IsStringPropertyEqual;  (<i>isPropertyEqual</i>)</h3>
+        <ul>
+          <li>name (argument) - The name of a PropertySet to test
+          <li>value (argument) - The String value to be tested against
+        </ul>
+        <p>Returns true or false if the value of the PropertySet property reference by
+            name is equal.  The 'toString' method is applied to the value before the
+            String 'equals' methods is used to test.</p>
+        </div>
+
+
+  </div>
+
+  <!--  End of 'right' div ============================================================= -->
+
+  <div class="clear"> </div>
+
+  <div id="footer">
+    <div id="copyright">
+      Copyright &copy; 2012-2017 Will Gilbert, All rights reserved.
+    </div>
+  </div>
+	
+</body>
+</html>

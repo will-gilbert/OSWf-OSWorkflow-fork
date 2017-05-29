@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<title>OSWf - Documentation</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<link rel="stylesheet" href="../style.css" type="text/css" charset="utf-8" />
+    <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+	
+</head>
+
+<body>
+  <div id="wrapper">
+
+    <!--  Start of 'left' column div =================================================== -->
+
+    <div id="sidebar">
+       <script type='text/javascript' src="includes/branding.js"> </script>
+       <script type='text/javascript' src="includes/jumplist.js"> </script>
+       <script type='text/javascript' src="includes/contactInfo.js"> </script>
+    </div>
+
+    <!--  Start of 'Content' column div =================================================== -->
+    
+    <div id="content">
+
+      <div class="topic">
+        <p>OSWf comes with several very built-in utility functions, all implementing the 
+            interface <code>net.sf.oswf.FunctionProvider</code>. For more detailed 
+            information, please see the javadocs for these utility functions. Below is only a 
+            brief description of each utility function. All classes are found in the 
+            <code>net.sf.oswf.functions</code> package. </p>
+        </div>
+
+      <div class="topic">
+        <h3>AssertEquals; (<i>assertEquals</i>)</h3>
+
+        <p>Takes two String arguments <code>expected</code> and <code>actual</code> and compares
+            them using the String method <code>equals</code>. Throws a <code>WorkflowException</code>
+            if the evaluation returns false. Used primarily for testing, not
+            advised for production release code.</p>
+     </div>
+
+        <div class="topic">
+        <h3>BeanShellFunctionProvider</h3>
+        <p>Type='Beanshell' used to interprept bsh code in an XML Workflow Description.
+        </div>
+        <div class="topic">
+        <h3>ClearStep;  (<i>clearStep</i>)</h3>
+        <ul>
+          <li>stepId (argument) - The step number(s) in the Current Step table; Multiple steps 
+              are comma delimited
+          <li>status (argument) - History Step status, may be null
+        </ul>
+        
+        <p>Remove a step from the Current Step table and optionally move it to the History Step 
+            table and assigns an exit status. Calling with a StepId which is not in the Current Steps
+            table is safe as nothing will happen.</p>
+        </div>
+
+        <div class="topic">
+        <h3>GetStringProperty;  (<i>getString</i>)</h3>
+        <ul>
+          <li>name (argument) - The name of a name/value pair in the PropertySet 
+          <li>variable (argument) - The name of the variable to assign in the transientVars
+              map
+        </ul>
+        <p>A very useful function to move PropertySet values into transient values.</p>
+        </div>
+        
+        <div class="topic">        
+        <h3>SetActor;  (<i>setActor</i>)</h3>
+        <ul>
+          <li>name (argument) - The name of actor 
+        </ul>
+        <p>Sets the actor from within the Workflow Description. Useful for automated or
+            system events.</p>
+        </div>
+
+        <div class="topic">
+        <h3>SetDateProperty;  (<i>now</i>)</h3>
+        <ul>
+          <li>name (argument) - The name of a PropertySet to set to the current datetime
+        </ul>
+        <p>Creates or sets a PropertySet name/value pair to the current datetime.</p>
+        </div>
+
+        <div class="topic">
+        <h3>SetStringProperty;  (<i>setString</i>)</h3>
+        <ul>
+          <li>name (argument) - The name of a PropertySet to assign a value to
+          <li>value (argument) - The value to be assignged
+          <li>default (argument) - Use this value if the 'value' argument is null
+        </ul>
+        <p>Creates or sets a PropertySet name/value pair to the current datetime.</p>
+        </div>
+
+        <div class="topic">
+        <h3>TimerTask;  (<i>timer</i>)</h3>
+        <ul>
+          <li>action (argument) - The actionId to fire on the current step
+          <li>duration (argument) - An amount of time to wait before firing
+        </ul>
+        <p>Fire and action in the current step of the current process instance.  If the
+            actionId is not appropriate for this step nothing will occur.  Note that this
+            is implemented as a Java TimerTask in the JVM which will disappear if the 
+            JVM is restarted.</p>
+        </div>
+
+
+    </div> <!--  End of 'content' div ============================================================= -->
+  </div> <!--  End of 'wrapper' div ============================================================= -->
+
+  <div class="clear"> </div>
+
+  <div id="footer">
+    <div id="copyright">
+      Copyright &copy; 2012-2017 Will Gilbert, All rights reserved.
+    </div>
+  </div>
+	
+</body>
+</html>

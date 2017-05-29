@@ -1,0 +1,106 @@
+
+digraph abstract {
+
+graph [ landscape="false" bgcolor="none"]
+node [ color="black" fillcolor="#f0ffff" fontcolor="black" style="filled" fontname="Arial" fontsize=10 shape=egg]
+edge [ fontname="Arial" fontsize=8 arrowtype="normal"]
+
+InitialAction1 [label=<<table border='0'><tr><td><font point-size='8.0'>Initial Action: 1</font></td></tr><tr><td>Start Workflow</td></tr></table>>
+   shape=box
+   fontsize=9
+   fillcolor="#ccebc5"]
+
+
+Step100 [label=<<table border='0'><tr><td><font point-size='8.0'>Step: 100</font></td></tr><tr><td>Employee Request</td></tr></table>>]
+
+Action101 [label=<<table border='0'><tr><td><font point-size='8.0'>Action: 101</font></td></tr><tr><td>request leave</td></tr></table>>
+   shape=box
+   fontsize=9
+   fillcolor="#f2f2f2"]
+Action102 [label=<<table border='0'><tr><td><font point-size='8.0'>Action: 102</font></td></tr><tr><td>cancel</td></tr></table>>
+   shape=box
+   fontsize=9
+   fillcolor="#f2f2f2"]
+
+
+Step200 [label=<<table border='0'><tr><td><font point-size='8.0'>Step: 200</font></td></tr><tr><td>Manager Revision</td></tr></table>>]
+
+Action201 [label=<<table border='0'><tr><td><font point-size='8.0'>Action: 201</font></td></tr><tr><td>approve</td></tr></table>>
+   shape=box
+   fontsize=9
+   fillcolor="#f2f2f2"]
+Action202 [label=<<table border='0'><tr><td><font point-size='8.0'>Action: 202</font></td></tr><tr><td>deny</td></tr></table>>
+   shape=box
+   fontsize=9
+   fillcolor="#f2f2f2"]
+
+
+Step300 [label=<<table border='0'><tr><td><font point-size='8.0'>Step: 300</font></td></tr><tr><td>HR Revision</td></tr></table>>]
+
+Action301 [label=<<table border='0'><tr><td><font point-size='8.0'>Action: 301</font></td></tr><tr><td>approve</td></tr></table>>
+   shape=box
+   fontsize=9
+   fillcolor="#f2f2f2"]
+Action302 [label=<<table border='0'><tr><td><font point-size='8.0'>Action: 302</font></td></tr><tr><td>deny</td></tr></table>>
+   shape=box
+   fontsize=9
+   fillcolor="#f2f2f2"]
+
+
+Step400 [label=<<table border='0'><tr><td><font point-size='8.0'>Step: 400</font></td></tr><tr><td>Notify Employee</td></tr></table>>]
+
+Action401 [label=<<table border='0'><tr><td><font point-size='8.0'>Action: 401</font></td></tr><tr><td>send e-mail</td></tr></table>>
+   shape=box
+   fontsize=9
+   fillcolor="#f2f2f2"]
+
+
+
+Split1 [label="Split: 1"
+   shape=trapezium
+   fontsize=9
+   fillcolor="#fddaec"]
+
+Join1 [label="AND Join: 1"
+   shape=invtrapezium
+   fontsize=9
+   fillcolor="#decbe4"]
+
+
+InitialAction1->Step100 [label="Task Pending"]
+
+Step100->Action101
+Action101->Split1 [label="Leave Requested"]
+
+Step100->Action102
+Finish1 [label="Finish"
+   shape=octagon
+   fontsize=8
+   fillcolor="#fbb4ae"]
+Action102->Finish1
+
+Step200->Action201
+Action201->Join1 [label="Pending"]
+
+Step200->Action202
+Action202->Join1 [label="Pending"]
+
+Step300->Action301
+Action301->Join1 [label="Pending"]
+
+Step300->Action302
+Action302->Join1 [label="Pending"]
+
+Step400->Action401
+Finish2 [label="Finish"
+   shape=octagon
+   fontsize=8
+   fillcolor="#fbb4ae"]
+Action401->Finish2
+
+Join1->Step400 [label="Queued"]
+Split1->Step200 [label="Task Pending"]
+Split1->Step300 [label="Task Pending"]
+
+}
+

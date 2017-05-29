@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<title>OSWf - Repository</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<link rel="stylesheet" href="./style.css" type="text/css" charset="utf-8" />
+    <link href="favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+	
+    <style>
+        .topic {margin-left: 0px} /* Don't indent topics on this page*/
+    </style>
+
+
+	
+</head>
+
+<body>
+  <div id="wrapper">
+
+    <!--  Start of 'left' column div ====================================================== -->
+
+    <div id="sidebar">
+      <div id="logo">
+        <h1>Informagen</h1>
+        <p><a href="./index.html">OSWf - Workflow</a></p>
+        <p>Repository</p>
+      </div>
+
+
+      <script type='text/javascript' src="includes/jumplist.js"> </script>
+      <script type='text/javascript' src="includes/contactInfo.js"> </script>
+
+    </div>
+
+    <!--  Start of 'Content' column div =================================================== -->
+    
+    <div id="content">
+
+      <div class='topic'>
+      
+        <h2>OSWf Repository</h2>
+        
+        <p>The OSWf binaries are avaliable as either references in a Maven2 <code>pom.xml</code> file or Gradle <code>build.gradle</code> or
+            as a direct download of the JAR file.
+        </p>
+        
+      </div>
+
+      <!-- Maven Repository and access via POM -->        
+      <div class='topic'>
+      
+        <h3>Access the Repository from a Maven POM</h3>
+              
+        <p>
+            These libraries can be accessed via the POM by reference the following
+            Maven repository by adding a <code>repositories</code> tag to your POM.
+        </p>
+        
+        <pre class='code'>
+    &lt;repository&gt;
+      &lt;id&gt;Informagen&lt;/id&gt;
+      &lt;url&gt;http://informagen.org/maven&lt;/url&gt;
+        .
+        .
+        .
+    &lt;/repository&gt;
+        </pre>       
+
+      </div>
+
+      <!-- Maven Repository and access via Gradle build.gradle -->        
+      <div class='topic'>
+        <h3>Access the Repository from a Gradle Build File</h3>
+
+        <p>These libraries can be accessed via Gradel by referencing the following
+            Maven repository by adding to your <code>repositories</code> configuration in your 
+            <code>gradle.build</code>.
+        </p>
+
+
+        
+        <pre class='code'>
+        repositories {
+           // Informagen repository
+           mavenRepo urls: ["http://informagen.org/maven/"]
+            .
+            .
+            .
+          mavenLocal();
+          mavenCentral();
+        }
+       </pre>       
+      </div>
+      
+      <div class="topic">
+        <h3>OSWf - Core</h3>
+        <p>Use a Maven dependency</p>
+        <pre class='code'>
+    &lt;dependency&gt;
+      &lt;groupId&gt;net.sf.oswf&lt;/groupId&gt;
+      &lt;artifactId&gt;oswf-core&lt;/artifactId&gt;
+      &lt;version&gt;3.0.0-SNAPSHOT&lt;/version&gt;
+    &lt;/dependency&gt;
+        </pre>
+
+        <p>Or Gradle dependency</p>
+        <pre class='code'> "net.sf.oswf:oswf-core:3.0.0-SNAPSHOT"</pre>
+      </div>
+
+      
+      <div class="topic">
+        <h3>OSWf - Store</h3>
+        <p>Use a Maven dependency</p>
+        <pre class='code'>
+    &lt;dependency&gt;
+      &lt;groupId&gt;net.sf.oswf&lt;/groupId&gt;
+      &lt;artifactId&gt;oswf-store&lt;/artifactId&gt;
+      &lt;version&gt;3.0.0-SNAPSHOT&lt;/version&gt;
+    &lt;/dependency&gt;
+        </pre>
+
+        <p>Or Gradle dependency</p>
+        <pre class='code'> "net.sf.oswf:oswf-store:3.0.0-SNAPSHOT"</pre>
+      </div>
+
+
+    </div> <!--  End of 'content' div ============================================================= -->
+  </div> <!--  End of 'wrapper' div ============================================================= -->
+
+  <div class="clear"> </div>
+
+  <div id="footer">
+    <div id="copyright">
+      Copyright &copy; 2012-2017 Will Gilbert, All rights reserved.
+    </div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE workflow SYSTEM "OSWf-3.0.dtd">
+
+<workflow>
+
+    <!--  List of possible starting points in the workflow ===============================  -->
+	<initial-actions>
+		<action id="1" name="Start Workflow">
+			<results>
+				<default-result step="100"/>
+			</results>
+		</action>
+	</initial-actions>
+
+
+    <!-- Steps ============================================================================ -->
+    
+	<steps>
+	
+	    <!-- Employee submits leave request  =================================== -->
+	    
+		<step id="100" name="Employee Request">
+			<actions>
+				<action id="101" name="Request day off">
+					<results>
+						<default-result split="1" exit-status="Requested"/>
+					</results>
+				</action>
+				<action id="102" name="cancel" finish="true" >
+					<results>
+						<default-result exit-status="Cancelled"/>
+					</results>
+				</action>
+			</actions>
+		</step>
+
+
+	    <!-- Line Manager approves or denies request based on labor needs  ===== -->
+	    
+		<step id="200" name="Manager Revision">
+			<actions>
+				<action id="201" name="Manager approves" >
+		    
+		            <pre-functions>
+		                <function type="beanshell">
+		                   <arg name="script">propertySet.setString("Manager Result", "approved");</arg>
+		                </function>
+		            </pre-functions>
+		
+					<results>
+						<default-result join="1" />
+					</results>
+				</action>
+				<action id="202" name="Manager denies" >
+		    
+		            <pre-functions>
+		                <function type="beanshell">
+		                   <arg name="script">propertySet.setString("Manager Result", "denied");</arg>
+		                </function>
+		            </pre-functions>
+		
+					<results>
+						<default-result join="10000"/>
+					</results>
+				</action>
+			</actions>
+		</step>
+
+	    <!-- HR Manager approves or denies request based on employee record ==== -->
+
+		<step id="300" name="HR Revision">
+
+			<actions>
+				<action id="301" name="HR approves" >
+		    
+		            <pre-functions>
+		                <function type="beanshell">
+		                   <arg name="script">propertySet.setString("HR Result", "approved");</arg>
+		                </function>
+		            </pre-functions>
+		
+					<results>
+						<default-result join="10000"/>
+					</results>
+				</action>
+
+				<action id="302" name="HR denies" >
+		    
+		            <pre-functions>
+		                <function type="beanshell">
+		                   <arg name="script">propertySet.setString("HR Result", "denied");</arg>
+		                </function>
+		            </pre-functions>
+		
+					<results>
+						<default-result join="10000"/>
+					</results>
+				</action>
+			</actions>
+		</step>
+
+	    <!-- System sends e-mail to employee =================================== -->
+
+		<step id="400" name="Notify Employee">
+
+			<actions>
+				<action id="401" name="send e-mail"  finish="true" >
+		            <pre-functions>
+		                <function type="beanshell">
+		                   <arg name="script">propertySet.setDate("E-Mail Sent", new Date());</arg>
+		                </function>
+		            </pre-functions>
+					<results>
+						<default-result step="-1"/>
+					</results>
+
+				</action>
+
+			</actions>
+
+		</step>
+	</steps>
+
+    <!-- Splits =========================================================================== -->
+
+    <!-- The leave approval goes to both the line manager and the HR manager ======= -->
+    
+	<splits>
+		<split id="1">
+			<default-result step="200"/>
+			<default-result step="300"/>
+		</split>
+	</splits>
+
+
+    <!-- Joins ============================================================================ -->
+
+    <!-- The line manager and HR manager's decisions are combined here ============= -->
+	<joins>
+	    
+	    <!-- The 'AND/OR' join -->
+	    
+		<join id="1">
+			<conditions type="AND">
+				<condition type="beanshell">
+					<arg name="script"><![CDATA[
+//==============================================================================================						
+
+    String managerResult = propertySet.getString("Manager Result");
+    String hrResult = propertySet.getString("HR Result");
+    					    
+    //========================================================
+    // Behave like an OR join if either the Manager or the
+    //  HR Director denied the request.
+    
+    if( managerResult != null && managerResult.equals("denied") ) {
+        propertySet.setString("Employee Request", "denied");
+        return true;
+    } 
+
+    if( hrResult != null && hrResult.equals("denied") ) {
+        propertySet.setString("Employee Request", "denied");
+        return true;
+    }
+    
+    //========================================================
+    // Behave like an AND join and wait for both decisions.
+
+    // Ensure that both properties have been defined i.e. both steps
+    //   have arrived at the join
+
+    if(managerResult == null || hrResult == null)
+        return false;
+    
+    // If we arrive here both arrived and neither have 'denied'; But
+    //   we check explicitly for both approved
+    
+    if(managerResult.equals("approved") &&  hrResult.equals("approved"))
+      propertySet.setString("Employee Request", "approved");
+    
+    // We return 'true' here to allow the workflow to proceed; this
+    //  return value is not related to our 'Day off' decisions
+      
+    return true;
+//==============================================================================================                        
+					]]></arg>
+				</condition>
+			</conditions>
+			
+			<default-result exit-status="JoinFinished" status="Queued" step="400"/>
+			
+		</join>
+
+	</joins>
+	
+	
+</workflow>

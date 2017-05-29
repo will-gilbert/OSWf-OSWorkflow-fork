@@ -1,0 +1,334 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<title>OSWf - Documentation</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<link rel="stylesheet" href="../style.css" type="text/css" charset="utf-8" />
+    <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+	
+</head>
+
+<body>
+  <div id="wrapper">
+
+    <!--  Start of 'left' column div ====================================================== -->
+
+    <div id="sidebar">
+       <script type='text/javascript' src="includes/branding.js"> </script>
+       <script type='text/javascript' src="includes/jumplist.js"> </script>
+       <script type='text/javascript' src="includes/contactInfo.js"> </script>
+    </div>
+    </div>
+
+    <!--  Start of 'Content' column div =================================================== -->
+    
+    <div id="content">
+
+      <div>
+        <h2>Simple Worklow - Requesting a Holiday</h2>
+        <p>Let's define a simple workflow where we are requesting a day off ('holiday' for 
+            our international readers). 
+            OSWf <b>Process Definitions</b> (workflows) are specified in an XML file, one per file.</p>
+        <p>Let's start by creating the file called '<code>holiday.oswf.xml</code>'. The minimum content for 
+          this file will contain the DTD definition, a set of one or more <code>initial-actions</code> which
+          serve as entry points into the workflow and set of <code>steps</code> and <code>actions</code> which a process instance will occupy
+          as the workflow is processed. Steps are also known as nodes and states, while actions may be
+          referred to as transitions in other workflow implementations.</p>
+      </div>
+
+      <pre class='code'>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE workflow PUBLIC "-//Open Source Workflow//DTD OSWf 3.0//EN" 
+          "http://oswf.sourceforge.net/OSWf-3.0.dtd"&gt;
+
+
+&lt;workflow&gt;
+
+  &lt;initial-actions&gt;
+        .
+        .
+        .
+  &lt;/initial-actions&gt;
+
+
+  &lt;steps&gt;
+     .
+     .
+     .
+  &lt;/steps&gt;
+
+&lt;/workflow&gt;
+
+</pre>
+ 
+<p>Note that OSWf will validate the XML file to the specified DTD, thus the workflow definition
+<b>has to be valid</b>. You can create and edit workflows using any XML tools and errors will
+be highlighted appropriately. The DTD is contained within the <code>oswf-core</code> JAR file
+and can be extracted for use with XML editing and validation tools. It can also be downloaded
+from <code><a =href'http://oswf.sourceforge.net/OSWf-3.0.dtd'>http://oswf.sourceforge.net/OSWf-3.0.dtd</a></code>
+</p>
+
+<h3>Steps and Actions</h3>
+
+<p>Next we specify the <code>initial-actions</code>, <code>steps</code> and <code>actions</code>. The first 
+important concept to understand the difference between initial-actions, steps and actions in a workflow. 
+A step is simply a place or position.  As a workflow progresses, a process instance moves from one step to another by 
+way of actions.  A step may be occupied for a very short period of time or very long period of 
+time.  A step has the start time when it was entered and a entry status.  When acted upon by an action, 
+a step will have a finished time and an exit status, optionally, a completed step will have an 'actor' 
+which caused the action to be fired.  Actors can be thought of as users, timers or external system
+events. Steps can also have <code>auto</code> actions which occur immediately and have no actor.
+</p>
+
+<p>In OSWf, initial-actions, steps and actions have a unique numbers and a name. Name need not be
+unique but are helpful if they are.  The name can be used by
+the application and in reporting, the number is used by the workflow engine.  More on this
+later.</p>
+
+<p>
+Actions specify the transitions that can take place within a particular step based on
+condtions. An action can result in a transition to another step or change the state of the
+current step, that is, actions can loop back onto their step of origin. 
+Examples of actions in our Holiday Request example will be '<code>Start
+Workflow</code>', '<code>Request holiday</code>', '<code>Approve</code>', and
+'<code>Deny</code>'. Verbs are commonly used as action names but not required, however, it does
+make the workflow easier to read.  Every step except terminal step have at least one action
+which specifies a <code>default-result</code>.
+</p>
+
+<p>Put simply, a step is 'where a process instance is', and an action is 'how the process
+instance can change'.</p>
+
+<p><code>Initial actions</code> are a special type of action that are used to 'kick off' a workflow. When
+a workflow is created, it has no state, and it is not in any step. The application must provide
+some mechanism to start off the process by choosing from the set of possible initial actions to start the
+workflow is specified in <code>&lt;initial-actions&gt;</code>. That said, most workflows have a single
+action, named 'Start Workflow' or simply 'Start'. </p>
+
+<p>For our Holiday workflow, let us assume that we only have one initial-action, 'Start Workflow'. 
+Add the following action definition inside of <code>&lt;initial-actions&gt;</code>:</p>
+
+<pre class="code">
+  &lt;initial-actions>
+  
+    &lt;action id='1' name='Start Workflow'>
+      &lt;results>
+        &lt;default-result step='100'/>
+      &lt;/results>
+   &lt;/action>
+   
+  &lt;/initial-actions>
+</pre>
+
+<p>This inital-action is the simplest possible type of action. It specifies a single (default) 
+result which moves to a new step.</p>
+
+
+<p>
+A brief note about <b>id</b> numbers. The <b>id</b> numbers for initial-actions, actions and steps
+must be unique within each of XML tag types.  This will also apply to other OSWf tags such as splits and
+joins which we will encounter soon.  As a personal convention, I use single digits (1..9) for
+initial actions, splits and joins as there tend to be few of these in most workflows; for steps I
+start with 100 and work up in increments of 100, 50 or 10 (100, 200, 300...) leaving room for intermediate
+steps as the workflow develops. Within each step, action ids start with the step number and
+increase by one or two (100 101, 102...). Most steps have only one action to move the workflow
+forward hence this convention works well.  This is only a convention but it helps me to organize
+the workflow description and allows me to insert steps and actions in the future. In the event
+of large workflow steps can be numbered by 50's or 10's.  Ids need not be assigned in any
+order. Order is only useful for display or reports.  You get the idea. 
+</p>
+
+
+<h3>The First Step: Requesting a Holiday</a></h3>
+
+<p>
+The first step of our simple workflow is for an employee to enter a request for a holiday. This might
+involve a web page with a form, or a verbal or written request. It is important to note that a
+workflow system merely tracks the steps and processes the actions of a real world process and DOES
+NOT IMPLEMENT THE PROCESS. It is the responsibility of the application, human or computer to inform
+the workflow system of the actions chosen. The workflow system responds and can then be queried
+by an application process in order to determine what actions are available to the application.
+</p>
+
+<pre class='code'>
+  &lt;step id='100' name='Employee request'>
+    &lt;actions>
+      &lt;action id='100' name='Request holiday'>
+        &lt;results>
+          &lt;default-result exit-status='Requested' step='200'/>
+        &lt;/results>
+     &lt;/action>
+   &lt;/actions>
+  &lt;/step>
+</pre>
+
+
+<h3>Step Status</h3>
+
+<p>
+The <code>default-result</code> for this step has an additional attribute called <code>exit-status</code>.
+This is an optional attribute used to indicate the final status of a step, the OSWf default exit-status
+is 'Finished'.  Here it's a bit useless as we can only exit this step by one action but I wanted
+to introduce this option before the next section.
+</p>
+
+<p><b>NB</b>: An 'exit-status' attribute is not used by the <b>initial-actions</b>'s <b>action</b> tags.</p>
+
+<!--
+A step status is a string that describes the status of a particular step. In our holiday
+request workflow, step 100 will take on the status of 'Underway'. Had we not specified a
+'status' the step status would take on the value of 'Pending', which in most cases is
+sufficient, but I wanted to show you how a step's status is specified.
+</p>
+
+<p>Wait a second! You're probably wondering, as I did when I first started using OSWorkflow as 
+to why a step's status is not set by itself.  This allow the action which which causes the step
+to 'come into being' to state how or why the step was created. Make sense? It will in more
+complex worflows.</p>
+-->
+
+<!--
+<p>
+In workflow language the employee is 'Actor' who initiates a workflow process, by completing
+the required form or paperwork in an application process causes the workflow to proceed to 
+step 200. Here we did not specify a 'status' or 'exit-status', which default to 'Pending' and 
+'Finished', respectively.
+</p>
+-->
+
+
+<h3>The Next Step: It's the Managers Turn</a></h3>
+
+<p>
+The workflow has now progressed to step 200, 'Manager Approval'.  This is where the manager
+must decide to allow or deny the employee's holiday based on workload, if other employees are available for
+coverage, this employee's available balance of holiday time, etc.  In workflow language, "<i>a
+work task has been added to the manager's <b>Work List</b></i>".  He or she must use a
+web form, application or human to record a decision.  Let's look at the available
+choices as defined in the workflow:
+</p>
+
+<pre class='code'>
+  &lt;step id='200' name='Manager Approval'>
+    &lt;actions>
+
+      &lt;!-- Manager approves holiday ====== -->
+      &lt;action id='201' name='Approve' finish='true'>
+        &lt;results>
+          &lt;default-result exit-status='Revised' />
+        &lt;/results>
+      &lt;/action>
+
+      &lt;!-- Manager denies holiday ======== -->
+      &lt;action id='202' name='Deny' finish='true'>
+        &lt;results>
+          &lt;default-result exit-status='Revised' />
+        &lt;/results>
+     &lt;/action>  &lt;/actions>
+  &lt;/step>
+</pre>
+
+<p>
+This step has two actions named 'Approve' or 'Deny',
+with ids of 201 and 202.  The exit-status for the step in either case will be 'Revised'. But 
+we could have used the OSWf default of 'Finished'. We could have used 'Approve' or 'Deny' and 
+probably should have but I'd like to show you a better way to record the manager's decision
+in the next few paragraphs.
+</p>
+
+<p> 
+All done!
+</p>
+
+<p>
+Not so fast! How can 
+the employee know of the manager's decision?  We need some kind of persistent
+store, like a database or at very least another step which sends an e-mail to the employee,
+human resources and payroll departments.
+</p>
+
+<p>
+OSWf can save the manager's decision as a name/value pair to a <code>PropertySet</code> which is
+an really neat Java framework also from OpenSymphony and also abandoned like OSWorkflow.  Let's add
+a post-function to each action, shown in red in our revised workflow steps. You can read about
+'post-function' in another tutorial but for now the name should be pretty self-explanatory:
+<i>Execute this function after this action has been chosen</i>. For now don't worry about the syntax,
+all will be revealed in time.
+</p>
+
+
+<pre class='code'>
+  &lt;step id='200' name='Manager Approval'>
+    &lt;actions>
+
+      &lt;!-- Manager approves holiday ====== -->
+      &lt;action id='201' name='Approve' finish='true'>
+        &lt;results>
+          &lt;default-result exit-status='Revised' />
+        &lt;/results>
+        <span style='color:red;'>&lt;post-functions>
+          &lt;function type='beanshell'>
+            &lt;arg name='script'>propertySet.setString('result', 'approved');&lt;/arg>
+          &lt;/function>
+        &lt;/post-functions></span>
+      &lt;/action>
+
+      &lt;!-- Manager denies holiday ======== -->
+      &lt;action id='202' name='Deny' finish='true'>
+        &lt;results>
+          &lt;default-result exit-status='Revised' />
+        &lt;/results>
+        <span style='color:red;'>&lt;post-functions>
+          &lt;function type='beanshell'>
+            &lt;arg name='script'>propertySet.setString('result', 'denied');&lt;/arg>
+          &lt;/function>
+        &lt;/post-functions></span>
+     &lt;/action>  &lt;/actions>
+  &lt;/step>
+</pre>
+
+<p>
+There are also ways from within OSWf to save the result of a step or action however you want
+or wherever you want. You would to write an OSWf function to do this.  The <b>PropertySet</b> name/value
+pair storage is builtin and work nicely for use within OSWf.
+</p>
+
+<p>
+Now we can look up the final decision in a database or add a step to send an e-mail to the 
+employee and notify the human resouces and payroll departments.  One more thing, 
+notice in each action the
+attribute <code>finish='true'</code>.  Although, the workflow has no more steps, these actions
+will put this process instance into a <b>Completed</b> state.
+</p>
+
+
+<p>To download the 'Holiday Request' workflow, click <a href='workflows/holiday.oswf.xml'>here</a>.</p>
+
+</div>
+
+<div align='center' style='margin-top:3em;'>
+ <img src='images/holiday.png'>
+</div>
+
+
+ 
+      <div class="clear"> </div>
+      
+    </div>
+
+  </div>
+
+  <!--  End of 'right' div ============================================================= -->
+
+  <div class="clear"> </div>
+
+  <div id="footer">
+    <div id="copyright">
+      Copyright &copy; 2012-2017 Will Gilbert, All rights reserved.
+    </div>
+  </div>
+	
+</body>
+</html>
