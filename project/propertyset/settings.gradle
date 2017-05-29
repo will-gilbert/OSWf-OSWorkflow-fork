@@ -6,4 +6,4 @@
  **    build.gradle file
  */
  
-rootProject.name = 'oswf-core'
+rootProject.name = 'oswf-propertyset'
