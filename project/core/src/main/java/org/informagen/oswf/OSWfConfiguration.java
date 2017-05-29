@@ -48,7 +48,7 @@ public interface OSWfConfiguration {
      *   affect store behaviour.
      */
 
-    Map<String,Object> getPersistenceArgs(); // getPersistenceVariables()
+    Map<String,Object> getPersistenceArgs();
  
 
     /**

@@ -54,7 +54,7 @@ import static org.junit.Assert.fail;
 
 
 /*
-**  Implement workflow concept of Roleand User work lists using OSWf's Step 'owner'.  This
+**  Implement workflow concept of Role and User work lists using OSWf's Step 'owner'.  This
 **      usage example uses the same 'Leave Request' workflow with the addition of Step id=250
 **      which allow a 'Manager' group member to 'claim' a request before moving into Step
 **      id=250 and becoming the owner in Step id=250.
