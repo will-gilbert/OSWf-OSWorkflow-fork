@@ -30,7 +30,7 @@ public class InvalidInputException extends WorkflowException {
      * as a generic base. If the object is an instance of
      * this exception, all properties are copied to this
      * exception. If the object is an instance of Map or
-     * String[], an errorName->errorMessage mapping will
+     * String[], an (errorName,errorMessage) mapping will
      * be attempted to be extracted. If the object is
      * something else, it's toString() method will be
      * called and added as a single generic error.
@@ -85,9 +85,9 @@ public class InvalidInputException extends WorkflowException {
     // M E T H O D S  -------------------------------------------------------------------------
 
     /**
-     * Returns a map (String->String) of the input-specific errors.
+     * Returns a map (String,String) of the input-specific errors.
      *
-     * @return a map (String->String) of the input-specific errors
+     * @return a map (String,String) of the input-specific errors
      */
     public Map getErrors() {
         return errors;

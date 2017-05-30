@@ -7,8 +7,6 @@ import org.informagen.oswf.impl.stores.HibernateStep;
  *   By subclassing the HibernateHistoryStep from the abstract HibernateStep class
  *   it can be easily written into seperate tables.
  *
- * @see {@link HibernateStep}
- * @see {@link HibernateCurrentStep}
  */
 
 public class HibernateHistoryStep extends HibernateStep {

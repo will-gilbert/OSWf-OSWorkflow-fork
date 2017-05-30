@@ -22,16 +22,16 @@ import java.util.Properties;
  * a property is set using the same key and an already existing property of the
  * SAME type, the new value will overwrite the old. However, if a property of
  * DIFFERENT type attempts to overwrite the existing value, a
- * {@link import org.informagen.oswf.propertyset.DuplicatePropertyKeyException}
+ * {DuplicatePropertyKeyException
  * should be thrown.</p>
  *
  * <p>If a property is set of a type that is not allowed, a
- * {@link import org.informagen.oswf.propertyset.IllegalPropertyException}
+ * IllegalPropertyException
  * should be thrown.</p>
  *
  * <p>If a property is retrieved that exists but contains a value of different
  * type, a
- * {@link import org.informagen.oswf.propertyset.InvalidPropertyTypeException}
+ * InvalidPropertyTypeException
  * should be thrown.</p>
  *
  * <p>If a property is retrieved that does not exist, null (or the primitive
@@ -39,7 +39,7 @@ import java.util.Properties;
  *
  * <p>If an Exception is encountered in the actual implementation of the
  * PropertySet that needs to be rethrown, it should be wrapped in a
- * {@link import org.informagen.oswf.propertyset.PropertyImplementationException}
+ * PropertyImplementationException
  * .</p>
  *
  * <p>Some PropertySet implementations may not store along side the data the original
@@ -67,7 +67,7 @@ import java.util.Properties;
  * <p>Not all PropertySet implementations need to support setter methods (i.e.
  * they are read only) and not all have to support storage/retrieval of specific
  * types. The capabilities of the specific implementation can be determined by
- * calling {@link #supportsType(int)} and {@link #isSettable(String)} .</p>
+ * callingsupportsType(int) and isSettable(String).</p>
  *
  * @author <a href="mailto:joe@truemesh.com">Joe Walnes</a>
  * @version $Revision: 144 $

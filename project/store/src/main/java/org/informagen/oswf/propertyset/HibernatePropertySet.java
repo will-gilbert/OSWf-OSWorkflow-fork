@@ -67,9 +67,9 @@ import javax.xml.parsers.ParserConfigurationException;
  *  <li><b>piid</b> - Long that holds the ID of this Process Instance</li>
  * </ul>
  *
- * if "<b>sessionFactory</b> - hibernate sessionFactory" is not passed as an arg then init will use: <br />
+ * if "<b>sessionFactory</b> - hibernate sessionFactory" is not passed as an arg then init will use: <br>
  *  <b>hibernate.*</b> - configurationProperties params needed to create a hibernate sessionFactory in the propertyset config xml.
- * <br />
+ * <br>
  * This can be any of the configs avail from hibernate.
  * <p>
  *

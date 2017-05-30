@@ -51,8 +51,6 @@ import javax.xml.transform.TransformerException;
  * @author <a href="mailto:joe@truemesh.com">Joe Walnes</a>
  * @version $Revision: 169 $
  *
- * @see org.informagen.oswf.propertyset.PropertySet
- * @see org.informagen.oswf.propertyset.memory.SerializablePropertySet
  */
 public class XMLPropertySet extends SerializablePropertySet {
     //  I N S T A N C E   F I E L D S  --------------------------------------------------------

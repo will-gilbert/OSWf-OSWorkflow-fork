@@ -5,10 +5,11 @@ import org.informagen.oswf.query.LogicalOperator;
 /**
  * Nested expressions are used when constructing a workflow query.
  * A nested expression consists of:
+ * <ul>
  * <li>one or more expressions: Each of them can again be a NestedExpression.
  * <li>operator: The operator used to evaluate the value of the nested expression
  *     from the specified sub expressions.
- *
+ * </ul>
  * @author Christine Zimmermann
  */
 public class NestedExpression extends Expression {
@@ -26,7 +27,7 @@ public class NestedExpression extends Expression {
     /**
     * Create a NestedExpression that consists of multiple expressions.
     * @param expressions an array of expressions for this query.
-    * @param operator {@link NestedExpression#AND} or {@link NestedExpression#OR}.
+    * @param operator NestedExpression.AND or NestedExpression.OR.
     */
     public NestedExpression(Expression[] expressions, LogicalOperator operator) {
         this.expressions = expressions;

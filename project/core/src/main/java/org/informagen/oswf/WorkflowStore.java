@@ -37,14 +37,14 @@ public interface WorkflowStore {
 
     /**
      * Set the state of the workflow instance.
-     * @param entryId The workflow instance id.
+     * @param piid The workflow instance id.
      * @param state The state to move the workflow instance to.
      */
     public void setEntryState(long piid, ProcessInstanceState state) throws WorkflowStoreException;
 
     /**
      * Returns a PropertySet that is associated with this process instance ID.
-     * @param entryId The workflow instance id.
+     * @param piid The workflow instance id.
      * @return a property set unique to this process instance (piid)
      */
     public PropertySet getPropertySet(long piid);
@@ -52,7 +52,7 @@ public interface WorkflowStore {
     /**
      * Persists a step with the given parameters.
      *
-     * @param entryId The process instance id.
+     * @param piid The process instance id.
      * @param stepId the ID of the workflow step associated with this new
      *               Step (not to be confused with the step primary key)
      * @param owner the owner of the step
@@ -82,16 +82,15 @@ public interface WorkflowStore {
     /**
      * Returns a list of all current steps for the given workflow instance ID.
      *
-     * @param entryId The workflow instance id.
+     * @param piid The workflow instance id.
      * @return a List of Steps
-     * @see org.informagen.oswf.impl.Step
      */
     public List<Step> findCurrentSteps(long piid) throws WorkflowStoreException;
 
     /**
      * Returns a list of all steps that are finished for the given workflow instance ID.
      *
-     * @param entryId The process instance id
+     * @param piid The process instance id
      * @return a List of Steps
      * @see org.informagen.oswf.Step
      */
@@ -104,7 +103,6 @@ public interface WorkflowStore {
      * @param finishDate the date when the step was finished; null if the step was cleared
      * @param status The status to set the finished step to
      * @param actor The actor that caused the step to finish
-     * @return the finished step
      */
 
     public void moveToHistory(Step step, int actionId, Date finishDate, String status, String actor) throws WorkflowStoreException;

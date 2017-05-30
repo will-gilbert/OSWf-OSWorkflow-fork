@@ -23,8 +23,6 @@ import java.util.HashMap;
  *      <code>setObject()</code> will throw an IllegalPropertyException if
  *  the passed object does not implement Serializable.</p>
  *
- * @see import org.informagen.oswf.propertyset.PropertySet
- * @see import org.informagen.oswf.propertyset.memory.MemoryPropertySet
  */
 
 

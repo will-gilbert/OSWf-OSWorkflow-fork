@@ -34,7 +34,7 @@ public interface WorkflowLoader {
     /**
        * Get all workflow names in the current factory
        * @return An array of all workflow names
-       * @throws org.informagen.oswf.exceptions. if the factory cannot determine the names of the workflows it has.
+       * @throws org.informagen.oswf.exceptions.WorkflowLoaderException if the specified workflow name does not exist or cannot be located.
        */
 
     Set<String> getWorkflowNames() throws WorkflowLoaderException;

@@ -27,10 +27,6 @@ import java.util.Properties;
  * following 2 methods which are declared <code>protected abstract</code> and need
  * to be implemented by subclasses:</p>
  *
- * <ul>
- * <li> {@link #get(int,java.lang.String)} </li>
- * <li> {@link #setImpl(int,java.lang.String,java.lang.Object)} </li>
- * </ul>
  *
  * <p>The following methods are declared <code>public abstract</code> and are the
  * remainder of the methods that need to be implemented at the very least:</p>
@@ -38,8 +34,6 @@ import java.util.Properties;
  * <ul>
  * <li> {@link #exists(java.lang.String)} </li>
  * <li> {@link #remove(java.lang.String)} </li>
- * <li> {@link #getType(java.lang.String)} </li>
- * <li> {@link #getKeys(java.lang.String,int)} </li>
  * </ul>
  *
  * <p>The <code>supports???</code> methods are implemented and all return true by default.

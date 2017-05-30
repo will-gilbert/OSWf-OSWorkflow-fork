@@ -55,7 +55,6 @@ public class TextUtils {
      * @param in String containing number to be parsed.
      * @return Long value of number or 0 if error.
      *
-     * @see #extractNumber(String)
      */
     public final static long parseLong(String in) {
         long l = 0;
@@ -78,7 +77,6 @@ public class TextUtils {
      * @param in String containing number to be parsed.
      * @return Double value of number or 0 if error.
      *
-     * @see #extractNumber(String)
      */
     public final static double parseDouble(String in) {
         double d = 0;

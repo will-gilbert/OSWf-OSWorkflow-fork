@@ -12,10 +12,10 @@ import java.io.Serializable;
 
 /**
  * Default implementation for a configuration object.
- * This configuration object is passed to the {@link org.informagen.oswf.Workflow#setConfiguration(Configuration)}
+ * This configuration object is passed to the Workflow#setConfiguration(Configuration)
  * method. If the configuration is not initialized, the {@link #load(java.net.URL)} method will be called by
  * the workflow. Alternatively, the actor can explicitly load the configuration by calling that method before
- * calling {@link org.informagen.oswf.Workflow#setConfiguration(Configuration)}.
+ * calling Workflow.setConfiguration(Configuration).
  * <p>
  */
 

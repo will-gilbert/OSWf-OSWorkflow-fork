@@ -79,7 +79,7 @@ public class PropertySetFactory {
     /**
      * Get a propertyset by name
      *
-     * @param name The name of the propertyset as registered in the configuration file
+     * @param propertySetName The name of the propertyset as registered in the configuration file
      *
      * @param args The arguments to pass to the propertyset for initialization.
      *     Consult the javadocs for a particular propertyset to see what arguments
@@ -97,8 +97,6 @@ public class PropertySetFactory {
     }
 
     /**
-     * @see #getInstance(String, java.util.Map)
-     * @param loader The classloader to use for loading the propertyset.
      */
 
      @SuppressWarnings("unchecked")

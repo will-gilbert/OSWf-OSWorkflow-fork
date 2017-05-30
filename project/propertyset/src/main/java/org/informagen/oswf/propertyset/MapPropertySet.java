@@ -21,8 +21,7 @@ import java.util.Properties;
  *     acts as a wrapper around a standard {@link java.util.Map} .
  *
  * <p>Because a Map will only store the value but not the type, this
- *     is untyped. See {@link import org.informagen.oswf.propertyset.PropertySet}
- *      for explanation.</p>
+ *     is untyped. </p>
  *
  * <b>Optional Args</b>
  * <ul>
@@ -32,7 +31,6 @@ import java.util.Properties;
  * @author <a href="mailto:joe@truemesh.com">Joe Walnes</a>
  * @version $Revision: 144 $
  *
- * @see import org.informagen.oswf.propertyset.PropertySet
  */
 public class MapPropertySet extends AbstractPropertySet {
     

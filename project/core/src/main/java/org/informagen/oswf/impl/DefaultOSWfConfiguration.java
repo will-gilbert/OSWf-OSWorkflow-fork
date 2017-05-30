@@ -57,10 +57,10 @@ import java.util.Properties;
 /**
  * Default implementation for an OSWf configuration object
  *
- * This configuration object is passed to the {@link org.informagen.oswf.Workflow#setOSWfConfiguration(OSWfConfiguration)}
+ * This configuration object is passed to the setOSWfConfiguration
  * method. If the configuration is not initialized, the {@link #load(java.net.URL)} method will be called by
  * the workflow. Alternatively, the actor can explicitly load the configuration by calling that method before
- * calling {@link org.informagen.oswf.Workflow#setOSWfConfiguration(OSWfConfiguration)}.
+ * calling Workflow#setOSWfConfiguration(OSWfConfiguration).
  * <p>
  * The loading behaviour comes into play when specifying a configuration remotely, for example in an EJB
  * environment. It might be desirable to ensure that the configuration is loaded from within the EJB server,
@@ -485,11 +485,13 @@ public class DefaultOSWfConfiguration implements OSWfConfiguration, Serializable
     /**
      * Load the default configuration from the current context classloader.
      * The search order is:
+     * <ul>
      * <li>Specified URL</li>
      * <li>oswf.xml</li>
      * <li>/oswf.xml</li>
      * <li>META-INF/oswf.xml</li>
      * <li>/META-INF/oswf.xml</li>
+     * </ul>
      */
 
     protected InputStream getInputStream(URL url) {

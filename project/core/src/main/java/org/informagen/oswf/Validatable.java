@@ -22,7 +22,6 @@ public interface Validatable {
      * a graphical workflow definition editor which would like to write incomplete definitions.
      * Validation *IS* performed on loading a workflow definition.
      *
-     * @see  org.informagen.oswf.descriptors.WorkflowLoader#load
      * @throws InvalidWorkflowDescriptorException
      */
     public void validate() throws InvalidWorkflowDescriptorException;

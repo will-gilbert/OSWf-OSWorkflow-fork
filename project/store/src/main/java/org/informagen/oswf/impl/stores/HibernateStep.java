@@ -30,6 +30,7 @@ public abstract class HibernateStep extends DefaultStep {
      * Clone a HibernateStep from another HibernateStep; This operation is
      *  used to create a HistoryStep from a CurrrentStep
      *  Do not copy the 'id'; It's used to indicate unsaved instances
+     *  @param step Hibernate step to be cloned
      */
 
     public HibernateStep(HibernateStep step) {

@@ -88,13 +88,14 @@ public interface OSWfConfiguration {
 
     WorkflowStore getWorkflowStore() throws WorkflowStoreException;
 
+    OSWfConfiguration load() throws WorkflowLoaderException;
+  
     /**
      * Load the specified configuration file. Returns self to allow
      *   method chaining i.e. after constructor or instance
      * @param url url to the configuration file.
      */
 
-    OSWfConfiguration load() throws WorkflowLoaderException;
     
     OSWfConfiguration load(URL url) throws WorkflowLoaderException;
 

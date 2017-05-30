@@ -34,7 +34,6 @@ import java.util.Properties;
  * @author <a href="mailto:joe@truemesh.com">Joe Walnes</a>
  * @version $Revision: 144 $
  *
- * @see import org.informagen.oswf.propertyset.PropertySet
  */
 
 public class MemoryPropertySet extends AbstractPropertySet {

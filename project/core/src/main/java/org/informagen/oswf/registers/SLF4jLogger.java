@@ -14,7 +14,7 @@ import java.util.Map;
 
 /**
  * This is a register, which helps logging using 'Simple Logging Facade for Java'.
- * It wraps a Logger instance which is linked to the "OSWorkflow/<workflow_name>/<id>" category
+ * It wraps a Logger instance which is linked to the "OSWorkflow workflow_name id" category
  *
  * Following optional arguments available:
  * <ul>

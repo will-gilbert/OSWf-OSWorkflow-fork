@@ -10,10 +10,11 @@ import org.informagen.oswf.query.Operator;
  * Field expressions are used when constructing a workflow query on the fields
  * of persistent workflow instances like (START_DATE, OWNER,....).
  * Field expressions have three attributes. These are:
+ * <ul>
  * <li>operator: This is the operator to apply on the expression.
  * <li>field: The workflow field to test agains
  * <li>Context: The context to search in, which can be one history, current steps, or a workflow instance.
- *
+ * </ul>
  * @author Christine Zimmermann
  */
 public class FieldExpression extends Expression {

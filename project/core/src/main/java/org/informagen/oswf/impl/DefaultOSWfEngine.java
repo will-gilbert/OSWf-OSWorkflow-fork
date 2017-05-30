@@ -317,7 +317,6 @@ public class DefaultOSWfEngine implements OSWfEngine {
     /**
      * Get the available actions for the specified workflow instance.
      * @param id The workflow instance id.
-     * @param inputs The inputs map to pass on to conditions
      * @return An array of action id's that can be performed on the specified pi.
      * @throws IllegalArgumentException if the specified id does not exist, or if its workflow
      * descriptor is no longer available or has become invalid.
@@ -326,6 +325,15 @@ public class DefaultOSWfEngine implements OSWfEngine {
     public List<Integer> getAvailableActions(long id) {
         return getAvailableActions(id, EMPTY_MAP);
     }
+
+    /**
+     * Get the available actions for the specified workflow instance.
+     * @param piid The workflow instance id.
+     * @param inputs The inputs map to pass on to conditions
+     * @return An array of action id's that can be performed on the specified pi.
+     * @throws IllegalArgumentException if the specified id does not exist, or if its workflow
+     * descriptor is no longer available or has become invalid.
+     */
      
     public List<Integer> getAvailableActions(long piid, Map<String,Object> inputs) {
 
@@ -588,7 +596,7 @@ public class DefaultOSWfEngine implements OSWfEngine {
 
     /**
      * Get a list of workflow names available
-     * @return List<String> a List of workflow names
+     * @return a set of workflow names
      */
 
     public Set<String> getWorkflowNames() {

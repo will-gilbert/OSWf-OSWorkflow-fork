@@ -20,7 +20,7 @@ import javax.naming.NamingException;
 
 /**
  * Invoke a register registred in JNDI.
- * Args must contain a {@link AbstractWorkflow#JNDI_LOCATION} key.
+ * Args must contain a AbstractWorkflow.JNDI_LOCATION key.
  * @author $Author: hani $
  * @version $Revision: 1.5 $
  */
