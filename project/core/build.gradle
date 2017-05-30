@@ -174,16 +174,8 @@ def String findProperty(String propertyName, defaultValue='') {
     return property?.trim()
 }
 
-// U N I T   T E S T I N G --------------------------------------------------------------------
-
-// Launch the browser if any test fails and display the report 
-gradle.taskGraph.afterTask { task, taskState ->
-    if (task.name == 'test' && taskState.failure)
-        java.awt.Desktop.desktop.browse(new File(testReportDir, 'index.html').toURI())
-}
-
 /* ============================================================================================
-Change log for OSWorkflow to OSWf 3.0.0
+Change log for OSWorkflow to OSWf 3.x
 
 - Gradle build system; clean, compileJava, test, install; See top of 'build.gradle' file
 

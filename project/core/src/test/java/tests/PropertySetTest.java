@@ -32,9 +32,20 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
-
-
 /**
+ * For these tests no configuration is set. These tests will using the configuration
+ *  found in the test classpath at /oswf.xml which uses memory base store and 
+ *  property set.
+ *
+ * <pre>
+ *   <persistence>
+ *       <workflow-store class="org.informagen.oswf.impl.stores.MemoryStore"/>
+ *       <propertyset-store class="org.informagen.oswf.impl.MemoryPropertySetStore"/>
+ *  </persistence>
+ * <pre>
+ *
+ *  The default URLLoader will be used to load the workflow definition using the
+ *     URL string as the workflow name.
  */
 
 public class PropertySetTest extends OSWfTestCase {
@@ -56,35 +67,41 @@ public class PropertySetTest extends OSWfTestCase {
 
     @Test
     public void setPropertySet() throws Exception {
-        long piid = wfEngine.initialize(url.toString(), 1, null);
+        int initialAction = 1;
+        long piid = wfEngine.initialize(url.toString(), initialAction);
         assertProcessInstanceState(wfEngine, piid, ProcessInstanceState.COMPLETE);        
     }
+
  
     // Testing 'HasProperyValue' condition using only a 'name' argument returning
     //   a boolean true if the 'name' exists, false otherwise.
     @Test
     public void propertySetValueExists() throws Exception {
-        long piid = wfEngine.initialize(url.toString(), 2, null);
+        int initialAction = 2;
+        long piid = wfEngine.initialize(url.toString(), initialAction);
         assertProcessInstanceState(wfEngine, piid, ProcessInstanceState.COMPLETE);        
     }
+
 
     // Testing missing 'name' argument in 'HasProperyValue' condition; See
     //  the logger for an error caught by 'OSWfEngine'
     @Test
     public void nameNotDefined() throws Exception {
         
-       long piid = wfEngine.initialize(url.toString(), 3, null);
-       
+        int initialAction = 3;
+        long piid = wfEngine.initialize(url.toString(), initialAction);
+
        // Workflow did not complete; check log to see the error
-       assertProcessInstanceState(wfEngine, piid, ProcessInstanceState.ACTIVE);        
- 
+       assertProcessInstanceState(wfEngine, piid, ProcessInstanceState.ACTIVE);         
     }
+   
    
     // Testing 'HasPropertyValue' condition with both name and value; checking
     //   if expected value mathes actual value; See workflow XML  
     @Test
     public void propertySetValueEquals() throws Exception {
-       long piid = wfEngine.initialize(url.toString(), 4, null);
+        int initialAction = 4;
+       long piid = wfEngine.initialize(url.toString(), initialAction);
        assertProcessInstanceState(wfEngine, piid, ProcessInstanceState.COMPLETE);        
     }
 

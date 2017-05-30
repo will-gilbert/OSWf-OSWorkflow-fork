@@ -180,8 +180,8 @@ public class DefaultOSWfEngine implements OSWfEngine {
     // initialize /////////////////////////////////////////////////////////////////////////////
     //
     // Create the ProcessInstance (Process Instance) and execute the initial action to move 
-    //  into a Step (state) and return the ProcessInstance ID 
-    //  a.k.a. a Process Instance ID, piid
+    //  into a Step (state) and return the ProcessInstance ID; There are no inputs.
+     
 
     public long initialize(String workflowName, int initialAction) throws InvalidActionException, 
                                                                           InvalidInputException, 
@@ -189,6 +189,12 @@ public class DefaultOSWfEngine implements OSWfEngine {
          return initialize(workflowName, initialAction, EMPTY_MAP);
 
      }
+
+    // initialize /////////////////////////////////////////////////////////////////////////////
+    //
+    // Create the ProcessInstance (Process Instance) and execute the initial action to move 
+    //  into a Step (state) and return the ProcessInstance ID 
+    //  a.k.a. a Process Instance ID, piid
     
     public long initialize(String workflowName, int initialAction, Map<String,Object> inputs) throws InvalidActionException, 
                                                                                                      InvalidInputException, 
@@ -405,10 +411,11 @@ public class DefaultOSWfEngine implements OSWfEngine {
     }
 
     /**
-     * Get the configuration for this workflow.
-     * This method also checks if the configuration has been initialized, and if not, initializes it.
+     * Returns the configuration for this workflow is set using setConfiguration.
+     * If the configuration has not been set then it uses an in-memory configuration and
+     *   looks for a configuation file named 'oswf.xml'
+     *
      * @return The configuration that was set.
-     * If no configuration was set, then the default (static) configuration is returned.
      *
      */
 
@@ -416,9 +423,10 @@ public class DefaultOSWfEngine implements OSWfEngine {
         
         OSWfConfiguration config = (configuration != null) ? configuration : new MemoryOSWfConfiguration();
 
-        if (!config.isInitialized()) {
+        // Load the configuration file, 'oswf.xml', in the classpath
+        if ( config.isInitialized() == false ) {
             try {
-                config.load(null);
+                config.load();
             } catch (WorkflowLoaderException e) {
                 logger.error(fatal, "Error initializing configuration", e);
 

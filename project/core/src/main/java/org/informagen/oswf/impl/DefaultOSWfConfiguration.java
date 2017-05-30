@@ -173,10 +173,11 @@ public class DefaultOSWfConfiguration implements OSWfConfiguration, Serializable
     }
 
     public OSWfConfiguration load(URL url) throws WorkflowLoaderException {
-        // Parsing XML
 
+        // Parse the url, if NULL then look for default 'oswf.xml' in the classpath
         InputStream is = getInputStream(url);
 
+        // Could not find any configuration file
         if (is == null)
             throw new WorkflowLoaderException("Cannot find OSWf configuration file in classpath or in META-INF");
 
@@ -483,14 +484,16 @@ public class DefaultOSWfConfiguration implements OSWfConfiguration, Serializable
 
 
     /**
-     * Load the default configuration from the current context classloader.
+     * Parse the configuration file passed as a URL.
+     * If null, load the configuration 'oswf.xml' from the current context classloader.
+     *
      * The search order is:
      * <ul>
-     * <li>Specified URL</li>
-     * <li>oswf.xml</li>
-     * <li>/oswf.xml</li>
-     * <li>META-INF/oswf.xml</li>
-     * <li>/META-INF/oswf.xml</li>
+     *   <li>Specified URL</li>
+     *   <li>oswf.xml</li>
+     *   <li>/oswf.xml</li>
+     *   <li>META-INF/oswf.xml</li>
+     *   <li>/META-INF/oswf.xml</li>
      * </ul>
      */
 
@@ -498,7 +501,7 @@ public class DefaultOSWfConfiguration implements OSWfConfiguration, Serializable
         
         InputStream is = null;
     
-        //  Try to open the OSWf configuration file via the URL; Fail silently
+        //  Parse the OSWf configuration via the URL; Fail silently
         //     as we have a few other options to try
         if (url != null) {
             try {
@@ -507,6 +510,8 @@ public class DefaultOSWfConfiguration implements OSWfConfiguration, Serializable
             }
         }
     
+        // When the URL is null, look in the classpath for a file named 'oswf.xml'
+
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
     
         if (is == null) {
