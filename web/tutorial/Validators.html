@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<title>OSWf - Documentation</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<link rel="stylesheet" href="../style.css" type="text/css" charset="utf-8" />
+    <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+	
+</head>
+
+<body>
+  <div id="wrapper">
+
+    <!--  Start of 'left' column div =================================================== -->
+
+    <div id="sidebar">
+       <script type='text/javascript' src="includes/branding.js"> </script>
+       <script type='text/javascript' src="includes/jumplist.js"> </script>
+       <script type='text/javascript' src="includes/contactInfo.js"> </script>
+    </div>
+
+    <!--  Start of 'Content' column div =================================================== -->
+    
+    <div id="content">
+
+<p>To be done</p>
+
+<!--
+        <p>Just like <a href="3.4 Functions.html" title="3.4 Functions">3.4 Functions</a>, OSWorkflow allows for validators in three different forms: <b>Java-based</b>, <b>BeanShell</b>, and <b>BSF</b>. Java-based validators must implement the <b>com.opensymphony.workflow.Validator</b> interface (or in the case of <b>remote-ejb</b>'s, the <b>com.opensymphony.workflow.ValidatorRemote</b> interface). With Java-based validators, throwing an InvalidInputException is all that is needed to mark an input as invalid and stop the workflow action from occuring. </p>
+
+        <p>But in BeanShell and BSF, things are a little different, since exceptions thrown in the scripts can't propogate out to the Java runtime environment. To get around this, any value returned in a BeanShell or BSF script will be used as the error message(s). The logic is as follows:</p>
+
+        <ul>
+	        <li>If the value returned is an InvalidInputException object, that object is immediately thrown to the client</li>
+	        <li>If the value returned is a Map, that Map is used for the error/errorMessage pairs in the InvalidInputException</li>
+	        <li>If the value returned is a String[], the even numbers are used as keys, and the odd numbers are used as values to construct a Map that can then be used in the above case.</li>
+	        <li>Otherwise, the value is converted to a String and added as a generic error message.</li>
+        </ul>
+
+-->
+
+    </div> <!--  End of 'content' div ============================================================= -->
+  </div> <!--  End of 'wrapper' div ============================================================= -->
+
+  <div class="clear"> </div>
+
+  <div id="footer">
+    <div id="copyright">
+      Copyright &copy; 2012-2017 Will Gilbert, All rights reserved.
+    </div>
+  </div>
+	
+</body>
+</html>
