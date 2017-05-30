@@ -19,8 +19,6 @@ import org.informagen.oswf.exceptions.InvalidWorkflowDescriptorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.xml.sax.SAXException;
-
 // Java - IO
 import java.io.InputStream;
 import java.io.ByteArrayInputStream;

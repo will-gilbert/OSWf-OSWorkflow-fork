@@ -59,7 +59,7 @@ public class AutoActionsTest  {
     public void autoWithSplit() throws Exception {
         
         URL url = getClass().getResource("/core/auto-split.oswf.xml");        
-        long piid = wfEngine.initialize(url.toString(), 1, null);
+        long piid = wfEngine.initialize(url.toString(), 1);
         
         assertEquals("Unexpected number of current steps", 2, wfEngine.getCurrentSteps(piid).size());
         assertEquals("Unexpected number of history steps", 0, wfEngine.getHistorySteps(piid).size());
@@ -76,7 +76,7 @@ public class AutoActionsTest  {
     public void simpleAuto() throws Exception {
 
         URL url = getClass().getResource("/core/auto1.oswf.xml");
-        long piid = wfEngine.initialize(url.toString(), 100, null);
+        long piid = wfEngine.initialize(url.toString(), 100);
         List<Step> currentSteps = wfEngine.getCurrentSteps(piid);
 
         assertEquals("Unexpected number of current steps", 1, currentSteps.size());
@@ -88,7 +88,7 @@ public class AutoActionsTest  {
     public void execOnlyOne() throws Exception {
         
         URL url = getClass().getResource("/core/auto2.oswf.xml");
-        long piid = wfEngine.initialize(url.toString(), 100, null);
+        long piid = wfEngine.initialize(url.toString(), 100);
         List<Step> currentSteps = wfEngine.getCurrentSteps(piid);
         List<Step> historySteps = wfEngine.getHistorySteps(piid);
         
@@ -105,7 +105,7 @@ public class AutoActionsTest  {
     public void execTwoActions() throws Exception {
         
         URL url = getClass().getResource("/core/auto3.oswf.xml");
-        long piid = wfEngine.initialize(url.toString(), 100, null);
+        long piid = wfEngine.initialize(url.toString(), 100);
         List<Step> currentSteps = wfEngine.getCurrentSteps(piid);
         List<Step> historySteps = wfEngine.getHistorySteps(piid);
         
@@ -121,7 +121,7 @@ public class AutoActionsTest  {
     public void conditionCheck() throws Exception {
         
         URL url = getClass().getResource("/core/auto4.oswf.xml");
-        long piid = wfEngine.initialize(url.toString(), 100, null);
+        long piid = wfEngine.initialize(url.toString(), 100);
         List<Step> currentSteps = wfEngine.getCurrentSteps(piid);
 
         assertEquals("Unexpected number of current steps", 1, currentSteps.size());
@@ -150,7 +150,7 @@ public class AutoActionsTest  {
     public void simpleFinishWithRestriction() throws Exception {
         
         URL url = getClass().getResource("/core/finish1.oswf.xml");
-        long piid = wfEngine.initialize(url.toString(), 100, null);
+        long piid = wfEngine.initialize(url.toString(), 100);
         wfEngine.doAction(piid, 1, null);
         
         assertTrue("Finished workflow should have no current steps", wfEngine.getCurrentSteps(piid).size() == 0);
@@ -166,7 +166,7 @@ public class AutoActionsTest  {
     public void simpleFinishWithoutRestriction() throws Exception {
         
         URL url = getClass().getResource("/core/finish2.oswf.xml");
-        long piid = wfEngine.initialize(url.toString(), 100, null);
+        long piid = wfEngine.initialize(url.toString(), 100);
         wfEngine.doAction(piid, 1, null);
         
         assertTrue("Finished workflow should have no current steps", wfEngine.getCurrentSteps(piid).size() == 0);

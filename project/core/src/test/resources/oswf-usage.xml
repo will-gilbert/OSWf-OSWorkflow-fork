@@ -1,11 +1,6 @@
 <oswf>
  
-    <persistence>
-        <workflow-store class="org.informagen.oswf.impl.stores.MemoryStore"/>
-        <propertyset-store class="org.informagen.oswf.impl.MemoryPropertySetStore"/>
-    </persistence>
-
-	<loader class="org.informagen.oswf.impl.loaders.URLLoader">
+	<loader>
         <workflow name="Action Restrictions" type="resource" location="usage/ActionRestrictions.oswf.xml"/>
         <workflow name="CEP"                 type="resource" location="usage/cep.oswf.xml"/>
         <workflow name="Example"             type="resource" location="usage/example.oswf.xml"/>

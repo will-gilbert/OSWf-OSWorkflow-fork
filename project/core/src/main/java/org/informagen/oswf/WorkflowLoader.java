@@ -20,26 +20,32 @@ public interface WorkflowLoader {
 
     void initDone() throws WorkflowLoaderException;
 
-    WorkflowDescriptor getWorkflow(String name) throws WorkflowLoaderException;
+    WorkflowDescriptor getWorkflow(String workflowName) throws WorkflowLoaderException;
 
     /**
-     * Get a workflow descriptor given a workflow name.
-     * @param name The name of the workflow to get.
-     * @return The descriptor for the specified workflow.
-     * @throws org.informagen.oswf.exceptions.WorkflowLoaderException if the specified workflow name does not exist or cannot be located.
+     * Get a workflow descriptor given a workflow name
+     * @param workflowName The name of the workflow to get
+     * @param validate should this workflow be validated against the DTD
+     * @return The descriptor for the specified workflow
+     * @throws WorkflowLoaderException if the specified workflow name does not exist or cannot be located
      */
 
-    WorkflowDescriptor getWorkflow(String name, boolean validate) throws WorkflowLoaderException;
+    WorkflowDescriptor getWorkflow(String workflowName, boolean validate) throws WorkflowLoaderException;
     
     /**
-       * Get all workflow names in the current factory
-       * @return An array of all workflow names
-       * @throws org.informagen.oswf.exceptions.WorkflowLoaderException if the specified workflow name does not exist or cannot be located.
-       */
+     * Get all workflow names in the this loader
+     * @return An array of all workflow names
+     * @throws WorkflowLoaderException if the workflows do not exist or cannot be located
+     */
 
     Set<String> getWorkflowNames() throws WorkflowLoaderException;
 
 
+    /**
+     * Get a workflow and an XML
+     * @param workflowName The name of the workflow to get
+     * @throws WorkflowLoaderException if the specified workflow name does not exist or cannot be located
+     */
     String getWorkflowAsXML(String workflowName) throws WorkflowLoaderException;
 
 }

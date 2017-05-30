@@ -34,7 +34,6 @@ Site specific variables such as the upload repository can be specified in a a fi
 
 ================================================================================================= */
 
-apply plugin: 'java'    // Used to compile and create JAR artifacts
 apply plugin: 'maven'   // Used to install in the local MAVEN repository
 
 // C O N F I G U R A T I O N ==================================================================
@@ -44,18 +43,6 @@ group = 'org.informagen.oswf'
 version = '3.2.0-SNAPSHOT'
 
 ext.applicationName = "OSWf Core"
-
-// Java Compiler Configuration ----------------------------------------------------------------
-
-// Java SDK
-sourceCompatibility = 1.8
-targetCompatibility = sourceCompatibility
-compileJava.options.compilerArgs = [
-//    '-Xlint:unchecked', 
-//    '-Xlint:deprecation',
-] 
-
-compileTestJava.options.compilerArgs = compileJava.options.compilerArgs;
 
 configurations { 
     graphvizRuntime 

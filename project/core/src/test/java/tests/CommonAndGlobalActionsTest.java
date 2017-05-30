@@ -51,23 +51,23 @@ public class CommonAndGlobalActionsTest  {
     public void testBasicCommonAction() throws Exception {
         
         URL url = getClass().getResource("/core/common-actions.oswf.xml");
-        long piid = wfEngine.initialize(url.toString(), 50, null);
+        long piid = wfEngine.initialize(url.toString(), 50);
         
         assertEquals("Unexpected workflow state", ProcessInstanceState.ACTIVE, wfEngine.getProcessInstanceState(piid));
 
         // Verify that a common action (Restart Workflow) can be called
-        wfEngine.doAction(piid, 100, null);
+        wfEngine.doAction(piid, 100);
 
         List<Step> historySteps = wfEngine.getHistorySteps(piid);
         Step historyStep = historySteps.get(0);
         assertEquals("Unexpected exit status set", "Restarted", historyStep.getStatus());
 
         // Now let's move to step 2
-        wfEngine.doAction(piid, 1, null);
+        wfEngine.doAction(piid, 1);
 
         // Now let's check if we can call a non-specified common action (100)
         try {
-            wfEngine.doAction(piid, 100, null);
+            wfEngine.doAction(piid, 100);
             fail("Should not be able to call non-explicitly specified common-action");
         } catch (InvalidActionException e) {
             assertTrue(true);
@@ -75,7 +75,7 @@ public class CommonAndGlobalActionsTest  {
 
         // Now test -1 stepId stuff. What is the -1 stuff?
 
-        wfEngine.doAction(piid, 101, null);
+        wfEngine.doAction(piid, 101);
         historySteps = wfEngine.getHistorySteps(piid);
         historyStep = historySteps.get(0);
         assertEquals("Unexpected old status set", "Finished", historyStep.getStatus());
@@ -86,24 +86,24 @@ public class CommonAndGlobalActionsTest  {
         
         URL url = getClass().getResource("/core/global-actions.oswf.xml");
         
-        long piid = wfEngine.initialize(url.toString(), 50, null);
+        long piid = wfEngine.initialize(url.toString(), 50);
 
-        List<Integer> availableActions = wfEngine.getAvailableActions(piid, null);
+        List<Integer> availableActions = wfEngine.getAvailableActions(piid);
         List<Integer> expectedActions = Arrays.asList(100, 101, 1);
         assertEquals("Unexpected available actions ", expectedActions, availableActions );
 
         //verify that a global action can be called
-        wfEngine.doAction(piid, 100, null);
+        wfEngine.doAction(piid, 100);
 
         List<Step> historySteps = wfEngine.getHistorySteps(piid);
         Step historyStep = historySteps.get(0);
         assertEquals("Unexpected old status set", "Restarted", historyStep.getStatus());
 
         //now let's move to step 2
-        wfEngine.doAction(piid, 1, null);
+        wfEngine.doAction(piid, 1);
 
         // now test -1 stepId stuff.
-        wfEngine.doAction(piid, 101, null);
+        wfEngine.doAction(piid, 101);
         historySteps = wfEngine.getHistorySteps(piid);
         historyStep = (Step) historySteps.get(0);
         assertEquals("Unexpected old status set", "Finished", historyStep.getStatus());

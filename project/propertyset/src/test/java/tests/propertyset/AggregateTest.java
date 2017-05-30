@@ -32,7 +32,7 @@ import org.junit.Ignore;
 
 import static org.junit.Assert.assertTrue;
 
-
+@Ignore
 public class AggregateTest extends AbstractTestClass {
 
     Random random = new Random();

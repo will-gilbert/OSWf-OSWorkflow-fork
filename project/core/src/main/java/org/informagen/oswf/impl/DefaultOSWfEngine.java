@@ -245,8 +245,8 @@ public class DefaultOSWfEngine implements OSWfEngine {
     // Fires a process transition, this method can be chained becuase it returns itself
     //
     
-    public OSWfEngine doAction(long id, int actionId) throws WorkflowException {
-        return doAction(id, actionId, EMPTY_MAP);
+    public OSWfEngine doAction(long piid, int actionId) throws WorkflowException {
+        return doAction(piid, actionId, EMPTY_MAP);
     }
     
     public OSWfEngine doAction(long piid, int actionId, Map<String,Object> inputs) throws WorkflowException {

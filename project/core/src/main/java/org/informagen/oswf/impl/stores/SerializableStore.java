@@ -6,7 +6,6 @@ import org.informagen.oswf.Step;
 import org.informagen.oswf.propertyset.PropertySet;
 import org.informagen.oswf.propertyset.PropertySetFactory;
 
-//import org.informagen.oswf.query.WorkflowQuery;
 import org.informagen.oswf.impl.*;
 
 import org.slf4j.Logger;
@@ -25,7 +24,6 @@ import java.util.*;
  * Following properties are <b>required</b>:
  * <ul>
  * <li><b>storeFile</b> - the absolute path to the store file
- * (<i>ex:c:\workflow.store</i>)</li>
  * </ul>
  *
  * @author <a href="mailto:gbort@msn.com">Guillaume Bort</a>

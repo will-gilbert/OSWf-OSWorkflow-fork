@@ -79,7 +79,7 @@ public class DefaultOSWfConfiguration implements OSWfConfiguration, Serializable
     protected WorkflowLoader workflowLoader = null; 
     
     // Coverts ${variable} into strings; 'DefaultVariableResolver' works in most
-    //  cases should never need to be redefined
+    //  cases rarely needs to be redefined
 
     protected VariableResolver variableResolver = null;
 
@@ -177,9 +177,11 @@ public class DefaultOSWfConfiguration implements OSWfConfiguration, Serializable
         // Parse the url, if NULL then look for default 'oswf.xml' in the classpath
         InputStream is = getInputStream(url);
 
-        // Could not find any configuration file
-        if (is == null)
-            throw new WorkflowLoaderException("Cannot find OSWf configuration file in classpath or in META-INF");
+        // If no configuration file was found use in-memory configuation with URL loader
+        if (is == null) {
+            workflowLoader = new org.informagen.oswf.impl.loaders.URLLoader();
+            return new MemoryOSWfConfiguration();
+        }
 
         try {
             
@@ -194,9 +196,10 @@ public class DefaultOSWfConfiguration implements OSWfConfiguration, Serializable
                 throw new WorkflowLoaderException("Error creating document builder", e);
             }
 
-            Document doc = db.parse(is);
-            Element root = XMLHelper.getDocumentRoot(doc);
+            Document document = db.parse(is);
+            Element root = XMLHelper.getDocumentRoot(document);
 
+            // Instance these classes in the confi
             variableResolver = parseVariableResolver(root);
             typeResolver = parseTypeResolver(root);
             workflowLoader = parseWorkflowLoader(root);
@@ -226,77 +229,7 @@ public class DefaultOSWfConfiguration implements OSWfConfiguration, Serializable
 
     // P R O T E C T E D   M E T H O D S  -------------------------------------------------------
 
-    /* Variable Resolver --------------------------------------------------------------
-    **
-    **  Read a resolver classname from a configuration XML file (Optional)
-    **
-    **    <variable-resolver class='org.informagen.oswf.util.DefaultVariableResolver' />
-    **
-    **  The 'DefaultVariableResolver' class is sufficient for variable interpolation
-    **    and rarely needs to be specified.
-    */
-
-    protected VariableResolver parseVariableResolver(Element root) throws Exception {
-
-        VariableResolver variableResolver = null;
-
-        Element variableResolverElement = XMLHelper.getChildElement(root, "variable-resolver");
-        if (variableResolverElement != null) {
-            String classname = variableResolverElement.getAttribute("class");
-
-            if (classname != null) 
-                variableResolver = (VariableResolver) ClassLoaderHelper.loadClass(classname, getClass()).newInstance();
-        }
-        
-        return variableResolver;
-    }
- 
-            
-    /* Type Resolver --------------------------------------------------------------
-    **
-    **  Read a type resolver classname from a configuration XML file (Optional)
-    **
-    **    <type-resolver class='org.informagen.oswf.util.DefaultTypeResolver' >
-    **        <function alias='NullFunction' class='tests.util.NullFunction' />
-    **        <condition alias='hasStatusOf' class='tests.util.TrueCondition' />        
-    **    </type-resolver>
-    **
-    **  The 'DefaultVariableResolver' class is sufficient for variable interpolation
-    **    and rarely needs to be specified.
-    */
-
-    protected TypeResolver parseTypeResolver(Element root) throws Exception {
-        
-        TypeResolver typeResolver = null;
-
-        Element typeResolverElement = XMLHelper.getChildElement(root, "type-resolver");
-        
-        if (typeResolverElement != null) {
-            
-            String resolverClassname = typeResolverElement.getAttribute("class");
-            if (resolverClassname != null) {
-                
-                typeResolver = (TypeResolver) ClassLoaderHelper.loadClass(resolverClassname, getClass()).newInstance();
-                
-                // Function Aliases
-                List<Element> functionElements = XMLHelper.getChildElements(typeResolverElement, "function");
-                for (Element e : functionElements) 
-                    typeResolver.addFunctionAlias(e.getAttribute("alias"), e.getAttribute("class"));
-
-                // Condition Aliases                    
-                List<Element> conditionElements = XMLHelper.getChildElements(typeResolverElement, "condition");
-                for (Element e : conditionElements) 
-                    typeResolver.addConditionAlias(e.getAttribute("alias"), e.getAttribute("class"));
-
-                // Register Aliases                    
-                List<Element> registerElements = XMLHelper.getChildElements(typeResolverElement, "register");
-                for (Element e : registerElements) 
-                    typeResolver.addRegisterAlias(e.getAttribute("alias"), e.getAttribute("class"));
-            }
-        }
-        return typeResolver;
-    }
-            
+      
     /* Persistence - Store & PropertySet ----------------------------------------------
     **
     **   <persistence>
@@ -356,10 +289,10 @@ public class DefaultOSWfConfiguration implements OSWfConfiguration, Serializable
             
             loaderClassname = loaderElement.getAttribute("class");
 
-            if (loaderClassname == null) 
-                throw new WorkflowLoaderException("Element 'loader' does not specify a class attribute");
-
-            //workflowLoader = (WorkflowLoader) ClassLoaderHelper.loadClass(loaderClassname, getClass()).newInstance();
+            if ( loaderClassname == null || loaderClassname.isEmpty() ) {
+                loaderClassname = "org.informagen.oswf.impl.loaders.URLLoader";
+                //throw new WorkflowLoaderException("Element 'loader' does not specify a class attribute");
+            }
 
             // Read the loader properties
             Properties workflowParameters = new Properties();
@@ -438,7 +371,77 @@ public class DefaultOSWfConfiguration implements OSWfConfiguration, Serializable
         }
     }
 
+    /* Variable Resolver --------------------------------------------------------------
+    **
+    **  Read a resolver classname from a configuration XML file (Optional)
+    **
+    **    <variable-resolver class='org.informagen.oswf.util.DefaultVariableResolver' />
+    **
+    **  The 'DefaultVariableResolver' class is sufficient for variable interpolation
+    **    and rarely needs to be specified.
+    */
 
+    protected VariableResolver parseVariableResolver(Element root) throws Exception {
+
+        VariableResolver variableResolver = null;
+
+        Element variableResolverElement = XMLHelper.getChildElement(root, "variable-resolver");
+        if (variableResolverElement != null) {
+            String classname = variableResolverElement.getAttribute("class");
+
+            if (classname != null) 
+                variableResolver = (VariableResolver) ClassLoaderHelper.loadClass(classname, getClass()).newInstance();
+        }
+        
+        return variableResolver;
+    }
+ 
+            
+    /* Type Resolver --------------------------------------------------------------
+    **
+    **  Read a type resolver classname from a configuration XML file (Optional)
+    **
+    **    <type-resolver class='org.informagen.oswf.util.DefaultTypeResolver' >
+    **        <function alias='NullFunction' class='tests.util.NullFunction' />
+    **        <condition alias='hasStatusOf' class='tests.util.TrueCondition' />        
+    **    </type-resolver>
+    **
+    **  The 'DefaultVariableResolver' class is sufficient for variable interpolation
+    **    and rarely needs to be specified.
+    */
+
+    protected TypeResolver parseTypeResolver(Element root) throws Exception {
+        
+        TypeResolver typeResolver = null;
+
+        Element typeResolverElement = XMLHelper.getChildElement(root, "type-resolver");
+        
+        if (typeResolverElement != null) {
+            
+            String resolverClassname = typeResolverElement.getAttribute("class");
+            if (resolverClassname != null) {
+                
+                typeResolver = (TypeResolver) ClassLoaderHelper.loadClass(resolverClassname, getClass()).newInstance();
+                
+                // Function Aliases
+                List<Element> functionElements = XMLHelper.getChildElements(typeResolverElement, "function");
+                for (Element e : functionElements) 
+                    typeResolver.addFunctionAlias(e.getAttribute("alias"), e.getAttribute("class"));
+
+                // Condition Aliases                    
+                List<Element> conditionElements = XMLHelper.getChildElements(typeResolverElement, "condition");
+                for (Element e : conditionElements) 
+                    typeResolver.addConditionAlias(e.getAttribute("alias"), e.getAttribute("class"));
+
+                // Register Aliases                    
+                List<Element> registerElements = XMLHelper.getChildElements(typeResolverElement, "register");
+                for (Element e : registerElements) 
+                    typeResolver.addRegisterAlias(e.getAttribute("alias"), e.getAttribute("class"));
+            }
+        }
+        return typeResolver;
+    }
+      
     protected WorkflowStore createWorkflowStore() throws WorkflowStoreException {
         
         WorkflowStore workflowStore = null;

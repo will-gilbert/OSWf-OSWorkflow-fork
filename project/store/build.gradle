@@ -44,13 +44,6 @@ version = '1.1.0-SNAPSHOT'
 
 ext.applicationName = "Hibernate WorkflowStore and PropertySet"
 
-// Java Compiler Configuration ----------------------------------------------------------------
-
-// Java SDK
-compileJava.options.compilerArgs = [
-    '-Xlint:unchecked', 
-    '-Xlint:deprecation',
-] 
 
 compileTestJava.options.compilerArgs = compileJava.options.compilerArgs;
 
@@ -69,16 +62,6 @@ configurations.all {
   }
 } 
 // R E P O S I T O R I E S   &   D E P E N D E N C I E S ======================================
-
-repositories {
-
-    maven {
-        url "http://informagen.org/maven"   // OSWf artifacts
-    }
-
-    mavenLocal();
-    mavenCentral();
-}
 
 
 dependencies {

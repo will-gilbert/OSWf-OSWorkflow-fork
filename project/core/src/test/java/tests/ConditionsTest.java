@@ -48,9 +48,9 @@ public class ConditionsTest extends OSWfTestCase {
         
         URL url = getClass().getResource("/core/nested-condition.oswf.xml");
         
-        long piid = wfEngine.initialize(url.toString(), 1, null);
+        long piid = wfEngine.initialize(url.toString(), 1);
 
-        List<Integer> availableActions = wfEngine.getAvailableActions(piid, null);
+        List<Integer> availableActions = wfEngine.getAvailableActions(piid);
 
         assertEquals("Unexpected number of available actions", 1, availableActions.size());
         assertEquals("Unexpected available action", 2, availableActions.get(0).intValue());
@@ -60,7 +60,7 @@ public class ConditionsTest extends OSWfTestCase {
     @Test
     public void orCondition() throws Exception {
         URL url = getClass().getResource("/core/boolean-conditions.oswf.xml");
-        long piid = wfEngine.initialize(url.toString(), 1, null);
+        long piid = wfEngine.initialize(url.toString(), 1);
         assertProcessInstanceState(wfEngine, piid, ProcessInstanceState.COMPLETE);        
 
     }
@@ -68,28 +68,28 @@ public class ConditionsTest extends OSWfTestCase {
     @Test
     public void failedOrCondition() throws Exception {
         URL url = getClass().getResource("/core/boolean-conditions.oswf.xml");
-        long piid = wfEngine.initialize(url.toString(), 6, null);
+        long piid = wfEngine.initialize(url.toString(), 6);
         assertProcessInstanceState(wfEngine, piid, ProcessInstanceState.ACTIVE);        
     }
     
     @Test
     public void andCondition() throws Exception {
         URL url = getClass().getResource("/core/boolean-conditions.oswf.xml");
-        long piid = wfEngine.initialize(url.toString(), 2, null);
+        long piid = wfEngine.initialize(url.toString(), 2);
         assertProcessInstanceState(wfEngine, piid, ProcessInstanceState.COMPLETE);        
     } 
     
     @Test
     public void failedAndCondition() throws Exception {
         URL url = getClass().getResource("/core/boolean-conditions.oswf.xml");
-        long piid = wfEngine.initialize(url.toString(), 7, null);
+        long piid = wfEngine.initialize(url.toString(), 7);
         assertProcessInstanceState(wfEngine, piid, ProcessInstanceState.ACTIVE);        
     } 
     
     @Test
     public void notCondition() throws Exception {
         URL url = getClass().getResource("/core/boolean-conditions.oswf.xml");
-        long piid = wfEngine.initialize(url.toString(), 3, null);
+        long piid = wfEngine.initialize(url.toString(), 3);
         assertProcessInstanceState(wfEngine, piid, ProcessInstanceState.COMPLETE);        
     }
 

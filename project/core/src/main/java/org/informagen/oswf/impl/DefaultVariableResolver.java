@@ -15,7 +15,6 @@ import java.util.StringTokenizer;
 
 public class DefaultVariableResolver implements VariableResolver, Serializable {
 
-
     private static String GET = "get";
     private static String SET = "set";
     private static String IS = "is";
@@ -35,11 +34,11 @@ public class DefaultVariableResolver implements VariableResolver, Serializable {
     // VariableResolver interface =============================================================
 
     /**
-       * Parses a string for instances of "${foo}" and returns a string with all instances replaced
-       * with the string value of the foo object (<b>foo.toString()</b>). If the string being passed
-       * in only refers to a single variable and contains no other characters (for example: ${foo}),
-       * then the actual object is returned instead of converting it to a string.
-       */
+     * Parses a string for instances of "${foo}" and returns a string with all instances replaced
+     * with the string value of the foo object (<b>foo.toString()</b>). If the string being passed
+     * in only refers to a single variable and contains no other characters (for example: ${foo}),
+     * then the actual object is returned instead of converting it to a string.
+     */
        
     public String translateVariables(String s, Map<String,Object> transientVars, PropertySet ps) {
 

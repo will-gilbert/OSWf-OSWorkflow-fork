@@ -49,7 +49,6 @@ public class BeanShellFunctionProviderTest {
      * In this example, by not initializing a JDBC DataSource, the BeanShell script fails.
      * It should record the underlying lcoation of the NullPointerError JDBC error, but instead you get a null pointer
      * exception location of the script instead.
-     </pre>
      *
      */
 
