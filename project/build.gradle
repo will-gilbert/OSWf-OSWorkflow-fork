@@ -4,6 +4,7 @@ task usage doLast { println """
 Modules:
 
      core - 
+     propertyset - 
      store - 
      simulator - 
   
@@ -25,6 +26,16 @@ gradle :<module>:test
 subprojects {
 
     apply plugin: 'java'
+
+    // Define version for all subprojects
+    ext.bsh      = '1.3.0'
+    ext.slf4j    = '1.7.25'
+    ext.log4j    = '1.2.17'
+    ext.junit    = '4.12'
+    ext.jndi     = '0.11.4.1'
+    ext.h2       = '1.4.195'
+    ext.wagon    = '2.12'
+
 
     repositories {
         mavenLocal()     // User's local Maven repository e.g. SNAPSHOTs

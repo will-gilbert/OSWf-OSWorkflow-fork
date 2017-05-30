@@ -1,5 +1,2 @@
 
-include 'propertyset'
-include 'core'
-include 'store'
-include 'simulator'
+include 'propertyset','core','store','simulator'

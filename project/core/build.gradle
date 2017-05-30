@@ -64,11 +64,6 @@ configurations {
 
 // R E P O S I T O R I E S   &   D E P E N D E N C I E S ======================================
 
-repositories {
-
-    mavenLocal()
-    mavenCentral()
-}
 
 dependencies {
 
@@ -77,13 +72,13 @@ dependencies {
     compile ([
 
         // BeanShell - used by Workflow Processes for step/action scripts
-        'org.beanshell:bsh:1.3.0',
+        "org.beanshell:bsh:$bsh",
         
         // Simple Logging Facade for Java - Used by 'OSWfTestCase'   
-        'org.slf4j:slf4j-api:1.6.4',
+        "org.slf4j:slf4j-api:$slf4j",
 
-        // JUnit 4.x - Used by 'OSWfTestCase' and 'OSWfAssertions'
-        'junit:junit:4.10'
+        // JUnit - Used by 'OSWfTestCase' and 'OSWfAssertions'
+        "junit:junit:$junit"
         
     ])
 
@@ -92,30 +87,30 @@ dependencies {
     testCompile([
         
         // Simple JNDI - Used for JDBCProperySet testing
-        'simple-jndi:simple-jndi:0.11.4.1'
+        "simple-jndi:simple-jndi:$jndi"
         
     ])
 
     testRuntime([
                         
          // Use 'log4j' with the SL4J logger
-         'org.slf4j:slf4j-log4j12:1.6.4',
-         'log4j:log4j:1.2.16',
+         "org.slf4j:slf4j-log4j12:$slf4j",
+         "log4j:log4j:$log4j",
          
         // H2 Database driver, formerly HSQLDB
-        "com.h2database:h2:1.0.77",
+        "com.h2database:h2:$h2"
     ])
 
     
     graphvizRuntime([
          // Use 'log4j' with the SL4J logger
-         'org.slf4j:slf4j-log4j12:1.6.4',
-         'log4j:log4j:1.2.16',
+         "org.slf4j:slf4j-log4j12:$slf4j",
+         "log4j:log4j:$log4j",
     ])
 
     repoUploadFTP([
-        'org.apache.maven.wagon:wagon-ftp:2.2',
-        'org.apache.maven.wagon:wagon-http:2.2',
+        "org.apache.maven.wagon:wagon-ftp:$wagon",
+        "org.apache.maven.wagon:wagon-http:$wagon",
     ])
 
 }

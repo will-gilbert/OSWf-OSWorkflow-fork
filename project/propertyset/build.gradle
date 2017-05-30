@@ -31,80 +31,34 @@ version = '3.2.0-SNAPSHOT'
 
 ext.applicationName = "OSWf Core"
 
-// Java Compiler Configuration ----------------------------------------------------------------
-
-// Java SDK
-sourceCompatibility = 1.8
-targetCompatibility = sourceCompatibility
-compileJava.options.compilerArgs = [
-//    '-Xlint:unchecked', 
-//    '-Xlint:deprecation',
-] 
-
-compileTestJava.options.compilerArgs = compileJava.options.compilerArgs;
-
-configurations { 
-    graphvizRuntime 
-    repoUploadFTP 
-}
-
+ 
 // R E P O S I T O R I E S   &   D E P E N D E N C I E S ======================================
-
-repositories {
-
-    mavenLocal()
-    mavenCentral()
-}
 
 dependencies {
 
     compile ([
-
-        // BeanShell - used by Workflow Processes for step/action scripts
-        // 'org.beanshell:bsh:1.3.0',
-        
-        // Simple Logging Facade for Java - Used by 'OSWfTestCase'   
-        'org.slf4j:slf4j-api:1.6.4',
-
-        
+        // Simple Logging Facade for Java   
+        "org.slf4j:slf4j-api:$slf4j",    
     ])
 
     runtime ([ ])
     
     testCompile([
-        
-        // JUnit 4.x - Used by 'OSWfTestCase' and 'OSWfAssertions'
-        'junit:junit:4.10',
+        // JUnit 4 - Used by 'OSWfTestCase' and 'OSWfAssertions'
+        "junit:junit:$junit",
         
         // Simple JNDI - Used for JDBCProperySet testing
-        'simple-jndi:simple-jndi:0.11.4.1'
-        
+        "simple-jndi:simple-jndi:$jndi"
     ])
 
     testRuntime([
                         
          // Use 'log4j' with the SL4J logger
-         'org.slf4j:slf4j-log4j12:1.6.4',
-         'log4j:log4j:1.2.16',
+         "org.slf4j:slf4j-log4j12:$slf4j",
+         "log4j:log4j:1.2.16",
          
         // H2 Database driver, formerly HSQLDB
-        "com.h2database:h2:1.0.77",
+        "com.h2database:h2:$h2"
     ])
 
-}
-
-
-// U T I L I T Y   M E T H O D S -------------------------------------------------------------- 
-
-def String findProperty(String propertyName, defaultValue='') {
-    def property = rootProject.hasProperty(propertyName) ? rootProject.getProperty(propertyName) : defaultValue
-    return property?.trim()
-}
-
-// U N I T   T E S T I N G --------------------------------------------------------------------
-
-// Launch the browser if any test fails and display the report 
-gradle.taskGraph.afterTask { task, taskState ->
-    if (task.name == 'test' && taskState.failure)
-        java.awt.Desktop.desktop.browse(new File(testReportDir, 'index.html').toURI())
 }
