@@ -58,6 +58,10 @@ div#sidebar {
   width: 265px;
 }
 
+div#sidebar > div#logo p {
+  font-size: 12px;
+}
+
 /* Logo - Page ID ------------------------------------------------------------------------ */
 
 div#logo {
@@ -150,7 +154,7 @@ div#news h2 {
 }
 
 div#news h3, #news p {
-  font-size: 11px;
+  font-size: larger;
   margin: 1em 8px 1em 0;
 }
 
@@ -220,14 +224,14 @@ div#content {
 
 
 div#content h2 {
-  font: 18px arial, sans-serif;
+  font: 22px arial, sans-serif;
   color: #BE8B06;
   padding-bottom: 6px;
   margin-bottom: 1em;
 }
 
 div#content h3 {
-  font: 14px arial, sans-serif;
+  font: 18px arial, sans-serif;
   color: #BE8B06;
   margin-top: 1.5em;
 }

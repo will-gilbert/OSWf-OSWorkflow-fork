@@ -26,14 +26,27 @@
     
     <div id="content">
 
-<p>To be done</p>
+        <h2>Configuration</h2>
+
+<p>Under Development. Random notes follow:</p>
+
+<p>The default configuration file is named "oswf.xml" in the root of the classpath.</p>
+
+<p>If not configuration file is specified or "oswf.xml" is not found in the classpath. 
+the default workflow engine will use an in-memory persistent store and in-memory 
+property set along with the URLLoader.  This is useful for writing unit tests and short 
+tutorials without a configuration causing unnecessary confusion.</p>
+
+<p>OSWf has two build-in loaders, <strong>JDBCLoader</strong> and <strong>URLLoader</strong>.
+
+<p>More to come with examples.</p>
 
 <!--
 <p>Previous to OSWorkflow 2.7, state was maintained using static fields in a number of places. This approach while convenient, has quite a few drawbacks and restrictions. One of the main ones was the fact that it was not possible to have multiple instances of OSWorkflow with different configurations running. Put simply, you couldn't have a number of workflows using a memory store running alongside other workflow instances that used the EJB store, for example.</p>
 
-<p>OSWorkflow 2.7 fixed this limitation by the introduction of a Configuration interface. The default implementation of this interface is DefaultConfiguration, which mimics the backward compatible behaviour of loading resources and so on. Also for the sake of backward compatibility, a static instance is used <b>if no explicit call is made using a Configuration</b>. Practically speaking, the decision to use the static instance or a specified configuration is determined by the <em>setConfiguration</em> method of AbstractWorkflow. If the method is called, then the per-instance model is used. If it is not called, then the legacy singleton static model is used.</p>
+<p>OSWorkflow 2.7 fixed this limitation by the introduction of a Configuration interface. The default implementation of this interface is DefaultConfiguration, which mimics the backward compatible behavior of loading resources and so on. Also for the sake of backward compatibility, a static instance is used <b>if no explicit call is made using a Configuration</b>. Practically speaking, the decision to use the static instance or a specified configuration is determined by the <em>setConfiguration</em> method of AbstractWorkflow. If the method is called, then the per-instance model is used. If it is not called, then the legacy singleton static model is used.</p>
 
-<p>One aspect of the new approach is that the AbstractWorkflow object is no longer stateless, and if you do not use the static approach (which you are dicouraged from using now!), you need to hold onto the instance of AbstractWorkflow that you instatiate and reuse it, instead of creating a new one for every call.</p>
+<p>One aspect of the new approach is that the AbstractWorkflow object is no longer stateless, and if you do not use the static approach (which you are discouraged from using now!), you need to hold onto the instance of AbstractWorkflow that you instantiate and reuse it, instead of creating a new one for every call.</p>
 
 <p>While that might all sound rather complicated, in practice it is quite simple, as the following examples illustrate:</p>
 

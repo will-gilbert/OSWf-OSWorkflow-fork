@@ -10,7 +10,7 @@ document.write("\
           <li><a href='http://informagen.org/sites/oswf-store/'>Store API</a></li>\
           <li><a href='https://github.com/will-gilbert/OSWf-OSWorkflow-fork'>GitHub Project</a></li>\
           <!-- <li><a href='./SourceCode.html'>Source Code</a></li> -->\
-          <li><a href='./tutorial/FirstWorkflow.html'>OSWf Documentation</a></li>\
+          <li><a href='./tutorial/index.html'>OSWf Documentation</a></li>\
         </ul>\
         <div id='jumpListBottom'></div>\
       </div>\
