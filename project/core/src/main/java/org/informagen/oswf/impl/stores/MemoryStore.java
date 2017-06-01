@@ -2,8 +2,8 @@ package org.informagen.oswf.impl.stores;
 
 import org.informagen.oswf.impl.stores.AbstractWorkflowStore;
 
-import org.informagen.oswf.propertyset.PropertySet;
-import org.informagen.oswf.PropertySetStore;
+import org.informagen.oswf.typedmap.TypedMap;
+import org.informagen.oswf.TypedMapStore;
 
 import org.informagen.oswf.ProcessInstance;
 import org.informagen.oswf.WorkflowStore;
@@ -23,7 +23,7 @@ import org.informagen.oswf.query.WorkflowExpressionQuery;
 
 import org.informagen.oswf.impl.DefaultStep;
 import org.informagen.oswf.impl.DefaultProcessInstance;
-import org.informagen.oswf.impl.MemoryPropertySetStore;
+import org.informagen.oswf.impl.MemoryTypedMapStore;
 
 import java.security.InvalidParameterException;
 
@@ -52,14 +52,14 @@ public class MemoryStore extends AbstractWorkflowStore  {
     private static Map<Long,ProcessInstance> piidCache = new HashMap<Long,ProcessInstance>();
     private static Map<Long,List<Step>>    currentStepsCache = new HashMap<Long,List<Step>>();
     private static Map<Long,List<Step>>    historyStepsCache = new HashMap<Long,List<Step>>();
-    private static Map<Long,PropertySet>   propertySetCache = new HashMap<Long,PropertySet>();
+    private static Map<Long,TypedMap>   propertySetCache = new HashMap<Long,TypedMap>();
 
     private static long nextPIID = 1;
     private static long nextStepId = 1;
 
 
     public MemoryStore() {
-        setPropertySetStore(new MemoryPropertySetStore());
+        setTypedMapStore(new MemoryTypedMapStore());
     }
 
     public MemoryStore(Map<String,String> config, Map<String,Object> args) {
@@ -68,18 +68,18 @@ public class MemoryStore extends AbstractWorkflowStore  {
 
     // WorkflowStore methods ==================================================================
 
-    public void setPropertySetStore(PropertySetStore propertySetStore) {
-        //throw new UnsupportedOperationException("CollectionStore uses MemoryPropertySetStore and cannot be set");
+    public void setTypedMapStore(TypedMapStore typedMapStore) {
+        //throw new UnsupportedOperationException("CollectionStore uses MemoryTypedMapStore and cannot be set");
     }
 
 
     /**
-     ** returns the PropertySet for a Process Instance; Here from a Map class
+     ** returns the TypedMap for a Process Instance; Here from a Map class
      **
      */
 
-    public PropertySet getPropertySet(long piid) {
-        return getPropertySetStore().getPropertySet(piid);
+    public TypedMap getTypedMap(long piid) {
+        return getTypedMapStore().getTypedMap(piid);
     }
         
     public ProcessInstance createEntry(String workflowName) throws WorkflowStoreException {
@@ -90,7 +90,7 @@ public class MemoryStore extends AbstractWorkflowStore  {
         piidCache.put(piid, pi);
         currentStepsCache.put(piid, new ArrayList());
         historyStepsCache.put(piid, new ArrayList());
-        //propertySetCache.put(piid, new MemoryPropertySet());
+        //propertySetCache.put(piid, new MemoryTypedMap());
 
         return pi;
     }
@@ -168,7 +168,7 @@ public class MemoryStore extends AbstractWorkflowStore  {
         currentStepsCache.clear();
         historyStepsCache.clear();
         propertySetCache.clear();
-        MemoryPropertySetStore.clear();
+        MemoryTypedMapStore.clear();
     }
 
     // Abstract method implementations =======================================================

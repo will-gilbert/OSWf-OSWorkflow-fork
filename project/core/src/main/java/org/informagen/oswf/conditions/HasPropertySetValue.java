@@ -1,6 +1,6 @@
 package org.informagen.oswf.conditions;
 
-import org.informagen.oswf.propertyset.PropertySet;
+import org.informagen.oswf.typedmap.TypedMap;
 
 import org.informagen.oswf.Condition;
 //import org.informagen.oswf.exceptions.WorkflowException;
@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class HasPropertySetValue implements Condition {
 
-    public boolean passesCondition(Map<String,Object> transientVars, Map<String,String> args, PropertySet ps) {
+    public boolean passesCondition(Map<String,Object> transientVars, Map<String,String> args, TypedMap ps) {
 
         // Expects a propertyset name as an argument input
         // Optionally get a value for equality testing

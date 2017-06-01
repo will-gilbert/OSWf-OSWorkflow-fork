@@ -1,6 +1,6 @@
 package org.informagen.oswf.validators;
 
-import org.informagen.oswf.propertyset.PropertySet;
+import org.informagen.oswf.typedmap.TypedMap;
 
 import org.informagen.oswf.Validator;
 import org.informagen.oswf.OSWfEngine;
@@ -30,7 +30,7 @@ public class JNDIValidator implements Validator {
 
     // M E T H O D S  -------------------------------------------------------------------------
 
-    public void validate(Map<String,Object> transientVars, Map<String,String> args, PropertySet ps) throws InvalidInputException, WorkflowException {
+    public void validate(Map<String,Object> transientVars, Map<String,String> args, TypedMap ps) throws InvalidInputException, WorkflowException {
         String location = (String) args.get(OSWfEngine.JNDI_LOCATION);
 
         if (location == null) {

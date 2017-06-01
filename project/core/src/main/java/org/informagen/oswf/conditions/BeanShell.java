@@ -4,7 +4,7 @@ import bsh.EvalError;
 import bsh.Interpreter;
 import bsh.TargetError;
 
-import org.informagen.oswf.propertyset.PropertySet;
+import org.informagen.oswf.typedmap.TypedMap;
 
 import org.informagen.oswf.Condition;
 import org.informagen.oswf.Register;
@@ -33,7 +33,7 @@ public class BeanShell implements Condition {
 
     // M E T H O D S  -------------------------------------------------------------------------
 
-    public boolean passesCondition(Map<String,Object> transientVars, Map<String,String> args, PropertySet ps) throws WorkflowException {
+    public boolean passesCondition(Map<String,Object> transientVars, Map<String,String> args, TypedMap ps) throws WorkflowException {
 
         String script = args.get(OSWfEngine.BSH_SCRIPT);
 
@@ -47,7 +47,7 @@ public class BeanShell implements Condition {
             interpreter.set("pi", transientVars.get("pi"));
             interpreter.set("context", transientVars.get("context"));
             interpreter.set("transientVars", transientVars);
-            interpreter.set("propertySet", ps);
+            interpreter.set("typedMap", ps);
             interpreter.set("jn", transientVars.get("jn"));
 
             Object object = interpreter.eval(script);

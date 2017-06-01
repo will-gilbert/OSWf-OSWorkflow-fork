@@ -10,7 +10,7 @@
 
         <!-- Custom PropertySetItem used with OSWf WorkflowStores ========================= -->
         
-        <mapping resource="org/informagen/oswf/hbm/HibernatePropertySetItem.hbm.xml" />
+        <mapping resource="org/informagen/oswf/hbm/HibernateTypedMapItem.hbm.xml" />
 
     </session-factory>
 

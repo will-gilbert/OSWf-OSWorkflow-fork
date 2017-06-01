@@ -16,8 +16,8 @@ import org.informagen.oswf.security.User;
 // OSWf - Exceptions
 import org.informagen.oswf.exceptions.WorkflowException;
 
-// OpenSymphony PropertySet
-import org.informagen.oswf.propertyset.PropertySet;
+// OSWF - TypedMap
+import org.informagen.oswf.typedmap.TypedMap;
 
 // Java - Collections
 import java.util.Collection;
@@ -41,7 +41,7 @@ public class UserOSWfEngine extends DefaultOSWfEngine {
         this.user = user;
     }
 
-    protected void populateTransientMap(ProcessInstance processInstance, Map<String,Object> transientVars, List<RegisterDescriptor> registers, Integer actionId, Collection<Step> currentSteps, PropertySet ps) throws WorkflowException {
+    protected void populateTransientMap(ProcessInstance processInstance, Map<String,Object> transientVars, List<RegisterDescriptor> registers, Integer actionId, Collection<Step> currentSteps, TypedMap ps) throws WorkflowException {
         super.populateTransientMap(processInstance, transientVars, registers, actionId, currentSteps, ps);
         transientVars.put("actor", user.getName());
     }

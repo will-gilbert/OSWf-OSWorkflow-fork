@@ -34,7 +34,7 @@ import org.informagen.oswf.impl.DefaultOSWfEngine;
 import org.informagen.oswf.impl.DefaultOSWfConfiguration;
 import org.informagen.oswf.exceptions.WorkflowLoaderException;
 
-import org.informagen.oswf.propertyset.util.Base64;
+import org.informagen.oswf.typedmap.util.Base64;
 
  // Java
 import java.lang.StringBuffer;

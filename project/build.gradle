@@ -4,7 +4,7 @@ task usage doLast { println """
 Modules:
 
      core - 
-     propertyset - 
+     typedmap - 
      store - 
      simulator - 
   

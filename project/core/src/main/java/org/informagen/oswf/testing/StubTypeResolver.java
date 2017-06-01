@@ -3,7 +3,6 @@ package org.informagen.oswf.testing;
 import org.informagen.oswf.impl.DefaultTypeResolver;
 
 // OSWf Core - Interfaces
-import org.informagen.oswf.propertyset.PropertySet;
 import org.informagen.oswf.WorkflowContext;
 import org.informagen.oswf.ProcessInstance;
 import org.informagen.oswf.TypeResolver;
@@ -11,6 +10,9 @@ import org.informagen.oswf.Condition;
 import org.informagen.oswf.FunctionProvider;
 import org.informagen.oswf.Register;
 import org.informagen.oswf.Validator;
+
+// OSWf Typed Map - Interfaces
+import org.informagen.oswf.typedmap.TypedMap;
 
 // OSWf - Utilitiy
 import org.informagen.oswf.util.ClassLoaderHelper;
@@ -97,19 +99,19 @@ public class StubTypeResolver extends DefaultTypeResolver {
     }
     
     public static class ConditionStub implements Condition {
-        public boolean passesCondition(Map<String,Object> transientVars, Map<String,String> args, PropertySet ps) throws WorkflowException {return true;}
+        public boolean passesCondition(Map<String,Object> transientVars, Map<String,String> args, TypedMap ps) throws WorkflowException {return true;}
     }
     
     public static class FunctionProviderStub implements FunctionProvider {
-        public void execute(Map<String,Object> transientVars, Map<String,String> args, PropertySet ps) throws WorkflowException {}
+        public void execute(Map<String,Object> transientVars, Map<String,String> args, TypedMap ps) throws WorkflowException {}
     }
     
     public static class RegisterStub implements Register {
-        public Object registerVariable(WorkflowContext context, ProcessInstance entry, Map<String,String> args, PropertySet ps) throws WorkflowException { return null; }
+        public Object registerVariable(WorkflowContext context, ProcessInstance entry, Map<String,String> args, TypedMap ps) throws WorkflowException { return null; }
     }
     
     public static class ValidatorStub implements Validator {
-        public void validate(Map<String,Object> transientVars, Map<String,String> args, PropertySet ps) throws WorkflowException {}
+        public void validate(Map<String,Object> transientVars, Map<String,String> args, TypedMap ps) throws WorkflowException {}
     }
 
     

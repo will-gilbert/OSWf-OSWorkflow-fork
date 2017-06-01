@@ -16,11 +16,11 @@ import org.informagen.oswf.impl.DefaultOSWfConfiguration;
 
 import org.informagen.oswf.descriptors.WorkflowDescriptor;
 
-import org.informagen.oswf.propertyset.PropertySet;
+import org.informagen.oswf.typedmap.TypedMap;
 
 import org.informagen.oswf.Step;
 
-import org.informagen.oswf.PropertySetStore;
+import org.informagen.oswf.TypedMapStore;
 
 // OSWf Security
 import org.informagen.oswf.SecurityManager;
@@ -35,8 +35,8 @@ import org.informagen.oswf.query.Operator;
 import org.informagen.oswf.query.FieldExpression;
 import org.informagen.oswf.query.WorkflowExpressionQuery;
 
-// OSWf delegate which installs a Custom PropertySet mapping
-import org.informagen.oswf.impl.HibernatePropertySetStore;
+// OSWf delegate which installs a Custom TypedMap mapping
+import org.informagen.oswf.impl.HibernateTypedMapStore;
 
 // Java Util
 import java.util.Collection;

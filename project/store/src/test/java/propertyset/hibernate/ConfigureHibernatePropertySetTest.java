@@ -4,14 +4,14 @@ package propertyset.hibernate;
 import org.informagen.oswf.OSWfConfiguration;
 import org.informagen.oswf.impl.DefaultOSWfConfiguration;
 
-import org.informagen.oswf.propertyset.hibernate.HibernateConfigurationProvider;
-import org.informagen.oswf.propertyset.HibernatePropertySet;
+import org.informagen.oswf.typedmap.hibernate.HibernateConfigurationProvider;
+import org.informagen.oswf.typedmap.HibernateTypedMap;
 import org.informagen.oswf.exceptions.WorkflowStoreException;
 
 
-// OS PropertySet 1.4
-import org.informagen.oswf.propertyset.PropertySet;
-import org.informagen.oswf.propertyset.PropertySetFactory;
+// OSWf Typed Map
+import org.informagen.oswf.typedmap.TypedMap;
+import org.informagen.oswf.typedmap.TypedMapFactory;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -77,7 +77,7 @@ public class ConfigureHibernatePropertySetTest  {
 //    static final String resources = "oswf-propertyset.cfg.xml,MySQL.hibernate.xml";
         
 
-    PropertySet propertySet;
+    TypedMap propertySet;
 
     @BeforeClass
     public static void createConfiguration() throws Exception {
@@ -92,7 +92,7 @@ public class ConfigureHibernatePropertySetTest  {
 
     @After
     public void closeSessionFactory() {
-        HibernateConfigurationProvider provider = ((HibernatePropertySet)propertySet).getConfigurationProvider(); 
+        HibernateConfigurationProvider provider = ((HibernateTypedMap)propertySet).getConfigurationProvider(); 
         provider.getSessionFactory().close();
     }
 
@@ -115,9 +115,9 @@ public class ConfigureHibernatePropertySetTest  {
         args.put("processInstanceId", random.nextLong()); 
         args.put("configurationProvider", new HibernateConfigurationProvider(sessionFactory));
     
-        propertySet = new HibernatePropertySet(null, args);
+        propertySet = new HibernateTypedMap(null, args);
 
-        assertPropertySet(propertySet);
+        assertTypedMap(propertySet);
     }
 
     @Test
@@ -131,9 +131,9 @@ public class ConfigureHibernatePropertySetTest  {
         Map<String,String> config = new HashMap<String,String>();
         config.put("resources", resources);
     
-        propertySet = new HibernatePropertySet(config, args);
+        propertySet = new HibernateTypedMap(config, args);
 
-        assertPropertySet(propertySet);
+        assertTypedMap(propertySet);
     }
 
 
@@ -147,9 +147,9 @@ public class ConfigureHibernatePropertySetTest  {
         Map<String,String> config = new HashMap<String,String>();
         config.put("resources", resources);
     
-        propertySet = new HibernatePropertySet(config, args);
+        propertySet = new HibernateTypedMap(config, args);
 
-        assertPropertySet(propertySet);
+        assertTypedMap(propertySet);
     }
 
     @Test
@@ -160,12 +160,12 @@ public class ConfigureHibernatePropertySetTest  {
         args.put("processInstanceId", random.nextLong()); 
 
         Map<String,String> config = new HashMap<String,String>();
-        config.put("configuration.provider.class","org.informagen.oswf.propertyset.hibernate.HibernateConfigurationProvider");
+        config.put("configuration.provider.class","org.informagen.oswf.typedmap.hibernate.HibernateConfigurationProvider");
         config.put("resources", resources);
     
-        propertySet = new HibernatePropertySet(config, args);
+        propertySet = new HibernateTypedMap(config, args);
 
-        assertPropertySet(propertySet);
+        assertTypedMap(propertySet);
     }
 
     @Test
@@ -188,32 +188,32 @@ public class ConfigureHibernatePropertySetTest  {
         config.put("hibernate.connection.pool_size", "1");
         
         // Add Hibernate Mapping file(s)
-        config.put("mapping-PropertySet", "org/informagen/oswf/hbm/HibernatePropertySetItem.hbm.xml");
+        config.put("mapping-TypedMap", "org/informagen/oswf/hbm/HibernateTypedMapItem.hbm.xml");
 
-        propertySet = new HibernatePropertySet(config, args);
+        propertySet = new HibernateTypedMap(config, args);
 
-        assertPropertySet(propertySet);
+        assertTypedMap(propertySet);
 
     }
 
     @Test
-    public void configureWithPropertySetName()  {
+    public void configureWithTypedMapName()  {
 
         Map<String,Object> args = new HashMap<String,Object>();
         args.put("processInstanceId", random.nextLong()); 
     
-        propertySet = PropertySetFactory.getInstance().createPropertySet("H2-Hibernate-cfg", args);    
-        assertPropertySet(propertySet);
+        propertySet = TypedMapFactory.getInstance().createTypedMap("H2-Hibernate-cfg", args);    
+        assertTypedMap(propertySet);
     }
 
     //=========================================================================================
 
     /*
-     *  Just assert that the PropertySet works; See 'HibernatePropertySetTest.java' for
-     *      an exhaustive set of tests on this PropertySet Implementation.
+     *  Just assert that the TypedMap works; See 'HibernateTypedMapTest.java' for
+     *      an exhaustive set of tests on this TypedMap Implementation.
      */
 
-    private void assertPropertySet(PropertySet propertySet) {
+    private void assertTypedMap(TypedMap propertySet) {
         propertySet.setString("string", "Hello, World");
         assertEquals("Hello, World", propertySet.getString("string"));
 

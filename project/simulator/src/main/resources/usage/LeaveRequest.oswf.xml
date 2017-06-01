@@ -129,7 +129,7 @@
 					<arg name="script"><![CDATA[
 					
 					    logger = transientVars.get("logger");
-                        propertySet.setString("result", "denied");
+                        typedMap.setString("result", "denied");
                         
                         if( jn.get(200) == null || jn.get(300) == null ) {
                             logger.debug("Not all Join steps have arrived");
@@ -145,7 +145,7 @@
                         
                         if(jn.get(200).getStatus().equals("Approved") && 
                            jn.get(300).getStatus().equals("Approved")) {
-                            propertySet.setString("result", "approved");
+                            typedMap.setString("result", "approved");
                         }
                         
                         // Final result
@@ -161,7 +161,7 @@
 					<function type='beanshell'><arg name='script'><![CDATA[
 					    logger = transientVars.get("logger");
  	                    logger.debug("Join 10000 finished - setting result to '${result}'");
-                 	    propertySet.setString("result", "${result}");
+                 	    typedMap.setString("result", "${result}");
 					]]></arg>
 					</function>
 				</pre-functions>

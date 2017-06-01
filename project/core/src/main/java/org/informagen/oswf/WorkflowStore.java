@@ -1,7 +1,7 @@
 package org.informagen.oswf;
 
-import org.informagen.oswf.propertyset.PropertySet;
-import org.informagen.oswf.PropertySetStore;
+import org.informagen.oswf.typedmap.TypedMap;
+import org.informagen.oswf.TypedMapStore;
 
 import org.informagen.oswf.Step;
 import org.informagen.oswf.ProcessInstance;
@@ -27,12 +27,12 @@ public interface WorkflowStore {
     /**
      *  DOCUMENT THIS
      */
-    void setPropertySetStore(PropertySetStore propertySetStore);
+    void setTypedMapStore(TypedMapStore typedMapStore);
 
     /**
      *  DOCUMENT THIS
      */
-    PropertySetStore getPropertySetStore();
+    TypedMapStore getTypedMapStore();
 
 
     /**
@@ -43,11 +43,11 @@ public interface WorkflowStore {
     public void setEntryState(long piid, ProcessInstanceState state) throws WorkflowStoreException;
 
     /**
-     * Returns a PropertySet that is associated with this process instance ID.
+     * Returns a TypedMap that is associated with this process instance ID.
      * @param piid The workflow instance id.
      * @return a property set unique to this process instance (piid)
      */
-    public PropertySet getPropertySet(long piid);
+    public TypedMap getTypedMap(long piid);
 
     /**
      * Persists a step with the given parameters.

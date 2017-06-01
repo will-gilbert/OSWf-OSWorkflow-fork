@@ -9,7 +9,7 @@
     <trigger-function id="10">
       <function type="beanshell">
         <arg name="script">
-          propertySet.setString("testTrigger", "blahblah");
+          typedMap.setString("testTrigger", "blahblah");
         </arg>
       </function>
     </trigger-function>

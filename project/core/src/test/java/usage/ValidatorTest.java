@@ -18,8 +18,6 @@ import org.informagen.oswf.impl.stores.MemoryStore;
 import org.informagen.oswf.exceptions.InvalidInputException;
 import org.informagen.oswf.exceptions.WorkflowException;
 
-import org.informagen.oswf.propertyset.PropertySet;
-
 
 // Java Util
 import java.util.Collection;

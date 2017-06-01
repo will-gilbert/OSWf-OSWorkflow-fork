@@ -15,14 +15,14 @@ import org.informagen.oswf.descriptors.WorkflowDescriptor;
 
 import org.informagen.oswf.exceptions.InvalidInputException;
 
-import org.informagen.oswf.propertyset.PropertySet;
+import org.informagen.oswf.typedmap.TypedMap;
 
 import org.informagen.oswf.Step;
 
-import org.informagen.oswf.PropertySetStore;
+import org.informagen.oswf.TypedMapStore;
 
-// OSWf PropertySet delegate which installs a Custom PropertySet mapping
-import org.informagen.oswf.impl.HibernatePropertySetStore;
+// OSWf TypedMap delegate which installs a Custom TypedMap mapping
+import org.informagen.oswf.impl.HibernateTypedMapStore;
 
 // Logging
 import org.slf4j.Logger;
@@ -220,7 +220,7 @@ public class LeaveRequestTest extends OSWfHibernateTestCase implements LeaveRequ
         //Get final status
         assertProcessInstanceState(wfEngine, bobId, ProcessInstanceState.COMPLETE);
         
-        PropertySet propertySet = wfEngine.getPropertySet(bobId);
+        TypedMap propertySet = wfEngine.getTypedMap(bobId);
         
         //Get final result value
         assertProperty(wfEngine, bobId, "result", "approved");

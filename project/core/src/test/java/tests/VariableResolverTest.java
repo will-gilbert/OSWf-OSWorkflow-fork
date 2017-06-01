@@ -1,7 +1,7 @@
 package tests;
 
-import org.informagen.oswf.propertyset.PropertySet;
-import org.informagen.oswf.propertyset.MemoryPropertySet;
+import org.informagen.oswf.typedmap.TypedMap;
+import org.informagen.oswf.typedmap.MemoryTypedMap;
 
 import org.informagen.oswf.VariableResolver;
 import org.informagen.oswf.impl.DefaultVariableResolver;
@@ -31,7 +31,7 @@ import static org.junit.Assert.fail;
 public class VariableResolverTest  {
 
         Map<String,Object> transients;
-        PropertySet ps;
+        TypedMap ps;
         DefaultVariableResolver resolver;
     
     //  I N S T A N C E   F I E L D S  --------------------------------------------------------
@@ -40,7 +40,7 @@ public class VariableResolverTest  {
     public void setup() {
                 
         transients = new HashMap<String,Object>();
-        ps = new MemoryPropertySet();
+        ps = new MemoryTypedMap();
 
         A a2 = new A("biff", new B(-1, "Jack"));
         ps.setObject("a2", a2);

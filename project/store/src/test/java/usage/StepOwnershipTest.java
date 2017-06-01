@@ -18,11 +18,10 @@ import org.informagen.oswf.descriptors.WorkflowDescriptor;
 
 import org.informagen.oswf.exceptions.InvalidInputException;
 
-import org.informagen.oswf.propertyset.PropertySet;
 
 import org.informagen.oswf.Step;
 
-import org.informagen.oswf.PropertySetStore;
+import org.informagen.oswf.TypedMapStore;
 
 
 // OSWf - Security
@@ -40,8 +39,8 @@ import org.informagen.oswf.query.FieldExpression;
 import org.informagen.oswf.query.WorkflowExpressionQuery;
 
 
-// OSWf delegate which installs a Custom PropertySet mapping
-import org.informagen.oswf.impl.HibernatePropertySetStore;
+// OSWf delegate which installs a Custom TypedMap mapping
+import org.informagen.oswf.impl.HibernateTypedMapStore;
 
 // Java Util
 import java.util.Collection;
@@ -120,7 +119,7 @@ public class StepOwnershipTest extends OSWfHibernateTestCase implements Constant
         configuration.load(getClass().getResource("/oswf.xml"));
         configuration.getPersistenceArgs().put("sessionFactory", getSessionFactory());
         
-        PropertySetStore delegate = new HibernatePropertySetStore(getSessionFactory());
+        TypedMapStore delegate = new HibernateTypedMapStore(getSessionFactory());
         configuration.getPersistenceArgs().put("propertySetDelegate", delegate);
     }
 

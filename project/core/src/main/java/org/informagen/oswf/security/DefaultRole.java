@@ -2,8 +2,8 @@ package org.informagen.oswf.security;
 
 import org.informagen.oswf.security.User;
 
-import org.informagen.oswf.propertyset.PropertySet;
-import org.informagen.oswf.propertyset.MemoryPropertySet;
+import org.informagen.oswf.typedmap.TypedMap;
+import org.informagen.oswf.typedmap.MemoryTypedMap;
 
 // Java - Security
 import java.security.Principal;
@@ -21,13 +21,13 @@ public class DefaultRole implements Role {
 
         final Set<User> users = new HashSet<User>();
         final String name;
-        PropertySet propertySet = null;
+        TypedMap propertySet = null;
 
         public DefaultRole(String name) {
             this.name = name;
         }
 
-        public DefaultRole(String name, PropertySet propertySet) {
+        public DefaultRole(String name, TypedMap propertySet) {
             this.name = name;
             this.propertySet = propertySet;
         }
@@ -67,9 +67,9 @@ public class DefaultRole implements Role {
         } 
 
         // Extra properties associated with this Role
-        public PropertySet getPropertySet() {
+        public TypedMap getTypedMap() {
             if(propertySet == null)
-                propertySet = new MemoryPropertySet();
+                propertySet = new MemoryTypedMap();
 
             return propertySet;
         }

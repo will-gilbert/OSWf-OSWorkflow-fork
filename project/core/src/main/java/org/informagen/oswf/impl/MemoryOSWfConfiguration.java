@@ -23,11 +23,11 @@ import java.io.Serializable;
 public class MemoryOSWfConfiguration extends DefaultOSWfConfiguration implements Serializable {
 
     final static String STORE_CLASSNAME = "org.informagen.oswf.impl.stores.MemoryStore";
-    final static String PROPERTYSETSTORE_CLASSNAME = "org.informagen.oswf.impl.MemoryPropertySetStore";
+    final static String TYPEDMAP_STORE_CLASSNAME = "org.informagen.oswf.impl.MemoryTypedMapStore";
 
     public MemoryOSWfConfiguration() {
         workflowStoreClassname = STORE_CLASSNAME;      
-        propertySetStoreClassname = PROPERTYSETSTORE_CLASSNAME;      
+        typedMapStoreClassname = TYPEDMAP_STORE_CLASSNAME;      
     }
 
 

@@ -4,7 +4,7 @@ import bsh.EvalError;
 import bsh.Interpreter;
 import bsh.TargetError;
 
-import org.informagen.oswf.propertyset.PropertySet;
+import org.informagen.oswf.typedmap.TypedMap;
 
 import org.informagen.oswf.*;
 import org.informagen.oswf.ProcessInstance;
@@ -31,7 +31,8 @@ public class BeanShellFunctionProvider implements FunctionProvider {
 
     // M E T H O D S  -------------------------------------------------------------------------
 
-    public void execute(Map<String,Object> transientVars, Map<String,String> args, PropertySet ps) throws WorkflowException {
+    public void execute(Map<String,Object> transientVars, Map<String,String> args, TypedMap ps) throws WorkflowException {
+
         String script = (String) args.get(OSWfEngine.BSH_SCRIPT);
         Interpreter i;
         ClassLoader loader;
@@ -49,7 +50,7 @@ public class BeanShellFunctionProvider implements FunctionProvider {
             i.set("pi", pi);
             i.set("context", context);
             i.set("transientVars", transientVars);
-            i.set("propertySet", ps);
+            i.set("typedMap", ps);
             i.set("args", args);
         } catch (EvalError evalError) {
             String message = "Could not set values for BSH script";

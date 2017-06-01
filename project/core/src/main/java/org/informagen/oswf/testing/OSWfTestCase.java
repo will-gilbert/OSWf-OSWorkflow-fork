@@ -17,7 +17,7 @@ import org.informagen.oswf.exceptions.WorkflowException;
 
 import org.informagen.oswf.testing.OSWfAssertions;
 
-import org.informagen.oswf.propertyset.PropertySet;
+import org.informagen.oswf.typedmap.TypedMap;
 
 // Logging
 import org.slf4j.Logger;
@@ -141,8 +141,8 @@ public abstract class OSWfTestCase  {
 
     protected void assertProperty(OSWfEngine wfEngine, long piid, String property, String result) {
         OSWfAssertions.assertProperty(wfEngine, piid, property, result);
-        // PropertySet propertySet = wfEngine.getPropertySet(piid);
-        // assertEquals(result, propertySet.getString(property));
+        // TypedMap typedMap = wfEngine.getTypedMap(piid);
+        // assertEquals(result, typedMap.getString(property));
     }
 
     // Logging ================================================================================

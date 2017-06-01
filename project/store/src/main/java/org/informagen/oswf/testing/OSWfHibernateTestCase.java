@@ -23,8 +23,6 @@ import org.informagen.oswf.exceptions.WorkflowException;
 
 import org.informagen.oswf.testing.OSWfAssertions;
 
-import org.informagen.oswf.propertyset.PropertySet;
-
 // Hibernate
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

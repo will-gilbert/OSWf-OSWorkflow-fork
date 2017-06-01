@@ -3,7 +3,7 @@ package org.informagen.oswf.impl;
 
 // OSWf Interface 
 import org.informagen.oswf.OSWfConfiguration; 
-import org.informagen.oswf.PropertySetStore; 
+import org.informagen.oswf.TypedMapStore; 
 
 // OSWf Exceptions
 import org.informagen.oswf.exceptions.WorkflowLoaderException;
@@ -11,7 +11,7 @@ import org.informagen.oswf.exceptions.WorkflowStoreException;
 
 // Persistence
 import org.informagen.oswf.WorkflowStore;
-import org.informagen.oswf.propertyset.PropertySetFactory;
+import org.informagen.oswf.typedmap.TypedMapFactory;
 
 // Variable and Type Resolvers
 import org.informagen.oswf.VariableResolver;
@@ -93,12 +93,12 @@ public class DefaultOSWfConfiguration implements OSWfConfiguration, Serializable
     protected String workflowStoreClassname = null;
     protected Map<String,String> workflowStoreParameters = new HashMap<String,String>();
 
-    protected String propertySetStoreClassname = null;
-    protected Map<String,String> propertySetStoreParameters = new HashMap<String,String>();
+    protected String typedMapStoreClassname = null;
+    protected Map<String,String> typedMapStoreParameters = new HashMap<String,String>();
 
     // The instatiated workflow store
     protected transient WorkflowStore workflowStore = null;
-    protected transient PropertySetStore propertySetStore = null;
+    protected transient TypedMapStore typedMapStore = null;
     
     protected boolean initialized = false;
 
@@ -238,7 +238,7 @@ public class DefaultOSWfConfiguration implements OSWfConfiguration, Serializable
     **   </persistence>
     **
     ** Read the WorkflowStore classname aka persistence.
-    **  If not found use 'MemoryStore' and 'MemoryPropertySet'
+    **  If not found use 'MemoryStore' and 'MemoryTypedMap'
     */
  
     protected void parsePersistence(Element root) throws Exception {
@@ -259,12 +259,12 @@ public class DefaultOSWfConfiguration implements OSWfConfiguration, Serializable
 
             Element propertySetElement = XMLHelper.getChildElement(persistenceElement, "propertyset-store");
             if(propertySetElement != null) {
-                propertySetStoreClassname = propertySetElement.getAttribute("class");
+                typedMapStoreClassname = propertySetElement.getAttribute("class");
         
                 // Load any name/value properties which the WorkflowStore may need
                 List<Element> propertyElements = XMLHelper.getChildElements(propertySetElement, "parameter");
                 for (Element e : propertyElements) 
-                    propertySetStoreParameters.put(e.getAttribute("name"), e.getAttribute("value"));
+                    typedMapStoreParameters.put(e.getAttribute("name"), e.getAttribute("value"));
             } 
         } 
     }
@@ -360,8 +360,8 @@ public class DefaultOSWfConfiguration implements OSWfConfiguration, Serializable
                     );
                 }
 
-                PropertySetFactory.getInstance()
-                    .addNamedPropertySet(
+                TypedMapFactory.getInstance()
+                    .addNamedTypedMap(
                         propertySetName, 
                         propertySetClassname, 
                         parameters
@@ -450,12 +450,12 @@ public class DefaultOSWfConfiguration implements OSWfConfiguration, Serializable
         if(classname == null)
             throw new WorkflowStoreException("'workflow-store' class not defined");
 
-        addPersistenceArg("propertySetStore", createPropertySetStore());
+        addPersistenceArg("typedMapStore", createTypedMapStore());
             
         try {
             Class workflowStoreClass = ClassLoaderHelper.loadClass(classname, getClass());
             Constructor<WorkflowStore> constructor = workflowStoreClass.getConstructor(new Class[]{Map.class, Map.class});
-            workflowStore = constructor.newInstance(propertySetStoreParameters, getPersistenceArgs());
+            workflowStore = constructor.newInstance(typedMapStoreParameters, getPersistenceArgs());
 
         } catch (Exception exception) {
             throw new WorkflowStoreException("Error creating WorkflowStore: " + classname, exception);
@@ -464,25 +464,25 @@ public class DefaultOSWfConfiguration implements OSWfConfiguration, Serializable
         return workflowStore;
     }
 
-    protected PropertySetStore createPropertySetStore() throws WorkflowStoreException {
+    protected TypedMapStore createTypedMapStore() throws WorkflowStoreException {
         
-        PropertySetStore propertySetStore = null;
-        String classname = propertySetStoreClassname;
+        TypedMapStore typedMapStore = null;
+        String classname = typedMapStoreClassname;
         
-        if((classname != null) && (getPersistenceArgs().containsKey("propertySetStore") == false) ) {
+        if((classname != null) && (getPersistenceArgs().containsKey("typedMapStore") == false) ) {
 
             try {
-                Class propertySetStoreClass = ClassLoaderHelper.loadClass(classname, getClass());
-                Constructor<PropertySetStore> constructor = propertySetStoreClass.getConstructor(new Class[]{Map.class, Map.class});
-                propertySetStore = constructor.newInstance(propertySetStoreParameters, getPersistenceArgs());
+                Class typedMapStoreClass = ClassLoaderHelper.loadClass(classname, getClass());
+                Constructor<TypedMapStore> constructor = typedMapStoreClass.getConstructor(new Class[]{Map.class, Map.class});
+                typedMapStore = constructor.newInstance(typedMapStoreParameters, getPersistenceArgs());
             } catch (Exception exception) {
-                throw new WorkflowStoreException("Error creating PropertySetStore: " + classname, exception);
+                throw new WorkflowStoreException("Error creating TypedMapStore: " + classname, exception);
             }
             
-        } else if(getPersistenceArgs().containsKey("propertySetStore") == false)
-            throw new WorkflowStoreException("PropertySet Store not defined");
+        } else if(getPersistenceArgs().containsKey("typedMapStore") == false)
+            throw new WorkflowStoreException("TypedMapStore not defined");
             
-        return propertySetStore;
+        return typedMapStore;
     }
 
 

@@ -89,7 +89,7 @@
             <function type="beanshell" name="bsh.function">
               <arg name="script">
                     String actor = context.getActor();
-                    propertySet.setString("actor", actor);
+                    typedMap.setString("actor", actor);
               </arg>
             </function>
           </pre-functions>
@@ -100,7 +100,7 @@
               <conditions>
                 <condition type="beanshell" name="bsh.condition">
                   <arg name="script">
-						propertySet.getString("actor").equals("test")
+						typedMap.getString("actor").equals("test")
                   </arg>
                 </condition>
               </conditions>

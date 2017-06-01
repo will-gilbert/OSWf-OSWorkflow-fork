@@ -31,12 +31,6 @@ import org.informagen.oswf.Step;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.informagen.oswf.PropertySetStore;
-
-// OSWf PropertySet delegate which installs a Custom PropertySet mapping
-import org.informagen.oswf.impl.HibernatePropertySetStore;
-
-
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;

@@ -1,2 +1,5 @@
 
-include 'propertyset','core','store','simulator'
+include 'core'
+include 'typedmap'
+include 'store'
+include 'simulator'

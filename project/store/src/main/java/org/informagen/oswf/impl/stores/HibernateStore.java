@@ -21,9 +21,6 @@ import org.informagen.oswf.exceptions.QueryNotSupportedException;
 import org.informagen.oswf.impl.DefaultProcessInstance;
 import org.informagen.oswf.impl.stores.AbstractWorkflowStore;
 
-// OSWf - PropertySet
-import org.informagen.oswf.PropertySetStore;
-
 // Hibernate
 import org.hibernate.HibernateException;
 import org.hibernate.Session;

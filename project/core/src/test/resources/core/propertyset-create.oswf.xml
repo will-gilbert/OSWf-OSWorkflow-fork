@@ -8,7 +8,7 @@
 				<function type="beanshell">
 					<arg name="script">
 					    // Save 'something' into the propery set as 'myvar'
-					     propertySet.setString("myvar","anything");
+					     typedMap.setString("myvar","anything");
 					</arg>
 				</function>
 			</pre-functions>
@@ -28,7 +28,7 @@
 							<arg name="script"><![CDATA[
 							    // Copy 'myvar' into the list
                                List list = transientVars.get("list");
-						       list.add(propertySet.getString("myvar"));
+						       list.add(typedMap.getString("myvar"));
  							]]></arg>
 						</function>
 					</pre-functions>

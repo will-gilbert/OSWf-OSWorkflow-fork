@@ -2,7 +2,7 @@
 
     <persistence>
         <workflow-store class="org.informagen.oswf.impl.stores.HibernateStore"/>  
-        <propertyset-store class="org.informagen.oswf.impl.HibernatePropertySetStore">
+        <propertyset-store class="org.informagen.oswf.impl.HibernateTypedMapStore">
             <parameter name="propertySet" value="simulator" />
         </propertyset-store>    
     </persistence>
@@ -41,7 +41,7 @@
 
     <propertysets>
     
-        <propertyset name="simulator" class="org.informagen.oswf.propertyset.HibernatePropertySet" >    
+        <propertyset name="simulator" class="org.informagen.oswf.typedmap.HibernateTypedMap" >    
             <parameter name="timeZone" value="US/Eastern" />
             <parameter name="dateFormat" value="yyyy-MMM-dd HH:mm" />
         </propertyset>

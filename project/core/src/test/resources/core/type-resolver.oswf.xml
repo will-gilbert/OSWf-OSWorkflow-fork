@@ -23,7 +23,7 @@
       <pre-functions>
         <function type="beanshell">
           <arg name="script">
-            propertySet.setString("message", "foo");
+            typedMap.setString("message", "foo");
           </arg>
         </function>        
       </pre-functions>

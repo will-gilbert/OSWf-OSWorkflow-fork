@@ -54,7 +54,7 @@ configurations {
 
 dependencies {
 
-    compile project(':propertyset')
+    compile project(':typedmap')
 
     compile ([
 

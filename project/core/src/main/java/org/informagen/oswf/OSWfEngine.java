@@ -3,8 +3,8 @@ package org.informagen.oswf;
 import org.informagen.oswf.ProcessInstanceState;
 
  
-// OpenSymphony PropertySet
-import org.informagen.oswf.propertyset.PropertySet;
+// TypedMap
+import org.informagen.oswf.typedmap.TypedMap;
 
 
 // OSWf Core
@@ -71,11 +71,11 @@ public interface OSWfEngine {
     List<Step> getHistorySteps(long piid);
 
     /**
-     * Get the PropertySet for the specified workflow process nstance id
+     * Get the TypedMap for the specified workflow process nstance id
      * @param piid The workflow instance id.
      */
 
-    PropertySet getPropertySet(long piid);
+    TypedMap getTypedMap(long piid);
 
     /**
      * Get a collection (Strings) of currently defined stepConditions for the specified workflow instance.

@@ -38,14 +38,11 @@ import org.informagen.oswf.exceptions.InvalidInputException;
 import org.informagen.oswf.exceptions.InvalidActionException;
 
 // OSWf - PropertSet
-import org.informagen.oswf.PropertySetStore;
-import org.informagen.oswf.propertyset.PropertySet;
-import org.informagen.oswf.propertyset.Type;
-import org.informagen.oswf.propertyset.exceptions.InvalidPropertyTypeException;
+import org.informagen.oswf.typedmap.TypedMap;
+import org.informagen.oswf.typedmap.Type;
+import org.informagen.oswf.typedmap.exceptions.InvalidValueTypeException;
 
 
-// Hiberate PropertySet persistence
-import org.informagen.oswf.impl.HibernatePropertySetStore;
 
 // Application - RPC 
 import org.informagen.oswf.simulator.rpc.OSWfService;
@@ -223,7 +220,7 @@ public class OSWfServiceImpl implements OSWfService {
        // Process Variables; interate over all types but access as 'String' for display
        try { 
            
-           PropertySet propertySet = wfEngine.getPropertySet(piid);
+           TypedMap propertySet = wfEngine.getTypedMap(piid);
 
            for(Type type : Type.getTypes())
                for(String key : propertySet.getKeys(type) ) 
@@ -233,7 +230,7 @@ public class OSWfServiceImpl implements OSWfService {
                       .value(propertySet.getString(key))
                    ); 
            
-       } catch (InvalidPropertyTypeException invalidPropertyTypeException) {
+       } catch (InvalidValueTypeException invalidPropertyTypeException) {
            logger.error(invalidPropertyTypeException.getMessage());
        }
 

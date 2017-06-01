@@ -67,7 +67,7 @@ configurations.all {
 dependencies {
 
     compile project(':core')
-    compile project(':propertyset')
+    compile project(':typedmap')
 
     def hibernate = '4.3.11.Final' //'3.3.2.GA'
     def mysql     = '5.1.25'
@@ -201,7 +201,7 @@ task schemaExport(dependsOn: ['jar'], type:JavaExec) {
       "src/main/resources/org/informagen/oswf/hbm/HibernateHistoryStep.hbm.xml",
       "src/main/resources/org/informagen/oswf/hbm/HibernateProcessInstance.hbm.xml",
       "src/main/resources/org/informagen/oswf/hbm/XmlWorkflowDescriptor.hbm.xml",
-      "src/main/resources/org/informagen/oswf/hbm/HibernatePropertySetItem.hbm.xml",
+      "src/main/resources/org/informagen/oswf/hbm/HibernateTypedMapItem.hbm.xml",
       "src/main/resources/org/informagen/oswf/hbm/WorkflowDescriptor.hbm.xml",
    ]
     

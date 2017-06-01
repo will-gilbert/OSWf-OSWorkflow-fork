@@ -1,0 +1,77 @@
+task usage doLast { print """
+====================================================================================================
+
+gradle javaCompile
+  Compile Java source code displaying warnings and error to the terminal console.
+
+gradle test
+  Run the Unit Tests. If an error occurs an attempt will be made to launch your browser.
+
+gradle clean
+  Delete build files and targets
+
+====================================================================================================
+"""}
+
+/* C O N F I G U R A T I O N  ======================================================================
+Site specific variables such as the upload repository can be specified in a a file name
+   'gradle.properties'.  This properties file should not be uploaded into the SCM. For GIT the
+   .gitignore file should be set to exclude it from consideration.
+
+================================================================================================= */
+
+apply plugin: 'java'            // Used to compile and create JAR artifacts
+apply plugin: 'maven-publish'   // Used to install in the local MAVEN repository
+
+// C O N F I G U R A T I O N ==================================================================
+
+// Project Configuration ----------------------------------------------------------------------
+group = 'org.informagen.oswf'
+version = '3.0.0-SNAPSHOT'
+
+ext.applicationName = "OSWf Typed Map"
+
+ 
+// R E P O S I T O R I E S   &   D E P E N D E N C I E S ======================================
+
+repositories {
+    mavenLocal()     // User's local Maven repository e.g. SNAPSHOTs
+    mavenCentral()   // Maven Central repositories
+}
+
+dependencies {
+
+    compile ([
+        // Simple Logging Facade for Java   
+        "org.slf4j:slf4j-api:$slf4j",    
+    ])
+
+    runtime ([ ])
+    
+    testCompile([
+        // JUnit 4 - Used by 'OSWfTestCase' and 'OSWfAssertions'
+        "junit:junit:$junit",
+        
+        // Simple JNDI - Used for JDBCProperySet testing
+        "simple-jndi:simple-jndi:$jndi"
+    ])
+
+    testRuntime([
+                        
+         // Use 'log4j' with the SL4J logger
+         "org.slf4j:slf4j-log4j12:$slf4j",
+         "log4j:log4j:1.2.16",
+         
+        // H2 Database driver, formerly HSQLDB
+        "com.h2database:h2:$h2"
+    ])
+
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+}

@@ -30,13 +30,13 @@
 				double balance = 0.00;
 				double withdraw = 0.00;
 				try {
-                    balance = Double.parseDouble(propertySet.getString("balance"));
+                    balance = Double.parseDouble(typedMap.getString("balance"));
                     withdraw = Double.parseDouble("${withdraw}");
                 } catch(Exception exception) {}
                 
                 if(balance >= withdraw) {
                     balance = balance - withdraw;
-                    propertySet.setString("balance", new Double(balance).toString());
+                    typedMap.setString("balance", new Double(balance).toString());
                     return true;
                 }
                     return false;

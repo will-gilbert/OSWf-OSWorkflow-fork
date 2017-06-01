@@ -24,11 +24,11 @@ import org.informagen.oswf.descriptors.WorkflowDescriptor;
 import org.informagen.oswf.descriptors.StepDescriptor;
 import org.informagen.oswf.descriptors.StepConditionDescriptor;
 
-import org.informagen.oswf.propertyset.PropertySet;
-import org.informagen.oswf.PropertySetStore;
+import org.informagen.oswf.typedmap.TypedMap;
+import org.informagen.oswf.TypedMapStore;
 
-// OSWf delegate which installs a Custom PropertySet mapping
-import org.informagen.oswf.impl.HibernatePropertySetStore;
+// OSWf delegate which installs a Custom TypedMap mapping
+import org.informagen.oswf.impl.HibernateTypedMapStore;
 
 
 import java.util.ArrayList;
@@ -94,7 +94,7 @@ public class StepConditionsTest extends OSWfHibernateTestCase implements Constan
         configuration.load(getClass().getResource("/oswf.xml"));
         configuration.getPersistenceArgs().put("sessionFactory", getSessionFactory());
         
-        PropertySetStore delegate = new HibernatePropertySetStore(getSessionFactory());
+        TypedMapStore delegate = new HibernateTypedMapStore(getSessionFactory());
         configuration.getPersistenceArgs().put("propertySetDelegate", delegate);
     }
 

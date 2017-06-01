@@ -18,14 +18,6 @@ import org.informagen.oswf.descriptors.WorkflowDescriptor;
 
 import org.informagen.oswf.exceptions.InvalidInputException;
 
-import org.informagen.oswf.propertyset.PropertySet;
-
-import org.informagen.oswf.PropertySetStore;
-
-
-// OSWf PropertySet delegate which installs a Custom PropertySet mapping
-import org.informagen.oswf.impl.HibernatePropertySetStore;
-
 // Java Util
 
 import java.util.Collection;

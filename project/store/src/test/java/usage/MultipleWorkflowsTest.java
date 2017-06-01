@@ -7,7 +7,6 @@ import org.informagen.oswf.OSWfEngine;
 import org.informagen.oswf.OSWfConfiguration;
 import org.informagen.oswf.Step;
 import org.informagen.oswf.ProcessInstanceState;
-import org.informagen.oswf.PropertySetStore;
 
 import org.informagen.oswf.exceptions.WorkflowException;
 
@@ -18,14 +17,6 @@ import org.informagen.oswf.impl.DefaultOSWfConfiguration;
 
 import org.informagen.oswf.descriptors.WorkflowDescriptor;
 
-
-import org.informagen.oswf.PropertySetStore;
-
-// OSWf PropertySet delegate which installs a Custom PropertySet mapping
-import org.informagen.oswf.impl.HibernatePropertySetStore;
-
-
-import org.informagen.oswf.propertyset.PropertySet;
 
 // Java Util
 

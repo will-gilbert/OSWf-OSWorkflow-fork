@@ -8,7 +8,7 @@
       <pre-functions>
         <function type="beanshell">
           <arg name="script">
-            propertySet.setString("message", "foo");
+            typedMap.setString("message", "foo");
           </arg>
         </function>
         <function type="class">
@@ -34,7 +34,7 @@
           <pre-functions>
             <function type="beanshell">
               <arg name="script">
-                propertySet.setString("message", "bar");
+                typedMap.setString("message", "bar");
               </arg>
             </function>
             <function type="class">

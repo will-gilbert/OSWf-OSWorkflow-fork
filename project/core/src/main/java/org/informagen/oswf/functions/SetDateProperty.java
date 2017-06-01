@@ -1,6 +1,6 @@
 package org.informagen.oswf.functions;
 
-import org.informagen.oswf.propertyset.PropertySet;
+import org.informagen.oswf.typedmap.TypedMap;
 
 import org.informagen.oswf.FunctionProvider;
 import org.informagen.oswf.WorkflowContext;
@@ -10,7 +10,7 @@ import java.util.Date;
 
 public class SetDateProperty implements FunctionProvider {
 
-    public void execute(Map<String,Object> transientVars, Map<String,String> args, PropertySet ps) {
+    public void execute(Map<String,Object> transientVars, Map<String,String> args, TypedMap ps) {
 
         String name = args.get("name");
         

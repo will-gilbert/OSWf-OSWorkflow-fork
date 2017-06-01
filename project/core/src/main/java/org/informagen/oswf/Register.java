@@ -1,6 +1,6 @@
 package org.informagen.oswf;
 
-import org.informagen.oswf.propertyset.PropertySet;
+import org.informagen.oswf.typedmap.TypedMap;
 
 import org.informagen.oswf.ProcessInstance;
 
@@ -30,5 +30,5 @@ public interface Register {
      * @param ps
      * @return the object to bind to the variable map for this workflow instance
      */
-    public Object registerVariable(WorkflowContext context, ProcessInstance entry, Map<String,String> args, PropertySet ps) throws WorkflowException;
+    public Object registerVariable(WorkflowContext context, ProcessInstance entry, Map<String,String> args, TypedMap ps) throws WorkflowException;
 }

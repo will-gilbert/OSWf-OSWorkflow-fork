@@ -5,7 +5,6 @@ import org.informagen.oswf.security.User;
 import org.informagen.oswf.security.SecurityProvider;
 import org.informagen.oswf.security.DefaultSecurityProvider;
 
-import org.informagen.oswf.propertyset.PropertySet;
 
 // Java - Collections
 import java.util.Set;

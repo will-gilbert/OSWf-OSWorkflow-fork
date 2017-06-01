@@ -26,7 +26,7 @@
       </actions>
       <post-functions>
         <function type="beanshell" name="bsh.function">
-          <arg name="script">propertySet.setString("postkey", "postvalue")</arg>
+          <arg name="script">typedMap.setString("postkey", "postvalue")</arg>
         </function>
       </post-functions>
     </step>

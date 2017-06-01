@@ -11,7 +11,7 @@ import org.informagen.oswf.OSWfConfiguration;
 import org.informagen.oswf.util.Graphviz;
 import org.informagen.oswf.descriptors.WorkflowDescriptor;
 
-import org.informagen.oswf.propertyset.util.Base64;
+import org.informagen.oswf.typedmap.util.Base64;
 
 // OSWf Default Implementations & Service Providers
 import org.informagen.oswf.impl.DefaultOSWfEngine;

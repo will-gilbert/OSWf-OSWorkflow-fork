@@ -1,8 +1,8 @@
 package org.informagen.oswf.security;
 
 import org.informagen.oswf.security.Role;
-import org.informagen.oswf.propertyset.PropertySet;
-import org.informagen.oswf.propertyset.MemoryPropertySet;
+import org.informagen.oswf.typedmap.TypedMap;
+import org.informagen.oswf.typedmap.MemoryTypedMap;
 
 import java.security.Principal;
 
@@ -23,14 +23,14 @@ public class DefaultUser implements User {
 
         final Set<Role> roles = new HashSet<Role>();
         final String name;
-        PropertySet propertySet = null;
+        TypedMap propertySet = null;
 
 
         public DefaultUser(String name) {
             this.name = name;
         }
 
-        public DefaultUser(String name, PropertySet propertySet) {
+        public DefaultUser(String name, TypedMap propertySet) {
             this.name = name;
             this.propertySet = propertySet;
         }
@@ -68,29 +68,29 @@ public class DefaultUser implements User {
 
         // Convenience methods to access property
         public void setEmail(String email) {
-            getPropertySet().setString(EMAIL, email);
+            getTypedMap().setString(EMAIL, email);
         }
 
         // Convenience method to access property
         public String getEmail() {
-            return getPropertySet().getString(EMAIL);
+            return getTypedMap().getString(EMAIL);
         }
 
         // Convenience method to access property
         public void setFullName(String fullName) {
-            getPropertySet().setString(FULLNAME, fullName);
+            getTypedMap().setString(FULLNAME, fullName);
         }
 
         // Convenience method to access property
         public String getFullName() {
-            return getPropertySet().getString(FULLNAME);
+            return getTypedMap().getString(FULLNAME);
         }
 
 
         // Extra properties associated with entity
-        public PropertySet getPropertySet() {
+        public TypedMap getTypedMap() {
             if(propertySet == null)
-                propertySet = new MemoryPropertySet();
+                propertySet = new MemoryTypedMap();
 
             return propertySet;
         }

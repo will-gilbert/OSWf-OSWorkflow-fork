@@ -8,10 +8,6 @@ import org.informagen.oswf.impl.DefaultOSWfEngine;
 import org.informagen.oswf.OSWfConfiguration;
 import org.informagen.oswf.impl.DefaultOSWfConfiguration;
 
-// OSWf delegate which installs a Custom PropertySet mapping
-import org.informagen.oswf.PropertySetStore;
-import org.informagen.oswf.impl.HibernatePropertySetStore;
-
 // OSWf Assertions
 import static org.informagen.oswf.testing.OSWfAssertions.assertRoute;
 

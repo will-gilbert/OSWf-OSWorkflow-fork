@@ -7,8 +7,8 @@ import org.informagen.oswf.Step;
 
 import org.informagen.oswf.descriptors.WorkflowDescriptor;
 
-// PropertySet
-import org.informagen.oswf.propertyset.PropertySet;
+// OSWf - TypedMap
+import org.informagen.oswf.typedmap.TypedMap;
 
 
 // Java Collections
@@ -84,7 +84,7 @@ public class OSWfAssertions  {
      */
 
     public static void assertProperty(OSWfEngine wfEngine, long piid, String property, String result) {
-        PropertySet propertySet = wfEngine.getPropertySet(piid);
+        TypedMap propertySet = wfEngine.getTypedMap(piid);
         assertEquals(result, propertySet.getString(property));
     }
 

@@ -14,8 +14,8 @@ import org.informagen.oswf.ProcessInstance;
 // OSWf - Actor Workflow
 import org.informagen.oswf.impl.DefaultOSWfEngine;
 
-// OpenSymphony - PropertySet
-import org.informagen.oswf.propertyset.PropertySet;
+// OSWf - TypedMap
+import org.informagen.oswf.typedmap.TypedMap;
 
 // Java - Util
 import java.util.Map;
@@ -23,7 +23,7 @@ import java.util.Map;
 
 public class FireTrigger implements FunctionProvider {
     
-    public void execute(Map<String,Object> transientVars, Map<String,String> args, PropertySet ps) throws WorkflowException {
+    public void execute(Map<String,Object> transientVars, Map<String,String> args, TypedMap ps) throws WorkflowException {
 
         ProcessInstance pi = (ProcessInstance)transientVars.get("pi");
         String actor = (String)transientVars.get("actor");

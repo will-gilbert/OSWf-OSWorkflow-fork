@@ -3,8 +3,7 @@ package org.informagen.oswf;
 // OSWf Exceptions
 import org.informagen.oswf.exceptions.WorkflowException;
 
-
-import org.informagen.oswf.propertyset.PropertySet;
+import org.informagen.oswf.typedmap.TypedMap;
 
 import java.util.Map;
 
@@ -14,9 +13,10 @@ import java.util.Map;
  * either as a pre-function or a post-function. The args nested elements within the function xml call
  * will be mapped to the properties parameter.
  *
- * @author <a href="mailto:plightbo@hotmail.com">Pat Lightbody</a>
  */
+
 public interface FunctionProvider {
+
     // M E T H O D S  -------------------------------------------------------------------------
 
     /**
@@ -46,5 +46,5 @@ public interface FunctionProvider {
      * instance of the workflow. Any change made to the propertyset are persisted to
      * the propertyset implementation's persistent store.
      */
-    public void execute(Map<String,Object> transientVars, Map<String,String> args, PropertySet ps) throws WorkflowException;
+    public void execute(Map<String,Object> transientVars, Map<String,String> args, TypedMap typedMap) throws WorkflowException;
 }

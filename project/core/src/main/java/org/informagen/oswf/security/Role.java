@@ -2,7 +2,7 @@ package org.informagen.oswf.security;
 
 import org.informagen.oswf.security.User;
 
-import org.informagen.oswf.propertyset.PropertySet;
+import org.informagen.oswf.typedmap.TypedMap;
 
 // Java - Security
 import java.security.Principal;
@@ -33,7 +33,7 @@ public interface Role extends Principal {
         void removeUser(User user); 
 
         // Extra properties associated with this Role
-        PropertySet getPropertySet();
+        TypedMap getTypedMap();
          
 
 }

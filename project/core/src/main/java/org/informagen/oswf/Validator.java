@@ -5,7 +5,7 @@ import org.informagen.oswf.exceptions.InvalidInputException;
 import org.informagen.oswf.exceptions.WorkflowException;
 
 
-import org.informagen.oswf.propertyset.PropertySet;
+import org.informagen.oswf.typedmap.TypedMap;
 
 import java.util.Map;
 
@@ -47,5 +47,5 @@ public interface Validator {
      * the propertyset implementation's persistent store.
      * @throws InvalidInputException if the input is deemed to be invalid
      */
-    public void validate(Map<String,Object> transientVars, Map<String,String> args, PropertySet ps) throws InvalidInputException, WorkflowException;
+    public void validate(Map<String,Object> transientVars, Map<String,String> args, TypedMap ps) throws InvalidInputException, WorkflowException;
 }

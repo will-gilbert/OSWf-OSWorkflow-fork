@@ -6,7 +6,7 @@ import org.informagen.oswf.ProcessInstance;
 import org.informagen.oswf.WorkflowStore;
 
 // OS PropertySet
-import org.informagen.oswf.propertyset.PropertySet;
+import org.informagen.oswf.typedmap.TypedMap;
 
 // OSWf Exceptions
 import org.informagen.oswf.exceptions.WorkflowStoreException;
@@ -31,7 +31,7 @@ public class HasStatusOf implements Condition {
 
     // M E T H O D S  -------------------------------------------------------------------------
 
-    public boolean passesCondition(Map<String,Object> transientVars, Map<String,String> args, PropertySet ps) throws WorkflowStoreException {
+    public boolean passesCondition(Map<String,Object> transientVars, Map<String,String> args, TypedMap ps) throws WorkflowStoreException {
 
         String status = (args.get("status") != null) ? args.get("status") : "";
         Integer stepId = null;

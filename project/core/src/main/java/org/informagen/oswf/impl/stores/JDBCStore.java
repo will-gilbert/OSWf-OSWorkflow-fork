@@ -1,7 +1,7 @@
 package org.informagen.oswf.impl.stores;
 
-import org.informagen.oswf.propertyset.PropertySet;
-import org.informagen.oswf.propertyset.PropertySetFactory;
+import org.informagen.oswf.typedmap.TypedMap;
+import org.informagen.oswf.typedmap.TypedMapFactory;
 
 import org.informagen.oswf.Step;
 import org.informagen.oswf.ProcessInstance;
@@ -168,11 +168,11 @@ public class JDBCStore extends AbstractWorkflowStore implements WorkflowStore {
         }
     }
 
-    public PropertySet getPropertySet(long entryId) {
+    public TypedMap getTypedMap(long entryId) {
         HashMap args = new HashMap(1);
         args.put("globalKey", "oswf_" + entryId);
 
-        return PropertySetFactory.getInstance().createPropertySet("jdbc", args);
+        return TypedMapFactory.getInstance().createTypedMap("jdbc", args);
     }
 
     ////////////METHOD #2 OF 3 //////////////////

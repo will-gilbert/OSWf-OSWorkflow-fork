@@ -12,7 +12,7 @@
     <step id="1" name="First Step">
       <pre-functions>
         <function type="beanshell" name="bsh.function">
-          <arg name="script">propertySet.setString("prekey", "prevalue")</arg>
+          <arg name="script">typedMap.setString("prekey", "prevalue")</arg>
         </function>
       </pre-functions>
     </step>

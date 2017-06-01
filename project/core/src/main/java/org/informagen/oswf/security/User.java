@@ -1,7 +1,7 @@
 package org.informagen.oswf.security;
 
 import org.informagen.oswf.security.Role;
-import org.informagen.oswf.propertyset.PropertySet;
+import org.informagen.oswf.typedmap.TypedMap;
 
 import java.security.Principal;
 
@@ -47,7 +47,7 @@ public interface User extends Principal {
         String getFullName(); 
 
         // Extra properties associated with entity
-        PropertySet getPropertySet();
+        TypedMap getTypedMap();
 
 
 }

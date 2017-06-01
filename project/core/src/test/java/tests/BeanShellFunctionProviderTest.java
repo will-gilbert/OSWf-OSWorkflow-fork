@@ -1,7 +1,7 @@
 package tests;
 
-import org.informagen.oswf.propertyset.PropertySet;
-import org.informagen.oswf.propertyset.JDBCPropertySet;
+import org.informagen.oswf.typedmap.TypedMap;
+import org.informagen.oswf.typedmap.JDBCTypedMap;
 
 import org.informagen.oswf.functions.BeanShellFunctionProvider;
 
@@ -57,9 +57,9 @@ public class BeanShellFunctionProviderTest {
         
         BeanShellFunctionProvider function = new BeanShellFunctionProvider();
         
-        // Create a JDBC PropertySet without parameters succeeds but throws
+        // Create a JDBC TypedMap without parameters succeeds but throws
         //     an exception when used
-        PropertySet ps = new JDBCPropertySet(Collections.EMPTY_MAP, Collections.EMPTY_MAP);
+        TypedMap ps = new JDBCTypedMap(Collections.EMPTY_MAP, Collections.EMPTY_MAP);
         Map transientVars = new HashMap<String,Object>();
         Map args = new HashMap<String,String>();
         args.put(OSWfEngine.BSH_SCRIPT, "String actor = \"testactor\"; propertySet.setString(\"actor\", actor);");

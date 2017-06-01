@@ -1,6 +1,6 @@
 package org.informagen.oswf.conditions;
 
-import org.informagen.oswf.propertyset.PropertySet;
+import org.informagen.oswf.typedmap.TypedMap;
 
 // OSWf Security
 import org.informagen.oswf.SecurityManager;
@@ -23,7 +23,7 @@ import java.util.Map;
 
 public class HasRole implements Condition {
 
-    public boolean passesCondition(Map<String,Object> transientVars, Map<String,String> args, PropertySet ps) {
+    public boolean passesCondition(Map<String,Object> transientVars, Map<String,String> args, TypedMap ps) {
 
         String actor = (String)transientVars.get("actor");
 

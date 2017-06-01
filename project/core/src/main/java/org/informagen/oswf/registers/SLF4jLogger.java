@@ -1,6 +1,6 @@
 package org.informagen.oswf.registers;
 
-import org.informagen.oswf.propertyset.PropertySet;
+import org.informagen.oswf.typedmap.TypedMap;
 
 import org.informagen.oswf.Register;
 import org.informagen.oswf.WorkflowContext;
@@ -33,7 +33,7 @@ import java.util.Map;
  */
 public class SLF4jLogger implements Register {
 
-    public Object registerVariable(WorkflowContext context, ProcessInstance pi, Map<String,String> args, PropertySet ps) {
+    public Object registerVariable(WorkflowContext context, ProcessInstance pi, Map<String,String> args, TypedMap ps) {
 
         String loggerName = "oswf";
 

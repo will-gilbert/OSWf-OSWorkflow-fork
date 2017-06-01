@@ -129,13 +129,13 @@ public class StepsTest {
         URL url = getClass().getResource("/core/step-post.oswf.xml");
         long piid = wfEngine.initialize(url.toString(), 1, null);
         wfEngine.doAction(piid, 2, null);
-        assertTrue("post-function was not called as expected", "postvalue".equals(wfEngine.getPropertySet(piid).getString("postkey")));
+        assertTrue("post-function was not called as expected", "postvalue".equals(wfEngine.getTypedMap(piid).getString("postkey")));
     }
 
     @Test
     public void testStepPreFunction() throws Exception {
         URL url = getClass().getResource("/core/step-pre.oswf.xml");
         long piid = wfEngine.initialize(url.toString(), 1, null);
-        assertTrue("pre-function was not called as expected", "prevalue".equals(wfEngine.getPropertySet(piid).getString("prekey")));
+        assertTrue("pre-function was not called as expected", "prevalue".equals(wfEngine.getTypedMap(piid).getString("prekey")));
     }
 }
