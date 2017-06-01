@@ -23,8 +23,10 @@ import static org.junit.Assert.fail;
  * lifecycle of a workflow.  This is also a good resource for beginners
  * to OSWorkflow.
  *
- * @author Eric Pugh (epugh@upstate.com)
+ * Uses in-memory persistance
+ *
  */
+
 public class MemoryFunctionalWorkflowTest extends AbstractFunctionalWorkflow {
 
 

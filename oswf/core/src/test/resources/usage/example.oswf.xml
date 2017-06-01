@@ -64,6 +64,7 @@
             </conditions>
           </restrict-to>
         </step-condition>
+
       </step-conditions>
       
       <actions>
@@ -74,14 +75,18 @@
           
           <restrict-to>
             <conditions>
+
               <condition type="beanshell">
                 <arg name="script">true</arg>
               </condition>
+
               <condition type='alias' name='hasStatusOf'>
                 <arg name="status">Underway</arg>
               </condition>
+
               <condition type='alias' name='isStepOwner'>
               </condition>
+
             </conditions>
           </restrict-to>
           
@@ -100,7 +105,7 @@
               <conditions>
                 <condition type="beanshell" name="bsh.condition">
                   <arg name="script">
-						typedMap.getString("actor").equals("test")
+						        typedMap.getString("actor").equals("test user name")
                   </arg>
                 </condition>
               </conditions>
@@ -134,6 +139,7 @@
       </step-conditions>
       
       <actions>
+
         <action id="2" name="Sign Up For Editing">
           <restrict-to>
             <conditions>
@@ -149,7 +155,9 @@
           <results>
             <default-result status="Underway" step="2" owner="${actor}"/>
           </results>
+
         </action>
+
         <action id="3" name="Finish Editing">
           <restrict-to>
             <conditions>
@@ -169,6 +177,7 @@
             <default-result status="Underway" step="3" owner="${mostRecentOwner}"/>
           </results>
         </action>
+
         <action id="4" name="Requeue Editing">
           <restrict-to>
             <conditions>
@@ -183,8 +192,10 @@
             <default-result status="Queued" step="2"/>
           </results>
         </action>
+
       </actions>
     </step>
+
     <step id="3" name="Review Doc">
       <step-conditions>
         <step-condition name="permA">
@@ -254,6 +265,7 @@
         </action>
       </actions>
     </step>
+
     <step id="4" name="Second Review">
       <step-conditions>
         <step-condition name="permC">
@@ -320,9 +332,12 @@
         </action>
       </actions>
     </step>
+
     <step id="5" name="Publish Doc">
+
       <actions>
-        <action id="11" name="Publish Document">
+        
+        <action id="11" name="Publish Document" finish="true">
           <restrict-to>
             <conditions>
               <condition type='alias' name='hasStatusOf'>
@@ -334,11 +349,13 @@
           </restrict-to>
 
           <results>
-            <default-result  status="Finished" step="5" owner="${actor}"/>
+            <default-result  status="Finished" owner="${actor}"/>
           </results>
+
         </action>
       </actions>
     </step>
+
     <step id="6" name="Foo">
       <actions>
         <action name="Finish Foo" id="12">
@@ -359,6 +376,7 @@
         </action>
       </actions>
     </step>
+
     <step id="7" name="Bar">
       <actions>
         <action name="Finish Bar" id="13">
@@ -374,7 +392,7 @@
             </conditions>
           </restrict-to>
           <results>
-            <default-result  owner="test" status="Underway" step="8"/>
+            <default-result  owner="test user name" status="Underway" step="8"/>
           </results>
         </action>
         <!-- an action used purely to test staying in the same step with magic -1 step id -->
@@ -391,7 +409,7 @@
             </conditions>
           </restrict-to>
           <results>
-            <default-result  owner="test" status="Underway" step="-1"/>
+            <default-result  owner="test user name" status="Underway" step="-1"/>
           </results>
         </action>
       </actions>
@@ -422,8 +440,8 @@
 
   <splits>
     <split id="1">
-      <default-result  status="Underway" owner="test" step="6"/>
-      <default-result  status="Underway" owner="test" step="7"/>
+      <default-result  status="Underway" owner="test user name" step="6"/>
+      <default-result  status="Underway" owner="test user name" step="7"/>
     </split>
   </splits>
 
@@ -440,7 +458,7 @@
           ]]></arg>
         </condition>
       </conditions>
-      <default-result  status="Underway" owner="test" step="2"/>
+      <default-result  status="Underway" owner="test user name" step="2"/>
     </join>
   </joins>
 </workflow>

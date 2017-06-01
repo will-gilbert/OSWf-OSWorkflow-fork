@@ -71,6 +71,7 @@ public class JDBCLoaderTest extends OSWfTestCase {
     // H2 keeps the database available in memory as long as there is at least one
     //   connection.  Create the following JDBC Connection when the database is 
     //   created and close it when these tests are complete i.e. 'AfterClass'
+    
     static Connection connection;
 
     @BeforeClass

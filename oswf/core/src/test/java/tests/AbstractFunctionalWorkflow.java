@@ -61,14 +61,15 @@ import static org.junit.Assert.fail;
  * lifecycle of a workflow.  This is also a good resource for beginners
  * to OSWorkflow.  This class is extended to for various SPI's.
  *
- * @author Eric Pugh (epugh@upstate.com)
+ * @see MemoryFunctionalWorkflowTest
+ *
  */
 
 public abstract class AbstractFunctionalWorkflow {
     
-    //~ Static fields/initializers /////////////////////////////////////////////
+    // S T A T I C   F I E L D S --------------------------------------------------------------
 
-    private static final String USER_TEST = "test";
+    private static final String USER_TEST = "test user name";
 
     //  I N S T A N C E   F I E L D S  --------------------------------------------------------
 
@@ -76,146 +77,175 @@ public abstract class AbstractFunctionalWorkflow {
     protected OSWfEngine wfEngine;
     protected WorkflowDescriptor workflowDescriptor;
 
-    // Create workflow engine
-    // Set up Roles and Users using OSWf Security classes
+
+    // B E F O R E  ---------------------------------------------------------------------------
+
+    // - Create workflow engine for the 'test user' as the actor
+    // - Create a Security Manager, add our 'test user'
+    // - Create three Roles gives these roles to our 'test user'
 
     @Before
     public void setup() throws Exception {
         
         wfEngine = new DefaultOSWfEngine(USER_TEST);
 
-        SecurityManager um = SecurityManager.getInstance();
-        assertNotNull("Could not get UserManager", um);
+        SecurityManager securityManager = SecurityManager.getInstance();
+        assertNotNull("Could not get UserManager", securityManager);
         
-        User test = um.createUser(USER_TEST);
+        User user = securityManager.createUser(USER_TEST);
     
-        Role foos = um.createRole("foos");
-        Role bars = um.createRole("bars");
-        Role bazs = um.createRole("bazs");
+        Role foos = securityManager.createRole("foos");
+        Role bars = securityManager.createRole("bars");
+        Role bazs = securityManager.createRole("bazs");
         
-        test.addToRole(foos);
-        test.addToRole(bars);
-        test.addToRole(bazs);
+        user.addToRole(foos);
+        user.addToRole(bars);
+        user.addToRole(bazs);
+
     }
 
 
-    // M E T H O D S  -------------------------------------------------------------------------
+    // T E S T S  -----------------------------------------------------------------------------
 
     @Test
     public void exampleWorkflow() throws Exception {
 
+        // Get the workflow name; Here the URL of the resource
+        // With no configuration the workflow engine will use an in-memory store and persistence.
+        // Use the URLLoader, which is the default
+        // Determine that an 'initial-action' of 100 is valid
+
         String workflowName = getWorkflowName();
         assertTrue("canInitialize for workflow " + workflowName + " is false", wfEngine.canInitialize(workflowName, 100));
 
-        long workflowId = wfEngine.initialize(workflowName, 100, EMPTY_MAP);
-        String workorderName = wfEngine.getWorkflowName(workflowId);
+        // Start the workflow for our 'test user' and return the process instance id
+
+        long piid = wfEngine.initialize(workflowName, 100);
+        String workorderName = wfEngine.getWorkflowName(piid);
         workflowDescriptor = wfEngine.getWorkflowDescriptor(workorderName);
 
         if (logger.isDebugEnabled()) {
-            logger.debug("Name of workorder:" + workorderName);
+            logger.debug("Name of workorder: " + workorderName);
         }
 
+        // StepConditions for Step id=1
         assertTrue("Expected step-condition permA in step 1 not found", 
-            wfEngine.getStepConditions(workflowId)
-                    .get(1)  // StepConditions for Step id=1
+            wfEngine.getStepConditions(piid)
+                    .get(1)  
                     .contains(new StepCondition(1, "permA", true)))
         ;
 
-        List currentSteps = wfEngine.getCurrentSteps(workflowId);
+        // Only one available step with id=1
+        List currentSteps = wfEngine.getCurrentSteps(piid);
         assertEquals("Unexpected number of current steps", 1, currentSteps.size());
         assertEquals("Unexpected current step", 1, ((Step) currentSteps.get(0)).getStepId());
 
-        List historySteps = wfEngine.getHistorySteps(workflowId);
+        // No history at the moment
+        List historySteps = wfEngine.getHistorySteps(piid);
         assertEquals("Unexpected number of history steps", 0, historySteps.size());
 
+
+        // Execute action 1 in Step 1; Go to Split 1 end up in Steps 6 (Foo) and 7 (Bar)
         if (logger.isDebugEnabled()) {
             logger.debug("Perform Finish First Draft");
         }
+        wfEngine.doAction(piid, 1);
 
-        wfEngine.doAction(workflowId, 1, EMPTY_MAP);
-
-        List<Integer> actions = wfEngine.getAvailableActions(workflowId, EMPTY_MAP);
+        // We now have 1 history step
+        List<Integer> actions = wfEngine.getAvailableActions(piid);
         assertEquals(3, actions.size());
-        historySteps = wfEngine.getHistorySteps(workflowId);
+        historySteps = wfEngine.getHistorySteps(piid);
         assertEquals("Unexpected number of history steps", 1, historySteps.size());
 
+        // Get the first history step and check that the due date is in the past
         Step historyStep = (Step) historySteps.get(0);
         assertEquals(USER_TEST, historyStep.getActor());
         assertNull(historyStep.getDueDate());
 
-        // check system date, add in a 1 second fudgefactor.
+        // Check system date, add in a 1 second fudgefactor.
         assertTrue("history step finish date " + historyStep.getFinishDate() + " is in the future!", (historyStep.getFinishDate().getTime() - 1000) < System.currentTimeMillis());
-        logActions(actions);
-
-        if (logger.isDebugEnabled()) {
-            logger.debug("Perform Finish Foo");
-        }
-
-        wfEngine.doAction(workflowId, 12, EMPTY_MAP);
-
-        //Step lastHistoryStep = historyStep;
-        historySteps = wfEngine.getHistorySteps(workflowId);
-        assertEquals("Unexpected number of history steps", 2, historySteps.size());
-
-        if (logger.isDebugEnabled()) {
-            logger.debug("Perform Stay in Bar");
-        }
-
-        wfEngine.doAction(workflowId, 113, EMPTY_MAP);
-        actions = wfEngine.getAvailableActions(workflowId, EMPTY_MAP);
-        assertEquals(2, actions.size());
-        assertTrue((actions.get(0) == 13) && (actions.get(1) == 113));
-        logActions(actions);
-
-        //historyStep = (Step) historySteps.get(0);
-        //assertEquals(lastHistoryStep.getId(), historyStep.getId());
-        if (logger.isDebugEnabled()) {
-            logger.debug("Perform Finish Bar");
-        }
-
-        wfEngine.doAction(workflowId, 13, EMPTY_MAP);
-        actions = wfEngine.getAvailableActions(workflowId, EMPTY_MAP);
-        assertEquals(1, actions.size());
-        logActions(actions);
-
-        if (logger.isDebugEnabled()) {
-            logger.debug("Perform Finish Baz");
-        }
-
-        wfEngine.doAction(workflowId, 14, EMPTY_MAP);
-        actions = wfEngine.getAvailableActions(workflowId, EMPTY_MAP);
-        logActions(actions);
-        historySteps = wfEngine.getHistorySteps(workflowId);
-        assertEquals("Unexpected number of history steps", 5, historySteps.size());
-
-        if (logger.isDebugEnabled()) {
-            logger.debug("Perform Finish Editing");
-        }
-
-        wfEngine.doAction(workflowId, 3, EMPTY_MAP);
-        actions = wfEngine.getAvailableActions(workflowId, EMPTY_MAP);
+        actions = wfEngine.getAvailableActions(piid);
         assertEquals(3, actions.size());
         logActions(actions);
 
         if (logger.isDebugEnabled()) {
-            logger.debug("Perform Publish Doc");
+            logger.debug("Perform: Finish Foo; Waiting at Join");
         }
 
-        wfEngine.doAction(workflowId, 7, EMPTY_MAP);
-        actions = wfEngine.getAvailableActions(workflowId, EMPTY_MAP);
+        wfEngine.doAction(piid, 12);
+
+        historySteps = wfEngine.getHistorySteps(piid);
+        assertEquals("Unexpected number of history steps", 2, historySteps.size());
+
+
+        if (logger.isDebugEnabled()) {
+            logger.debug("Perform 'Stay in Bar'; Return to Step 7");
+        }
+
+        wfEngine.doAction(piid, 113);
+
+        // There are two actions, 'Stay in Bar' and 'Finish Bar'
+        actions = wfEngine.getAvailableActions(piid);
+        assertEquals(2, actions.size());
+        assertTrue((actions.get(0) == 13) && (actions.get(1) == 113));
+        logActions(actions);
+
+        if (logger.isDebugEnabled()) {
+            logger.debug("Perform 'Finish Bar'");
+        }
+
+        wfEngine.doAction(piid, 13);
+        actions = wfEngine.getAvailableActions(piid);
         assertEquals(1, actions.size());
         logActions(actions);
 
         if (logger.isDebugEnabled()) {
-            logger.debug("Perform Publish Document");
+            logger.debug("Perform Finish Baz; Arriving at Join and proceeding to Step 2");
         }
 
-        wfEngine.doAction(workflowId, 11, EMPTY_MAP);
+        // Step 2, 'Edit Doc' has two actions 'Finish Editing (3)' and 'Requeue Editing (4)'
+        wfEngine.doAction(piid, 14);
+        actions = wfEngine.getAvailableActions(piid);
+        assertEquals(2, actions.size());
+        logActions(actions);
+    
+        historySteps = wfEngine.getHistorySteps(piid);
+        assertEquals("Unexpected number of history steps", 5, historySteps.size());
 
-        actions = wfEngine.getAvailableActions(workflowId, EMPTY_MAP);
+        if (logger.isDebugEnabled()) {
+            logger.debug("Perform 'Finish Editing'");
+        }
+
+        wfEngine.doAction(piid, 3);
+
+        // Step 3, 'Review Doc' has three actions 'Peer Review (6)', 'Publish Doc (7)' and 'More Edits (5)'
+        actions = wfEngine.getAvailableActions(piid);
+        assertEquals(3, actions.size());
+        logActions(actions);
+
+        if (logger.isDebugEnabled()) {
+            logger.debug("Perform 'Publish Doc'");
+        }
+
+        wfEngine.doAction(piid, 7);
+
+        // Step 5, 'Review Doc' has one action 'Publish Document (11)'
+        actions = wfEngine.getAvailableActions(piid);
+        assertEquals(1, actions.size());
+        logActions(actions);
+
+        if (logger.isDebugEnabled()) {
+            logger.debug("Perform 'Publish Document'");
+        }
+
+        wfEngine.doAction(piid, 11);
+
+        // Publish the document and finish this process instance
+        actions = wfEngine.getAvailableActions(piid);
         assertEquals(0, actions.size());
-        historySteps = wfEngine.getHistorySteps(workflowId);
+        historySteps = wfEngine.getHistorySteps(piid);
         assertEquals("Unexpected number of history steps", 8, historySteps.size());
+        logHistory(historySteps);
     }
 
     @Test
@@ -224,7 +254,7 @@ public abstract class AbstractFunctionalWorkflow {
         assertTrue("canInitialize for workflow " + workflowName + " is false", wfEngine.canInitialize(workflowName, 100));
 
         try {
-            long workflowId = wfEngine.initialize(workflowName, 200, EMPTY_MAP);
+            long workflowId = wfEngine.initialize(workflowName, 200);
             fail("initial action result specified target step of current step. Succeeded but should not have.");
         } catch (WorkflowException e) {
             // expected, no such thing as current step for initial action
@@ -234,7 +264,7 @@ public abstract class AbstractFunctionalWorkflow {
     @Test
     public void metadataAccess() throws Exception {
         String workflowName = getWorkflowName();
-        long workflowId = wfEngine.initialize(workflowName, 100, EMPTY_MAP);
+        long workflowId = wfEngine.initialize(workflowName, 100);
         WorkflowDescriptor wfDesc = wfEngine.getWorkflowDescriptor(workflowName);
 
         Map meta = wfDesc.getMetaAttributes();
@@ -446,7 +476,7 @@ public abstract class AbstractFunctionalWorkflow {
         assertEquals("Expected to find no history steps that were completed", 0, workflows.size());
 
         // =================================================================================================
-        wfEngine.doAction(workflowId, 1, EMPTY_MAP);
+        wfEngine.doAction(workflowId, 1);
 
         // --------------------- START_DATE+HISTORY_STEPS -------------------------------------------------
         //there should be two step that have been started
@@ -498,7 +528,7 @@ public abstract class AbstractFunctionalWorkflow {
 
         //----------------------------------------------------------------------------
         // ----- some more tests using nested expressions
-        long workflowId2 = wfEngine.initialize(workflowName, 100, EMPTY_MAP);
+        long workflowId2 = wfEngine.initialize(workflowName, 100);
         wfEngine.changeEntryState(workflowId, ProcessInstanceState.SUSPENDED);
         
         queryRight = new FieldExpression(
@@ -591,6 +621,18 @@ public abstract class AbstractFunctionalWorkflow {
 
             if (logger.isDebugEnabled()) {
                 logger.debug("Actions Available: " + name + " id:" + actionId);
+            }
+        }
+    }
+
+    protected void logHistory(List<Step> steps) {
+
+        for (int i = steps.size()-1; i >= 0; i--) {
+            String name = workflowDescriptor.getAction(steps.get(i).getActionId()).getName();
+            int actionId = workflowDescriptor.getAction(steps.get(i).getActionId()).getId();
+
+            if (logger.isDebugEnabled()) {
+                logger.debug("History Actions: " + name + " id:" + actionId);
             }
         }
     }
