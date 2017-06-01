@@ -47,20 +47,20 @@
     <p>There are three variables in the expression scope at all times: <em>entry</em> <em>context</em>, and <em>store</em>. The variable "entry" is an object that implements <em>com.opensymphony.workflow.spi.WorkflowEntry</em> and represents the workflow instance. The variable "context" is an object of type <em>com.opensymphony.workflow.WorkflowContext</em> which allows for BeanShell functions to roll back transactions or determine the caller name. The "store" variable is of type <em>com.opensymphony.workflow.WorkflowStore</em><br/>
  and allows the function to access the underlying workflow persistence store.</p>
 
- <p>Just like <a href="3.4.1 Java-based Functions.html" title="3.4.1 Java-based Functions">3.4.1 Java-based Functions</a>, there are three variables that can be used and are automatically set in the BeanShell scope: <b>transientVars</b>, <b>args</b>, and <b>propertySet</b>. The same rules that apply to Java functions also apply here. Example:</p>
+ <p>Just like <a href="3.4.1 Java-based Functions.html" title="3.4.1 Java-based Functions">3.4.1 Java-based Functions</a>, there are three variables that can be used and are automatically set in the BeanShell scope: <b>transientVars</b>, <b>args</b>, and <b>typedMap</b>. The same rules that apply to Java functions also apply here. Example:</p>
 
 <pre class="code">&lt;function type=<span class="code-quote">"beanshell"</span>&gt;
 	&lt;arg name=<span class="code-quote">"script"</span>&gt;	
-		propertySet.setString(<span class="code-quote">"world"</span>, <span class="code-quote">"Earth"</span>);
+		typedMap.setString(<span class="code-quote">"world"</span>, <span class="code-quote">"Earth"</span>);
 	&lt;/arg&gt;
 &lt;/function&gt;
 &lt;function type=<span class="code-quote">"beanshell"</span>&gt;
 	&lt;arg name=<span class="code-quote">"script"</span>&gt;	
-		<span class="code-object">System</span>.out.println(<span class="code-quote">"Hello, "</span>+propertySet.getString(<span class="code-quote">"world"</span>));
+		<span class="code-object">System</span>.out.println(<span class="code-quote">"Hello, "</span>+typedMap.getString(<span class="code-quote">"world"</span>));
 	&lt;/arg&gt;
 &lt;/function&gt;</pre>
 
-    <p>The output of these two scripts would be "Hello, Earth". This is because any variable stored in the <b>propertySet</b> is persisted for use in functions later in the workflow.</p>
+    <p>The output of these two scripts would be "Hello, Earth". This is because any variable stored in the <b>typedMap</b> is persisted for use in functions later in the workflow.</p>
 
 -->
     </div> <!--  End of 'content' div ============================================================= -->

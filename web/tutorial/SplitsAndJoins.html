@@ -108,9 +108,9 @@
     
     <p>
     Each time an action arrives at the join all of conditions are evaluated.  Here we are using
-    the name/value pairs recorded in the PropertySet. The PackPub book and some of the original
+    the name/value pairs recorded in the TypedMap. The PackPub book and some of the original
     OSWorkflow examples used step <code>exit-status</code> in the conditions.  I personally
-    find these fragile and prefer to use PropertySet values.
+    find these fragile and prefer to use TypedMap values.
     </b>
     
     <p>
@@ -136,13 +136,13 @@
       
         &lt;condition type="beanshell">
           &lt;arg name="script">&lt;![CDATA[
-            propertySet.getString("Manager Result") != null;
+            typedMap.getString("Manager Result") != null;
           ]]>&lt;/arg>
         &lt;/condition>
         
         &lt;condition type="beanshell">
           &lt;arg name="script">&lt;![CDATA[
-            propertySet.getString("HR Result") != null;
+            typedMap.getString("HR Result") != null;
           ]]>&lt;/arg>
         &lt;/condition>
         
@@ -183,20 +183,20 @@
           &lt;arg name="script">&lt;![CDATA[<span style='color:red;'>
 //===========================================================================						
 
-    String managerResult = propertySet.getString("Manager Result");
-    String hrResult = propertySet.getString("HR Result");
+    String managerResult = typedMap.getString("Manager Result");
+    String hrResult = typedMap.getString("HR Result");
     					    
     //========================================================
     // Behave like an OR join if either the Manager or the
     //  HR Director denied the request.
     
     if( managerResult != null && managerResult.equals("denied") ) {
-        propertySet.setString("Employee Request", "denied");
+        typedMap.setString("Employee Request", "denied");
         return true;
     } 
 
     if( hrResult != null && hrResult.equals("denied") ) {
-        propertySet.setString("Employee Request", "denied");
+        typedMap.setString("Employee Request", "denied");
         return true;
     }
     
@@ -213,7 +213,7 @@
     //   we check explicitly for both approved
     
     if(managerResult.equals("approved") &&  hrResult.equals("approved"))
-      propertySet.setString("Employee Request", "approved");
+      typedMap.setString("Employee Request", "approved");
     
     // We return 'true' here to allow the workflow to proceed; this
     //  return value is not related to our 'Day off' decisions

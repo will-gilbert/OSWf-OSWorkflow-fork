@@ -43,7 +43,7 @@ public interface Condition {
      * the property value. There is a magic property of '<code>stepId</code>';
      * if specified with a value of -1, then the value is replaced with the
      * current step's ID before the condition is called.
-     * @param ps The persistent variables that are associated with the current
+     * @param persistentVars The persistent variables that are associated with the current
      * instance of the workflow. Any change made to this will be seen on the next
      * function call in the workflow lifetime.
      */

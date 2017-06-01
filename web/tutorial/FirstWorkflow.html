@@ -250,7 +250,7 @@ human resources and payroll departments.
 </p>
 
 <p>
-OSWf can save the manager's decision as a name/value pair to a <code>PropertySet</code> which is
+OSWf can save the manager's decision as a name/value pair to a <code>TypedMap</code> which is
 an really neat Java framework also from OpenSymphony and also abandoned like OSWorkflow.  Let's add
 a post-function to each action, shown in red in our revised workflow steps. You can read about
 'post-function' in another tutorial but for now the name should be pretty self-explanatory:
@@ -270,7 +270,7 @@ all will be revealed in time.
         &lt;/results>
         <span style='color:red;'>&lt;post-functions>
           &lt;function type='beanshell'>
-            &lt;arg name='script'>propertySet.setString('result', 'approved');&lt;/arg>
+            &lt;arg name='script'>typedMap.setString('result', 'approved');&lt;/arg>
           &lt;/function>
         &lt;/post-functions></span>
       &lt;/action>
@@ -282,7 +282,7 @@ all will be revealed in time.
         &lt;/results>
         <span style='color:red;'>&lt;post-functions>
           &lt;function type='beanshell'>
-            &lt;arg name='script'>propertySet.setString('result', 'denied');&lt;/arg>
+            &lt;arg name='script'>typedMap.setString('result', 'denied');&lt;/arg>
           &lt;/function>
         &lt;/post-functions></span>
       &lt;/action>  
@@ -292,7 +292,7 @@ all will be revealed in time.
 
 <p>
 There are also ways from within OSWf to save the result of a step or action however you want
-or wherever you want. You would to write an OSWf function to do this.  The <b>PropertySet</b> name/value
+or wherever you want. You would to write an OSWf function to do this.  The <b>TypedMap</b> name/value
 pair storage is builtin and work nicely for use within OSWf.
 </p>
 

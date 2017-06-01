@@ -42,7 +42,7 @@ public interface FunctionProvider {
      * from arg nested elements within the xml, an arg element takes in a name attribute
      * which is the properties key, and the CDATA text contents of the element map to
      * the property value.
-     * @param ps The persistent variables that are associated with the current
+     * @param typedMap The persistent variables that are associated with the current
      * instance of the workflow. Any change made to the propertyset are persisted to
      * the propertyset implementation's persistent store.
      */

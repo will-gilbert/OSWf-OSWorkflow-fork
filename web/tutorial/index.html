@@ -514,7 +514,7 @@
     elements</b> in the workflow descriptor are also all parsed for variables to be dynamically
     converted. A variable is identified when it looks like <b>${foo}</b>. OSWf recognizes
     this form and first looks in the <b>transientVars</b> for the key foo. If the key does not
-    exist as a transient variable, then then  <b>propertySet</b> is searched. If the
+    exist as a transient variable, then then  <b>typedMap</b> is searched. If the
     propertyset does not contain the specified key either, then the entire variable is
     converted to an empty String.</p>
 
@@ -563,24 +563,24 @@
     initiated the auto action.</p>
 
 
-    <h3>PropertySet - Name/Value Pairs</h3>
+    <h3>TypedMap - Name/Value Pairs</h3>
 
 
     <p>
     At any point in the workflow, you will likely want to persist small pieces of data. This is
-    made possible in OSWf by the use of the OpenSymphony PropertySet library. A
-    PropertySet is basically a persistent, type-safe Map. You can add items to the propertyset
+    made possible in OSWf by the use of the OpenSymphony TypedMap library. A
+    TypedMap is basically a persistent, type-safe Map. You can add items to the propertyset
     (one is created per workflow) and later on retrieve them. The propertyset is not emptied or
     deleted unless you explicitly do so yourself. Every function and condition has access to
     this propertyset, as well as any inline scripts, where it is added to the script context
-    with the name 'propertySet'. So, to illustrate an inline script accessing the property set,
+    with the name 'typedMap'. So, to illustrate an inline script accessing the property set,
     let's add the following to our 'Start First Draft' actions' pre-functions.
     </p>
 
     
     <pre class="code">
   &lt;function type="beanshell">
-    &lt;arg name="script">propertySet.setString("foo", "bar")&lt;/arg>
+    &lt;arg name="script">typedMap.setString("foo", "bar")&lt;/arg>
   &lt;/function></pre>
 
     <p>
@@ -592,7 +592,7 @@
 
     <pre class="code">
   &lt;function type=>"beanshell">
-    &lt;arg name="script">String value = propertySet.getString("foo")&lt;/arg>
+    &lt;arg name="script">String value = typedMap.getString("foo")&lt;/arg>
   &lt;/function></pre>
 
 
@@ -638,7 +638,7 @@ public class TitleValidator implements</span> Validator {
 
   public void validate(Map&lt;String,Object> transientVars, 
                        Map&lt;String,String> args, 
-                       PropertySet ps) throws InvalidInputException, 
+                       TypedMap ps) throws InvalidInputException, 
                                               WorkflowException {
                                                                
     String title = (String)transientVars.get("workingTitle");
