@@ -71,6 +71,10 @@ public class ActionRestrictionsTest extends OSWfTestCase implements Constants {
 
     @BeforeClass
     public static void createOSWfConfiguration() throws Exception {
+
+        // Use in memory store/property set; Load the configuration
+        //   in order to access workflows by name.
+
         configuration = new MemoryOSWfConfiguration()
             .load(ActionRestrictionsTest.class.getResource("/oswf-usage.xml"))
         ;
@@ -83,8 +87,10 @@ public class ActionRestrictionsTest extends OSWfTestCase implements Constants {
           
         assertNotNull("Could not get SecurityManager", securityManager);
 
-        // Create a set of users; add them to groups;
+        // Create a set of users; Add them to groups;
         // In production this would be managed by an RDBMS
+        // By createing Users and Roles from the native
+        //   security system
                    
         // Groups
         Role employee = securityManager.createRole("Employees");

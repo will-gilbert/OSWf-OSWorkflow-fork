@@ -177,7 +177,7 @@
 		foundation for OSWf.
 		</p>
 				    
-		<h3>Steps, Status, andActions</h3>
+		<h3>Steps, Status &amp; Actions</h3>
 				    
 		<p>
 			Any particular <em>process instance</em> can have one or more <em>current steps</em>
@@ -218,7 +218,7 @@
 
 				    
 				    
-		<h3>Results, Joins, and Splits<h3>
+		<h3>Results, Joins &amp; Splits<h3>
 			
 		<h4>Default Result</h4>
 
@@ -772,16 +772,16 @@ public class TitleValidator implements</span> Validator {
     The logging output will now contain the workflow process instance ID (piid).
     </p>
 
-
-
+<!-- This needs a better example
     <h3>Integrating with Abstract Entities</h3>
+
     <p>Because OSWf is not an out-of-the-box solution, some development work is required
     to make your project work correctly with OSWf. It is recommended that your core
-    entity, such as "Document" or "Order", be given a new attribute: <em>workflowId</em>. That
+    entity, such as "Document" or "Order", be given a new attribute: <em>PIID</em> for the process instance id. That
     way when a new Document or Order is created, it can be associated with a workflow instance
     also. Then your code can look up that workflow instance and retrieve workflow information
     and/or issue workflow actions via the OSWf API.</p>
-
+-->
 
 
     <h3>Process Instance State</h3>

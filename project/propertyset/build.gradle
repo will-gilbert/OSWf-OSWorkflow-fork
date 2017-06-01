@@ -20,8 +20,8 @@ Site specific variables such as the upload repository can be specified in a a fi
 
 ================================================================================================= */
 
-apply plugin: 'java'    // Used to compile and create JAR artifacts
-apply plugin: 'maven'   // Used to install in the local MAVEN repository
+apply plugin: 'java'            // Used to compile and create JAR artifacts
+apply plugin: 'maven-publish'   // Used to install in the local MAVEN repository
 
 // C O N F I G U R A T I O N ==================================================================
 
@@ -33,6 +33,11 @@ ext.applicationName = "OSWf Property Set"
 
  
 // R E P O S I T O R I E S   &   D E P E N D E N C I E S ======================================
+
+repositories {
+    mavenLocal()     // User's local Maven repository e.g. SNAPSHOTs
+    mavenCentral()   // Maven Central repositories
+}
 
 dependencies {
 
@@ -61,4 +66,12 @@ dependencies {
         "com.h2database:h2:$h2"
     ])
 
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
 }

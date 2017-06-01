@@ -10,7 +10,8 @@ import java.util.Map;
 import java.util.HashMap;
 
 /**
- *
+ * A map which behaves like a persistence store i.e. a database, to store
+ *  the property set for each processes instance. 
  */
  
 public class MemoryPropertySetStore implements PropertySetStore {

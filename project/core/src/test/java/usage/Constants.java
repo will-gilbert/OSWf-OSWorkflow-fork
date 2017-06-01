@@ -19,10 +19,10 @@ public interface Constants  {
     final static int REQUEST_LEAVE                 = REQUEST_HOLIDAYS;
     
     // Actions = Manager
-    final static int CLAIM_WORK_ITEM                    = 251;
+    final static int CLAIM_WORK_ITEM               = 251;
     final static int LINE_MANAGER_APPROVES         = 201;
     final static int LINE_MANAGER_DENIES           = 202;
-    final static int RELEASE_WORK_ITEM                  = 203;
+    final static int RELEASE_WORK_ITEM             = 203;
 
     // Actions - HR
     final static int HUMAN_RESOURCES_APPROVES      = 301;
