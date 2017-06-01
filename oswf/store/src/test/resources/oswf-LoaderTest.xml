@@ -14,16 +14,16 @@
     <propertysets>
 
         <!-- Use all defaults; requires 'SessionFactory' to be injected via 'persistentArgs' -->
-        <propertyset name="hibernate" class="org.informagen.oswf.typedmap.HibernateTypedMap"/>    
+        <propertyset name="hibernate" class="org.informagen.typedmap.HibernateTypedMap"/>    
     
         <!-- Report time in the Eastern US timezone using a non-IS8601 format -->
-        <propertyset name="US-Eastern" class="org.informagen.oswf.typedmap.HibernateTypedMap" >    
+        <propertyset name="US-Eastern" class="org.informagen.typedmap.HibernateTypedMap" >    
             <parameter name="timeZone" value="US/Eastern" />
             <parameter name="dateFormat" value="EEE, dd-MMM-yyyy hh:mm Z" />
         </propertyset>
 
         <!-- Configure completely via XML parameters; no hibernate configuration files used  --> 
-        <propertyset name="H2-Hibernate-cfg" class="org.informagen.oswf.typedmap.HibernateTypedMap" >    
+        <propertyset name="H2-Hibernate-cfg" class="org.informagen.typedmap.HibernateTypedMap" >    
  
             <parameter name="timeZone" value="US/Eastern" />
             <parameter name="dateFormat" value="yyyy-MM-dd HH:mm:ss Z" />

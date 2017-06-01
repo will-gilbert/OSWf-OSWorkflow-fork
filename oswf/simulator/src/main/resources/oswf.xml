@@ -41,7 +41,7 @@
 
     <propertysets>
     
-        <propertyset name="simulator" class="org.informagen.oswf.typedmap.HibernateTypedMap" >    
+        <propertyset name="simulator" class="org.informagen.typedmap.HibernateTypedMap" >    
             <parameter name="timeZone" value="US/Eastern" />
             <parameter name="dateFormat" value="yyyy-MMM-dd HH:mm" />
         </propertyset>

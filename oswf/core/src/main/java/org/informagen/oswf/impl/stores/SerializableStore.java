@@ -3,8 +3,8 @@ package org.informagen.oswf.impl.stores;
 import org.informagen.oswf.ProcessInstance;
 import org.informagen.oswf.Step;
 
-import org.informagen.oswf.typedmap.TypedMap;
-import org.informagen.oswf.typedmap.TypedMapFactory;
+import org.informagen.typedmap.TypedMap;
+import org.informagen.typedmap.TypedMapFactory;
 
 import org.informagen.oswf.impl.*;
 

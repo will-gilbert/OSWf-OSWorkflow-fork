@@ -1,6 +1,6 @@
 package org.informagen.oswf.conditions;
 
-import org.informagen.oswf.typedmap.TypedMap;
+import org.informagen.typedmap.TypedMap;
 
 // OSWf Security
 import org.informagen.oswf.SecurityManager;

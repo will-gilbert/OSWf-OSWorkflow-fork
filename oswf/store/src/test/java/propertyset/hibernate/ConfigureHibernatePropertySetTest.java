@@ -4,14 +4,14 @@ package propertyset.hibernate;
 import org.informagen.oswf.OSWfConfiguration;
 import org.informagen.oswf.impl.DefaultOSWfConfiguration;
 
-import org.informagen.oswf.typedmap.hibernate.HibernateConfigurationProvider;
-import org.informagen.oswf.typedmap.HibernateTypedMap;
+import org.informagen.typedmap.hibernate.HibernateConfigurationProvider;
+import org.informagen.typedmap.HibernateTypedMap;
 import org.informagen.oswf.exceptions.WorkflowStoreException;
 
 
 // OSWf Typed Map
-import org.informagen.oswf.typedmap.TypedMap;
-import org.informagen.oswf.typedmap.TypedMapFactory;
+import org.informagen.typedmap.TypedMap;
+import org.informagen.typedmap.TypedMapFactory;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -160,7 +160,7 @@ public class ConfigureHibernatePropertySetTest  {
         args.put("processInstanceId", random.nextLong()); 
 
         Map<String,String> config = new HashMap<String,String>();
-        config.put("configuration.provider.class","org.informagen.oswf.typedmap.hibernate.HibernateConfigurationProvider");
+        config.put("configuration.provider.class","org.informagen.typedmap.hibernate.HibernateConfigurationProvider");
         config.put("resources", resources);
     
         propertySet = new HibernateTypedMap(config, args);

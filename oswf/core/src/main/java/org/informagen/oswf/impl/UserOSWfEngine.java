@@ -17,7 +17,7 @@ import org.informagen.oswf.security.User;
 import org.informagen.oswf.exceptions.WorkflowException;
 
 // OSWF - TypedMap
-import org.informagen.oswf.typedmap.TypedMap;
+import org.informagen.typedmap.TypedMap;
 
 // Java - Collections
 import java.util.Collection;

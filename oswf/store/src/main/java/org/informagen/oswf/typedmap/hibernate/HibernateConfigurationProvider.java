@@ -1,7 +1,7 @@
-package org.informagen.oswf.typedmap.hibernate;
+package org.informagen.typedmap.hibernate;
 
 // This package
-import org.informagen.oswf.typedmap.hibernate.HibernateTypedMapDAO;
+import org.informagen.typedmap.hibernate.HibernateTypedMapDAO;
 
 // Logging
 import org.slf4j.Logger;

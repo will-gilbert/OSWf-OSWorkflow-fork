@@ -2,8 +2,8 @@ package org.informagen.oswf.impl;
 
 import org.informagen.oswf.TypedMapStore;
 
-import org.informagen.oswf.typedmap.TypedMap;
-import org.informagen.oswf.typedmap.MemoryTypedMap;
+import org.informagen.typedmap.TypedMap;
+import org.informagen.typedmap.MemoryTypedMap;
 
 // Java - Collections
 import java.util.Map;

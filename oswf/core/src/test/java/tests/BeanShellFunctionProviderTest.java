@@ -1,7 +1,7 @@
 package tests;
 
-import org.informagen.oswf.typedmap.TypedMap;
-import org.informagen.oswf.typedmap.JDBCTypedMap;
+import org.informagen.typedmap.TypedMap;
+import org.informagen.typedmap.JDBCTypedMap;
 
 import org.informagen.oswf.functions.BeanShellFunctionProvider;
 

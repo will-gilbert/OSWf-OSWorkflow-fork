@@ -8,7 +8,7 @@ import org.informagen.oswf.Step;
 import org.informagen.oswf.descriptors.WorkflowDescriptor;
 
 // OSWf - TypedMap
-import org.informagen.oswf.typedmap.TypedMap;
+import org.informagen.typedmap.TypedMap;
 
 
 // Java Collections

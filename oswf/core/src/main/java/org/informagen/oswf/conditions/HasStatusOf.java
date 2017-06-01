@@ -6,7 +6,7 @@ import org.informagen.oswf.ProcessInstance;
 import org.informagen.oswf.WorkflowStore;
 
 // OS PropertySet
-import org.informagen.oswf.typedmap.TypedMap;
+import org.informagen.typedmap.TypedMap;
 
 // OSWf Exceptions
 import org.informagen.oswf.exceptions.WorkflowStoreException;

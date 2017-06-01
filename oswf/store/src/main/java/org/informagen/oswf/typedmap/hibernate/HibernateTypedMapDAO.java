@@ -1,11 +1,11 @@
-package org.informagen.oswf.typedmap.hibernate;
+package org.informagen.typedmap.hibernate;
 
 // This package
-import org.informagen.oswf.typedmap.hibernate.HibernateTypedMapItem;
+import org.informagen.typedmap.hibernate.HibernateTypedMapItem;
 
 // OSWf PropertySet
-import org.informagen.oswf.typedmap.Type;
-import org.informagen.oswf.typedmap.exceptions.TypedMapException;
+import org.informagen.typedmap.Type;
+import org.informagen.typedmap.exceptions.TypedMapException;
 
 
 // Hibernate

@@ -1,6 +1,6 @@
 package org.informagen.oswf.conditions;
 
-import org.informagen.oswf.typedmap.TypedMap;
+import org.informagen.typedmap.TypedMap;
 
 import org.informagen.oswf.Condition;
 import org.informagen.oswf.exceptions.WorkflowStoreException;

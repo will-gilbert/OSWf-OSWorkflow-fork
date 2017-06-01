@@ -17,7 +17,7 @@ import org.informagen.oswf.exceptions.WorkflowException;
 
 import org.informagen.oswf.testing.OSWfAssertions;
 
-import org.informagen.oswf.typedmap.TypedMap;
+import org.informagen.typedmap.TypedMap;
 
 // Logging
 import org.slf4j.Logger;

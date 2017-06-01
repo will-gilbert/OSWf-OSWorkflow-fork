@@ -16,7 +16,7 @@ import org.informagen.oswf.impl.DefaultOSWfConfiguration;
 
 import org.informagen.oswf.descriptors.WorkflowDescriptor;
 
-import org.informagen.oswf.typedmap.TypedMap;
+import org.informagen.typedmap.TypedMap;
 
 import org.informagen.oswf.Step;
 

@@ -55,8 +55,8 @@ import org.informagen.oswf.exceptions.WorkflowLoaderException;
 
 
 // OpenSymphony PropertySet
-import org.informagen.oswf.typedmap.TypedMap;
-import org.informagen.oswf.typedmap.MemoryTypedMap;
+import org.informagen.typedmap.TypedMap;
+import org.informagen.typedmap.MemoryTypedMap;
 
 // Simple Logging
 import org.slf4j.Logger;

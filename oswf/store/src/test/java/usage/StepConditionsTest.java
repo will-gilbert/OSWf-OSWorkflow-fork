@@ -24,7 +24,7 @@ import org.informagen.oswf.descriptors.WorkflowDescriptor;
 import org.informagen.oswf.descriptors.StepDescriptor;
 import org.informagen.oswf.descriptors.StepConditionDescriptor;
 
-import org.informagen.oswf.typedmap.TypedMap;
+import org.informagen.typedmap.TypedMap;
 import org.informagen.oswf.TypedMapStore;
 
 // OSWf delegate which installs a Custom TypedMap mapping

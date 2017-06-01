@@ -2,7 +2,7 @@ package org.informagen.oswf.impl;
 
 import org.informagen.oswf.VariableResolver;
 
-import org.informagen.oswf.typedmap.TypedMap;
+import org.informagen.typedmap.TypedMap;
 
 import java.io.Serializable;
 

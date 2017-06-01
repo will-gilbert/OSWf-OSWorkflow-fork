@@ -4,9 +4,9 @@ package tests.typedmap;
 // This package - Super class tests
 import tests.typedmap.AbstractTestClass;
 
-import org.informagen.oswf.typedmap.TypedMap;
-import org.informagen.oswf.typedmap.Type;
-import org.informagen.oswf.typedmap.MemoryTypedMap;
+import org.informagen.typedmap.TypedMap;
+import org.informagen.typedmap.Type;
+import org.informagen.typedmap.MemoryTypedMap;
 
 
 // JUnit 4.x testing

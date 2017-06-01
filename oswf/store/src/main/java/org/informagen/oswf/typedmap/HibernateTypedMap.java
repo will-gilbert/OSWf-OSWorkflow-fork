@@ -1,24 +1,24 @@
-package org.informagen.oswf.typedmap;
+package org.informagen.typedmap;
 
 // This package
-import org.informagen.oswf.typedmap.hibernate.HibernateTypedMapItem;
-import org.informagen.oswf.typedmap.hibernate.HibernateTypedMapDAO;
-import org.informagen.oswf.typedmap.hibernate.HibernateConfigurationProvider;
+import org.informagen.typedmap.hibernate.HibernateTypedMapItem;
+import org.informagen.typedmap.hibernate.HibernateTypedMapDAO;
+import org.informagen.typedmap.hibernate.HibernateConfigurationProvider;
 
 
 // OSWf - PropertySet
-import org.informagen.oswf.typedmap.AbstractTypedMap;
-import org.informagen.oswf.typedmap.Type;
-import org.informagen.oswf.typedmap.exceptions.TypedMapException;
-import org.informagen.oswf.typedmap.exceptions.IllegalValueException;
+import org.informagen.typedmap.AbstractTypedMap;
+import org.informagen.typedmap.Type;
+import org.informagen.typedmap.exceptions.TypedMapException;
+import org.informagen.typedmap.exceptions.IllegalValueException;
 
 // OSWf - Utilities 
 import org.informagen.oswf.util.ClassLoaderHelper;
 
 // OSWf - PropertySet Utililites
-import org.informagen.oswf.typedmap.util.ByteArray;
-import org.informagen.oswf.typedmap.util.XMLUtils;
-import org.informagen.oswf.typedmap.util.Base64;
+import org.informagen.typedmap.util.ByteArray;
+import org.informagen.typedmap.util.XMLUtils;
+import org.informagen.typedmap.util.Base64;
 
 // Logging
 import org.slf4j.Logger;

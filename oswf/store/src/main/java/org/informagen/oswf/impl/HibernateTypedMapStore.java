@@ -2,16 +2,16 @@ package org.informagen.oswf.impl;
 
 
 // OSWf -  TypedMap Hibernate 3.x
-import org.informagen.oswf.typedmap.HibernateTypedMap;
-import org.informagen.oswf.typedmap.hibernate.HibernateConfigurationProvider;
+import org.informagen.typedmap.HibernateTypedMap;
+import org.informagen.typedmap.hibernate.HibernateConfigurationProvider;
 
 
 // OSWf - Core
 import org.informagen.oswf.TypedMapStore;
 
 // OpenSymphony - TypedMap 
-import org.informagen.oswf.typedmap.TypedMap;
-import org.informagen.oswf.typedmap.TypedMapFactory;
+import org.informagen.typedmap.TypedMap;
+import org.informagen.typedmap.TypedMapFactory;
 import org.informagen.oswf.exceptions.WorkflowStoreException;
 
 // Hibernate 3.2.x

@@ -38,9 +38,9 @@ import org.informagen.oswf.exceptions.InvalidInputException;
 import org.informagen.oswf.exceptions.InvalidActionException;
 
 // OSWf - PropertSet
-import org.informagen.oswf.typedmap.TypedMap;
-import org.informagen.oswf.typedmap.Type;
-import org.informagen.oswf.typedmap.exceptions.InvalidValueTypeException;
+import org.informagen.typedmap.TypedMap;
+import org.informagen.typedmap.Type;
+import org.informagen.typedmap.exceptions.InvalidValueTypeException;
 
 
 

@@ -10,8 +10,8 @@ import org.informagen.oswf.exceptions.WorkflowStoreException;
 
 
 // OSWf - Typed Map
-import org.informagen.oswf.typedmap.TypedMap;
-import org.informagen.oswf.typedmap.TypedMapFactory;
+import org.informagen.typedmap.TypedMap;
+import org.informagen.typedmap.TypedMapFactory;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

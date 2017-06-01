@@ -1,6 +1,6 @@
 package org.informagen.oswf.registers;
 
-import org.informagen.oswf.typedmap.TypedMap;
+import org.informagen.typedmap.TypedMap;
 
 import org.informagen.oswf.Register;
 import org.informagen.oswf.WorkflowContext;

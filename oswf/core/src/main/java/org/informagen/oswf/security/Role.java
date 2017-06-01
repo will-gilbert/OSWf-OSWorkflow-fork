@@ -2,7 +2,7 @@ package org.informagen.oswf.security;
 
 import org.informagen.oswf.security.User;
 
-import org.informagen.oswf.typedmap.TypedMap;
+import org.informagen.typedmap.TypedMap;
 
 // Java - Security
 import java.security.Principal;

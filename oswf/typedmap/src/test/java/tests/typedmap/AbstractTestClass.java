@@ -2,10 +2,10 @@ package tests.typedmap;
 
 
 // OSWf - TypedMap
-import org.informagen.oswf.typedmap.TypedMap;
-import org.informagen.oswf.typedmap.Type;
-import org.informagen.oswf.typedmap.util.XMLUtils;
-import org.informagen.oswf.typedmap.exceptions.TypedMapException;
+import org.informagen.typedmap.TypedMap;
+import org.informagen.typedmap.Type;
+import org.informagen.typedmap.util.XMLUtils;
+import org.informagen.typedmap.exceptions.TypedMapException;
 
 import java.lang.StringBuffer;
 import java.util.Date;

@@ -1,7 +1,7 @@
 package org.informagen.oswf.security;
 
 import org.informagen.oswf.security.Role;
-import org.informagen.oswf.typedmap.TypedMap;
+import org.informagen.typedmap.TypedMap;
 
 import java.security.Principal;
 

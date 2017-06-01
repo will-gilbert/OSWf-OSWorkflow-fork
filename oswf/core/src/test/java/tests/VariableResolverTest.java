@@ -1,7 +1,7 @@
 package tests;
 
-import org.informagen.oswf.typedmap.TypedMap;
-import org.informagen.oswf.typedmap.MemoryTypedMap;
+import org.informagen.typedmap.TypedMap;
+import org.informagen.typedmap.MemoryTypedMap;
 
 import org.informagen.oswf.VariableResolver;
 import org.informagen.oswf.impl.DefaultVariableResolver;

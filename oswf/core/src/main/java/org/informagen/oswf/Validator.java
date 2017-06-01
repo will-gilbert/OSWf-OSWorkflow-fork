@@ -5,7 +5,7 @@ import org.informagen.oswf.exceptions.InvalidInputException;
 import org.informagen.oswf.exceptions.WorkflowException;
 
 
-import org.informagen.oswf.typedmap.TypedMap;
+import org.informagen.typedmap.TypedMap;
 
 import java.util.Map;
 

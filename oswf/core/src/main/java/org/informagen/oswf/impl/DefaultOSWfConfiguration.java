@@ -11,7 +11,7 @@ import org.informagen.oswf.exceptions.WorkflowStoreException;
 
 // Persistence
 import org.informagen.oswf.WorkflowStore;
-import org.informagen.oswf.typedmap.TypedMapFactory;
+import org.informagen.typedmap.TypedMapFactory;
 
 // Variable and Type Resolvers
 import org.informagen.oswf.VariableResolver;

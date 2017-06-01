@@ -1,8 +1,8 @@
 package tests.typedmap;
 
-import org.informagen.oswf.typedmap.TypedMap;
-import org.informagen.oswf.typedmap.Type;
-import org.informagen.oswf.typedmap.JDBCTypedMap;
+import org.informagen.typedmap.TypedMap;
+import org.informagen.typedmap.Type;
+import org.informagen.typedmap.JDBCTypedMap;
 
 import org.osjava.sj.loader.SJDataSource;
 

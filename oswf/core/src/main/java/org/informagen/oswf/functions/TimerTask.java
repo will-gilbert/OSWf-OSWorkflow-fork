@@ -13,7 +13,7 @@ import org.informagen.oswf.impl.DefaultOSWfEngine;
 import org.informagen.oswf.descriptors.WorkflowDescriptor;
 
 
-import org.informagen.oswf.typedmap.TypedMap;
+import org.informagen.typedmap.TypedMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

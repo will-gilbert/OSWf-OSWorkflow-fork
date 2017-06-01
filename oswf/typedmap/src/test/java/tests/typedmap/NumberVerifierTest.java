@@ -1,8 +1,8 @@
 
 package tests.typedmap;
 
-import org.informagen.oswf.typedmap.verifiers.NumberVerifier;
-import org.informagen.oswf.typedmap.verifiers.VerifyException;
+import org.informagen.typedmap.verifiers.NumberVerifier;
+import org.informagen.typedmap.verifiers.VerifyException;
 
 // JUnit 4.x testing
 import org.junit.AfterClass;

@@ -4,11 +4,11 @@ package propertyset.hibernate;
 // Super class tests
 import propertyset.TypedMapBase;
 
-import org.informagen.oswf.typedmap.hibernate.HibernateConfigurationProvider;
+import org.informagen.typedmap.hibernate.HibernateConfigurationProvider;
 
-import org.informagen.oswf.typedmap.HibernateTypedMap;
+import org.informagen.typedmap.HibernateTypedMap;
 
-import org.informagen.oswf.typedmap.exceptions.TypedMapException;
+import org.informagen.typedmap.exceptions.TypedMapException;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

@@ -15,7 +15,7 @@ import org.informagen.oswf.ProcessInstance;
 import org.informagen.oswf.impl.DefaultOSWfEngine;
 
 // OSWf - TypedMap
-import org.informagen.oswf.typedmap.TypedMap;
+import org.informagen.typedmap.TypedMap;
 
 // Java - Util
 import java.util.Map;

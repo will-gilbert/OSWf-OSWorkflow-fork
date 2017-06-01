@@ -4,7 +4,7 @@ import bsh.EvalError;
 import bsh.Interpreter;
 import bsh.TargetError;
 
-import org.informagen.oswf.typedmap.TypedMap;
+import org.informagen.typedmap.TypedMap;
 
 import org.informagen.oswf.*;
 import org.informagen.oswf.ProcessInstance;

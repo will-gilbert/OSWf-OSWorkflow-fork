@@ -1,7 +1,7 @@
 package org.informagen.oswf;
 
-import org.informagen.oswf.typedmap.TypedMap;
-import org.informagen.oswf.typedmap.exceptions.TypedMapException;
+import org.informagen.typedmap.TypedMap;
+import org.informagen.typedmap.exceptions.TypedMapException;
 
 public interface TypedMapStore {
 
