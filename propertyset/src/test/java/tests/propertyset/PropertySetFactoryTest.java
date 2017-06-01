@@ -10,9 +10,9 @@ package tests.propertyset;
 
 import tests.propertyset.TestBean;
 
-import org.informagen.oswf.propertyset.PropertySet;
-import org.informagen.oswf.propertyset.PropertySetFactory;
-import org.informagen.oswf.propertyset.exceptions.PropertyImplementationException;
+import org.informagen.propertyset.PropertySet;
+import org.informagen.propertyset.PropertySetFactory;
+import org.informagen.propertyset.exceptions.PropertyImplementationException;
 
 
 // Java - Collections
@@ -57,13 +57,13 @@ public class PropertySetFactoryTest {
         PropertySetFactory factory = PropertySetFactory.getInstance();
         assertNotNull(factory);
         
-        assertEquals(factory.getClassName("aggregate"), "org.informagen.oswf.propertyset.AggregatePropertySet");
-        assertEquals(factory.getClassName("proxy"), "org.informagen.oswf.propertyset.ProxyPropertySet");
-        assertEquals(factory.getClassName("bean"), "org.informagen.oswf.propertyset.BeanPropertySet");
-        assertEquals(factory.getClassName("map"), "org.informagen.oswf.propertyset.MapPropertySet");
-        assertEquals(factory.getClassName("memory"), "org.informagen.oswf.propertyset.MemoryPropertySet");
-        assertEquals(factory.getClassName("serializable"), "org.informagen.oswf.propertyset.SerializablePropertySet");
-        assertEquals(factory.getClassName("xml"), "org.informagen.oswf.propertyset.XMLPropertySet");
+        assertEquals(factory.getClassName("aggregate"), "org.informagen.propertyset.AggregatePropertySet");
+        assertEquals(factory.getClassName("proxy"), "org.informagen.propertyset.ProxyPropertySet");
+        assertEquals(factory.getClassName("bean"), "org.informagen.propertyset.BeanPropertySet");
+        assertEquals(factory.getClassName("map"), "org.informagen.propertyset.MapPropertySet");
+        assertEquals(factory.getClassName("memory"), "org.informagen.propertyset.MemoryPropertySet");
+        assertEquals(factory.getClassName("serializable"), "org.informagen.propertyset.SerializablePropertySet");
+        assertEquals(factory.getClassName("xml"), "org.informagen.propertyset.XMLPropertySet");
 } 
  
     @Ignore
@@ -71,8 +71,8 @@ public class PropertySetFactoryTest {
         
         PropertySetFactory factory = PropertySetFactory.getInstance();
         assertNotNull(factory);
-        assertEquals(factory.getClassName("jdbc"), "org.informagen.oswf.propertyset.JDBCPropertySet");
-        assertEquals(factory.getClassName("jdbc-jndi"), "org.informagen.oswf.propertyset.JDBCPropertySet");
+        assertEquals(factory.getClassName("jdbc"), "org.informagen.propertyset.JDBCPropertySet");
+        assertEquals(factory.getClassName("jdbc-jndi"), "org.informagen.propertyset.JDBCPropertySet");
     }
 
     @Ignore
@@ -80,7 +80,7 @@ public class PropertySetFactoryTest {
         
         PropertySetFactory config = PropertySetFactory.getInstance();
         assertNotNull(config);
-        assertEquals(config.getClassName("jdbc-jndi"), "org.informagen.oswf.propertyset.JDBCPropertySet");
+        assertEquals(config.getClassName("jdbc-jndi"), "org.informagen.propertyset.JDBCPropertySet");
 
         Map<String,String> parameters = config.getParameters("jdbc-jndi");
         assertNotNull(parameters);

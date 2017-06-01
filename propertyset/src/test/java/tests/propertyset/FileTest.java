@@ -1,12 +1,12 @@
 package tests.propertyset;
 
-import org.informagen.oswf.propertyset.PropertySet;
-import org.informagen.oswf.propertyset.Type;
-import org.informagen.oswf.propertyset.FilePropertySet;
-import org.informagen.oswf.propertyset.MemoryPropertySet;
-import org.informagen.oswf.propertyset.util.PropertySetCloner;
+import org.informagen.propertyset.PropertySet;
+import org.informagen.propertyset.Type;
+import org.informagen.propertyset.FilePropertySet;
+import org.informagen.propertyset.MemoryPropertySet;
+import org.informagen.propertyset.util.PropertySetCloner;
 
-import org.informagen.oswf.propertyset.util.XMLUtils;
+import org.informagen.propertyset.util.XMLUtils;
 
 
 import junit.framework.TestCase;

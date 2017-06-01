@@ -1,8 +1,8 @@
 package tests.propertyset;
 
-import org.informagen.oswf.propertyset.PropertySet;
-import org.informagen.oswf.propertyset.Type;
-import org.informagen.oswf.propertyset.JDBCPropertySet;
+import org.informagen.propertyset.PropertySet;
+import org.informagen.propertyset.Type;
+import org.informagen.propertyset.JDBCPropertySet;
 
 import org.osjava.sj.loader.SJDataSource;
 

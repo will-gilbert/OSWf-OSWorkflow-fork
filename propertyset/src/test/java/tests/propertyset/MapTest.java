@@ -2,9 +2,9 @@ package tests.propertyset;
 
 import tests.propertyset.AbstractTestClass;
 
-import org.informagen.oswf.propertyset.PropertySet;
-import org.informagen.oswf.propertyset.Type;
-import org.informagen.oswf.propertyset.MapPropertySet;
+import org.informagen.propertyset.PropertySet;
+import org.informagen.propertyset.Type;
+import org.informagen.propertyset.MapPropertySet;
 
 import java.util.Map;
 import java.util.HashMap;

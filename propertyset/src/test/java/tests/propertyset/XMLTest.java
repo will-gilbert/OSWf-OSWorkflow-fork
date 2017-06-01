@@ -3,11 +3,11 @@ package tests.propertyset;
 // This package - Super class tests
 import tests.propertyset.AbstractTestClass;
 
-import org.informagen.oswf.propertyset.PropertySet;
-import org.informagen.oswf.propertyset.Type;
-import org.informagen.oswf.propertyset.XMLPropertySet;
+import org.informagen.propertyset.PropertySet;
+import org.informagen.propertyset.Type;
+import org.informagen.propertyset.XMLPropertySet;
 
-import org.informagen.oswf.propertyset.exceptions.PropertySetException;
+import org.informagen.propertyset.exceptions.PropertySetException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;

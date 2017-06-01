@@ -1,10 +1,10 @@
 package tests.propertyset;
 
-import org.informagen.oswf.propertyset.PropertySet;
-import org.informagen.oswf.propertyset.Type;
-import org.informagen.oswf.propertyset.exceptions.InvalidPropertyTypeException;
+import org.informagen.propertyset.PropertySet;
+import org.informagen.propertyset.Type;
+import org.informagen.propertyset.exceptions.InvalidPropertyTypeException;
 
-import org.informagen.oswf.propertyset.BeanPropertySet;
+import org.informagen.propertyset.BeanPropertySet;
 
 // JUnit 4.x testing
 import org.junit.AfterClass;

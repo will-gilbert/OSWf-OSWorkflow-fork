@@ -9,9 +9,9 @@
 
     <propertysets>
         
-        <!-- <propertyset name="proxy" class="org.informagen.oswf.propertyset.ProxyPropertySet"/> -->
+        <!-- <propertyset name="proxy" class="org.informagen.propertyset.ProxyPropertySet"/> -->
 
-        <propertyset name="jdbc-jndi" class="org.informagen.oswf.propertyset.JDBCPropertySet">
+        <propertyset name="jdbc-jndi" class="org.informagen.propertyset.JDBCPropertySet">
             <parameter name="jndi"          value="jdbc/H2"/>
             <parameter name="table.name"    value="OS_PROPERTYENTRY"/>
             <parameter name="col.globalKey" value="GLOBAL_KEY"/>
@@ -25,7 +25,7 @@
         </propertyset>
 
 
-        <propertyset name="jdbc" class="org.informagen.oswf.propertyset.JDBCPropertySet">
+        <propertyset name="jdbc" class="org.informagen.propertyset.JDBCPropertySet">
             <parameter name="table.name"    value="OS_PROPERTYENTRY"/>
             <parameter name="col.globalKey" value="GLOBAL_KEY"/>
             <parameter name="col.itemKey"   value="ITEM_KEY"/>

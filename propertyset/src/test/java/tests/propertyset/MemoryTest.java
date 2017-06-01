@@ -4,9 +4,9 @@ package tests.propertyset;
 // This package - Super class tests
 import tests.propertyset.AbstractTestClass;
 
-import org.informagen.oswf.propertyset.PropertySet;
-import org.informagen.oswf.propertyset.Type;
-import org.informagen.oswf.propertyset.MemoryPropertySet;
+import org.informagen.propertyset.PropertySet;
+import org.informagen.propertyset.Type;
+import org.informagen.propertyset.MemoryPropertySet;
 
 
 // JUnit 4.x testing

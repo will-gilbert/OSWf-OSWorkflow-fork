@@ -2,10 +2,10 @@ package tests.propertyset;
 
 
 // OSWf - PropertySet
-import org.informagen.oswf.propertyset.PropertySet;
-import org.informagen.oswf.propertyset.Type;
-import org.informagen.oswf.propertyset.util.XMLUtils;
-import org.informagen.oswf.propertyset.exceptions.PropertySetException;
+import org.informagen.propertyset.PropertySet;
+import org.informagen.propertyset.Type;
+import org.informagen.propertyset.util.XMLUtils;
+import org.informagen.propertyset.exceptions.PropertySetException;
 
 import java.lang.StringBuffer;
 import java.util.Date;

@@ -5,13 +5,13 @@ package tests.propertyset;
 // This package - Super class tests
 import tests.propertyset.AbstractTestClass;
 
-import org.informagen.oswf.propertyset.PropertySet;
-import org.informagen.oswf.propertyset.Type;
-import org.informagen.oswf.propertyset.MemoryPropertySet;
-import org.informagen.oswf.propertyset.MapPropertySet;
-import org.informagen.oswf.propertyset.XMLPropertySet;
-import org.informagen.oswf.propertyset.SerializablePropertySet;
-import org.informagen.oswf.propertyset.AggregatePropertySet;
+import org.informagen.propertyset.PropertySet;
+import org.informagen.propertyset.Type;
+import org.informagen.propertyset.MemoryPropertySet;
+import org.informagen.propertyset.MapPropertySet;
+import org.informagen.propertyset.XMLPropertySet;
+import org.informagen.propertyset.SerializablePropertySet;
+import org.informagen.propertyset.AggregatePropertySet;
 
 
 // Java - Collections

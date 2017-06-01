@@ -1,8 +1,8 @@
 
 package tests.propertyset;
 
-import org.informagen.oswf.propertyset.verifiers.NumberVerifier;
-import org.informagen.oswf.propertyset.verifiers.VerifyException;
+import org.informagen.propertyset.verifiers.NumberVerifier;
+import org.informagen.propertyset.verifiers.VerifyException;
 
 // JUnit 4.x testing
 import org.junit.AfterClass;
