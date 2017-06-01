@@ -41,7 +41,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
-@Ignore
+
 public class FileTest  {
 
     protected static final String PROPERTIES_FILE = "build/FilePropertySet.properties";

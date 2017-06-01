@@ -13,12 +13,6 @@ gradle clean
 ====================================================================================================
 """}
 
-/* C O N F I G U R A T I O N  ======================================================================
-Site specific variables such as the upload repository can be specified in a a file name
-   'gradle.properties'.  This properties file should not be uploaded into the SCM. For GIT the
-   .gitignore file should be set to exclude it from consideration.
-
-================================================================================================= */
 
 apply plugin: 'java'            // Used to compile and create JAR artifacts
 apply plugin: 'maven-publish'   // Used to install in the local MAVEN repository
@@ -40,6 +34,13 @@ repositories {
 }
 
 dependencies {
+
+    // Define versions
+    def slf4j    = '1.7.25'
+    def log4j    = '1.2.17'
+    def junit    = '4.12'
+    def jndi     = '0.11.4.1'
+    def h2       = '1.4.195'
 
     compile ([
         // Simple Logging Facade for Java   
