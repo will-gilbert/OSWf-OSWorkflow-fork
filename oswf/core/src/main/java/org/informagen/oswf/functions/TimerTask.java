@@ -34,7 +34,7 @@ public class TimerTask implements FunctionProvider {
     public static OSWfEngine wfEngine = new DefaultOSWfEngine(ACTOR); 
     public static Timer timer = new Timer();
     
-    public void execute(Map<String,Object> transientVars, Map<String,String> args, TypedMap ps) throws WorkflowException {
+    public void execute(Map<String,Object> transientVars, Map<String,String> args, TypedMap persistentVars) throws WorkflowException {
 
         ProcessInstance processInstance = (ProcessInstance)transientVars.get("pi");
 

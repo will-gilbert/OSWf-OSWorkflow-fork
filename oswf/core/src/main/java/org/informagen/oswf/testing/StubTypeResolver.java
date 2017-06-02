@@ -99,19 +99,19 @@ public class StubTypeResolver extends DefaultTypeResolver {
     }
     
     public static class ConditionStub implements Condition {
-        public boolean passesCondition(Map<String,Object> transientVars, Map<String,String> args, TypedMap ps) throws WorkflowException {return true;}
+        public boolean passesCondition(Map<String,Object> transientVars, Map<String,String> args, TypedMap persistentVars) throws WorkflowException {return true;}
     }
     
     public static class FunctionProviderStub implements FunctionProvider {
-        public void execute(Map<String,Object> transientVars, Map<String,String> args, TypedMap ps) throws WorkflowException {}
+        public void execute(Map<String,Object> transientVars, Map<String,String> args, TypedMap persistentVars) throws WorkflowException {}
     }
     
     public static class RegisterStub implements Register {
-        public Object registerVariable(WorkflowContext context, ProcessInstance entry, Map<String,String> args, TypedMap ps) throws WorkflowException { return null; }
+        public Object registerVariable(WorkflowContext context, ProcessInstance entry, Map<String,String> args, TypedMap persistentVars) throws WorkflowException { return null; }
     }
     
     public static class ValidatorStub implements Validator {
-        public void validate(Map<String,Object> transientVars, Map<String,String> args, TypedMap ps) throws WorkflowException {}
+        public void validate(Map<String,Object> transientVars, Map<String,String> args, TypedMap persistentVars) throws WorkflowException {}
     }
 
     

@@ -20,7 +20,7 @@ import java.util.Map;
 
 public class SetStringProperty implements FunctionProvider {
 
-    public void execute(Map<String,Object> transientVars, Map<String,String> args, TypedMap ps) {
+    public void execute(Map<String,Object> transientVars, Map<String,String> args, TypedMap persistentVars) {
 
         // Expects a name/value pair as argument inputs
         String name = args.get("name");
@@ -35,6 +35,6 @@ public class SetStringProperty implements FunctionProvider {
             value = theDefault;
         
         if(value != null)        
-            ps.setString(name, value);
+            persistentVars.setString(name, value);
     }
 }

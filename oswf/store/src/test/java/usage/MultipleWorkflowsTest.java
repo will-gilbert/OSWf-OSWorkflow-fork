@@ -182,7 +182,7 @@ public class MultipleWorkflowsTest extends OSWfHibernateTestCase implements Leav
         // Determine Ted's last step status.
         //  NB: With this workflow we can't determine the final outcome of
         //      this workflow!!!
-        // We must use a persistant variable
+        // We must use a persistent variable
         
         List<Step> historySteps = wfEngine.getHistorySteps(tedId);
 

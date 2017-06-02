@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class HasPropertySetValue implements Condition {
 
-    public boolean passesCondition(Map<String,Object> transientVars, Map<String,String> args, TypedMap ps) {
+    public boolean passesCondition(Map<String,Object> transientVars, Map<String,String> args, TypedMap persistentVars) {
 
         // Expects a propertyset name as an argument input
         // Optionally get a value for equality testing
@@ -25,12 +25,12 @@ public class HasPropertySetValue implements Condition {
         
         // We're only interested if a value has been defined for this property, not it's actual value
         if(value == null)
-            return ps.exists(name);
+            return persistentVars.exists(name);
 
         // Here we are testing for string equality; 'args' can only be specified as strings
         if(value != null) {
            
-            Object object = ps.getAsActualType(name);
+            Object object = persistentVars.getAsActualType(name);
             
             if(object == null)
                 return false;

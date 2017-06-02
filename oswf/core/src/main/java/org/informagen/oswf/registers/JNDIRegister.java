@@ -27,7 +27,7 @@ import javax.naming.NamingException;
 public class JNDIRegister implements Register {
     // M E T H O D S  -------------------------------------------------------------------------
 
-    public Object registerVariable(WorkflowContext context, ProcessInstance entry, Map<String,String> args, TypedMap ps) throws WorkflowException {
+    public Object registerVariable(WorkflowContext context, ProcessInstance entry, Map<String,String> args, TypedMap persistentVars) throws WorkflowException {
         String location = (String) args.get(OSWfEngine.JNDI_LOCATION);
 
         if (location == null) {
@@ -48,6 +48,6 @@ public class JNDIRegister implements Register {
             throw new WorkflowException(message, e);
         }
 
-        return r.registerVariable(context, entry, args, ps);
+        return r.registerVariable(context, entry, args, persistentVars);
     }
 }

@@ -43,7 +43,7 @@ public class IsStepOwner implements Condition {
 
     // ////////////////////////////////////////////////////////////////
 
-    public boolean passesCondition(Map<String,Object> transientVars, Map<String,String> args, TypedMap ps) throws WorkflowStoreException {
+    public boolean passesCondition(Map<String,Object> transientVars, Map<String,String> args, TypedMap persistentVars) throws WorkflowStoreException {
 
         Integer stepId = null;
         String stepIdValue = args.get("stepId");

@@ -32,7 +32,7 @@ public class JNDIFunctionProvider implements FunctionProvider {
 
     // M E T H O D S  -------------------------------------------------------------------------
 
-    public void execute(Map<String,Object> transientVars, Map<String,String> args, TypedMap ps) throws WorkflowException {
+    public void execute(Map<String,Object> transientVars, Map<String,String> args, TypedMap persistentVars) throws WorkflowException {
         String location = (String) args.get(OSWfEngine.JNDI_LOCATION);
 
         if (location == null) {
@@ -54,6 +54,6 @@ public class JNDIFunctionProvider implements FunctionProvider {
             throw new WorkflowException(message, e);
         }
 
-        provider.execute(transientVars, args, ps);
+        provider.execute(transientVars, args, persistentVars);
     }
 }

@@ -31,7 +31,7 @@ public class BeanShellFunctionProvider implements FunctionProvider {
 
     // M E T H O D S  -------------------------------------------------------------------------
 
-    public void execute(Map<String,Object> transientVars, Map<String,String> args, TypedMap ps) throws WorkflowException {
+    public void execute(Map<String,Object> transientVars, Map<String,String> args, TypedMap persistentVars) throws WorkflowException {
 
         String script = (String) args.get(OSWfEngine.BSH_SCRIPT);
         Interpreter i;
@@ -50,7 +50,7 @@ public class BeanShellFunctionProvider implements FunctionProvider {
             i.set("pi", pi);
             i.set("context", context);
             i.set("transientVars", transientVars);
-            i.set("typedMap", ps);
+            i.set("typedMap", persistentVars);
             i.set("args", args);
         } catch (EvalError evalError) {
             String message = "Could not set values for BSH script";

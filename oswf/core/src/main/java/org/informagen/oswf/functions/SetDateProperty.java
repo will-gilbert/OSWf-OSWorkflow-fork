@@ -10,13 +10,13 @@ import java.util.Date;
 
 public class SetDateProperty implements FunctionProvider {
 
-    public void execute(Map<String,Object> transientVars, Map<String,String> args, TypedMap ps) {
+    public void execute(Map<String,Object> transientVars, Map<String,String> args, TypedMap persistentVars) {
 
         String name = args.get("name");
         
         if(name == null)
             return;
         
-        ps.setDate(name, new Date());
+        persistentVars.setDate(name, new Date());
     }
 }

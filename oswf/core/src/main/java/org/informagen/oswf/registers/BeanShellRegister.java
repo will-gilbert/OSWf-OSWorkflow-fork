@@ -25,7 +25,7 @@ import java.util.Map;
  */
 public class BeanShellRegister implements Register {
 
-    public Object registerVariable(WorkflowContext context, ProcessInstance pi, Map<String,String> args, TypedMap ps) throws WorkflowException {
+    public Object registerVariable(WorkflowContext context, ProcessInstance pi, Map<String,String> args, TypedMap persistentVars) throws WorkflowException {
 
         String script = (String) args.get(OSWfEngine.BSH_SCRIPT);
 
@@ -39,7 +39,7 @@ public class BeanShellRegister implements Register {
 
             i.set("pi", pi);
             i.set("context", context);
-            i.set("propertySet", ps);
+            i.set("propertySet", persistentVars);
 
             return i.eval(script);
         } catch (TargetError targetError) {

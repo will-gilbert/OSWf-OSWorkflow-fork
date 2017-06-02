@@ -33,7 +33,7 @@ public class BeanShellValidator implements Validator {
 
     // M E T H O D S  -------------------------------------------------------------------------
 
-    public void validate(Map<String,Object> transientVars, Map<String,String> args, TypedMap ps) throws WorkflowException {
+    public void validate(Map<String,Object> transientVars, Map<String,String> args, TypedMap persistentVars) throws WorkflowException {
  
         Interpreter interpreter = new Interpreter();
         ClassLoader loader = Thread.currentThread().getContextClassLoader();
@@ -48,7 +48,7 @@ public class BeanShellValidator implements Validator {
             interpreter.set("pi",  transientVars.get("pi"));
             interpreter.set("context", transientVars.get("context"));
             interpreter.set("transientVars", transientVars);
-            interpreter.set("propertySet", ps);
+            interpreter.set("propertySet", persistentVars);
 
             Object object = interpreter.eval(contents);
 

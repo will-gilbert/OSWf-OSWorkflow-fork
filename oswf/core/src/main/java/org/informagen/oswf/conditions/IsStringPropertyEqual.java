@@ -23,7 +23,7 @@ import java.util.Map;
 
 public class IsStringPropertyEqual implements Condition {
 
-    public boolean passesCondition(Map<String,Object> transientVars, Map<String,String> args, TypedMap ps) {
+    public boolean passesCondition(Map<String,Object> transientVars, Map<String,String> args, TypedMap persistentVars) {
 
         String name = args.get("name");
         String value = args.get("value");
@@ -32,7 +32,7 @@ public class IsStringPropertyEqual implements Condition {
         if(name == null || value == null)
             return false;
             
-        String currentValue = ps.getString(name);
+        String currentValue = persistentVars.getString(name);
         
         if(currentValue == null)
             return false;
