@@ -39,7 +39,7 @@
 					</results>
                     <post-functions>
                         <function type='beanshell'>
-                           <arg name='script'>typedMap.setString("result", "approved");</arg>
+                           <arg name='script'>persistentVars.setString("result", "approved");</arg>
                         </function>
                     </post-functions>
 				</action>
@@ -51,7 +51,7 @@
 					</results>
                     <post-functions>
                         <function type='beanshell'>
-                           <arg name='script'>typedMap.setString("result", "denied");</arg>
+                           <arg name='script'>persistentVars.setString("result", "denied");</arg>
                         </function>
                     </post-functions>
 				</action>

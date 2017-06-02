@@ -50,7 +50,7 @@ public class BeanShellFunctionProvider implements FunctionProvider {
             i.set("pi", pi);
             i.set("context", context);
             i.set("transientVars", transientVars);
-            i.set("typedMap", persistentVars);
+            i.set("persistentVars", persistentVars);
             i.set("args", args);
         } catch (EvalError evalError) {
             String message = "Could not set values for BSH script";

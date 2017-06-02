@@ -201,8 +201,8 @@
             
             <function type="beanshell">
               <arg name="script">
-                typedMap.setString("Step 200/Action 201: Post-Function", "executed");
-                typedMap.setString("result","approved");
+                persistentVars.setString("Step 200/Action 201: Post-Function", "executed");
+                persistentVars.setString("result","approved");
               </arg>
             </function>
           </post-functions>
@@ -225,7 +225,7 @@
                 <function type="beanshell">
                   <arg name="script">
                     transientVars.get("logger").debug("Step 200/Action 202/Result:Pre-Function");
-                    typedMap.setString("Step 200/Action 202/Result:Pre-Function","executed");
+                    persistentVars.setString("Step 200/Action 202/Result:Pre-Function","executed");
                  </arg>
                 </function>
               </pre-functions>
@@ -245,8 +245,8 @@
             <function type="beanshell">
               <arg name="script">
                 transientVars.get("logger").debug("Step 200/Action 202: Post-Function");
-                typedMap.setString("Step 200/Action 202: Post-Function", "executed");
-                typedMap.setString("result","denied");
+                persistentVars.setString("Step 200/Action 202: Post-Function", "executed");
+                persistentVars.setString("result","denied");
               </arg>
             </function>
             

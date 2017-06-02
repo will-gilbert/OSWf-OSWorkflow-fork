@@ -161,15 +161,15 @@
 					<arg name="script"><![CDATA[
         //=====================================================================================						
 
-        String managerResult = typedMap.getString("Manager Result");
-        String hrResult = typedMap.getString("HR Result");
+        String managerResult = persistentVars.getString("Manager Result");
+        String hrResult = persistentVars.getString("HR Result");
     					    
         //========================================================
         // Behave like an OR join if either the Manager or the
         //  HR Director 'denied' the request.
     
         if( "denied".equals(managerResult) || "denied".equals(hrResult) ) {
-            typedMap.setString("Employee Request", "denied");
+            persistentVars.setString("Employee Request", "denied");
             return true;
         } 
     
@@ -177,7 +177,7 @@
         // Behave like an AND join when both decisions are 'approved'
         
         if("approved".equals(managerResult) && "approved".equals(hrResult)) {
-          typedMap.setString("Employee Request", "approved");
+          persistentVars.setString("Employee Request", "approved");
           return true;
         }
           

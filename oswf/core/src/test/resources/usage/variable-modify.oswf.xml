@@ -8,7 +8,7 @@
       <pre-functions>
         <function type="beanshell">
           <arg name="script">
-            typedMap.setString("message", "foo");
+            persistentVars.setString("message", "foo");
           </arg>
         </function>
         <function type="class">
@@ -34,7 +34,7 @@
           <pre-functions>
             <function type="beanshell">
               <arg name="script">
-                typedMap.setString("message", "bar");
+                persistentVars.setString("message", "bar");
               </arg>
             </function>
             <function type="class">

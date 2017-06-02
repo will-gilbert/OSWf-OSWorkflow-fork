@@ -169,11 +169,11 @@
 				<condition type="beanshell">
 					<arg name="script"><![CDATA[
 					
-                        typedMap.setString("result", "denied");
+                        persistentVars.setString("result", "denied");
                         
                         if(jn.get(200).getStatus().endsWith("approved") && 
                            jn.get(300).getStatus().endsWith("approved")) {
-                            typedMap.setString("result", "approved");
+                            persistentVars.setString("result", "approved");
                         }
                         
                         // Final result
