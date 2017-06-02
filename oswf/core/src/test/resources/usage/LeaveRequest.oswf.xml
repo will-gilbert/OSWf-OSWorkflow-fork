@@ -137,7 +137,7 @@
 
 					    logger = transientVars.get("slf4jLogger");
 					
-                        typedMap.setString("result", "denied");
+                        persistentVars.setString("result", "denied");
                         
                         logger.debug("================");
                         logger.debug("LM Step: " + jn.get(200));
@@ -148,7 +148,7 @@
                                                 
                         if(jn.get(200).getStatus().equals("Approved") && 
                            jn.get(300).getStatus().equals("Approved")) {
-                            typedMap.setString("result", "approved");
+                            persistentVars.setString("result", "approved");
                         }
                         
                         // Final result
@@ -164,7 +164,7 @@
 					<function type='beanshell'><arg name='script'><![CDATA[
 					    logger = transientVars.get("slf4jLogger");
  	                    logger.debug("Join 10000 finished - setting result to '${result}'");
-                 	    typedMap.setString("result", "${result}");
+                 	    persistentVars.setString("result", "${result}");
 					]]></arg>
 					</function>
 				</pre-functions>

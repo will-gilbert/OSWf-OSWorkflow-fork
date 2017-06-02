@@ -23,7 +23,7 @@ import java.util.Map;
 
 public class FireTrigger implements FunctionProvider {
     
-    public void execute(Map<String,Object> transientVars, Map<String,String> args, TypedMap ps) throws WorkflowException {
+    public void execute(Map<String,Object> transientVars, Map<String,String> args, TypedMap persistentVars) throws WorkflowException {
 
         ProcessInstance pi = (ProcessInstance)transientVars.get("pi");
         String actor = (String)transientVars.get("actor");

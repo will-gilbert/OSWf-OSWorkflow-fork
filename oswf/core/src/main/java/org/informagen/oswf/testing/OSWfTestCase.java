@@ -141,8 +141,8 @@ public abstract class OSWfTestCase  {
 
     protected void assertProperty(OSWfEngine wfEngine, long piid, String property, String result) {
         OSWfAssertions.assertProperty(wfEngine, piid, property, result);
-        // TypedMap typedMap = wfEngine.getTypedMap(piid);
-        // assertEquals(result, typedMap.getString(property));
+        // TypedMap persistentVars = wfEngine.getTypedMap(piid);
+        // assertEquals(result, persistentVars.getString(property));
     }
 
     // Logging ================================================================================

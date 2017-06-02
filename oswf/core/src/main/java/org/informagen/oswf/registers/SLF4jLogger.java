@@ -33,7 +33,7 @@ import java.util.Map;
  */
 public class SLF4jLogger implements Register {
 
-    public Object registerVariable(WorkflowContext context, ProcessInstance pi, Map<String,String> args, TypedMap ps) {
+    public Object registerVariable(WorkflowContext context, ProcessInstance pi, Map<String,String> args, TypedMap persistentVars) {
 
         String loggerName = "oswf";
 

@@ -9,7 +9,7 @@
     <trigger-function id="10">
       <function type="beanshell">
         <arg name="script">
-          typedMap.setString("testTrigger", "blahblah");
+          persistentVars.setString("testTrigger", "blahblah");
         </arg>
       </function>
     </trigger-function>

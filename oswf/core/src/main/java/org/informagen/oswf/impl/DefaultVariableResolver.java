@@ -40,7 +40,7 @@ public class DefaultVariableResolver implements VariableResolver, Serializable {
      * then the actual object is returned instead of converting it to a string.
      */
        
-    public String translateVariables(String s, Map<String,Object> transientVars, TypedMap ps) {
+    public String translateVariables(String s, Map<String,Object> transientVars, TypedMap persistentVars) {
 
         String temp = s.trim();
 
@@ -48,7 +48,7 @@ public class DefaultVariableResolver implements VariableResolver, Serializable {
 
             // The string is just a variable reference, just lookup it's value if available
             String var = temp.substring(2, temp.length() - 1);
-            Object object = getVariableFromMaps(var, transientVars, ps);
+            Object object = getVariableFromMaps(var, transientVars, persistentVars);
             
             return (object == null) ? null : object.toString();
 
@@ -61,7 +61,7 @@ public class DefaultVariableResolver implements VariableResolver, Serializable {
                 if ((x != -1) && (y != -1)) {
                     String var = s.substring(x + 2, y);
                     String t = null;
-                    Object o = getVariableFromMaps(var, transientVars, ps);
+                    Object o = getVariableFromMaps(var, transientVars, persistentVars);
 
                     if (o != null) {
                         t = o.toString();
@@ -92,7 +92,7 @@ public class DefaultVariableResolver implements VariableResolver, Serializable {
     //     return (BeanProvider)beanProvider;
     // }
 
-    public Object getVariableFromMaps(String var, Map<String,Object> transientVars, TypedMap ps) {
+    public Object getVariableFromMaps(String var, Map<String,Object> transientVars, TypedMap persistentVars) {
 
         int firstDot = var.indexOf('.');
         String actualVar = var;
@@ -109,7 +109,7 @@ public class DefaultVariableResolver implements VariableResolver, Serializable {
         //  Need to fix this.
         if (o == null) {
            try { 
-               o = ps.getAsActualType(actualVar);
+               o = persistentVars.getAsActualType(actualVar);
            } catch (Exception exception) {
                return null;
            }

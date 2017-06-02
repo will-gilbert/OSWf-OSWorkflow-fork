@@ -19,7 +19,7 @@ import java.util.Map;
 
 public class GetStringProperty implements FunctionProvider {
 
-    public void execute(Map<String,Object> transientVars, Map<String,String> args, TypedMap ps) {
+    public void execute(Map<String,Object> transientVars, Map<String,String> args, TypedMap persistentVars) {
 
         // Expects a name/variable pair as argument inputs
         String name = args.get("name");
@@ -28,7 +28,7 @@ public class GetStringProperty implements FunctionProvider {
         if(name == null || variable == null)
             return;
             
-        String value = ps.getString(name);
+        String value = persistentVars.getString(name);
         transientVars.put(variable, value);
 
     }

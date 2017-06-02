@@ -4,19 +4,18 @@ task usage doLast { println """
 Modules:
 
      core - 
-     typedmap - 
      store - 
+     typedmap - 
      simulator - 
   
 ===============================================================================================
 
-gradle clean
-gradle :<module>:clean
-    Remove all built artifacts from all projects e.g. class files, JARs, WARs
 
-gradle test
-gradle :<module>:test
-    Build main and test classes; Execute unit tests and create HTML test report
+gradle :core:clean :core:test
+gradle :store:clean :store:test
+gradle :typedmap:clean :typedmap:test
+gradle :simulator:clean :simulator:jettyRun
+
 
 
 =================================================================================================

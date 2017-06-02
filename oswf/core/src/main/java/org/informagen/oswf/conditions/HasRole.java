@@ -23,7 +23,7 @@ import java.util.Map;
 
 public class HasRole implements Condition {
 
-    public boolean passesCondition(Map<String,Object> transientVars, Map<String,String> args, TypedMap ps) {
+    public boolean passesCondition(Map<String,Object> transientVars, Map<String,String> args, TypedMap persistentVars) {
 
         String actor = (String)transientVars.get("actor");
 

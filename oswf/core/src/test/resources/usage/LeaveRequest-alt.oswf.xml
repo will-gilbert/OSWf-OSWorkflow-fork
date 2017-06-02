@@ -43,7 +43,7 @@
 		    
 		            <pre-functions>
 		                <function type="beanshell">
-		                   <arg name="script">typedMap.setString("Manager Result", "approved");</arg>
+		                   <arg name="script">persistentVars.setString("Manager Result", "approved");</arg>
 		                </function>
 		            </pre-functions>
 		
@@ -55,7 +55,7 @@
 		    
 		            <pre-functions>
 		                <function type="beanshell">
-		                   <arg name="script">typedMap.setString("Manager Result", "denied");</arg>
+		                   <arg name="script">persistentVars.setString("Manager Result", "denied");</arg>
 		                </function>
 		            </pre-functions>
 		
@@ -75,7 +75,7 @@
 		    
 		            <pre-functions>
 		                <function type="beanshell">
-		                   <arg name="script">typedMap.setString("HR Result", "approved");</arg>
+		                   <arg name="script">persistentVars.setString("HR Result", "approved");</arg>
 		                </function>
 		            </pre-functions>
 		
@@ -88,7 +88,7 @@
 		    
 		            <pre-functions>
 		                <function type="beanshell">
-		                   <arg name="script">typedMap.setString("HR Result", "denied");</arg>
+		                   <arg name="script">persistentVars.setString("HR Result", "denied");</arg>
 		                </function>
 		            </pre-functions>
 		
@@ -107,7 +107,7 @@
 				<action id="401" name="send e-mail"  finish="true" >
 		            <pre-functions>
 		                <function type="beanshell">
-		                   <arg name="script">typedMap.setDate("E-Mail Sent", new Date());</arg>
+		                   <arg name="script">persistentVars.setDate("E-Mail Sent", new Date());</arg>
 		                </function>
 		            </pre-functions>
 					<results>
@@ -146,20 +146,20 @@
 					<arg name="script"><![CDATA[
 //==============================================================================================						
 
-    String managerResult = typedMap.getString("Manager Result");
-    String hrResult = typedMap.getString("HR Result");
+    String managerResult = persistentVars.getString("Manager Result");
+    String hrResult = persistentVars.getString("HR Result");
     					    
     //========================================================
     // Behave like an OR join if either the Manager or the
     //  HR Director denied the request.
     
     if( managerResult != null && managerResult.equals("denied") ) {
-        typedMap.setString("Employee Request", "denied");
+        persistentVars.setString("Employee Request", "denied");
         return true;
     } 
 
     if( hrResult != null && hrResult.equals("denied") ) {
-        typedMap.setString("Employee Request", "denied");
+        persistentVars.setString("Employee Request", "denied");
         return true;
     }
     
@@ -176,7 +176,7 @@
     //   we check explicitly for both approved
     
     if(managerResult.equals("approved") &&  hrResult.equals("approved"))
-      typedMap.setString("Employee Request", "approved");
+      persistentVars.setString("Employee Request", "approved");
     
     // We return 'true' here to allow the workflow to proceed; this
     //  return value is not related to our 'Day off' decisions

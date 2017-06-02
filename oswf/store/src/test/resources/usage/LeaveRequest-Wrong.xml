@@ -45,7 +45,7 @@
 						<default-result exit-status="Manager denied" status="Underway" step="400">
     						<pre-functions>
                                 <function type="beanshell">
-                                   <arg name="script">typedMap.setString("result", "denied");</arg>
+                                   <arg name="script">persistentVars.setString("result", "denied");</arg>
                                 </function>
                             </pre-functions>
 						</default-result>
@@ -70,7 +70,7 @@
 						<default-result exit-status="HR denied" status="Underway" step="400">
     						<pre-functions>
                                 <function type="beanshell">
-                                   <arg name="script">typedMap.setString("result", "denied");</arg>
+                                   <arg name="script">persistentVars.setString("result", "denied");</arg>
                                 </function>
                             </pre-functions>
 						</default-result>
@@ -129,7 +129,7 @@
 			<default-result exit-status="JoinFinished" status="${result}" step="400">
 				<pre-functions>
                     <function type="beanshell">
-                       <arg name="script">typedMap.setString("result", "approved");</arg>
+                       <arg name="script">persistentVars.setString("result", "approved");</arg>
                     </function>
                 </pre-functions>
 			</default-result>

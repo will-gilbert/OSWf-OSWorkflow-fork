@@ -30,7 +30,7 @@ public class JNDIValidator implements Validator {
 
     // M E T H O D S  -------------------------------------------------------------------------
 
-    public void validate(Map<String,Object> transientVars, Map<String,String> args, TypedMap ps) throws InvalidInputException, WorkflowException {
+    public void validate(Map<String,Object> transientVars, Map<String,String> args, TypedMap persistentVars) throws InvalidInputException, WorkflowException {
         String location = (String) args.get(OSWfEngine.JNDI_LOCATION);
 
         if (location == null) {
@@ -50,6 +50,6 @@ public class JNDIValidator implements Validator {
             throw new WorkflowException(message, e);
         }
 
-        validator.validate(transientVars, args, ps);
+        validator.validate(transientVars, args, persistentVars);
     }
 }

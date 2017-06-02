@@ -233,38 +233,17 @@ public class ExampleWorkflowTest extends OSWfTestCase {
         // Check system date, add in a 1 second fudgefactor.
         assertTrue("history step finish date " + historyStep.getFinishDate() + " is in the future!", (historyStep.getFinishDate().getTime() - 1000) < System.currentTimeMillis());
 
-        assertCounts(wfEngine, piid, 1, 2, 3);       
-        chooseAction(wfEngine, piid, ACTION_FINISH_FOO);
+        assertCounts(wfEngine, piid, 1, 1, 0);       
 
         historySteps = wfEngine.getHistorySteps(piid);
-        assertEquals("Unexpected number of history steps", 2, historySteps.size());
+        assertEquals("Unexpected number of history steps", 1, historySteps.size());
 
-        assertCounts(wfEngine, piid, 2, 1, 2);       
-        chooseAction(wfEngine, piid, ACTION_STAY_IN_BAR);
+        assertCounts(wfEngine, piid, 1, 1, 0);       
         
         actions = wfEngine.getAvailableActions(piid);
-        assertEquals(2, actions.size());
-        assertTrue((actions.get(0).intValue() == 13) && (actions.get(1).intValue() == 113));
+        assertEquals(0, actions.size());
 
-        // From here to the end we just check the counts of actions, history steps and 
-        //  current steps, then move on
         
-        assertCounts(wfEngine, piid, 3, 1, 2);       
-        chooseAction(wfEngine, piid, ACTION_FINISH_BAR);
- 
-        assertCounts(wfEngine, piid, 4, 1, 1);       
-        chooseAction(wfEngine, piid, ACTION_FINISH_BAZ);
-
-        assertCounts(wfEngine, piid, 5, 1, 2);       
-        chooseAction(wfEngine, piid, ACTION_FINISH_EDITING);
-
-        assertCounts(wfEngine, piid, 6, 1, 3);       
-        chooseAction(wfEngine, piid, ACTION_PUBLISH_DOC);
-
-        assertCounts(wfEngine, piid, 7, 1, 1);       
-        chooseAction(wfEngine, piid, ACTION_PUBLISH_DOCOCUMENT);
-
-        // assertCounts(piid, 8, 0, 0);       
         logInstanceState(wfEngine, piid);
 
         //assertProcessInstanceState(piid, ProcessInstanceState.COMPLETE);
@@ -592,7 +571,7 @@ public class ExampleWorkflowTest extends OSWfTestCase {
             }, LogicalOperator.AND));
 
         workflows = wfEngine.query(query);
-        assertEquals("Expected to find 2 workflows in current steps", 2, workflows.size());
+        assertEquals("Expected to find 2 workflows in current steps", 1, workflows.size());
     }
 
 /*

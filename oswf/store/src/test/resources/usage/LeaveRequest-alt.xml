@@ -116,13 +116,13 @@
 					    if( jn.get(200) != null &&
 					        jn.get(200).getStatus().endsWith("denied") ) {
 					        
-					        typedMap.setString("result", "denied");
+					        persistentVars.setString("result", "denied");
 					        return true;
 					        
 					    } else if( jn.get(300) != null &&
 					        jn.get(300).getStatus().endsWith("denied") ) {
 					        
-					        typedMap.setString("result", "denied");
+					        persistentVars.setString("result", "denied");
 					        return true;
 					    }
 					    
@@ -137,7 +137,7 @@
 					    if(jn.get(200).getStatus().endsWith("approved") && 
                            jn.get(300).getStatus().endsWith("approved")) {
                                   
-                            typedMap.setString("result", "approved");
+                            persistentVars.setString("result", "approved");
                             return true;
                         }
                         

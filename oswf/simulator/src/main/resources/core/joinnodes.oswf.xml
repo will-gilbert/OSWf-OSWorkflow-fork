@@ -66,7 +66,7 @@
 
 		            <pre-functions>
 		                <function type="beanshell">
-		                   <arg name="script">typedMap.setBoolean("Manager Result", true);</arg>
+		                   <arg name="script">persistentVars.setBoolean("Manager Result", true);</arg>
 		                </function>
 		            </pre-functions>
 		            
@@ -77,7 +77,7 @@
 				<action id="202" name="LM Deny" >
 		            <pre-functions>
 		                <function type="beanshell">
-		                   <arg name="script">typedMap.setBoolean("Manager Result", false);</arg>
+		                   <arg name="script">persistentVars.setBoolean("Manager Result", false);</arg>
 		                </function>
 		            </pre-functions>
 
@@ -97,7 +97,7 @@
 				    
 		            <pre-functions>
 		                <function type="beanshell">
-		                   <arg name="script">typedMap.setBoolean("HR Result", true);</arg>
+		                   <arg name="script">persistentVars.setBoolean("HR Result", true);</arg>
 		                </function>
 		            </pre-functions>
 
@@ -109,7 +109,7 @@
 
 		            <pre-functions>
 		                <function type="beanshell">
-		                   <arg name="script">typedMap.setBoolean("HR Result", false);</arg>
+		                   <arg name="script">persistentVars.setBoolean("HR Result", false);</arg>
 		                </function>
 		            </pre-functions>
 
@@ -196,11 +196,11 @@
 					<function type='beanshell'> <arg name='script'><![CDATA[
 				    logger = transientVars.get("logger");
 				    
-				    result = typedMap.getBoolean("HR Result") &&
-				             typedMap.getBoolean("Manager Result");
+				    result = persistentVars.getBoolean("HR Result") &&
+				             persistentVars.getBoolean("Manager Result");
 				    
                     logger.debug("Join 10000 finished - setting result to {}", result);
-         	        typedMap.setBoolean("Request Approved", result);
+         	        persistentVars.setBoolean("Request Approved", result);
 				]]></arg> </function>
 				</pre-functions>
 			</default-result>

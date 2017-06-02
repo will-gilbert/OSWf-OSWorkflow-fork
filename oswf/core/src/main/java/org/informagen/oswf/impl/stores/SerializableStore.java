@@ -58,14 +58,14 @@ public class SerializableStore extends MemoryStore {
 
     public TypedMap getTypedMap(long entryId) {
 
-        TypedMap ps = (TypedMap) SerializableCache.getInstance().propertySetCache.get(new Long(entryId));
+        TypedMap persistentVars = (TypedMap) SerializableCache.getInstance().propertySetCache.get(new Long(entryId));
 
-        if (ps == null) {
-            ps = TypedMapFactory.getInstance().createTypedMap("serializable", null);
-            SerializableCache.getInstance().propertySetCache.put(new Long(entryId), ps);
+        if (persistentVars == null) {
+            persistentVars = TypedMapFactory.getInstance().createTypedMap("serializable", null);
+            SerializableCache.getInstance().propertySetCache.put(new Long(entryId), persistentVars);
         }
 
-        return ps;
+        return persistentVars;
     }
 
     public static void setStoreFile(String storeFile) {

@@ -17,7 +17,7 @@ import java.util.Map;
 
 public class SetActor implements FunctionProvider {
 
-    public void execute(Map<String,Object> transientVars, Map<String,String> args, TypedMap ps) {
+    public void execute(Map<String,Object> transientVars, Map<String,String> args, TypedMap persistentVars) {
 
         WorkflowContext context = (WorkflowContext) transientVars.get("context");
         String actor = args.get("name");

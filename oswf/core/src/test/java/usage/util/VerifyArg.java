@@ -15,7 +15,7 @@ public class VerifyArg implements FunctionProvider {
     // M E T H O D S  -------------------------------------------------------------------------
 
 	@Override
-    public void execute(Map<String,Object> transientVars, Map<String,String> args, TypedMap typedMap) throws WorkflowException {
+    public void execute(Map<String,Object> transientVars, Map<String,String> args, TypedMap persistentVars) throws WorkflowException {
         Object expected = args.get("expected");
         Object actual = args.get("actual");
         TestCase.assertEquals(expected, actual);

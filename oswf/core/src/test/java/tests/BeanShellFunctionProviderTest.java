@@ -59,13 +59,15 @@ public class BeanShellFunctionProviderTest {
         
         // Create a JDBC TypedMap without parameters succeeds but throws
         //     an exception when used
-        TypedMap ps = new JDBCTypedMap(Collections.EMPTY_MAP, Collections.EMPTY_MAP);
+        
         Map transientVars = new HashMap<String,Object>();
         Map args = new HashMap<String,String>();
+        TypedMap persistentVars = new JDBCTypedMap(Collections.EMPTY_MAP, Collections.EMPTY_MAP);
+
         args.put(OSWfEngine.BSH_SCRIPT, "String actor = \"testactor\"; propertySet.setString(\"actor\", actor);");
 
         try {
-            function.execute(transientVars, args, ps);
+            function.execute(transientVars, args, persistentVars);
             fail();
         } catch (Exception e) {
         }

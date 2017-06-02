@@ -16,7 +16,7 @@ import javax.naming.NamingException;
 
 public class CanLookupJNDI implements Condition {
 
-    public boolean passesCondition(Map<String,Object> transientVars, Map<String,String> args, TypedMap ps) throws WorkflowException {
+    public boolean passesCondition(Map<String,Object> transientVars, Map<String,String> args, TypedMap persistentVars) throws WorkflowException {
 
         String location = (String) args.get(OSWfEngine.JNDI_LOCATION);
         location = location.trim();
@@ -35,6 +35,6 @@ public class CanLookupJNDI implements Condition {
             throw new WorkflowException(message, e);
         }
 
-        return condition.passesCondition(transientVars, args, ps);
+        return condition.passesCondition(transientVars, args, persistentVars);
     }
 }

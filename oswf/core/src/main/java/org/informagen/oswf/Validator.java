@@ -47,5 +47,5 @@ public interface Validator {
      * the propertyset implementation's persistent store.
      * @throws InvalidInputException if the input is deemed to be invalid
      */
-    public void validate(Map<String,Object> transientVars, Map<String,String> args, TypedMap ps) throws InvalidInputException, WorkflowException;
+    public void validate(Map<String,Object> transientVars, Map<String,String> args, TypedMap persistentVars) throws InvalidInputException, WorkflowException;
 }

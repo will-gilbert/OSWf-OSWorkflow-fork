@@ -31,7 +31,7 @@ public class HasStatusOf implements Condition {
 
     // M E T H O D S  -------------------------------------------------------------------------
 
-    public boolean passesCondition(Map<String,Object> transientVars, Map<String,String> args, TypedMap ps) throws WorkflowStoreException {
+    public boolean passesCondition(Map<String,Object> transientVars, Map<String,String> args, TypedMap persistentVars) throws WorkflowStoreException {
 
         String status = (args.get("status") != null) ? args.get("status") : "";
         Integer stepId = null;

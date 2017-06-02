@@ -31,7 +31,7 @@ public class MostRecentOwner implements FunctionProvider {
 
     // M E T H O D S  -------------------------------------------------------------------------
 
-    public void execute(Map<String,Object> transientVars, Map<String,String> args, TypedMap ps) throws WorkflowException {
+    public void execute(Map<String,Object> transientVars, Map<String,String> args, TypedMap persistentVars) throws WorkflowException {
 
         // Expects a stepId name/value pair
         String stepIdString = args.get("stepId");
