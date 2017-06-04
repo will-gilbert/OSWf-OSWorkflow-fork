@@ -2,7 +2,7 @@ package groovy.tests
 
 import org.informagen.typedmap.MemoryTypedMap
 
-import org.informagen.oswf.functions.GroovyScriptFunctionProvider
+import org.informagen.oswf.functions.GroovyScript
 import org.informagen.oswf.exceptions.WorkflowException;
 
 import org.informagen.oswf.OSWfEngine
@@ -19,7 +19,7 @@ import static org.junit.Assert.fail
 
 
 /**
- * Unit test to prove that the GroovyScriptFunctionProvider eats the key exception
+ * Unit test to prove that the GroovyScript Function Provider eats the key exception
  *   you need.  It tells you what line the script fails, but not the underlying
  *   solution.
  *
@@ -36,7 +36,7 @@ public class GroovyScriptFunctionProviderTest {
 
     @Before
     void setup() {
-        function = new GroovyScriptFunctionProvider()
+        function = new GroovyScript()
         
         // Create a Memory persistent variables 
         
@@ -71,7 +71,7 @@ public class GroovyScriptFunctionProviderTest {
 
         try {
             function.execute(transientVars, args, persistentVars)
-            fail('Should throw "GroovyScriptFunctionProvider: Evaluation error while running Groovy function script"');
+            fail('Should throw "GroovyScript Function Provider: Evaluation error while running Groovy function script"');
         } catch (WorkflowException e) {
             assert true
         }

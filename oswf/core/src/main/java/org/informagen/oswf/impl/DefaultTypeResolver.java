@@ -151,10 +151,10 @@ public class DefaultTypeResolver implements TypeResolver {
             className = name;
         
         else if("beanshell".equals(type))
-            className = "org.informagen.oswf.functions.BeanShellFunctionProvider";
+            className = "org.informagen.oswf.functions.BeanShell";
 
         else if("groovy".equals(type))
-            className = "org.informagen.oswf.functions.GroovyScriptFunctionProvider";
+            className = "org.informagen.oswf.functions.GroovyScript";
             
         // For added function types and a last attempt
         if(className == null)

@@ -25,10 +25,10 @@ import java.util.Map;
  *
  * @author will-gilbert
  */
-public class GroovyScriptFunctionProvider implements FunctionProvider {
+public class GroovyScript implements FunctionProvider {
 
 
-    private static final Logger logger = LoggerFactory.getLogger(GroovyScriptFunctionProvider.class);
+    private static final Logger logger = LoggerFactory.getLogger(GroovyScript.class);
 
     // M E T H O D S  -------------------------------------------------------------------------
 

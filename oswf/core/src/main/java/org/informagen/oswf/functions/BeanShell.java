@@ -24,10 +24,10 @@ import java.util.Map;
  *
  * @author Hani
  */
-public class BeanShellFunctionProvider implements FunctionProvider {
+public class BeanShell implements FunctionProvider {
     //~ Static fields/initializers /////////////////////////////////////////////
 
-    private static final Logger logger = LoggerFactory.getLogger(BeanShellFunctionProvider.class);
+    private static final Logger logger = LoggerFactory.getLogger(BeanShell.class);
 
     // M E T H O D S  -------------------------------------------------------------------------
 

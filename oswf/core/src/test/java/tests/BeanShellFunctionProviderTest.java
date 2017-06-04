@@ -3,7 +3,7 @@ package tests;
 import org.informagen.typedmap.TypedMap;
 import org.informagen.typedmap.JDBCTypedMap;
 
-import org.informagen.oswf.functions.BeanShellFunctionProvider;
+import org.informagen.oswf.functions.BeanShell;
 
 import org.informagen.oswf.OSWfEngine;
 import org.informagen.oswf.impl.DefaultOSWfEngine;
@@ -32,7 +32,7 @@ import static org.junit.Assert.fail;
 
 
 /**
- * Unit test to prove that the BeanShellFunctionProvider eats the key exception
+ * Unit test to prove that the BeanShell eats the key exception
  *  you need.  It tells you what line the script fails, but not the underlying
  *  solution.
  *
@@ -55,7 +55,7 @@ public class BeanShellFunctionProviderTest {
     @Test
     public void throwException() throws Exception {
         
-        BeanShellFunctionProvider function = new BeanShellFunctionProvider();
+        BeanShell function = new BeanShell();
         
         // Create a JDBC TypedMap without parameters succeeds but throws
         //     an exception when used
