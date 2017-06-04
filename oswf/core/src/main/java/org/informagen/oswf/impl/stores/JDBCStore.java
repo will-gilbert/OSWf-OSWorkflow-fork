@@ -168,11 +168,15 @@ public class JDBCStore extends AbstractWorkflowStore implements WorkflowStore {
         }
     }
 
-    public TypedMap getTypedMap(long entryId) {
+    public TypedMap getTypedMap(long piid) {
         HashMap args = new HashMap(1);
-        args.put("globalKey", "oswf_" + entryId);
+        args.put("globalKey", "oswf_" + piid);
 
         return TypedMapFactory.getInstance().createTypedMap("jdbc", args);
+    }
+
+    public TypedMap getPersistentVars(long piid) {
+        return getTypedMap(piid);
     }
 
     ////////////METHOD #2 OF 3 //////////////////

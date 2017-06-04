@@ -493,17 +493,22 @@ public class DefaultOSWfEngine implements OSWfEngine {
      * Get the TypedMap for the specified workflow ID
      * @param id The workflow ID
      */
-    public TypedMap getTypedMap(long id) {
+    public TypedMap getTypedMap(long piid) {
         TypedMap persistentVars = null;
 
         try {
-            persistentVars = getPersistence().getTypedMap(id);
+            persistentVars = getPersistence().getTypedMap(piid);
         } catch (WorkflowStoreException e) {
-            logger.error("Error getting TypedMap for piid " + id, e);
+            logger.error("Error getting TypedMap for piid " + piid, e);
         }
 
         return persistentVars;
     }
+
+    public TypedMap getPersistentVars(long piid) {
+        return getTypedMap(piid);
+    }
+
 
     // TypeResolver ---------------------------------
 
@@ -636,7 +641,7 @@ public class DefaultOSWfEngine implements OSWfEngine {
 
                 case RUNNING:
                     if ((newState == ProcessInstanceState.ACTIVE) || 
-                        (newState == ProcessInstanceState.COMPLETE) ||
+                        (newState == ProcessInstanceState.COMPLETED) ||
                         (newState == ProcessInstanceState.SUSPENDED) ||
                         (newState == ProcessInstanceState.TERMINATED) ||
                         (newState == ProcessInstanceState.ARCHIVED) )
@@ -644,7 +649,7 @@ public class DefaultOSWfEngine implements OSWfEngine {
                     break;
 
                 case ACTIVE:
-                    if ((newState == ProcessInstanceState.COMPLETE) || 
+                    if ((newState == ProcessInstanceState.COMPLETED) || 
                         (newState == ProcessInstanceState.SUSPENDED) ||
                         (newState == ProcessInstanceState.TERMINATED) ||
                         (newState == ProcessInstanceState.ARCHIVED) )
@@ -660,7 +665,7 @@ public class DefaultOSWfEngine implements OSWfEngine {
                         result = true;
                     break;
                 
-                case COMPLETE:
+                case COMPLETED:
                     if (newState == ProcessInstanceState.ARCHIVED) 
                         result = true;
                     break;
@@ -696,7 +701,7 @@ public class DefaultOSWfEngine implements OSWfEngine {
 
         if (canSwitchToProcessInstanceState(piid, newState)) {
             
-            if ((newState == ProcessInstanceState.TERMINATED) || (newState == ProcessInstanceState.COMPLETE)) {
+            if ((newState == ProcessInstanceState.TERMINATED) || (newState == ProcessInstanceState.COMPLETED)) {
                 
                 Collection currentSteps = getCurrentSteps(piid);
 
@@ -973,7 +978,7 @@ public class DefaultOSWfEngine implements OSWfEngine {
         }
 
         if (isCompleted) {
-            completeProcess(action, piid, currentSteps, ProcessInstanceState.COMPLETE);
+            completeProcess(action, piid, currentSteps, ProcessInstanceState.COMPLETED);
         }
     }
 
@@ -996,15 +1001,15 @@ public class DefaultOSWfEngine implements OSWfEngine {
 
 
     protected Step createNewCurrentStep(
-                                ResultDescriptor theResult, 
-                                ProcessInstance pi, 
-                                WorkflowStore store, 
-                                int actionId, 
-                                Step currentStep, 
-                                long[] previousIds, 
-                                Map<String,Object> transientVars, 
-                                TypedMap persistentVars) throws WorkflowException {
-                                    
+                    ResultDescriptor theResult, 
+                    ProcessInstance pi, 
+                    WorkflowStore store, 
+                    int actionId, 
+                    Step currentStep, 
+                    long[] previousIds, 
+                    Map<String,Object> transientVars, 
+                    TypedMap persistentVars) throws WorkflowException {
+                        
 
         try {
             
@@ -1573,7 +1578,7 @@ public class DefaultOSWfEngine implements OSWfEngine {
         //   return true per the API
         
         if (action.isFinish()) {
-            completeProcess(action, pi.getProcessInstanceId(), getCurrentSteps(pi.getProcessInstanceId()), ProcessInstanceState.COMPLETE);
+            completeProcess(action, pi.getProcessInstanceId(), getCurrentSteps(pi.getProcessInstanceId()), ProcessInstanceState.COMPLETED);
             return true;
         }
 

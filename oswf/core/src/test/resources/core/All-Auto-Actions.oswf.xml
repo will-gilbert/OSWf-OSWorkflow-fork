@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE workflow SYSTEM "OSWf-3.0.dtd">
+
+<workflow>
+
+
+  <initial-actions>
+    <action id="1" name="Start Workflow">
+
+      <results>
+        <default-result step="100" />
+      </results>
+
+    </action>
+  </initial-actions>
+
+
+  <steps>
+
+    <step id="100" name="First Step">
+      <actions>
+        <action id="101" name="The first action" auto="true">
+          <results>
+            <default-result status="Queued" step="200"/>
+          </results>
+        </action>
+      </actions>
+    </step>
+
+    <step id="200" name="Second Step">
+      <actions>
+        <action id="202" name="The second action" auto="true">
+          <results>
+            <default-result status="Finished" step="300"/>
+          </results>
+        </action>
+      </actions>
+    </step>
+
+    <step id="300" name="End Step" />
+      
+
+  </steps>
+</workflow>
+

@@ -69,7 +69,7 @@ public class PropertySetTest extends OSWfTestCase {
     public void setPropertySet() throws Exception {
         int initialAction = 1;
         long piid = wfEngine.initialize(url.toString(), initialAction);
-        assertProcessInstanceState(wfEngine, piid, ProcessInstanceState.COMPLETE);        
+        assertProcessInstanceState(wfEngine, piid, ProcessInstanceState.COMPLETED);        
     }
 
  
@@ -79,7 +79,7 @@ public class PropertySetTest extends OSWfTestCase {
     public void propertySetValueExists() throws Exception {
         int initialAction = 2;
         long piid = wfEngine.initialize(url.toString(), initialAction);
-        assertProcessInstanceState(wfEngine, piid, ProcessInstanceState.COMPLETE);        
+        assertProcessInstanceState(wfEngine, piid, ProcessInstanceState.COMPLETED);        
     }
 
 
@@ -102,7 +102,7 @@ public class PropertySetTest extends OSWfTestCase {
     public void propertySetValueEquals() throws Exception {
         int initialAction = 4;
        long piid = wfEngine.initialize(url.toString(), initialAction);
-       assertProcessInstanceState(wfEngine, piid, ProcessInstanceState.COMPLETE);        
+       assertProcessInstanceState(wfEngine, piid, ProcessInstanceState.COMPLETED);        
     }
 
 }

@@ -48,6 +48,7 @@ public interface WorkflowStore {
      * @return a property set unique to this process instance (piid)
      */
     public TypedMap getTypedMap(long piid);
+    public TypedMap getPersistentVars(long piid);
 
     /**
      * Persists a step with the given parameters.

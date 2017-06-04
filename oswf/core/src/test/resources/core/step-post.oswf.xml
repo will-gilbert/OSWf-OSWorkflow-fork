@@ -1,36 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE workflow SYSTEM "OSWf-3.0.dtd">
+
 <workflow>
+
   <initial-actions>
     <action id="1" name="Start Workflow">
       <results>
-        <default-result status="Underway" step="1" owner="crazybob"/>
+        <default-result step="1"/>
       </results>
     </action>
   </initial-actions>
+
   <steps>
+
     <step id="1" name="First Step">
+
       <actions>
-        <action id="2" name="The first action" finish="true">
-          <restrict-to>
-            <conditions>
-              <condition type='alias' name='hasStatusOf'>
-                <arg name="status">Underway</arg>
-              </condition>
-            </conditions>
-          </restrict-to>
+        <action id="2" name="TLeave Step 1">
+
           <results>
-            <default-result status="LastFinished" step="2"/>
+            <default-result step="2"/>
           </results>
+
         </action>
       </actions>
+
       <post-functions>
         <function type="beanshell" name="bsh.function">
           <arg name="script">persistentVars.setString("postkey", "postvalue")</arg>
         </function>
       </post-functions>
+
     </step>
+
     <step id="2" name="Second step" />
+
+
   </steps>
+
 </workflow>
 

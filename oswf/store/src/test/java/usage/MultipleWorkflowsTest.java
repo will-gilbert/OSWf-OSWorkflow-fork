@@ -154,7 +154,7 @@ public class MultipleWorkflowsTest extends OSWfHibernateTestCase implements Leav
         // Ted is done, he used a simpler workflow
         assertProcessInstanceState(wfEngine, aliceId, ProcessInstanceState.ACTIVE);
         assertProcessInstanceState(wfEngine, bobId, ProcessInstanceState.ACTIVE);
-        assertProcessInstanceState(wfEngine, tedId, ProcessInstanceState.COMPLETE);
+        assertProcessInstanceState(wfEngine, tedId, ProcessInstanceState.COMPLETED);
 
         // Round 3 of Approvals and Notifications ======================================
 
@@ -174,9 +174,9 @@ public class MultipleWorkflowsTest extends OSWfHibernateTestCase implements Leav
 
         // All workflows are finished
 
-        assertProcessInstanceState(wfEngine, aliceId, ProcessInstanceState.COMPLETE);
-        assertProcessInstanceState(wfEngine, bobId, ProcessInstanceState.COMPLETE);
-        assertProcessInstanceState(wfEngine, tedId, ProcessInstanceState.COMPLETE);
+        assertProcessInstanceState(wfEngine, aliceId, ProcessInstanceState.COMPLETED);
+        assertProcessInstanceState(wfEngine, bobId, ProcessInstanceState.COMPLETED);
+        assertProcessInstanceState(wfEngine, tedId, ProcessInstanceState.COMPLETED);
 
 
         // Determine Ted's last step status.

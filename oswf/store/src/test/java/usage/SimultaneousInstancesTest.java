@@ -169,14 +169,14 @@ public class SimultaneousInstancesTest extends OSWfHibernateTestCase implements 
 
         // Alice and Bob are done, but Ted's process is still active
 
-        assertProcessInstanceState(wfEngine, aliceId, ProcessInstanceState.COMPLETE);
-        assertProcessInstanceState(wfEngine, bobId, ProcessInstanceState.COMPLETE);
+        assertProcessInstanceState(wfEngine, aliceId, ProcessInstanceState.COMPLETED);
+        assertProcessInstanceState(wfEngine, bobId, ProcessInstanceState.COMPLETED);
         assertProcessInstanceState(wfEngine, tedId, ProcessInstanceState.ACTIVE);
         
         // Notify Ted
         wfEngine.doAction(tedId, NOTIFY_EMPLOYEE);
 
-        assertProcessInstanceState(wfEngine, tedId, ProcessInstanceState.COMPLETE);
+        assertProcessInstanceState(wfEngine, tedId, ProcessInstanceState.COMPLETED);
     }
     
 

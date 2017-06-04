@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE workflow SYSTEM "OSWf-3.0.dtd">
+
+<workflow>
+
+  <initial-actions>
+    <action id="100" name="Initiate">
+      <results>
+        <default-result status="Underway" split="1"/>
+      </results>
+    </action>
+  </initial-actions>
+
+  <steps>
+
+    <step id="1" name="Step 1">
+      <actions>
+        <action id="1" name="Leave Step 1">
+          <results>
+            <default-result join="1"/>
+          </results>
+        </action>
+      </actions>
+    </step>
+
+    <step id="2" name="Step 2">
+      <actions>
+        <action id="2" name="Leave Step 2">
+          <results>
+            <default-result join="1"/>
+          </results>
+          
+        </action>
+      </actions>
+    </step>
+
+    <step id="3" name="Finished">
+      <description>At step with no actions will terminate the workflow</description>
+    </step>
+
+  </steps>
+
+  <splits>
+    <split id="1">
+      <default-result status="Underway" step="1"/>
+      <default-result status="Underway" step="2"/>
+    </split>
+  </splits>
+
+  <joins>
+    <join id="1">
+
+      <description>
+        An AND join; Both incoming step must be 'Finished', the default exit status, before
+        the workflow can proceed.
+      </description>
+
+      <conditions>
+        <condition type="beanshell">
+          <arg name="script"><![CDATA[
+              "Finished".equals(jn.get(1).getStatus()) && "Finished".equals(jn.get(2).getStatus())
+          ]]></arg>
+        </condition>
+      </conditions>
+      <default-result status="Underway" step="3"/>
+    </join>
+  </joins>
+</workflow>

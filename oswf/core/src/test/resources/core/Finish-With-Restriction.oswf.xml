@@ -4,18 +4,18 @@
 <workflow>
 
   <initial-actions>
-    <action id="100" name="Start Workflow">
-      <results>
-        <default-result status="Underway" step="1" owner="${actor}"/>
-      </results>
+
+    <action id="1" name="Start Workflow">
+      <results><default-result status='Underway' step="100"/></results>
     </action>
+
   </initial-actions>
 
 
   <steps>
-    <step id="1" name="First Step">
+    <step id="100" name="The Step">
       <actions>
-        <action id="1" name="The first action" finish="true">
+        <action id="101" name="The action" finish="true">
 
           <restrict-to>
             <conditions>
@@ -26,7 +26,7 @@
           </restrict-to>
 
           <results>
-            <default-result status="LastFinished" step="1"/>
+            <default-result exit-status="Last Finished" />
           </results>
 
         </action>

@@ -360,7 +360,7 @@ public class ExampleWorkflowTest extends OSWfHibernateTestCase {
 
         query = new WorkflowExpressionQuery(
             new FieldExpression(Context.ENTRY, 
-                Field.STATE, Operator.EQUALS, ProcessInstanceState.COMPLETE
+                Field.STATE, Operator.EQUALS, ProcessInstanceState.COMPLETED
             )
         );
         

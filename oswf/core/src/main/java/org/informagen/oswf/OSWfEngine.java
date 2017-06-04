@@ -76,6 +76,7 @@ public interface OSWfEngine {
      */
 
     TypedMap getTypedMap(long piid);
+    TypedMap getPersistentVars(long piid);
 
     /**
      * Get a collection (Strings) of currently defined stepConditions for the specified workflow instance.

@@ -19,6 +19,12 @@
 
   <steps>
     <step id="1" name="Entry Step">
+
+      <description><![CDATA[
+
+      ]]>
+      </description>  
+
       <actions>
         <action id="2" name="Split into A/B">
         
@@ -98,7 +104,7 @@
   <joins>
     <join id="1">
         
-      <!-- Multiple Conditions; type defaults to 'AND' -->
+      <description> Multiple Conditions; type defaults to 'AND' </description>
       
       <conditions>
           

@@ -80,7 +80,7 @@ public class VariableModifyTest extends OSWfTestCase {
         bobId = createProcessInstance(wfEngine, workflowFilename, INITIAL_ACTION);
         
         //Get final status
-        assertProcessInstanceState(wfEngine, bobId, ProcessInstanceState.COMPLETE);
+        assertProcessInstanceState(wfEngine, bobId, ProcessInstanceState.COMPLETED);
         
         
         //Get final value of the 'message' transient variable

@@ -221,7 +221,7 @@ public class LeaveRequestTest extends OSWfTestCase implements Constants {
         // assertStepState((Step)historySteps.get(0), "Finished");      
         
         //Get final status
-        assertProcessInstanceState(wfEngine, piid, ProcessInstanceState.COMPLETE);
+        assertProcessInstanceState(wfEngine, piid, ProcessInstanceState.COMPLETED);
         
         TypedMap propertySet = wfEngine.getTypedMap(piid);
         
@@ -270,7 +270,7 @@ public class LeaveRequestTest extends OSWfTestCase implements Constants {
         // assertStepState((Step)historySteps.get(0), "Finished");      
         
         //Get final status
-        assertProcessInstanceState(wfEngine, piid, ProcessInstanceState.COMPLETE);
+        assertProcessInstanceState(wfEngine, piid, ProcessInstanceState.COMPLETED);
         
         TypedMap propertySet = wfEngine.getTypedMap(piid);
         
@@ -298,7 +298,7 @@ public class LeaveRequestTest extends OSWfTestCase implements Constants {
         assertCounts(wfEngine, piid, 4, 0, 0);
         
         //Get final status
-        assertProcessInstanceState(wfEngine, piid, ProcessInstanceState.COMPLETE);
+        assertProcessInstanceState(wfEngine, piid, ProcessInstanceState.COMPLETED);
         
         //Get final result value
         assertProperty(wfEngine, piid, "Employee Request", "denied");
@@ -329,7 +329,7 @@ public class LeaveRequestTest extends OSWfTestCase implements Constants {
         assertCounts(wfEngine, piid, 4, 0, 0);
         
         //Get final status
-        assertProcessInstanceState(wfEngine, piid, ProcessInstanceState.COMPLETE);
+        assertProcessInstanceState(wfEngine, piid, ProcessInstanceState.COMPLETED);
          
         //Get final result value
         assertProperty(wfEngine, piid, "Employee Request", "denied");
@@ -365,7 +365,7 @@ public class LeaveRequestTest extends OSWfTestCase implements Constants {
 
         //Get final status
 
-        assertProcessInstanceState(wfEngine, piid, ProcessInstanceState.COMPLETE);
+        assertProcessInstanceState(wfEngine, piid, ProcessInstanceState.COMPLETED);
         
         //Get final result value
         assertProperty(wfEngine, piid, "Employee Request", "denied");

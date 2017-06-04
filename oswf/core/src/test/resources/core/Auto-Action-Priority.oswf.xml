@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE workflow SYSTEM 'OSWf-3.0.dtd'>
+
+<workflow>
+
+  <description><![CDATA[
+    Step 100 with multiple actions with one (id=103) of them with its auto  
+      attribute set to 'true', hence the other actions will be ignored.
+  ]]>
+  </description>
+
+  <initial-actions>
+    <action id='1' name='Start Workflow'>
+      <results><default-result step='100'/></results>
+    </action>
+  </initial-actions>
+
+
+  <steps>
+    <step id='100' name='Start Step'>
+
+      <description>
+        This step has an action with its attribute auto set to true. This
+        action will be exectuted while all the others will be ignored.
+      </description>
+
+      <actions>
+
+        <action id='101' name='not-auto action'>
+          <results><default-result step='200'/></results>
+        </action>
+
+        <action id='102' name='not-auto action'>
+          <results><default-result step='200'/></results>
+        </action>
+
+        <action id='103' name='auto action' auto='true'>
+          <results><default-result step='200'/></results>
+        </action>
+
+        <action id='104' name='not-auto action'>
+          <results><default-result step='200'/></results>
+        </action>
+
+      </actions>
+    </step>
+
+
+    <step id='200' name='Finish'/>
+
+  </steps>
+
+</workflow>
+

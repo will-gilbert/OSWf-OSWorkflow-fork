@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE workflow SYSTEM 'OSWf-3.0.dtd'>
+
+<workflow>
+
+  <description><![CDATA[
+    Step 200 has multiple actions all with their auto attribute 
+      set to 'true', the first one in XML order will be executed.
+
+    In this case, action id=201  is executed the others are ignored.
+   ]]> 
+  </description>
+
+
+  <initial-actions>
+
+    <action id='1' name='Start Workflow'>
+      <results><default-result step='100'/></results>
+    </action>
+
+  </initial-actions>
+
+
+  <steps>
+
+    <step id='100' name='First Step'>
+      <actions>
+        <action id='101' name='The first action' auto='true'>
+          <results>
+            <default-result step='200'/>
+          </results>
+        </action>
+      </actions>
+    </step>
+
+
+    <step id='200' name='Second Step'>
+      <actions>
+
+        <action id='201' name='The second action' auto='true'>
+          <results>
+            <default-result step='300'/>
+          </results>
+        </action>
+
+        <action id='202' name='The third action' auto='true'>
+          <results>
+            <default-result step='300'/>
+          </results>
+        </action>
+
+      </actions>
+    </step>
+
+
+    <step id='300' name='Third Step'/>
+           
+  </steps>
+
+</workflow>
+

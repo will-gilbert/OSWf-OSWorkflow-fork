@@ -222,7 +222,7 @@ public class LeaveRequestAltTest extends OSWfHibernateTestCase implements LeaveR
         assertStepState((Step)historySteps.get(3), "Finished");      
         
         //Get final status
-        assertProcessInstanceState(wfEngine, bobId, ProcessInstanceState.COMPLETE);
+        assertProcessInstanceState(wfEngine, bobId, ProcessInstanceState.COMPLETED);
         
         TypedMap propertySet = wfEngine.getTypedMap(bobId);
 
@@ -249,7 +249,7 @@ public class LeaveRequestAltTest extends OSWfHibernateTestCase implements LeaveR
         
         //Get final status
 
-        assertProcessInstanceState(wfEngine, bobId, ProcessInstanceState.COMPLETE);
+        assertProcessInstanceState(wfEngine, bobId, ProcessInstanceState.COMPLETED);
         
         //Get final result value
         assertProperty(wfEngine, bobId, "result", "denied");
@@ -281,7 +281,7 @@ public class LeaveRequestAltTest extends OSWfHibernateTestCase implements LeaveR
         assertCounts(wfEngine, bobId, 4, 0, 0);
         
         //Get final status
-        assertProcessInstanceState(wfEngine, bobId, ProcessInstanceState.COMPLETE);
+        assertProcessInstanceState(wfEngine, bobId, ProcessInstanceState.COMPLETED);
         
         //Get final result value
         assertProperty(wfEngine, bobId, "result", "denied");
@@ -309,7 +309,7 @@ public class LeaveRequestAltTest extends OSWfHibernateTestCase implements LeaveR
         assertCounts(wfEngine, bobId, 4, 0, 0);
         
         //Get final status
-        assertProcessInstanceState(wfEngine, bobId, ProcessInstanceState.COMPLETE);
+        assertProcessInstanceState(wfEngine, bobId, ProcessInstanceState.COMPLETED);
         
         //Get final result value
         assertProperty(wfEngine, bobId, "result", "denied");
@@ -359,7 +359,7 @@ public class LeaveRequestAltTest extends OSWfHibernateTestCase implements LeaveR
 
         //Get final status
 
-        assertProcessInstanceState(wfEngine, bobId, ProcessInstanceState.COMPLETE);
+        assertProcessInstanceState(wfEngine, bobId, ProcessInstanceState.COMPLETED);
         
         //Get final result value
         assertProperty(wfEngine, bobId, "result", "denied");

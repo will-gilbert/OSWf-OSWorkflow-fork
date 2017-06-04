@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE workflow SYSTEM 'OSWf-3.0.dtd'>
+<workflow>
+
+  <description><![CDATA[
+    This workflow uses auto actions and conditions to control 
+    the progress of the workflow
+
+    Step 100 has two auto actions, each has a condition which controls its execution.
+    If the input variable 'path' is 'Foo' then action id 101 is executed and goes to
+    Step 200, otherwise if 'path' is 'Bar' then action 102 is taken.
+
+    This type of workflow could be used to create an automated decision tree.
+  ]]>
+  </description>
+
+  <initial-actions>
+
+    <action id='1' name='Start Workflow'>
+      <results><default-result step='100'/></results>
+    </action>
+
+  </initial-actions>
+
+  <steps>
+
+    <step id='100' name='First Step'>
+
+      <actions>
+
+        <action id='101' name='path=Foo' auto='true'>
+          <restrict-to>
+            <conditions>
+                <condition type='beanshell' name='[path:"Foo"]'>
+                  <arg name='script'>
+                    <![CDATA[ transientVars.get("path").equals("Foo") ]]>
+                  </arg>
+                </condition>
+            </conditions>
+          </restrict-to>
+
+          <results><default-result status='Finished' step='200'/></results>
+
+        </action>
+
+        <action id='102' name='path=Bar' auto='true'>
+          <restrict-to>
+            <conditions>
+                <condition type='beanshell' name='[path:"Bar"]'>
+                  <arg name='script'>
+                    <![CDATA[ transientVars.get("path").equals("Bar") ]]>
+                  </arg>
+                </condition>
+            </conditions>
+          </restrict-to>
+
+          <results> <default-result status='Finished' step='300'/></results>
+
+        </action>
+
+      </actions>
+    </step>
+
+    <step id='200' name='Foo' />
+    <step id='300' name='Bar' />
+
+  </steps>
+</workflow>
+

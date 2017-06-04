@@ -104,7 +104,7 @@ public class ReEnterSplitTest {
     
     private void checkRoute(int[] actions, boolean logSteps) throws Exception {
         
-        long piid = wfEngine.initialize(getClass().getResource("/core/reenter-split.oswf.xml").toString(), 1, null);
+        long piid = wfEngine.initialize(getClass().getResource("/core/ReenterSplitWithClear.oswf.xml").toString(), 1, null);
 
         for (int i = 0; i < actions.length; i++) {
             

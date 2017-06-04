@@ -4,8 +4,14 @@
 
   <meta name='Test Pupose'><![CDATA[
 
+    This workflow has multiple starting points, initial-actions, each goes to a
+    step with a boolean test.
+
+    Each step set a persistent variable, 'result' to 'failed'.  If the restrict-to
+    conditions evaluate to 'true' the the  'result' is changed to 'passed'.
 
   ]]></meta>
+
 
   <initial-actions>
       
@@ -37,12 +43,17 @@
 
     <step id="100" name="OR Test Step">
 
+      <pre-functions>
+        <function type="beanshell" name="bsh.function">
+          <arg name="script">persistentVars.setString("result", "failed")</arg>
+        </function>
+      </pre-functions>
+
       <actions>
-        <action id="100" name="test" auto='true' finish='true'>
+        <action id="100" name="false OR true" auto='true' finish='true'>
             
           <restrict-to>
             <conditions type="OR">
-              <condition type="beanshell"><arg name="script">false</arg></condition>
               <condition type="beanshell"><arg name="script">false</arg></condition>
               <condition type="beanshell"><arg name="script">false</arg></condition>
               <condition type="beanshell"><arg name="script">false</arg></condition>
@@ -50,15 +61,33 @@
             </conditions>
           </restrict-to> 
           
-          <results><default-result/></results>
+          <results>
+
+            <default-result>
+              <post-functions>
+                <function type="beanshell" name="bsh.function">
+                  <arg name="script">persistentVars.setString("result", "passed")</arg>
+                </function>
+              </post-functions>
+            </default-result>
+
+          </results>
         </action>
       </actions>
     </step>
 
+
+
     <step id="600" name="Failed OR Test Step">
 
+      <pre-functions>
+        <function type="beanshell" name="bsh.function">
+          <arg name="script">persistentVars.setString("result", "failed")</arg>
+        </function>
+      </pre-functions>
+
       <actions>
-        <action id="600" name="test" auto='true' finish='true'>
+        <action id="600" name="false OR false" auto='true' finish='true'>
             
           <restrict-to>
             <conditions type="OR">
@@ -76,8 +105,14 @@
 
     <step id="200" name="AND Test Step">
 
+      <pre-functions>
+        <function type="beanshell" name="bsh.function">
+          <arg name="script">persistentVars.setString("result", "failed")</arg>
+        </function>
+      </pre-functions>
+
       <actions>
-        <action id="200" name="test" auto='true' finish='true'>
+        <action id="200" name="true AND true" auto='true' finish='true'>
             
           <restrict-to>
             <conditions type="AND">
@@ -85,19 +120,34 @@
               <condition type="beanshell"><arg name="script">true</arg></condition>
               <condition type="beanshell"><arg name="script">true</arg></condition>
               <condition type="beanshell"><arg name="script">true</arg></condition>
-              <condition type="beanshell"><arg name="script">true</arg></condition>
             </conditions>
           </restrict-to> 
           
-          <results><default-result/></results>
+          <results>
+
+            <default-result>
+              <post-functions>
+                <function type="beanshell" name="bsh.function">
+                  <arg name="script">persistentVars.setString("result", "passed")</arg>
+                </function>
+              </post-functions>
+            </default-result>
+
+          </results>
         </action>
       </actions>
     </step>
 
     <step id="700" name="Failed AND Test Step">
 
+      <pre-functions>
+        <function type="beanshell" name="bsh.function">
+          <arg name="script">persistentVars.setString("result", "failed")</arg>
+        </function>
+      </pre-functions>
+
       <actions>
-        <action id="700" name="test" auto='true' finish='true'>
+        <action id="700" name="false AND true" auto='true' finish='true'>
             
           <restrict-to>
             <conditions type="AND">
@@ -109,15 +159,31 @@
             </conditions>
           </restrict-to> 
           
-          <results><default-result/></results>
+          <results>
+
+            <default-result>
+              <post-functions>
+                <function type="beanshell" name="bsh.function">
+                  <arg name="script">persistentVars.setString("result", "passed")</arg>
+                </function>
+              </post-functions>
+            </default-result>
+
+          </results>
         </action>
       </actions>
     </step>
 
     <step id="300" name="NOT Test Step">
 
+      <pre-functions>
+        <function type="beanshell" name="bsh.function">
+          <arg name="script">persistentVars.setString("result", "failed")</arg>
+        </function>
+      </pre-functions>
+
       <actions>
-        <action id="300" name="test" auto='true' finish='true'>
+        <action id="300" name="NOT false" auto='true' finish='true'>
             
           <restrict-to>
             <conditions type="AND">
@@ -125,7 +191,17 @@
             </conditions>
           </restrict-to> 
           
-          <results><default-result/></results>
+          <results>
+
+            <default-result>
+              <post-functions>
+                <function type="beanshell" name="bsh.function">
+                  <arg name="script">persistentVars.setString("result", "passed")</arg>
+                </function>
+              </post-functions>
+            </default-result>
+
+          </results>
         </action>
       </actions>
     </step>

@@ -10,7 +10,7 @@
   <initial-actions>
     <action id="1" name="Start Workflow">
       <results>
-        <default-result step="1" owner="${actor}"/>
+        <default-result step="1"/>
       </results>
     </action>
   </initial-actions>
@@ -21,7 +21,7 @@
     <step id="1" name="First Step">
 
       <actions>
-        <action id="2" name="The first action">
+        <action id="2" name="true OR false">
           <restrict-to>
             <conditions>
                 
@@ -40,13 +40,13 @@
             
           </restrict-to>
           <results>
-            <default-result status="Queued" step="2"/>
+            <default-result step="2"/>
           </results>
         </action>
       </actions>
     </step>
 
-    <step name="end" id="2" />
+    <step name="Finished" id="2" />
 
   </steps>
 </workflow>

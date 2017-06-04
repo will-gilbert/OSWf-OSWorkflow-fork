@@ -51,7 +51,7 @@ public class TypeResolverTest extends OSWfTestCase {
         ;
 
         long piid = createProcessInstance(wfEngine, workflowFilename, 1);
-        assertProcessInstanceState(wfEngine, piid, ProcessInstanceState.COMPLETE);        
+        assertProcessInstanceState(wfEngine, piid, ProcessInstanceState.COMPLETED);        
     }
 
     @Test
@@ -68,7 +68,7 @@ public class TypeResolverTest extends OSWfTestCase {
         ;
         
         long piid = createProcessInstance(wfEngine, workflowFilename, 2);
-        assertProcessInstanceState(wfEngine, piid, ProcessInstanceState.COMPLETE);        
+        assertProcessInstanceState(wfEngine, piid, ProcessInstanceState.COMPLETED);        
     }
 
     @Test
@@ -83,7 +83,7 @@ public class TypeResolverTest extends OSWfTestCase {
         //config.getTypeResolver().addFunction("NullFunction", "tests.util.NullFunction");
         
         long piid = createProcessInstance(wfEngine, workflowFilename, 2);
-        assertProcessInstanceState(wfEngine, piid, ProcessInstanceState.COMPLETE);        
+        assertProcessInstanceState(wfEngine, piid, ProcessInstanceState.COMPLETED);        
     }
 
     @Test
@@ -98,7 +98,7 @@ public class TypeResolverTest extends OSWfTestCase {
         //TypeResolver.getInstance().addFunction("X", "tests.util.NullFunction");
         
         long piid = createProcessInstance(wfEngine,workflowFilename, 3);
-        assertProcessInstanceState(wfEngine, piid, ProcessInstanceState.COMPLETE);        
+        assertProcessInstanceState(wfEngine, piid, ProcessInstanceState.COMPLETED);        
     }
 
     @Test
@@ -112,7 +112,7 @@ public class TypeResolverTest extends OSWfTestCase {
         ;
                 
         long piid = createProcessInstance(wfEngine, workflowFilename, 4);
-        assertProcessInstanceState(wfEngine, piid, ProcessInstanceState.COMPLETE);        
+        assertProcessInstanceState(wfEngine, piid, ProcessInstanceState.COMPLETED);        
     }
 
     @Test
@@ -125,7 +125,7 @@ public class TypeResolverTest extends OSWfTestCase {
         ;
                 
         long piid = createProcessInstance(wfEngine, workflowFilename, 4);
-        assertProcessInstanceState(wfEngine, piid, ProcessInstanceState.COMPLETE);        
+        assertProcessInstanceState(wfEngine, piid, ProcessInstanceState.COMPLETED);        
     }
 
 
@@ -139,7 +139,7 @@ public class TypeResolverTest extends OSWfTestCase {
         ;
 
         long piid = createProcessInstance(wfEngine, workflowFilename, 5);
-        assertProcessInstanceState(wfEngine, piid, ProcessInstanceState.COMPLETE);        
+        assertProcessInstanceState(wfEngine, piid, ProcessInstanceState.COMPLETED);        
     }
 
 
@@ -153,7 +153,7 @@ public class TypeResolverTest extends OSWfTestCase {
         ;
 
         long piid = createProcessInstance(wfEngine, workflowFilename, 6);
-        assertProcessInstanceState(wfEngine, piid, ProcessInstanceState.COMPLETE);        
+        assertProcessInstanceState(wfEngine, piid, ProcessInstanceState.COMPLETED);        
     }
 
 
@@ -170,7 +170,7 @@ public class TypeResolverTest extends OSWfTestCase {
         ;
 
         long piid = createProcessInstance(wfEngine, workflowFilename, 7);
-        assertProcessInstanceState(wfEngine, piid, ProcessInstanceState.COMPLETE);        
+        assertProcessInstanceState(wfEngine, piid, ProcessInstanceState.COMPLETED);        
     }
 
 

@@ -246,7 +246,7 @@ public class ExampleWorkflowTest extends OSWfTestCase {
         
         logInstanceState(wfEngine, piid);
 
-        //assertProcessInstanceState(piid, ProcessInstanceState.COMPLETE);
+        //assertProcessInstanceState(piid, ProcessInstanceState.COMPLETED);
         
         logger.debug("Entry state: " + getProcessInstanceState(wfEngine, piid));
 
@@ -342,7 +342,7 @@ public class ExampleWorkflowTest extends OSWfTestCase {
 
         query = new WorkflowExpressionQuery(new FieldExpression(
             Context.ENTRY, 
-            Field.STATE, Operator.EQUALS, ProcessInstanceState.COMPLETE)
+            Field.STATE, Operator.EQUALS, ProcessInstanceState.COMPLETED)
         );
         workflows = wfEngine.query(query);
         assertEquals("empty STATE+ENTRY", 0, workflows.size());

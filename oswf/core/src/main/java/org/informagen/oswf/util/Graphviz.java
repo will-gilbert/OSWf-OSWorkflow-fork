@@ -154,6 +154,15 @@ public class Graphviz {
         
         // Steps
         for(StepDescriptor step : steps) {
+
+            if (step.getActions().size() == 0) {
+
+                // I'd be nice to add a finish symbol here
+
+                continue;
+            }
+
+
             for(ActionDescriptor action : step.getActions()) {
                 stepActionTransition(step.getId(), action);
                 fromActionEdges("Action", action);
@@ -296,8 +305,8 @@ public class Graphviz {
             buffer.append(" [label=\"");
             
             List<ConditionsDescriptor> conditions = join.getConditions();      
-            if (conditions.size() > 0) 
-                buffer.append(conditions.get(0).getType()).append(" ");
+            // if (conditions.size() > 0) 
+            //     buffer.append(conditions.get(0).getType()).append(" ");
 
             buffer.append("Join: ").append(join.getId());
             buffer.append("\"\n   shape=invtrapezium\n   fontsize=9\n   ");

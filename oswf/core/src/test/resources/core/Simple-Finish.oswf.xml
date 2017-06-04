@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE workflow SYSTEM "OSWf-3.0.dtd">
+
+<workflow>
+
+  <initial-actions>
+
+    <action id="1" name="Start Workflow">
+      <results><default-result step="100"/></results>
+    </action>
+  </initial-actions>
+
+  <steps>
+    <step id="100" name="The Step">
+      <actions>
+        <action id="101" name="The action" finish="true">
+          <results>
+            <default-result exit-status="Last Finished"/>
+          </results>
+        </action>
+      </actions>
+    </step>
+  </steps>
+</workflow>
+

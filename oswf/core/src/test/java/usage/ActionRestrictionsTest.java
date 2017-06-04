@@ -252,7 +252,7 @@ public class ActionRestrictionsTest extends OSWfTestCase implements Constants {
         wf.setConfiguration(configuration);
         wf.doAction(piid, HUMAN_RESOURCES_APPROVES);
  
-        assertProcessInstanceState(wf, piid, ProcessInstanceState.COMPLETE);
+        assertProcessInstanceState(wf, piid, ProcessInstanceState.COMPLETED);
         assertProperty(wf, piid, "result", "approved");
     }
 

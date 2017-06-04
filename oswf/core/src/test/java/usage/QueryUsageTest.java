@@ -262,7 +262,7 @@ public class QueryUsageTest extends OSWfTestCase implements LeaveRequest {
 
         // Finish this process instance
         wfEngine.doAction(piid, LINE_MANAGER_APPROVES);
-        assertEquals(ProcessInstanceState.COMPLETE, wfEngine.getProcessInstanceState(piid));
+        assertEquals(ProcessInstanceState.COMPLETED, wfEngine.getProcessInstanceState(piid));
 
         // Should have two history steps; Steps 100 and 200; no current steps
         assertEquals(0, wfEngine.query(currentQuery).size());
@@ -293,7 +293,7 @@ public class QueryUsageTest extends OSWfTestCase implements LeaveRequest {
 
         completed = new FieldExpression(
             Context.ENTRY,
-            Field.STATE, Operator.EQUALS, ProcessInstanceState.COMPLETE
+            Field.STATE, Operator.EQUALS, ProcessInstanceState.COMPLETED
         );
                                          
         activatedQuery = new WorkflowExpressionQuery(activated);
@@ -514,7 +514,7 @@ public class QueryUsageTest extends OSWfTestCase implements LeaveRequest {
 
         // Ensure successful completion
         assertProperty(wfEngine, piid, "result", "approved");
-        assertEquals(ProcessInstanceState.COMPLETE, wfEngine.getProcessInstanceState(piid));
+        assertEquals(ProcessInstanceState.COMPLETED, wfEngine.getProcessInstanceState(piid));
 
     }
 

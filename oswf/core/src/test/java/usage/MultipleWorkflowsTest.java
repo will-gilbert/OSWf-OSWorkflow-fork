@@ -133,7 +133,7 @@ public class MultipleWorkflowsTest extends OSWfTestCase implements Constants {
         
         wfEngine.doAction(tedId, LINE_MANAGER_APPROVES);
         assertCounts(wfEngine, tedId,   2, 0, 0);
-        assertProcessInstanceState(wfEngine, tedId, ProcessInstanceState.COMPLETE);
+        assertProcessInstanceState(wfEngine, tedId, ProcessInstanceState.COMPLETED);
         assertProperty(wfEngine, tedId,   "result", "approved");
 
 
@@ -160,8 +160,8 @@ public class MultipleWorkflowsTest extends OSWfTestCase implements Constants {
         assertProperty(wfEngine, bobId,   "Employee Request", "approved");
 
         // Both two approval workflows are finished
-        assertProcessInstanceState(wfEngine, aliceId, ProcessInstanceState.COMPLETE);
-        assertProcessInstanceState(wfEngine, bobId,   ProcessInstanceState.COMPLETE);
+        assertProcessInstanceState(wfEngine, aliceId, ProcessInstanceState.COMPLETED);
+        assertProcessInstanceState(wfEngine, bobId,   ProcessInstanceState.COMPLETED);
 
     }
     

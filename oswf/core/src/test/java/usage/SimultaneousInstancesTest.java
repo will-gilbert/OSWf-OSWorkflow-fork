@@ -162,9 +162,9 @@ public class SimultaneousInstancesTest extends OSWfTestCase implements Constants
 
         // Alice and Bob are done, but Ted's process is still active
 
-        assertProcessInstanceState(wfEngine, aliceId, ProcessInstanceState.COMPLETE);
-        assertProcessInstanceState(wfEngine, bobId,   ProcessInstanceState.COMPLETE);
-        assertProcessInstanceState(wfEngine, tedId,   ProcessInstanceState.COMPLETE);
+        assertProcessInstanceState(wfEngine, aliceId, ProcessInstanceState.COMPLETED);
+        assertProcessInstanceState(wfEngine, bobId,   ProcessInstanceState.COMPLETED);
+        assertProcessInstanceState(wfEngine, tedId,   ProcessInstanceState.COMPLETED);
 
     }
     

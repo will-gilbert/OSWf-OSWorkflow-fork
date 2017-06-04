@@ -13,92 +13,39 @@
       </results>
     </action>
 
-    <action id="2" name="Step 1: Pending">
-      <results>
-        <default-result step="1" />
-      </results>
-    </action>
-
-    <action id="3" name="Step 2: Pending">
-      <results>
-        <default-result step="2" />
-      </results>
-    </action>
-
-    <action id="4" name="Step 1: Automatic">
-      <results>
-        <default-result status="Automatic" step="1" />
-      </results>
-    </action>
-
-    <action id="5" name="Step 2: Automatic">
-      <results>
-        <default-result status="Automatic" step="2" />
-      </results>
-    </action>
-
-
   </initial-actions>
 
   <!-- S T E P S  ========================================================================= -->
 
   <steps>
   
-    <step id="1" name="Step 1">
+    <step id="100" name="Step 1">
+
       <actions>
 
-        <action id="10" name="auto-action" auto="true">
-          <restrict-to>
-            <conditions>
-              <condition type='alias' name='hasStatusOf'>
-                <arg name="stepId">11</arg>
-                <arg name="status">Automatic</arg>
-              </condition>
-            </conditions>
-          </restrict-to>
+        <action id="100" name='Auto' auto='true'>
           <results>
-            <default-result step="1"/>
-          </results>
-        </action>
-
-        <action id="11" name='Finish'>
-          <results>
-            <unconditional-result old-status='old-status' step="3"/> 
+            <default-result step="300"/> 
          </results>
         </action>
 
       </actions>
     </step>
 
-    <step id="2" name="Step 2">
+    <step id="200" name="Step 2">
 
       <actions>
 
-        <action id="20" name="auto-action" auto="true">
-          <restrict-to>
-            <conditions>
-              <condition type='alias' name='hasStatusOf'>
-                <arg name="stepId">12</arg>
-                <arg name="status">Automatic</arg>
-              </condition>
-            </conditions>
-          </restrict-to>
+        <action id="200" name='Auto' auto='true'>
           <results>
-            <default-result step="2"/>
-          </results>
-          
-        </action>
-
-        <action id="21" name='Finish'>
-          <results>
-            <default-result step="3"/>
+            <default-result step="300"/>
           </results>
         </action>
 
       </actions>
     </step>
 
-    <step id='3' name='End' />
+    <step id='300' name='End' />
 
   </steps>
 
@@ -106,8 +53,8 @@
   
   <splits>
     <split id="1">
-      <default-result  exit-status="Split" status="Automatic" step="1"/>
-      <default-result  exit-status="Split" status="Automatic" step="2"/>
+      <default-result  exit-status="Split" status="Automatic" step="100"/>
+      <default-result  exit-status="Split" status="Automatic" step="200"/>
     </split>
 
   </splits>

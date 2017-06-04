@@ -250,7 +250,7 @@ public class StepOwnershipTest extends OSWfHibernateTestCase implements Constant
         wf.setConfiguration(configuration);
         wf.doAction(piid, HUMAN_RESOURCES_APPROVES);
  
-        assertProcessInstanceState(wf, piid, ProcessInstanceState.COMPLETE);
+        assertProcessInstanceState(wf, piid, ProcessInstanceState.COMPLETED);
         assertProperty(wf, piid, "result", "approved");
     }
 

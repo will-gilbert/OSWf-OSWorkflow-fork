@@ -113,7 +113,7 @@ public class LoggingTest extends OSWfTestCase implements Constants {
 
         // Ensure successful completion
         assertProperty(wfEngine, piid, "result", "approved");
-        assertEquals(ProcessInstanceState.COMPLETE, wfEngine.getProcessInstanceState(piid));
+        assertEquals(ProcessInstanceState.COMPLETED, wfEngine.getProcessInstanceState(piid));
     }
     @Test
     public void denyRequest() throws Exception {
@@ -131,7 +131,7 @@ public class LoggingTest extends OSWfTestCase implements Constants {
 
         // Ensure successful completion
         assertProperty(wfEngine, piid, "result", "denied");
-        assertEquals(ProcessInstanceState.COMPLETE, wfEngine.getProcessInstanceState(piid));
+        assertEquals(ProcessInstanceState.COMPLETED, wfEngine.getProcessInstanceState(piid));
     }
 
 }

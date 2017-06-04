@@ -34,6 +34,7 @@ Site specific variables such as the upload repository can be specified in a a fi
 
 ================================================================================================= */
 
+apply plugin: 'groovy'   
 apply plugin: 'maven'   // Used to install in the local MAVEN repository
 
 // C O N F I G U R A T I O N ==================================================================
@@ -58,6 +59,7 @@ dependencies {
 
     compile ([
 
+
         // BeanShell - used by Workflow Processes for step/action scripts
         "org.beanshell:bsh:$bsh",
         
@@ -72,6 +74,8 @@ dependencies {
     runtime ([ ])
     
     testCompile([
+        
+        "org.codehaus.groovy:groovy:$groovy",
         
         // Simple JNDI - Used for JDBCProperySet testing
         "simple-jndi:simple-jndi:$jndi"
@@ -101,6 +105,15 @@ dependencies {
     ])
 
 }
+
+sourceSets {
+
+    test { 
+        java { srcDirs = [] }
+        groovy { srcDirs = ['src/test/java', 'src/test/groovy'] }
+    }
+}
+
 
 task graphviz(dependsOn: ['jar'], type:JavaExec) {
 
@@ -160,88 +173,3 @@ def String findProperty(String propertyName, defaultValue='') {
     def property = rootProject.hasProperty(propertyName) ? rootProject.getProperty(propertyName) : defaultValue
     return property?.trim()
 }
-
-/* ============================================================================================
-Change log for OSWorkflow to OSWf 3.x
-
-- Gradle build system; clean, compileJava, test, install; See top of 'build.gradle' file
-
-- Use SL4J instead of Apache commons-logging
-
-- JUnit 4.x testing with annotations
-
-- Remove all deprecated OSWorkflow 2.x methods and classes
-
-- Change top-level package from 'com.opensymphony.workflow' to 'org.informagen.oswf'
-
-- Remove EJB, ofbiz, Soap. This is not deprecation but separation.
-  These implementations can/should be provided as plugins.
-
-- Massive refactoring of packages
-  - All major Workflow interfaces to top level
-  - A seperate package for homogenous sets of classses; e.g. conditions, descriptors, 
-    exceptions, functions, registers and validators.  Used plural in package  
-    names to indicate the homogeneity of the classes contain in each package
-
-- 'util' contains only helper, support and static classes
-
-- 'spi' directory (Service Provider Interface)  contains 'Default/Built-in'  
-   implementations of major interfaces such as process description 
-   (WorkflowDescriptor) loaders, workflow store implmentations and
-   PropertySetDelegate implementation
-
-- Rename Condition FunctionProviders to use boolean verbs, is*, has*
-  as specified for boolean JavaBean properties; Dropped 'Condition' suffix
-
-- Rename Workflow to OSWfEngine for in order to avoid confusion with
-  a WorkflowDescriptor (Process Description) or WorkflowEntity (Process Instance)
-  Will probably rename these in the future
-
-- Rename 'unconditional-result' to 'default-result' for clarity
-
-- Rename 'old-status' to 'exit-status' for clarity; not required, defaults to 'Finished'
-
-- Default 'status' is set to 'Pending'
-
-- Use default type of 'AND' for 'conditions'; require 'type' if more than one condition
-
-- Rename all Workflow Description XML files to end with .oswf.xml
-
-- Use and return typed class, i.e. generics, for all/most collections
-
-- Convert the use of arrays to List<T>; This required changes to some of
-  the 'Workflow' interface methods
-
-- Remove the use of Iterator; replace with Java 1.5 'for' loop constructs
-
-- Removed Hibernate 2.x support; Created Hibernate 3.x WorkflowStore as seperate JAR;
-   Moved to OSWf Store; Core has no dependencies on Hibernate
-
-- Merge WorkflowStore interface methods 'markFinished' and 'moveHistory' into a single
-   method named 'moveHistory' with 'markFinished' parameters
-
-- Publish via SourceForge as 'OSWf'
-
-- Remove dependency on OpenSymphony 'osuser' authentication framework; Created simple
-   interfaces 'SecurityProvider', 'User' & 'Role' within OSWf with Default implementations.
-   Changed 'Group' to 'Role' in order to allow for abstract assosciation i.e. e-mail lists,
-   group membership, allowed actions, etc.
-
-- Incorporated OpenSymphony's PropertySet v1.4 source and tests into OSWf in order to 
-   both modernize its codebase and remove dependicies on older frameworks
-
-- Rename 'JoinNodes' to 'JoinSteps'; behaves like a Collection; S/B Set or List? How to
-   handle reentrant Splits?
-   
-== Ideas or To Do =============================================================================
-
-- Perhaps the defaults for 'exit-status' of "Finished" and 'status' of "Pending" could be 
-  specified via external properties in the future
-
-- Remove Quartz; implement as plugin
-  Allows Quartz 1.x and 2.x implementations as separate plugins
-      
-============================================================================================ */
-
-
-

@@ -81,6 +81,10 @@ public class MemoryStore extends AbstractWorkflowStore  {
     public TypedMap getTypedMap(long piid) {
         return getTypedMapStore().getTypedMap(piid);
     }
+
+    public TypedMap getPersistentVars(long piid) {
+        return getTypedMap(piid);
+    }
         
     public ProcessInstance createEntry(String workflowName) throws WorkflowStoreException {
 

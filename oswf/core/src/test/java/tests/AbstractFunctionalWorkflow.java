@@ -329,7 +329,7 @@ public abstract class AbstractFunctionalWorkflow {
         //-------------------  Field.STATE + Context.ENTRY ----------------------------------
         query = new WorkflowExpressionQuery(new FieldExpression(
             Context.ENTRY, 
-            Field.STATE, Operator.EQUALS, ProcessInstanceState.COMPLETE)
+            Field.STATE, Operator.EQUALS, ProcessInstanceState.COMPLETED)
         );
         workflows = wfEngine.query(query);
         assertEquals("empty STATE+ENTRY", 0, workflows.size());

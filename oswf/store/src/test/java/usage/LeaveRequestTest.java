@@ -218,7 +218,7 @@ public class LeaveRequestTest extends OSWfHibernateTestCase implements LeaveRequ
         assertStepState((Step)historySteps.get(3), "Finished");      
         
         //Get final status
-        assertProcessInstanceState(wfEngine, bobId, ProcessInstanceState.COMPLETE);
+        assertProcessInstanceState(wfEngine, bobId, ProcessInstanceState.COMPLETED);
         
         TypedMap propertySet = wfEngine.getTypedMap(bobId);
         
@@ -247,7 +247,7 @@ public class LeaveRequestTest extends OSWfHibernateTestCase implements LeaveRequ
         
         //Get final status
 
-        assertProcessInstanceState(wfEngine, bobId, ProcessInstanceState.COMPLETE);
+        assertProcessInstanceState(wfEngine, bobId, ProcessInstanceState.COMPLETED);
         
         //Get final result value
         assertProperty(wfEngine, bobId, "result", "denied");
@@ -279,7 +279,7 @@ public class LeaveRequestTest extends OSWfHibernateTestCase implements LeaveRequ
         assertCounts(wfEngine, bobId, 4, 0, 0);
         
         //Get final status
-        assertProcessInstanceState(wfEngine, bobId, ProcessInstanceState.COMPLETE);
+        assertProcessInstanceState(wfEngine, bobId, ProcessInstanceState.COMPLETED);
         
         //Get final result value
         assertProperty(wfEngine, bobId, "result", "denied");
@@ -319,7 +319,7 @@ public class LeaveRequestTest extends OSWfHibernateTestCase implements LeaveRequ
 
         //Get final status
 
-        assertProcessInstanceState(wfEngine, bobId, ProcessInstanceState.COMPLETE);
+        assertProcessInstanceState(wfEngine, bobId, ProcessInstanceState.COMPLETED);
         
         //Get final result value
         assertProperty(wfEngine, bobId, "result", "denied");
