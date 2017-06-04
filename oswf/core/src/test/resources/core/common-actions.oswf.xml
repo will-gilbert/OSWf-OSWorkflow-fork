@@ -39,6 +39,7 @@
 	    
 		<step id="1" name="First Draft">
 			<actions>
+				
 				<!-- these should reference the common-actions above! -->
 				<common-action id="100" />
 				<common-action id="101" />

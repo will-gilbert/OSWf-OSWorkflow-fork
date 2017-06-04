@@ -155,7 +155,7 @@ Used in: conditions
 <!ELEMENT condition (arg*)>
 <!ATTLIST condition
       id CDATA #IMPLIED
-	type (alias | class | beanshell) #REQUIRED
+	type (alias | class | beanshell | groovy) #REQUIRED
     name CDATA #IMPLIED
   negate (TRUE | FALSE | true | false) #IMPLIED
 >
@@ -281,7 +281,7 @@ Used in: pre-functions, post-functions
 <!ELEMENT function (arg*)>
 <!ATTLIST function
       id CDATA #IMPLIED
-	type (alias | class | beanshell) #REQUIRED
+	type (alias | class | beanshell | groovy) #REQUIRED
     name CDATA #IMPLIED
 >
 

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE workflow SYSTEM "OSWf-3.0.dtd">
+<workflow>
+
+  <meta name='Test Pupose'><![CDATA[
+
+
+  ]]></meta>
+
+  <initial-actions>
+    <action id="1" name="Start Workflow">
+      <results>
+        <default-result step="1"/>
+      </results>
+    </action>
+  </initial-actions>
+  
+  
+  <steps>
+
+    <step id="1" name="First Step">
+
+      <actions>
+        <action id="2" name="true OR false">
+          <restrict-to>
+            <conditions>
+                
+              <conditions type="OR">
+                  
+                <condition type="groovy">
+                  <arg name="script">true</arg>
+                </condition>
+                
+                <condition type="groovy">
+                  <arg name="script">false</arg>
+                </condition>
+                
+              </conditions>
+            </conditions>
+            
+          </restrict-to>
+          <results>
+            <default-result step="2"/>
+          </results>
+        </action>
+      </actions>
+    </step>
+
+    <step name="Finished" id="2" />
+
+  </steps>
+</workflow>
+

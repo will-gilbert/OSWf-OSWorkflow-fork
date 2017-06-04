@@ -113,6 +113,9 @@ public class DefaultTypeResolver implements TypeResolver {
         else if("beanshell".equals(type))
             className = "org.informagen.oswf.conditions.BeanShell";
 
+        else if("groovy".equals(type))
+            className = "org.informagen.oswf.conditions.GroovyScript";
+
         // For added condiitons and a last attempt
         if(className == null)
             className = conditions.get(type);
@@ -149,6 +152,9 @@ public class DefaultTypeResolver implements TypeResolver {
         
         else if("beanshell".equals(type))
             className = "org.informagen.oswf.functions.BeanShellFunctionProvider";
+
+        else if("groovy".equals(type))
+            className = "org.informagen.oswf.functions.GroovyScriptFunctionProvider";
             
         // For added function types and a last attempt
         if(className == null)

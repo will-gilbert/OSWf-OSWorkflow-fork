@@ -17,7 +17,7 @@ import org.junit.Ignore
 import org.junit.Test
 
 
-public class ConditionsTest {
+public class GroovyScriptConditionsTest {
     
     // M E T H O D S  -------------------------------------------------------------------------
 
@@ -32,7 +32,7 @@ public class ConditionsTest {
     @Test
     public void nestedCondition() throws Exception {
         
-        def url = getClass().getResource("/core/nested-condition.oswf.xml")
+        def url = getClass().getResource("/core/groovyscript/nested-condition.oswf.xml")
         
         def piid = wfEngine.initialize(url.toString(), 1)
 
@@ -44,8 +44,8 @@ public class ConditionsTest {
 
     @Test
     public void orCondition() throws Exception {
-        def url = getClass().getResource("/core/boolean-conditions.oswf.xml")
-        long piid = wfEngine.initialize(url.toString(), 1)
+        def url = getClass().getResource("/core/groovyscript/boolean-conditions.oswf.xml")
+        def piid = wfEngine.initialize(url.toString(), 1)
 
         assert 'passed' == wfEngine.getPersistentVars(piid).getString('result')
         assert ProcessInstanceState.COMPLETED == wfEngine.getProcessInstanceState(piid)
@@ -53,7 +53,7 @@ public class ConditionsTest {
 
     @Test
     public void failedOrCondition() throws Exception {
-        def url = getClass().getResource("/core/boolean-conditions.oswf.xml")
+        def url = getClass().getResource("/core/groovyscript/boolean-conditions.oswf.xml")
         def piid = wfEngine.initialize(url.toString(), 6)
 
         assert 'failed' == wfEngine.getPersistentVars(piid).getString('result')
@@ -62,7 +62,7 @@ public class ConditionsTest {
     
     @Test
     public void andCondition() throws Exception {
-        def url = getClass().getResource("/core/boolean-conditions.oswf.xml")
+        def url = getClass().getResource("/core/groovyscript/boolean-conditions.oswf.xml")
         def piid = wfEngine.initialize(url.toString(), 2)
 
         assert 'passed' == wfEngine.getPersistentVars(piid).getString('result')
@@ -71,7 +71,7 @@ public class ConditionsTest {
     
     @Test
     public void failedAndCondition() throws Exception {
-        def url = getClass().getResource("/core/boolean-conditions.oswf.xml")
+        def url = getClass().getResource("/core/groovyscript/boolean-conditions.oswf.xml")
         def piid = wfEngine.initialize(url.toString(), 7)
 
         assert 'failed' == wfEngine.getPersistentVars(piid).getString('result')
@@ -80,7 +80,7 @@ public class ConditionsTest {
     
     @Test
     public void notCondition() throws Exception {
-        def url = getClass().getResource("/core/boolean-conditions.oswf.xml")
+        def url = getClass().getResource("/core/groovyscript/boolean-conditions.oswf.xml")
         def piid = wfEngine.initialize(url.toString(), 3)
 
         assert 'passed' == wfEngine.getPersistentVars(piid).getString('result')

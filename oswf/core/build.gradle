@@ -60,6 +60,9 @@ dependencies {
     compile ([
 
 
+        // GroovyScript - used by Workflow Processes for step/action scripts
+        "org.codehaus.groovy:groovy:$groovy",
+
         // BeanShell - used by Workflow Processes for step/action scripts
         "org.beanshell:bsh:$bsh",
         
@@ -74,9 +77,7 @@ dependencies {
     runtime ([ ])
     
     testCompile([
-        
-        "org.codehaus.groovy:groovy:$groovy",
-        
+            
         // Simple JNDI - Used for JDBCProperySet testing
         "simple-jndi:simple-jndi:$jndi"
         
