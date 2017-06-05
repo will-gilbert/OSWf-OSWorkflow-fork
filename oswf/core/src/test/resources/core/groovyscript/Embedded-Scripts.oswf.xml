@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE workflow SYSTEM "OSWf-3.0.dtd">
+
+<workflow>
+
+  <initial-actions>
+
+    <action id="1" name="XML Comments">
+      <results> <default-result step="100" /> </results>
+    </action>
+
+
+    <action id="2" name="CDATA enclosed script">
+      <results> <default-result step="200" /> </results>
+    </action>
+
+    <action id="3" name="Embedded in Pre and Post">
+      <results> <default-result step="300" /> </results>
+    </action>
+
+    <action id="4" name="Modify variable">       
+      <pre-functions>
+        <function type="groovy">
+          <arg name="script">
+            persistentVars.setString 'message', 'foo'
+          </arg>
+        </function>        
+      </pre-functions>
+      
+      <results> <default-result step="400"/> </results>
+    </action>
+
+
+  </initial-actions>
+
+
+  <steps>
+
+    <step id="100" name="XML Comments">
+ 
+      <actions>
+        <action id="101" name="XML Comments" auto='true' finish='true'>
+          <results>
+
+            <default-result>
+              <post-functions>
+                <function type="groovy">
+                  <arg name="script">
+
+                    def test = transientVars.get('test')
+                    test.counter++
+
+                    <!-- Should be honored when no CDATA tags used
+                    test.counter++
+                    -->
+
+                    test.counter++;
+                  </arg>
+                </function>
+              </post-functions>
+            </default-result>
+
+          </results>
+
+        </action>
+      </actions>
+    </step>
+
+    <step id="200" name="CDATA enclosed script">
+ 
+      <actions>
+        <action id="201" name="CDATA enclosed script" auto='true' finish='true'>
+          <results>
+
+            <default-result>
+              <post-functions>
+                <function type="groovy">
+                  <arg name="script"><![CDATA[
+
+                    def test = transientVars.get 'test'
+
+                    if ( true && true && (1<2) && (2>1) ) {
+                      test.counter++
+                    }
+
+                    test.counter++
+                ]]></arg>
+                </function>
+              </post-functions>
+            </default-result>
+
+          </results>
+
+        </action>
+      </actions>
+    </step>
+
+
+ 
+    <step id="300" name="Embedded in Pre and Post">
+ 
+      <actions>
+        <action id="301" name="Embedded in Pre and Post" auto='true' finish='true'>
+          <results>
+ 
+            <default-result>
+
+              <pre-functions>
+                <function type="groovy">
+                  <arg name="script">
+                    def test = transientVars.get 'test'
+                    test.counter++;
+                  </arg>
+                </function>
+              </pre-functions>
+
+              <post-functions>
+                <function type="groovy">
+                  <arg name="script">
+                    def test = transientVars.get 'test'
+                    test.counter++;
+                  </arg>
+                </function>
+              </post-functions>
+
+            </default-result>
+
+          </results>
+        </action>
+      </actions>
+    </step>
+
+
+    <step id="400" name="Verify Argument">
+      <actions>
+        <action id="401" name="Verify Argument" finish="true" auto="true">
+            
+          <pre-functions>
+
+            <function type="class">
+              <arg name="classname">tests.util.VerifyArg</arg>
+              <arg name="expected">foo</arg>
+              <arg name="actual">${message}</arg>
+            </function>
+              
+            <function type="groovy">
+              <arg name="script">
+                persistentVars.setString 'message', 'bar'
+              </arg>
+            </function>
+            
+            <function type="class">
+              <arg name="classname">tests.util.VerifyArg</arg>
+              <arg name="expected">bar</arg>
+              <arg name="actual">${message}</arg>
+            </function>
+          </pre-functions>
+          
+          <results>
+            <default-result/>
+          </results>
+          
+        </action>
+      </actions>
+    </step>
+
+
+  </steps>
+
+</workflow>
