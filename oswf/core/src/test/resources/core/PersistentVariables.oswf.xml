@@ -5,12 +5,11 @@
 
   <initial-actions> 
  
-    <action id="1" name="Set PropertySet to 'Hello, World'">
+    <action id="1" name="Set/Get persistent variable">
 
-      <meta name='title'>Test Set/GetStringProperty functions</meta>  
       <meta name='description'><![CDATA[  
-        Use 'SetStringProperty' function to add the string of 'Hello, World" as
-        the value referenced by the string 'test-name' into the PropertySet.
+        Use 'SetStringProperty' function to set persistent variable 'test-name' to 'Hello, World'.
+        Go to step 100 and verify that the persistent variable was set using 'getStringPoperty'.
       ]]></meta>
     
       <pre-functions>
@@ -22,10 +21,15 @@
       <results> <default-result step="100"/> </results>
     </action> 
 
-    <action id="2" name="Set PropertySet to 'Hello, World'">
 
-      <meta name='title'>Test Set/GetStringProperty functions</meta>  
-      <meta name='description'><![CDATA[]]></meta>
+
+    <action id="2" name="Set/Get persistent">
+
+      <meta name='title'>Test Set/Get persistent variables functions</meta>  
+      <meta name='description'><![CDATA[
+        Create a persistent variable 'test-name' with content 'Hello, World'.
+        Go to step 200 and use the 'hasProperty' alias to verify
+        ]]></meta>
       <pre-functions>
         <function type='alias' name='setString'>
           <arg name="name">test-name</arg>
@@ -34,12 +38,25 @@
       </pre-functions>
       <results> <default-result step="200"/> </results>
     </action> 
+
+
  
-    <action id="3" name="PropertySet 'name' not defined">
+    <action id="3" name="Persistent variable not defined">
+      <meta name='description'><![CDATA[
+        Persistent variable 'name' not defined, throw exception
+        ]]></meta>
       <results> <default-result step="300"/> </results>
     </action> 
+
+
  
     <action id="4" name="Set PropertySet to 'Hello, World'">
+
+      <meta name='description'><![CDATA[
+        Create a persistent variable 'test-name' with content 'Hello, World'.
+        Go to step 400 and use the 'hasProperty' alias to verify
+        ]]></meta>
+
       <pre-functions>
         <function type='alias' name='setString'>
           <arg name="name">test-name</arg>
@@ -58,11 +75,10 @@
     <step id="100" name="Test getStringProperty Function">
 
       <meta name='description'><![CDATA[  
-        Use 'getStringProperty' function to copy the value reference by 'test-name'
-        in the PropertySet into the transient variable 'test'.  Use the core test
-        function, 'assertEquals' to test this transient variable
+        Use 'getStringProperty' function to copy the persistent variable, 'test-name',
+         to the transient variable 'test'.  Use the core test unction, 'assertEquals' 
+         to test this transient variable.
       ]]></meta>
-
 
       <actions>
         <action id="100" name="action" auto='true' finish='true'>
@@ -90,9 +106,8 @@
     <step id="200" name="Test hasProperty Condition, exists">
 
       <meta name='description'><![CDATA[
-          Test that a property exists but does not test the its value
+          Test that a persistent variable exists but does not test the its value
       ]]></meta>
-
 
       <actions>
 
@@ -109,12 +124,12 @@
 
       </actions>
     </step> 
+
     
     <step id="300" name="Test hasProperty Condition, no-args">
 
-
       <meta name='description'><![CDATA[ 
-          Should throws an 'IllegalArgumentException' 
+          Should throw an 'IllegalArgumentException', missing 'arg' element
       ]]></meta>
 
       <actions>

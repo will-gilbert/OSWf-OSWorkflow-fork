@@ -9,7 +9,7 @@ import java.util.Map;
 
 
 /**
- * Sets the arguments "name" and "value" into the TypedMap.
+ * Sets the arguments "name" and "value" into the persistent variables.
  *
  *
  * Usage:

@@ -9,7 +9,7 @@ import java.util.Map;
 
 
 /**
- * Sets the transient variable "${variable)" to the value of a TypedMap...
+ * Get a persistent variable with key of arguemnt 'name' and save as a transient variable with key 'variable'
  *
  * Usage:
  *

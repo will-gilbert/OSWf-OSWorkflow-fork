@@ -7,6 +7,7 @@ import org.informagen.oswf.OSWfEngine;
 import org.informagen.oswf.impl.DefaultOSWfEngine;
 import org.informagen.oswf.ProcessInstance;
 import org.informagen.oswf.exceptions.InvalidActionException;
+import org.informagen.oswf.ProcessInstanceState;
 
 // OSWf Configuration
 import org.informagen.oswf.OSWfConfiguration;
@@ -234,6 +235,18 @@ public class WorkListTest extends OSWfTestCase implements Constants {
         // Charlie can 'Approve', 'Deny' or 'Release' the request; Bob has nothing
         assertEquals(3, charlie.getAvailableActions(piid).size());
         assertEquals(0, bob.getAvailableActions(piid).size());
+
+        // Charlie as a Manager approves the reqeust
+        charlie.doAction(piid, LINE_MANAGER_DENIES);
+        assertEquals(0, charlie.getAvailableActions(piid).size());
+
+        //joe.doAction(piid, NOTIFY_EMPLOYEE);
+
+        assertEquals("pending", charlie.getPersistentVars(piid).getString("result"));
+
+
+        assertEquals(ProcessInstanceState.ACTIVE, charlie.getProcessInstanceState(piid));
+
 
     }
 
