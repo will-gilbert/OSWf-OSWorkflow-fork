@@ -75,12 +75,13 @@
 			</actions>
 		</step>
 
-	    <!-- Manager approves or denies request based on labor needs. Or releases the request for another manager  ========= -->
+	    <!-- 
+	    	Manager approves or denies request based on labor needs. Or releases the request for another manager  ========= -->
 	    
 		<step id="200" name="Manager Approval">
 
 			<actions>
-				<action id="201" name="Approve" >
+				<action id="201" name="Manager Approve" >
 					
 				    <!-- Line Managers and HR Directors can approve requests -->
 				    <restrict-to>
@@ -97,7 +98,7 @@
 					</results>
 				</action>
 
-				<action id="202" name="Deny" >
+				<action id="202" name="Manager Deny" >
 				    <!-- Managers and Payroll can approve requests -->
 				    <restrict-to>
 				        <conditions>
@@ -112,7 +113,7 @@
 					</results>
 				</action>
 
-				<action id="203" name="Release" >
+				<action id="203" name="Release Task" >
 				    <!-- Release the request for another manager -->
 				    <restrict-to>
 				        <conditions>
@@ -205,20 +206,31 @@
 	<joins>
 		<join id="10000">
 			<conditions>
-				<condition type="beanshell">
+				<condition type="groovy">
 					<arg name="script"><![CDATA[
 					
-                        persistentVars.setString("result", "denied");
-                        
-                        if(jn.get(200).getStatus().endsWith("approved") && 
-                           jn.get(300).getStatus().endsWith("approved")) {
-                            persistentVars.setString("result", "approved");
+                        persistentVars.setString 'result', 'pending' 
+
+                        def step200 = jn.get(200)?.status
+                        def step300 = jn.get(300)?.status
+
+
+                        if( step200?.endsWith('approved') && step300?.endsWith('approved') ) {
+                            persistentVars.setString 'result', 'approved'
+                            return true
+                        }
+
+                        if( step200?.endsWith('denied') || step300?.endsWith('denied') ) {
+                            persistentVars.setString 'result', 'denied'
+                            return true
                         }
                         
+                        return false
+
                         // Final result
-                        !("Underway".equals(jn.get(200).getStatus())) && 
-                        !("Underway".equals(jn.get(300).getStatus()));
-                        
+                        //!("Underway".equals(jn.get(200).getStatus())) && 
+                        //!("Underway".equals(jn.get(300).getStatus()));
+                                                
 					]]></arg>
 				</condition>
 			</conditions>

@@ -62,6 +62,7 @@ public class PersistentVariablesTest extends OSWfTestCase {
         url = getClass().getResource("/core/PersistentVariables.oswf.xml")        
     }
 
+
     // T E S T S  ==============================================================
 
     @Test
@@ -88,17 +89,18 @@ public class PersistentVariablesTest extends OSWfTestCase {
     public void nameNotDefined() throws Exception {
         def piid = wfEngine.initialize(url.toString(), 3)
 
-       // Workflow did not complete check log to see the error
+        // Workflow did not complete check log to see the error
         assert ProcessInstanceState.ACTIVE == wfEngine.getProcessInstanceState(piid)
     }
    
    
     // Testing 'HasPropertyValue' condition with both name and value checking
-    //   if expected value mathes actual value See workflow XML  
+    //   if expected value mathes actual value See workflow XML 
+
     @Test
     public void propertySetValueEquals() throws Exception {
-       def piid = wfEngine.initialize(url.toString(), 4)
-    assert ProcessInstanceState.COMPLETED == wfEngine.getProcessInstanceState(piid)
+        def piid = wfEngine.initialize(url.toString(), 4)
+        assert ProcessInstanceState.COMPLETED == wfEngine.getProcessInstanceState(piid)
     }
 
 }

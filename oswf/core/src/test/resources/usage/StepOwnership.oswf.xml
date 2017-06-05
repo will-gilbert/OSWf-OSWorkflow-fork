@@ -184,19 +184,20 @@
 	<joins>
 		<join id="10000">
 			<conditions>
-				<condition type="beanshell">
+				<condition type="groovy">
 					<arg name="script"><![CDATA[
 					
-                        persistentVars.setString("result", "denied");
-                        
-                        if(jn.get(200).getStatus().endsWith("approved") && 
-                           jn.get(300).getStatus().endsWith("approved")) {
-                            persistentVars.setString("result", "approved");
+                        persistentVars.setString 'result', 'denied' 
+
+                        def step200 = jn.get(200).status.endsWith('approved')
+                        def step300 = jn.get(300).status.endsWith('approved')
+
+                        if( step200 && step300 ) {
+                            persistentVars.setString 'result', 'approved'
+                            return true
                         }
                         
-                        // Final result
-                        !("Underway".equals(jn.get(200).getStatus())) && 
-                        !("Underway".equals(jn.get(300).getStatus()));
+                        return false
                         
 					]]></arg>
 				</condition>
