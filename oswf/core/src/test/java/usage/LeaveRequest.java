@@ -16,8 +16,8 @@ public interface LeaveRequest  {
     
     // Steps
     final static int EMPLOYEE_REQUEST_STEP         = 100;
-    final static int LINE_MANAGER_REVISION_STEP    = 200;
-    final static int HUMAN_RESOURCES_REVISION_STEP = 300;
+    final static int LINE_MANAGER_DESCISION_STEP    = 200;
+    final static int HUMAN_RESOURCES_DESCISION_STEP = 300;
     final static int NOTIFY_EMPLOYEE_STEP          = 400;
     
     
