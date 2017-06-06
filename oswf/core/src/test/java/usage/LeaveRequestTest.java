@@ -153,16 +153,16 @@ public class LeaveRequestTest extends OSWfTestCase implements Constants {
         
         assertEquals(2, currentSteps.size());
 
-        assertEquals(LINE_MANAGER_REVISION_STEP, currentSteps.get(0).getStepId());
-        assertEquals(HUMAN_RESOURCES_REVISION_STEP, ((Step)currentSteps.get(1)).getStepId());
+        assertEquals(LINE_MANAGER_DESCISION_STEP, currentSteps.get(0).getStepId());
+        assertEquals(HUMAN_RESOURCES_DESCISION_STEP, ((Step)currentSteps.get(1)).getStepId());
 
         // Verify the Step ids
         assertEquals("Manager Revision", wd.getStep(((Step)currentSteps.get(0)).getStepId()).getName());
         assertEquals("HR Revision",  wd.getStep(((Step)currentSteps.get(1)).getStepId()).getName());
 
         // Verify the Step names
-        assertEquals("Manager Revision", wd.getStep(LINE_MANAGER_REVISION_STEP).getName());
-        assertEquals("HR Revision", wd.getStep(HUMAN_RESOURCES_REVISION_STEP).getName());
+        assertEquals("Manager Revision", wd.getStep(LINE_MANAGER_DESCISION_STEP).getName());
+        assertEquals("HR Revision", wd.getStep(HUMAN_RESOURCES_DESCISION_STEP).getName());
 
         assertStepState((Step)currentSteps.get(0), "Pending");      
         assertStepState((Step)currentSteps.get(1), "Pending");      
@@ -211,8 +211,8 @@ public class LeaveRequestTest extends OSWfTestCase implements Constants {
         // Reverse ordered as they occurred (OSWf v3.0)
         // Fails if using MySQL, not reversed; Find out why
         // assertEquals(EMPLOYEE_REQUEST_STEP,         ((Step)historySteps.get(3)).getStepId());
-        // assertEquals(HUMAN_RESOURCES_REVISION_STEP, ((Step)historySteps.get(2)).getStepId());
-        // assertEquals(LINE_MANAGER_REVISION_STEP,    ((Step)historySteps.get(1)).getStepId());
+        // assertEquals(HUMAN_RESOURCES_DESCISION_STEP, ((Step)historySteps.get(2)).getStepId());
+        // assertEquals(LINE_MANAGER_DESCISION_STEP,    ((Step)historySteps.get(1)).getStepId());
         // assertEquals(NOTIFY_EMPLOYEE_STEP,          ((Step)historySteps.get(0)).getStepId());
         // 
         // assertStepState((Step)historySteps.get(3), "Finished");      
@@ -260,8 +260,8 @@ public class LeaveRequestTest extends OSWfTestCase implements Constants {
 
         // Reverse ordered as they occurred (OSWf v3.0)
         // assertEquals(EMPLOYEE_REQUEST_STEP,         ((Step)historySteps.get(3)).getStepId());
-        // assertEquals(LINE_MANAGER_REVISION_STEP,    ((Step)historySteps.get(2)).getStepId());
-        // assertEquals(HUMAN_RESOURCES_REVISION_STEP, ((Step)historySteps.get(1)).getStepId());
+        // assertEquals(LINE_MANAGER_DESCISION_STEP,    ((Step)historySteps.get(2)).getStepId());
+        // assertEquals(HUMAN_RESOURCES_DESCISION_STEP, ((Step)historySteps.get(1)).getStepId());
         // assertEquals(NOTIFY_EMPLOYEE_STEP,          ((Step)historySteps.get(0)).getStepId());
         // 
         // assertStepState((Step)historySteps.get(3), "Finished");      

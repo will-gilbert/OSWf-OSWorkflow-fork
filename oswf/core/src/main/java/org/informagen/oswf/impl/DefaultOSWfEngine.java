@@ -106,6 +106,10 @@ public class DefaultOSWfEngine implements OSWfEngine {
 
     //~ Constructors //////////////////////////////////////////////////////////////////////////
 
+    public DefaultOSWfEngine() {
+        this(new DefaultWorkflowContext(""));
+    }
+
     public DefaultOSWfEngine(String actor) {
         this(new DefaultWorkflowContext(actor));
     }

@@ -156,12 +156,12 @@ public class LeaveRequestTest extends OSWfHibernateTestCase implements LeaveRequ
         assertEquals(2, currentSteps.size());
 
         // Verify the Step ids
-        assertEquals(LINE_MANAGER_REVISION_STEP, currentSteps.get(0).getStepId());
-        assertEquals(HUMAN_RESOURCES_REVISION_STEP, currentSteps.get(1).getStepId());
+        assertEquals(LINE_MANAGER_DESCISION_STEP, currentSteps.get(0).getStepId());
+        assertEquals(HUMAN_RESOURCES_DESCISION_STEP, currentSteps.get(1).getStepId());
 
         // Verify the Step names
-        assertEquals("Manager Revision", wd.getStep(LINE_MANAGER_REVISION_STEP).getName());
-        assertEquals("HR Revision", wd.getStep(HUMAN_RESOURCES_REVISION_STEP).getName());
+        assertEquals("Manager Revision", wd.getStep(LINE_MANAGER_DESCISION_STEP).getName());
+        assertEquals("HR Revision", wd.getStep(HUMAN_RESOURCES_DESCISION_STEP).getName());
 
         assertStepState((Step)currentSteps.get(0), "Underway");      
         assertStepState((Step)currentSteps.get(1), "Underway");      
@@ -208,8 +208,8 @@ public class LeaveRequestTest extends OSWfHibernateTestCase implements LeaveRequ
 
         // Ordered as they occur
         assertEquals(EMPLOYEE_REQUEST_STEP,         ((Step)historySteps.get(0)).getStepId());
-        assertEquals(LINE_MANAGER_REVISION_STEP,    ((Step)historySteps.get(1)).getStepId());
-        assertEquals(HUMAN_RESOURCES_REVISION_STEP, ((Step)historySteps.get(2)).getStepId());
+        assertEquals(LINE_MANAGER_DESCISION_STEP,    ((Step)historySteps.get(1)).getStepId());
+        assertEquals(HUMAN_RESOURCES_DESCISION_STEP, ((Step)historySteps.get(2)).getStepId());
         assertEquals(NOTIFY_EMPLOYEE_STEP,          ((Step)historySteps.get(3)).getStepId());
         
         assertStepState((Step)historySteps.get(0), "Finished");      

@@ -167,11 +167,16 @@ public class MemoryStore extends AbstractWorkflowStore  {
     *   have old data in it.
     */
 
-    public static void reset() {        
+    public static void reset() {  
+
+        nextPIID = 1;
+        nextStepId = 1;
+
         piidCache.clear();
         currentStepsCache.clear();
         historyStepsCache.clear();
         propertySetCache.clear();
+        
         MemoryTypedMapStore.clear();
     }
 

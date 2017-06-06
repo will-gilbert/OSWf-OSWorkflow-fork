@@ -155,16 +155,16 @@ public class LeaveRequestAltTest extends OSWfHibernateTestCase implements LeaveR
         
         assertEquals(2, currentSteps.size());
 
-        assertEquals(LINE_MANAGER_REVISION_STEP, ((Step)currentSteps.get(0)).getStepId());
-        assertEquals(HUMAN_RESOURCES_REVISION_STEP, ((Step)currentSteps.get(1)).getStepId());
+        assertEquals(LINE_MANAGER_DESCISION_STEP, ((Step)currentSteps.get(0)).getStepId());
+        assertEquals(HUMAN_RESOURCES_DESCISION_STEP, ((Step)currentSteps.get(1)).getStepId());
 
         // Verify the Step ids
         assertEquals("Line Manager revision", wd.getStep(((Step)currentSteps.get(0)).getStepId()).getName());
         assertEquals("HR Manager revision",  wd.getStep(((Step)currentSteps.get(1)).getStepId()).getName());
 
         // Verify the Step names
-        assertEquals("Line Manager revision", wd.getStep(LINE_MANAGER_REVISION_STEP).getName());
-        assertEquals("HR Manager revision", wd.getStep(HUMAN_RESOURCES_REVISION_STEP).getName());
+        assertEquals("Line Manager revision", wd.getStep(LINE_MANAGER_DESCISION_STEP).getName());
+        assertEquals("HR Manager revision", wd.getStep(HUMAN_RESOURCES_DESCISION_STEP).getName());
 
         assertStepState((Step)currentSteps.get(0), "Underway");      
         assertStepState((Step)currentSteps.get(1), "Underway");      
@@ -212,8 +212,8 @@ public class LeaveRequestAltTest extends OSWfHibernateTestCase implements LeaveR
 
         // Ordered as they occur
         assertEquals(EMPLOYEE_REQUEST_STEP,         ((Step)historySteps.get(0)).getStepId());
-        assertEquals(LINE_MANAGER_REVISION_STEP,    ((Step)historySteps.get(1)).getStepId());
-        assertEquals(HUMAN_RESOURCES_REVISION_STEP, ((Step)historySteps.get(2)).getStepId());
+        assertEquals(LINE_MANAGER_DESCISION_STEP,    ((Step)historySteps.get(1)).getStepId());
+        assertEquals(HUMAN_RESOURCES_DESCISION_STEP, ((Step)historySteps.get(2)).getStepId());
         assertEquals(NOTIFY_EMPLOYEE_STEP,          ((Step)historySteps.get(3)).getStepId());
         
         assertStepState((Step)historySteps.get(0), "Finished");      
