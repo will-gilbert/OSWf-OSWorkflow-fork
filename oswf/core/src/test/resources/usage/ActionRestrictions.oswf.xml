@@ -27,7 +27,7 @@
 	    <restrict-to>
 	      <conditions>
 				  <condition type='alias' name='hasRole'>
-				  	<arg name='role'>Employees</arg>
+				  	<arg name='role'>Employee</arg>
 			    </condition>
 	       </conditions>
 	    </restrict-to>
@@ -76,7 +76,7 @@
 				    <restrict-to>
 				      <conditions>
 								<condition type='alias' name='hasRole'>
-								  <arg name='role'>Line Managers</arg>
+								  <arg name='role'>Line Manager</arg>
 						    </condition>
 								<condition type='alias' negate='true' name='isStepOwner' />
 				      </conditions>
@@ -92,7 +92,7 @@
 				    <conditions>
 
 							<condition type='alias' name='hasRole'>
-								<arg name='role'>Line Managers</arg>
+								<arg name='role'>Line Manager</arg>
 						  </condition>
 
 							<condition type='alias' negate='true' name='isStepOwner' />
@@ -182,25 +182,25 @@
 				<condition type='groovy'>
 					<arg name='script'><![CDATA[
 
-						// Get both incoming step statuses; 'null' if the step has not yet arrived.
+			// Get both incoming step statuses; 'null' if the step has not yet arrived.
 
-						def step200 = jn.get(200)?.getStatus()
-						def step300 = jn.get(300)?.getStatus()
+			def step200 = jn.get(200)?.getStatus()
+			def step300 = jn.get(300)?.getStatus()
 
-						// Ensure that both pathways from the split have arrived at the join
-						//   before we can start evaluating any statuses
+			// Ensure that both pathways from the split have arrived at the join
+			//   before we can start evaluating any statuses
 
-						if( step200 == null || step300 == null)
-							return false
+			if( step200 == null || step300 == null)
+				return false
 
-						// Both must approve
+			// Both must approve
             if( step200 == 'Manager approved' && step300 == 'HR approved' ) {
                 persistentVars.setString('result', 'approved')
                 return true
             }
 
             // Either can deny
-            if( step200 == 'Manger denied' || step300 == 'HR denied' ) {
+            if( step200 == 'Manager denied' || step300 == 'HR denied' ) {
                 persistentVars.setString('result', 'denied')
             }
             

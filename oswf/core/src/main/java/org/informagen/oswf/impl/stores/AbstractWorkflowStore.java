@@ -73,8 +73,12 @@ public abstract class AbstractWorkflowStore implements WorkflowStore {
         }
     }
 
-    public TypedMap getTypedMap(long entryId) {
-        return getTypedMapStore().getTypedMap(entryId);
+    public TypedMap getTypedMap(long piid) {
+        return getTypedMapStore().getTypedMap(piid);
+    }
+
+    public TypedMap getPersistentVars(long piid) {
+        return getTypedMap(piid);
     }
 
     public Step markFinished(Step step, int actionId, Date finishDate, String status, String actor) throws WorkflowStoreException {

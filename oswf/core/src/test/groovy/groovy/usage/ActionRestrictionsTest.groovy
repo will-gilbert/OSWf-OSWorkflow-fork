@@ -49,12 +49,26 @@ import static org.junit.Assert.fail;
 
 
 /**
- *  Exercises OSWf Action restrictions
+ *  Exercises OSWf Action restrictions using a Leave Request which
+ *    limits steps to users with particular roles.
+ *
+ *  A 'WorkflowEngine' is an object which can manipulate a process instance
+ *    as it moved through a workflow description. The 'DefaultWorkflowEngine'
+ *    take an actor as its only argument. Think of this as 'logging into' the
+ *    workflow.
+ *
+ *  This actor is used by the 'restrict-to' in order to determine elements in 
+ *    determining if an action can be taken to advance the process instance.
+ *
+ *  In the examples below, even thought the user 'Joe' may create the 
+ *    initial process instance.  The other users, 'Bob' and 'Doris' use
+ *    their own 'Workflow Engines' to affect the progress of that process
+ *    instance.
  *
  *  Uses:  src/test/resources/usage/ActionRestrictions.oswf.xml
  *
+ *  See 'StepOwnershipTest' and 'WorkListTest' for futher examples.
  */
-
 
 class ActionRestrictionsTest implements usage.Constants {
 
@@ -81,11 +95,11 @@ class ActionRestrictionsTest implements usage.Constants {
         // Create a set of users; Add them to groups
         //
         // In production this would be managed by an RDBMS
-        //  by createing Users and Roles from the native security system
+        //  by creating Users and Roles from the native security system
                    
         // Roles
-        Role employee = securityManager.createRole("Employees");
-        Role manager = securityManager.createRole("Line Managers");
+        Role employee = securityManager.createRole("Employee");
+        Role manager = securityManager.createRole("Line Manager");
         Role hr = securityManager.createRole("HR Director");
 
         // Create 'Joe Average', an employee
@@ -120,12 +134,12 @@ class ActionRestrictionsTest implements usage.Constants {
         assert securityManager.getUser('Bob Bossman')
         assert securityManager.getUser('Doris Despised')
         
-        assert securityManager.getUser('Joe Average').hasRole('Employees')
+        assert securityManager.getUser('Joe Average').hasRole('Employee')
         
-        assert securityManager.getUser('Bob Bossman').hasRole('Employees')
-        assert securityManager.getUser('Bob Bossman').hasRole('Line Managers')
+        assert securityManager.getUser('Bob Bossman').hasRole('Employee')
+        assert securityManager.getUser('Bob Bossman').hasRole('Line Manager')
         
-        assert securityManager.getUser('Doris Despised').hasRole('Employees')
+        assert securityManager.getUser('Doris Despised').hasRole('Employee')
         assert securityManager.getUser('Doris Despised').hasRole('HR Director')
     
     }
@@ -162,29 +176,29 @@ class ActionRestrictionsTest implements usage.Constants {
     @Test
     void employeesRequestLeave() {
                 
-        def engine, piid
+        def joe, piid
         
         // Any company employee can create a "Action Restrictions" process instance
 
-        engine = new DefaultOSWfEngine("Joe Average").setConfiguration(configuration)
-        piid = engine.initialize("Action Restrictions", INITIAL_ACTION)
+        joe = new DefaultOSWfEngine("Joe Average").setConfiguration(configuration)
+        piid = joe.initialize("Action Restrictions", INITIAL_ACTION)
         assert piid
-        engine.doAction(piid, REQUEST_LEAVE)
+        joe.doAction(piid, REQUEST_LEAVE)
                 
-        engine = new DefaultOSWfEngine("Bob Bossman").setConfiguration(configuration)
-        piid = engine.initialize("Action Restrictions", INITIAL_ACTION)
+        joe = new DefaultOSWfEngine("Bob Bossman").setConfiguration(configuration)
+        piid = joe.initialize("Action Restrictions", INITIAL_ACTION)
         assert piid
-        engine.doAction(piid, REQUEST_LEAVE)
+        joe.doAction(piid, REQUEST_LEAVE)
         
-        engine = new DefaultOSWfEngine("Doris Despised").setConfiguration(configuration)
-        piid = engine.initialize("Action Restrictions", INITIAL_ACTION)
+        joe = new DefaultOSWfEngine("Doris Despised").setConfiguration(configuration)
+        piid = joe.initialize("Action Restrictions", INITIAL_ACTION)
         assert piid
-        engine.doAction(piid, REQUEST_LEAVE)
+        joe.doAction(piid, REQUEST_LEAVE)
  
-        engine = new DefaultOSWfEngine("Curtis Contractor").setConfiguration(configuration)
+        joe = new DefaultOSWfEngine("Curtis Contractor").setConfiguration(configuration)
  
         try {
-            piid = engine.initialize("Action Restrictions", INITIAL_ACTION)
+            piid = joe.initialize("Action Restrictions", INITIAL_ACTION)
             fail()
         } catch(InvalidActionException invalidActionException) {
         }
@@ -194,41 +208,58 @@ class ActionRestrictionsTest implements usage.Constants {
     @Test
     void managerApproval() {
         
-        // Managers can approve employee leave requests
+        // Managers can approve or deny employee leave requests
         
-        def wfEngine, piid
+        def joe, bob, piid
 
-        wfEngine = new DefaultOSWfEngine("Joe Average").setConfiguration(configuration);
-        piid = wfEngine.initialize("Action Restrictions", INITIAL_ACTION);
-        wfEngine.doAction(piid, REQUEST_LEAVE);
+        // Joe requests leave
+        joe = new DefaultOSWfEngine("Joe Average").setConfiguration(configuration)
+        piid = joe.initialize("Action Restrictions", INITIAL_ACTION);
+        joe.doAction(piid, REQUEST_LEAVE);
 
-        assert "pending" == wfEngine.getPersistentVars(piid).getString("result")
+        // The persistent variable from the workflow
+        assert "pending" == joe.getPersistentVars(piid).getString("result")
 
+        // The Line Manage 'logs in' to the workflow
+        bob = new DefaultOSWfEngine("Bob Bossman").setConfiguration(configuration);
+        assert 2 == bob.getCurrentSteps(piid).size()
 
-        wfEngine = new DefaultOSWfEngine("Bob Bossman").setConfiguration(configuration);
-        assert 2 == wfEngine.getCurrentSteps(piid).size()
+        // The process instance exists in 2 steps; This has nothing to
+        //   to do with Bob's actions. Any OSWfEngine instance would give 
+        //   the same steps.
 
-        def wd = wfEngine.getWorkflowDescriptor('Action Restrictions')
-        wfEngine.getCurrentSteps(piid).each {
-            println wd.getStep(it.stepId).name
+        def wd = bob.getWorkflowDescriptor('Action Restrictions')
+        def steps =  bob.getCurrentSteps(piid).collect {
+            wd.getStep(it.stepId).name
         }
+
+        // The 2 steps for this process instance
+        assert steps.contains('Line Manager Approval')
+        assert steps.contains('HR Manager Approval')
+
+        // On the other hand, here are Bob's actions vs. Joe's
+        def actions =  bob.getAvailableActions(piid).sort()
+        assert actions == [LINE_MANAGER_APPROVES, LINE_MANAGER_DENIES]
+        assert [] == joe.getAvailableActions(piid)
 
         // 'Bob Bossman' can not perform the HR approval action
         try {
-            wfEngine.doAction(piid, HUMAN_RESOURCES_APPROVES)
+            bob.doAction(piid, HUMAN_RESOURCES_APPROVES)
             fail()
         } catch(InvalidActionException invalidActionException) {
         }
 
         // But can not perform the Manager approval action
-        wfEngine.doAction(piid, LINE_MANAGER_APPROVES)
+        bob.doAction(piid, LINE_MANAGER_APPROVES)
 
         // Process Instance has not yet completed
         // Even though the manager has approved the process instance is waiting for 
         //  the Human Resources approval.
 
-        assert ProcessInstanceState.ACTIVE == wfEngine.getProcessInstanceState(piid)
-        assert "pending" == wfEngine.getPersistentVars(piid).getString("result")
+        assert ProcessInstanceState.ACTIVE == bob.getProcessInstanceState(piid)
+
+        // Joe can check on the progress of the request
+        assert "pending" == joe.getPersistentVars(piid).getString("result")
     }
 
     
@@ -237,37 +268,36 @@ class ActionRestrictionsTest implements usage.Constants {
         
         // The HR Director can approve employee leave requests in lieu of a Manager
         
-        def wfEngine, piid
+        def joe, doris, piid
 
-        wfEngine = new DefaultOSWfEngine("Joe Average").setConfiguration(configuration);
-        piid = wfEngine.initialize("Action Restrictions", INITIAL_ACTION);
-        wfEngine.doAction(piid, REQUEST_LEAVE);
+        joe = new DefaultOSWfEngine("Joe Average").setConfiguration(configuration);
+        piid = joe.initialize("Action Restrictions", INITIAL_ACTION);
+        joe.doAction(piid, REQUEST_LEAVE);
 
-        assert "pending" == wfEngine.getPersistentVars(piid).getString("result")
+        assert "pending" == joe.getPersistentVars(piid).getString("result")
           
-        wfEngine = new DefaultOSWfEngine("Doris Despised").setConfiguration(configuration);
-        assert 2 == wfEngine.getCurrentSteps(piid).size()
+        doris = new DefaultOSWfEngine("Doris Despised").setConfiguration(configuration);
 
-        def wd = wfEngine.getWorkflowDescriptor('Action Restrictions')
-        wfEngine.getCurrentSteps(piid).each {
-            println wd.getStep(it.stepId).name
-        }
+        def actions =  doris.getAvailableActions(piid).sort()
+        assert actions == [HUMAN_RESOURCES_APPROVES, HUMAN_RESOURCES_DENIES]
+
 
         // 'Doris Despised' can not perform the Line Manger approval action
         try {
-            wfEngine.doAction(piid, LINE_MANAGER_APPROVES)
+            doris.doAction(piid, LINE_MANAGER_APPROVES)
             fail()
         } catch(InvalidActionException invalidActionException) {
         }
 
-        // But can not perform the Manager approval action
-        wfEngine.doAction(piid, HUMAN_RESOURCES_APPROVES);
+        // But can not perform the HR Manager approval action
+        doris.doAction(piid, HUMAN_RESOURCES_APPROVES);
 
         // Process Instance has not yet completed
-        // Even though the manager has approved the process instance is waiting for 
-        //  the Human Resources approval
-        assert ProcessInstanceState.ACTIVE == wfEngine.getProcessInstanceState(piid)
-        assert "pending" == wfEngine.getPersistentVars(piid).getString("result")
+        // Even though the HR Manager has approved the process instance is waiting for 
+        //  the Line Manager approval. Here 'Joe' checks the progress
+
+        assert ProcessInstanceState.ACTIVE == joe.getProcessInstanceState(piid)
+        assert "pending" == joe.getPersistentVars(piid).getString("result")
     }
 
     
@@ -380,15 +410,16 @@ class ActionRestrictionsTest implements usage.Constants {
         assert "pending" == joe.getPersistentVars(piid).getString("result")
 
         // Both Bob and Doris have two actions, 'Approve' or 'Deny'
-        assert 2 == bob.getAvailableActions(piid).size() 
-        assert 2 == doris.getAvailableActions(piid).size() 
+        assert [LINE_MANAGER_APPROVES, LINE_MANAGER_DENIES] == bob.getAvailableActions(piid).sort() 
+        assert [HUMAN_RESOURCES_APPROVES, HUMAN_RESOURCES_DENIES] == doris.getAvailableActions(piid).sort() 
 
         // Both approve
         bob.doAction(piid, LINE_MANAGER_APPROVES)
         doris.doAction(piid, HUMAN_RESOURCES_APPROVES)
 
-        assert "approved" == joe.getPersistentVars(piid).getString("result")
+        // Joe checks the progress and 'Yeah' he gets the day off.
         assert ProcessInstanceState.COMPLETED == doris.getProcessInstanceState(piid)
+        assert "approved" == joe.getPersistentVars(piid).getString("result")
     }
 
     @Test
@@ -415,63 +446,94 @@ class ActionRestrictionsTest implements usage.Constants {
         bob.doAction(piid, LINE_MANAGER_APPROVES)
         doris.doAction(piid, HUMAN_RESOURCES_DENIES)
 
+        // Joe checks the progress.
         assert "denied" == joe.getPersistentVars(piid).getString("result")
         assert ProcessInstanceState.COMPLETED == doris.getProcessInstanceState(piid)
+    }
+
+
+    @Test
+    void hrApprovesManagerDenies() {
+
+        // Managers can't approve their own leave requests
+        def joe, bob, doris, piid
+
+        // Create engines for each of the actors
+        joe = new DefaultOSWfEngine("Joe Average").setConfiguration(configuration);
+        bob = new DefaultOSWfEngine("Bob Bossman").setConfiguration(configuration);
+        doris = new DefaultOSWfEngine("Doris Despised").setConfiguration(configuration);
+
+        piid = joe.initialize("Action Restrictions", INITIAL_ACTION);
+        joe.doAction(piid, REQUEST_LEAVE);
+
+        assert "pending" == joe.getPersistentVars(piid).getString("result")
+
+        // Both Bob and Doris have two actions, 'Approve' or 'Deny'
+        assert 2 == bob.getAvailableActions(piid).size() 
+        assert 2 == doris.getAvailableActions(piid).size() 
+
+        // Both approve
+        bob.doAction(piid, LINE_MANAGER_DENIES)
+        doris.doAction(piid, HUMAN_RESOURCES_APPROVES)
+
+        // Joe checks the progress.
+        assert ProcessInstanceState.COMPLETED == joe.getProcessInstanceState(piid)
+        assert "denied" == joe.getPersistentVars(piid).getString("result")
     }
 
 
  
     /*  
     **  This long test merely shows that Action Restriction cannot be used to 
-    **      define step ownership, which is used to define a Task List.
+    **     define step ownership, which is used to define a Task List.
     **
-    **  See the last few lines of code
+    **  See 'StepOwnershipTest' and 'WorkListTest' for examples.
     */
 
     @Test
-    public void createTaskList() throws Exception {
+    public void cannotCreateWorkList() throws Exception {
 
-        OSWfEngine joe, bob, doris;
-        WorkflowExpressionQuery query;
-        Expression manager, hrDirector;
+        def joe, bob, doris;
 
-        manager = new FieldExpression(
+        def piids = []
+
+        // Create some actors
+        joe = new DefaultOSWfEngine("Joe Average") .setConfiguration(configuration);
+        bob = new DefaultOSWfEngine("Bob Bossman").setConfiguration(configuration);
+        doris = new DefaultOSWfEngine("Doris Despised").setConfiguration(configuration);
+
+        // Let 'Joe' create three leave requests; 
+        piids << joe.initialize("Action Restrictions", INITIAL_ACTION);
+        joe.doAction(piids.last(), REQUEST_LEAVE);
+        
+        piids <<  joe.initialize("Action Restrictions", INITIAL_ACTION);
+        joe.doAction(piids.last(), REQUEST_LEAVE);
+        
+        piids <<  joe.initialize("Action Restrictions", INITIAL_ACTION);
+        joe.doAction(piids.last(), REQUEST_LEAVE);
+
+        
+        // Can't obtain a work list based on "Action Restrictions" roles
+
+        Expression manager = new FieldExpression(
             Context.CURRENT_STEPS, 
-            Field.OWNER,  Operator.EQUALS, "Line Managers"
+            Field.OWNER,  Operator.EQUALS, "Line Manager"
         );
+        
+        WorkflowExpressionQuery query = new WorkflowExpressionQuery(manager);
+        def workList = bob.query(query);
+        assert piids != workList
+ 
 
-        hrDirector = new FieldExpression(
+        Expression hrDirector = new FieldExpression(
             Context.CURRENT_STEPS, 
             Field.OWNER, Operator.EQUALS, "HR Director"
         );
 
-        // Let 'Joe' create three leave requests
-        joe = new DefaultOSWfEngine("Joe Average");
-        joe.setConfiguration(configuration);
-
-        long piid1 = joe.initialize("Action Restrictions", INITIAL_ACTION);
-        joe.doAction(piid1, REQUEST_LEAVE);
-        
-        long piid2 = joe.initialize("Action Restrictions", INITIAL_ACTION);
-        joe.doAction(piid2, REQUEST_LEAVE);
-        
-        long piid3 = joe.initialize("Action Restrictions", INITIAL_ACTION);
-        joe.doAction(piid3, REQUEST_LEAVE);
-
-        // Now create workflow for 'Bob' the boss so he can approve one of
-        //  the leaves for 'Joe'
-        
-        bob = new DefaultOSWfEngine("Bob Bossman");
-        bob.setConfiguration(configuration);
-
-        
-        // Can't obtain a task list based on "Action Restrictions" 
-        //  See the 'createTaskListFromStepOwnership' unit test in 'StepOwnershipTest.java'
-        
-        query = new WorkflowExpressionQuery(manager);
-        List taskList = bob.query(query);
-        assertEquals(0, taskList.size());
-    
+        query = new WorkflowExpressionQuery(hrDirector);
+        workList = doris.query(query);
+        assert piids != workList
+   
     }    
 
 }
