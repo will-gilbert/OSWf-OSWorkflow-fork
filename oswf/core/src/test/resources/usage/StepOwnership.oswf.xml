@@ -35,7 +35,7 @@
 		    <restrict-to>
 		        <conditions>
 					<condition type='alias' name='hasRole'>
-						<arg name='role'>Employees</arg>
+						<arg name='role'>Employee</arg>
 				    </condition>
 		        </conditions>
 		    </restrict-to>
@@ -82,7 +82,7 @@
 				    <restrict-to>
 				        <conditions type='AND'>
 							<condition type='alias' name='hasRole'>
-								<arg name='role'>Line Managers</arg>
+								<arg name='role'>Line Manager</arg>
 						    </condition>
 							<condition type='alias' negate='true' name='isStepOwner' />
 				        </conditions>
@@ -98,7 +98,7 @@
 				    <restrict-to>
 				        <conditions>
 							<condition type='alias' name='hasRole'>
-								<arg name='role'>Line Managers</arg>
+								<arg name='role'>Line Manager</arg>
 						    </condition>
 							<condition type='alias' negate='true' name='isStepOwner' />
 				        </conditions>
@@ -167,13 +167,12 @@
 	</steps>
 
     <!-- Splits =========================================================================== -->
-
-    <!-- The leave approval goes to both the line manager and the HR manager ======= -->
+    <!-- The leave approval goes to both the line manager and the HR manager roles ======== -->
     
 	<splits>
 		<split id="10000">
-			<default-result status="Underway" step="200" owner="Line Managers"/>
-			<default-result status="Underway" step="300" owner="HR Director"/>
+			<default-result status="Descision Pending" step="200" owner="Line Manager"/>
+			<default-result status="Descision Pending" step="300" owner="HR Director"/>
 		</split>
 	</splits>
 
@@ -187,17 +186,30 @@
 				<condition type="groovy">
 					<arg name="script"><![CDATA[
 					
-                        persistentVars.setString 'result', 'denied' 
+			// Get both incoming step statuses; 'null' if the step has not yet arrived.
 
-                        def step200 = jn.get(200).status.endsWith('approved')
-                        def step300 = jn.get(300).status.endsWith('approved')
+			def step200 = jn.get(200)?.getStatus()
+			def step300 = jn.get(300)?.getStatus()
 
-                        if( step200 && step300 ) {
-                            persistentVars.setString 'result', 'approved'
-                            return true
-                        }
-                        
-                        return false
+			// Ensure that both pathways from the split have arrived at the join
+			//   before we can start evaluating any statuses
+
+			if( step200 == null || step300 == null)
+				return false
+
+			// Both must approve
+            if( step200 == 'Manager approved' && step300 == 'HR approved' ) {
+                persistentVars.setString('result', 'approved')
+                return true
+            }
+
+            // Either can deny
+            if( step200 == 'Manger denied' || step300 == 'HR denied' ) {
+                persistentVars.setString('result', 'denied')
+            }
+            
+            // But we wait for both descisions before leaving the join
+            !( step200 == 'Descision Pending' || step300 == 'Descision Pending')
                         
 					]]></arg>
 				</condition>

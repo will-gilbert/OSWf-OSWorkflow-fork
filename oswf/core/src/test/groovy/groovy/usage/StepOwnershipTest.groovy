@@ -1,0 +1,266 @@
+package groovy.usage;
+
+import org.informagen.oswf.testing.OSWfTestCase;
+
+// OSWf - Core classes
+import org.informagen.oswf.OSWfEngine;
+import org.informagen.oswf.impl.DefaultOSWfEngine;
+import org.informagen.oswf.ProcessInstance;
+import org.informagen.oswf.ProcessInstanceState;
+import org.informagen.oswf.exceptions.InvalidActionException;
+
+// OSWf Configuration
+import org.informagen.oswf.OSWfConfiguration;
+import org.informagen.oswf.impl.MemoryOSWfConfiguration;
+
+// OSWf Store - Use in-memory Java Collection classes
+import org.informagen.oswf.impl.stores.MemoryStore;
+
+// OSWf Query
+import org.informagen.oswf.query.Expression;
+import org.informagen.oswf.query.Context;
+import org.informagen.oswf.query.Field;
+import org.informagen.oswf.query.Operator;
+import org.informagen.oswf.query.FieldExpression;
+import org.informagen.oswf.query.WorkflowExpressionQuery;
+
+// OSWf Security
+import org.informagen.oswf.SecurityManager;
+import org.informagen.oswf.security.User;
+import org.informagen.oswf.security.Role;
+
+// Java Util
+import java.util.Collections;
+import java.util.List;
+
+// Logging
+import org.slf4j.LoggerFactory;
+
+
+// JUnit 4.x testing
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
+
+
+/**
+ *  Exercises OSWf Step ownership
+ *
+ *  Uses:  src/test/resources/usage/StepOwnership.oswf.xml
+ *
+ */
+
+public class StepOwnershipTest implements usage.Constants {
+
+    static OSWfConfiguration configuration;
+
+
+    @BeforeClass
+    public static void defineConfiguration() throws Exception {
+        configuration = new MemoryOSWfConfiguration();
+        configuration.load(StepOwnershipTest.class.getResource("/oswf-usage.xml"));
+    }
+
+
+    @BeforeClass
+    public static void createAuthorization() {
+
+        SecurityManager securityManager = SecurityManager.getInstance()
+            
+        assertNotNull("Could not get SecurityManager", securityManager)
+
+        // Create a set of users; add them to groups; In production
+        //  this would be managed by an RDBMS
+                   
+        // Groups
+        Role employee = securityManager.createRole("Employee")
+        Role manager = securityManager.createRole("Line Manager")
+        Role hr = securityManager.createRole("HR Director")
+
+        // Create 'Joe Average', an employee
+        User joe = securityManager.createUser("Joe Average")
+        joe.addToRole(employee)
+
+        // Create 'Bob Bossman', a manager
+        User bob = securityManager.createUser("Bob Bossman")
+        bob.addToRole(employee)
+        bob.addToRole(manager)
+        
+        // Create 'Doris Despised', the much loved Human Resources Director
+        User doris = securityManager.createUser("Doris Despised")
+        doris.addToRole(employee)
+        doris.addToRole(hr)
+            
+    }
+
+
+    @After
+    public void teardown() {
+        MemoryStore.reset();
+    }
+
+    // Tests ==================================================================================
+    
+    @Test
+    public void confirmSecurity() {
+
+        SecurityManager securityManager = SecurityManager.getInstance()
+
+        assert securityManager.getUser('Joe Average')
+        assert securityManager.getUser('Bob Bossman')
+        assert securityManager.getUser('Doris Despised')
+        
+        assert securityManager.getUser('Joe Average').hasRole('Employee')
+        
+        assert securityManager.getUser('Bob Bossman').hasRole('Employee')
+        assert securityManager.getUser('Bob Bossman').hasRole('Line Manager')
+        
+        assert securityManager.getUser('Doris Despised').hasRole('Employee')
+        assert securityManager.getUser('Doris Despised').hasRole('HR Director')
+    }
+
+    @Test
+    public void employeesCanRequestLeave() {
+        
+        // Any company employee can request leave and successfully create 
+        //   a process instance
+        
+        OSWfEngine joe, bob, doris
+        long piid
+        
+        // Any company employee can create a "Step Ownership" process instance
+        joe = new DefaultOSWfEngine("Joe Average").setConfiguration(configuration)
+        piid = joe.initialize("Step Ownership", INITIAL_ACTION)
+        assert piid
+        joe.doAction(piid, REQUEST_LEAVE)
+                
+        bob = new DefaultOSWfEngine("Bob Bossman").setConfiguration(configuration)
+        piid = bob.initialize("Step Ownership", INITIAL_ACTION)
+        assert piid
+        bob.doAction(piid, REQUEST_LEAVE)
+        
+        doris = new DefaultOSWfEngine("Doris Despised").setConfiguration(configuration)
+        piid = doris.initialize("Step Ownership", INITIAL_ACTION)
+        assert piid
+        doris.doAction(piid, REQUEST_LEAVE)
+    }
+
+    
+    @Test
+    public void managersCanApprove() throws Exception {
+        
+        // The HR Director can approve employee leave requests in lieu of a Manager
+        
+        OSWfEngine wf;
+        long piid;
+
+        wf = new DefaultOSWfEngine("Joe Average");
+        wf.setConfiguration(configuration);
+        piid = wf.initialize("Step Ownership", INITIAL_ACTION);
+        wf.doAction(piid, REQUEST_LEAVE);
+  
+        wf = new DefaultOSWfEngine("Bob Bossman");
+        wf.setConfiguration(configuration);
+        wf.doAction(piid, LINE_MANAGER_APPROVES);
+        
+        wf = new DefaultOSWfEngine("Doris Despised");
+        wf.setConfiguration(configuration);
+        wf.doAction(piid, HUMAN_RESOURCES_APPROVES);
+ 
+        assert ProcessInstanceState.COMPLETED == wf.getProcessInstanceState(piid)
+        assert "approved" == wf.getPersistentVars(piid).getString("result")
+
+    }
+
+
+    @Test
+    public void createWorkList() throws Exception {
+
+        OSWfEngine joe, bob, doris, wfEngine
+
+        WorkflowExpressionQuery query
+        Expression managers, hrDirectors
+                                                                                          
+        def piids = []
+
+        // Have 'Joe' create three leave requests
+        joe = new DefaultOSWfEngine("Joe Average").setConfiguration(configuration);
+
+        piids << joe.initialize("Step Ownership", INITIAL_ACTION);
+        joe.doAction(piids.last(), REQUEST_LEAVE);
+        
+        piids <<  joe.initialize("Step Ownership", INITIAL_ACTION);
+        joe.doAction(piids.last(), REQUEST_LEAVE);
+        
+        piids <<  joe.initialize("Step Ownership", INITIAL_ACTION);
+        joe.doAction(piids.last(), REQUEST_LEAVE);
+
+        // Now create workflow for 'Bob the boss' so he can approve one of
+        //  the leaves for 'Joe'
+        
+        wfEngine = new DefaultOSWfEngine("").setConfiguration(configuration);
+        
+        // Get a list of process instance ids where there are steps which need
+        //   the attention of any Line Manager. NB: Not necessarily 'Bob Bossman'
+
+        managers = new FieldExpression(
+            Context.CURRENT_STEPS, 
+            Field.OWNER, Operator.EQUALS, "Line Manager"
+        );
+
+        query = new WorkflowExpressionQuery(managers);
+        def workList = wfEngine.query(query);
+        assert piids == workList
+
+        // Bob, a Line Manager, connects to the WorkFlow and approves all requests
+        bob = new DefaultOSWfEngine("Bob Bossman").setConfiguration(configuration)
+
+        workList.each { piid ->
+            bob.doAction(piid, LINE_MANAGER_APPROVES)
+        }
+
+        // No more tasks for 'Line Managers'
+        query = new WorkflowExpressionQuery(managers);
+        workList = wfEngine.query(query);
+        assert workList == []
+ 
+        // Do the same for 'HR Directors' -----------------------
+
+        // Get a list of process instance ids where there are steps which need
+        //   the attention of any Human Resources Manager. NB: Not necessarily 'Doris Despised'
+
+        hrDirectors = new FieldExpression(
+            Context.CURRENT_STEPS, 
+            Field.OWNER, Operator.EQUALS, "HR Director"
+        );
+
+        query = new WorkflowExpressionQuery(hrDirectors);
+        workList = wfEngine.query(query);
+        assert piids == workList
+
+        // Doris, a Humnan Resources Manager, connects to the WorkFlow and approves all requests
+        doris = new DefaultOSWfEngine("Doris Despised").setConfiguration(configuration)
+
+        workList.each { piid ->
+            doris.doAction(piid, HUMAN_RESOURCES_APPROVES)
+        }
+
+        // No more tasks for 'Human Resources Managers'
+        query = new WorkflowExpressionQuery(hrDirectors);
+        workList = wfEngine.query(query);
+        assert workList == []
+    
+    }
+
+  
+
+}
