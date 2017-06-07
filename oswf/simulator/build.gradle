@@ -162,7 +162,7 @@ dependencies {
     compile project(':typedmap')
     compile project(':store')
 
-    def hibernate = '4.3.11.Final' //'3.3.2.GA'
+    def hibernate =  '4.3.11.Final' //'3.3.2.GA' // '5.2.10.Final' doesnot run
 
 
     compile ([
