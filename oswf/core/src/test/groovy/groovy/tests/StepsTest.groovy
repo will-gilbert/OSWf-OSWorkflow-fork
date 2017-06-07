@@ -119,11 +119,11 @@ public class StepsTest {
             doAction piid, 6   // Finish Step 3, the other step
         }
 
-        assert 0 == wfEngine.getCurrentSteps(piid).size()
+        assert 2 == wfEngine.getCurrentSteps(piid).size()
         assert 6 == wfEngine.getHistorySteps(piid).size()
 
         // The final state for this process instance
-        assert 'COMPLETED' == wfEngine.getProcessInstanceState(piid).name()
+        assert 'ACTIVE' == wfEngine.getProcessInstanceState(piid).name()
         
     }
 

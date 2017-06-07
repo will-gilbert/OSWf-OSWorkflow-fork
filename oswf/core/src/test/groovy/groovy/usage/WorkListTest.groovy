@@ -73,13 +73,13 @@ import static org.junit.Assert.fail;
 **
 */
 
-public class WorkListTest implements usage.Constants {
+class WorkListTest implements usage.Constants {
 
     static OSWfConfiguration configuration;
 
 
     @BeforeClass
-    public static void defineConfiguration() throws Exception {
+    static void defineConfiguration() throws Exception {
         configuration = new MemoryOSWfConfiguration()
             .load(WorkListTest.class.getResource('/oswf-usage.xml'));
     }
@@ -91,7 +91,7 @@ public class WorkListTest implements usage.Constants {
     */
 
     @BeforeClass
-    public static void createAuthorization() {
+    static void createAuthorization() {
 
         SecurityManager securityManager = SecurityManager.getInstance();
             
@@ -128,14 +128,14 @@ public class WorkListTest implements usage.Constants {
 
 
     @After
-    public void teardown() {
+    void teardown() {
         MemoryStore.reset();
     }
 
     // Tests ==================================================================================
     
     @Test
-    public void confirmSecurity() {
+    void confirmSecurity() {
 
         SecurityManager securityManager = SecurityManager.getInstance()
 
@@ -158,7 +158,7 @@ public class WorkListTest implements usage.Constants {
     }
 
     @Test
-    public void canCreateWorkflowEngine() {
+    void canCreateWorkflowEngine() {
 
         OSWfEngine joe, bob, charlie, doris
         
@@ -181,7 +181,7 @@ public class WorkListTest implements usage.Constants {
 
 
     @Test
-    public void canCreateRequest() {
+    void canCreateRequest() {
 
         def joe = new DefaultOSWfEngine('Joe Average').setConfiguration(configuration)
         def piid = joe.initialize('Work List', INITIAL_ACTION)
@@ -193,7 +193,7 @@ public class WorkListTest implements usage.Constants {
 
 
     @Test
-    public void managerClaimWorkItem()  {
+    void managerClaimWorkItem()  {
 
         OSWfEngine joe, bob, charlie
 
@@ -251,9 +251,42 @@ public class WorkListTest implements usage.Constants {
         assert 'pending' == joe.getPersistentVars(piid).getString('result')
     }
 
+    @Test
+    void claimAndReclaim() {
+
+        def joe, bob, doris, wfEngine
+
+        joe = createOSWfEngine('Joe Average')
+        bob = createOSWfEngine('Bob Bossman')
+        doris = createOSWfEngine('Doris Despised')
+        wfEngine = createOSWfEngine()
+
+        def piid = joe.initialize('Work List', INITIAL_ACTION)
+        joe.doAction(piid, REQUEST_LEAVE)
+
+        bob.doAction(piid, CLAIM_WORK_ITEM);
+        bob.doAction(piid, RELEASE_WORK_ITEM);
+
+        bob.doAction(piid, CLAIM_WORK_ITEM);
+        bob.doAction(piid, RELEASE_WORK_ITEM);
+
+        bob.doAction(piid, CLAIM_WORK_ITEM);
+        bob.doAction(piid, RELEASE_WORK_ITEM);
+
+        bob.doAction(piid, CLAIM_WORK_ITEM)
+        bob.doAction(piid, LINE_MANAGER_APPROVES)
+
+        doris.doAction(piid, HUMAN_RESOURCES_APPROVES)
+
+        assert ProcessInstanceState.COMPLETED ==  wfEngine.getProcessInstanceState(piid)
+        assert 'approved' == wfEngine.getPersistentVars(piid).getString('result')
+    }
+
+
+
 
     @Test
-    public void workingWithWorkLists() {
+    void workingWithWorkLists() {
 
         OSWfEngine joe, bob, charlie, doris, wfEngine
         List<Long> workList, piids =[]
@@ -353,8 +386,7 @@ public class WorkListTest implements usage.Constants {
 
         piids.each {
             assert ProcessInstanceState.COMPLETED ==  wfEngine.getProcessInstanceState(it)
-            // assert 'approved' == wfEngine.getPersistentVars(it).getString('result')
-            // println "$it ${wfEngine.getPersistentVars(it).getString('result')}"
+            assert 'approved' == wfEngine.getPersistentVars(it).getString('result')
         }
 
     }

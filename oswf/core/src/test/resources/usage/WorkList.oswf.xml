@@ -6,243 +6,243 @@
 
   <meta name="title">Step Claim</meta>
   <meta name="description"><![CDATA[
-	
-	            TBD
-	
+  
+              TBD
+  
   ]]></meta>
 
     <!--  List of possible starting points in the workflow ===============================  -->
 
-	<initial-actions>
-	
-		<action id="1" name="Start">
+  <initial-actions>
+  
+    <action id="1" name="Start">
 
-		    <!-- Must be an employee to submit a request; Line Managers and Payroll are employees too -->
-		    <restrict-to>
-		        <conditions>
-					<condition type='alias' name='hasRole'>
-						<arg name='role'>Employee</arg>
-				    </condition>
-		        </conditions>
-		    </restrict-to>
+        <!-- Must be an employee to submit a request; Line Managers and Payroll are employees too -->
+        <restrict-to>
+            <conditions>
+          <condition type='alias' name='hasRole'>
+            <arg name='role'>Employee</arg>
+            </condition>
+            </conditions>
+        </restrict-to>
 
-			<results>
-				<default-result step="100" owner="${actor}"/>
-			</results>
-		</action>
+      <results>
+        <default-result step="100" owner="${actor}"/>
+      </results>
+    </action>
 
-	</initial-actions>
+  </initial-actions>
 
 
     <!-- Steps ============================================================================ -->
     
-	<steps>
-	
-	    <!-- Employee submits a leave request  ================================= -->
-	    
-		<step id="100" name="Employee Request">
-			<actions>
+  <steps>
+  
+      <!-- Employee submits a leave request  ================================= -->
+      
+    <step id="100" name="Employee Request">
+      <actions>
 
-				<action id="101" name="Request Leave">
-					<description>Initialize result to pending</description>
-			    <pre-functions>
-			      <function type='alias' name='setString'>
-			        <arg name='name'>result</arg>
-			        <arg name='value'>pending</arg>
-			      </function>
-			    </pre-functions>
-					<results>
-						<default-result split="10000"/>
-					</results>
-				</action>
-			</actions>
-		</step>
-
-
-		<step id="250" name="Line Manager Pending Descision">
-
-			<actions>
-				<action id="251" name="Claim Work" >
-			    <description>Only Line Managers can claim a task from the task list</description>
-
-			    <restrict-to>
-			        <conditions >
-								<condition type='alias' name='hasRole'>
-									<arg name='role'>Line Manager</arg>
-					    </condition>
-			        </conditions>
-			    </restrict-to>
-					
-					<results>
-						<default-result step="200" owner='${actor}' />
-					</results>
-
-				</action>
-			</actions>
-		</step>
-
-	    <!-- 
-	    	Manager approves or denies request based on labor needs. Or releases the request for another manager  ========= -->
-	    
-		<step id="200" name="Manager Approval">
-
-			<actions>
-				<action id="201" name="Approve" >
-					
-			    <restrict-to>
-			      <conditions>
-							<condition type='alias' name='hasRole'>
-									<arg name='role'>Line Manager</arg>
-					    </condition>
-							<condition type='alias' name='isStepOwner' />
-			      </conditions>
-			    </restrict-to>
-					
-					<results>
-						<default-result exit-status="Manager approved" join="10000" />
-					</results>
-				</action>
-
-				<action id="202" name="Deny" >
-			    <restrict-to>
-			      <conditions>
-							<condition type='alias' name='hasRole'>
-								<arg name='role'>Line Manager</arg>
-					    </condition>
-							<condition type='alias' name='isStepOwner' />
-			      </conditions>
-			    </restrict-to>
-					<results>
-						<default-result exit-status="Manager denied" join="10000"/>
-					</results>
-				</action>
-
-				<action id="203" name="Release Task" >
-			    <description>Release a request for another manager</description>
-			    <restrict-to>
-			      <conditions>
-						  <condition type='alias' name='hasRole'>
-							  <arg name='role'>Line Manager</arg>
-					    </condition>
-						  <condition type='alias' name='isStepOwner' />
-			      </conditions>
-			    </restrict-to>
-					<results>
-						<default-result step="250" exit-status="Release Task exit-status" owner='Line Manager'/>
-					</results>
-				</action>
+        <action id="101" name="Request Leave">
+          <description>Initialize result to pending</description>
+          <pre-functions>
+            <function type='alias' name='setString'>
+              <arg name='name'>result</arg>
+              <arg name='value'>pending</arg>
+            </function>
+          </pre-functions>
+          <results>
+            <default-result split="10000"/>
+          </results>
+        </action>
+      </actions>
+    </step>
 
 
-			</actions>
-		</step>
+    <step id="250" name="Line Manager Pending Descision">
 
-	    <!-- HR Manager approves or denies request based on employee record ==== -->
+      <actions>
+        <action id="251" name="Claim Work" >
+          <description>Only Line Managers can claim a task from the task list</description>
 
-		<step id="300" name="HR Approval">
+          <restrict-to>
+              <conditions >
+                <condition type='alias' name='hasRole'>
+                  <arg name='role'>Line Manager</arg>
+              </condition>
+              </conditions>
+          </restrict-to>
+          
+          <results>
+            <default-result step="200" owner='${actor}' />
+          </results>
 
-			<actions>
-				<action id="301" name="Approve" >
-			    <restrict-to>
-			      <conditions>
-						  <condition type='alias' name='hasRole'>
-							  <arg name='role'>HR Director</arg>
-					    </condition>
-			      </conditions>
-			    </restrict-to>
-					
-					<results>
-						<default-result exit-status="HR approved" join="10000"/>
-					</results>
-				</action>
+        </action>
+      </actions>
+    </step>
 
-				<action id="302" name="Deny" >
-					
-			    <restrict-to>
-			      <conditions>
-						  <condition type='alias' name='hasRole'>
-							  <arg name='role'>HR Director</arg>
-					    </condition>
-			      </conditions>
-			    </restrict-to>
-					
-					<results>
-						<default-result exit-status="HR denied" join="10000"/>
-					</results>
-				</action>
-			</actions>
-		</step>
+      <!-- 
+        Manager approves or denies request based on labor needs. Or releases the request for another manager  ========= -->
+      
+    <step id="200" name="Manager Approval">
+
+      <actions>
+        <action id="201" name="Approve" >
+          
+          <restrict-to>
+            <conditions>
+              <condition type='alias' name='hasRole'>
+                  <arg name='role'>Line Manager</arg>
+              </condition>
+              <condition type='alias' name='isStepOwner' />
+            </conditions>
+          </restrict-to>
+          
+          <results>
+            <default-result exit-status="Manager approved" join="10000" />
+          </results>
+        </action>
+
+        <action id="202" name="Deny" >
+          <restrict-to>
+            <conditions>
+              <condition type='alias' name='hasRole'>
+                <arg name='role'>Line Manager</arg>
+              </condition>
+              <condition type='alias' name='isStepOwner' />
+            </conditions>
+          </restrict-to>
+          <results>
+            <default-result exit-status="Manager denied" join="10000"/>
+          </results>
+        </action>
+
+        <action id="203" name="Release Task" >
+          <description>Release a request for another manager</description>
+          <restrict-to>
+            <conditions>
+              <condition type='alias' name='hasRole'>
+                <arg name='role'>Line Manager</arg>
+              </condition>
+              <condition type='alias' name='isStepOwner' />
+            </conditions>
+          </restrict-to>
+          <results>
+            <default-result step="250" exit-status="Release Task" owner='Line Manager'/>
+          </results>
+        </action>
 
 
-		<step id="400" name="Notify employee">
-	   	<description>System sends e-mail to employee</description>
+      </actions>
+    </step>
 
-			<actions>
-				<action id="401" name="Notify" auto="true" finish="TRUE" >
-					<results>
-							<default-result status="complete"/>
-					</results>
-				</action>
-			</actions>
+      <!-- HR Manager approves or denies request based on employee record ==== -->
 
-		</step>
-	</steps>
+    <step id="300" name="HR Approval">
+
+      <actions>
+        <action id="301" name="Approve" >
+          <restrict-to>
+            <conditions>
+              <condition type='alias' name='hasRole'>
+                <arg name='role'>HR Director</arg>
+              </condition>
+            </conditions>
+          </restrict-to>
+          
+          <results>
+            <default-result exit-status="HR approved" join="10000"/>
+          </results>
+        </action>
+
+        <action id="302" name="Deny" >
+          
+          <restrict-to>
+            <conditions>
+              <condition type='alias' name='hasRole'>
+                <arg name='role'>HR Director</arg>
+              </condition>
+            </conditions>
+          </restrict-to>
+          
+          <results>
+            <default-result exit-status="HR denied" join="10000"/>
+          </results>
+        </action>
+      </actions>
+    </step>
+
+
+    <step id="400" name="Notify employee">
+      <description>System sends e-mail to employee</description>
+
+      <actions>
+        <action id="401" name="Notify" auto="true" finish="TRUE" >
+          <results>
+              <default-result status="complete"/>
+          </results>
+        </action>
+      </actions>
+
+    </step>
+  </steps>
 
     <!-- Splits =========================================================================== -->
 
     <!-- The leave approval goes to both the line manager and the HR manager ======= -->
     
-	<splits>
-		<split id="10000">
-			<default-result status="Descision Pending" step="250" owner="Line Manager"/>
-			<default-result status="Descision Pending" step="300" owner="HR Director"/>
-		</split>
-	</splits>
+  <splits>
+    <split id="10000">
+      <default-result status="Descision Pending" step="250" owner="Line Manager"/>
+      <default-result status="Descision Pending" step="300" owner="HR Director"/>
+    </split>
+  </splits>
 
 
     <!-- Joins ============================================================================ -->
 
     <!-- The line manager and HR manager's decisions are combined here ============= -->
-	<joins>
-		<join id="10000">
-			<conditions>
-				<condition type="groovy">
-					<arg name="script"><![CDATA[
-					
-							// Get both incoming step statuses; 'null' if the step has not yet arrived.
+  <joins>
+    <join id="10000">
+      <conditions>
+        <condition type="groovy">
+          <arg name="script"><![CDATA[
+          
+              // Get both incoming step statuses; 'null' if the step has not yet arrived.
 
-							def step200 = jn.get(200)?.getStatus()
-							def step300 = jn.get(300)?.getStatus()
+              def step200 = jn.get(200)?.getStatus()
+              def step300 = jn.get(300)?.getStatus()
 
-							// println "Join>>>> $step200, $step300"
+              // Ensure that both pathways from the split have arrived at the join
+              //   before we can start evaluating any statuses
 
-							// Ensure that both pathways from the split have arrived at the join
-							//   before we can start evaluating any statuses
+              if( step200 == null || step300 == null)
+                return false
 
-							if( step200 == null || step300 == null)
-								return false
+              // But we wait for both descisions before setting the 'result'
 
-							// Both must approve
-				      if( step200 == 'Manager approved' && step300 == 'HR approved' ) {
-				          persistentVars.setString('result', 'approved')
-				          return true
-				      }
+              if ( step200 == 'Descision Pending' || step300 == 'Descision Pending')
+                return false
 
-				      // Either can deny
-				      if( step200 == 'Manager denied' || step300 == 'HR denied' ) {
-				          persistentVars.setString('result', 'denied')
-				      }
-				      
-				      // But we wait for both descisions before leaving the join
-				      !( step200 == 'Descision Pending' || step300 == 'Descision Pending')
+              // Both must approve
+              if( step200 == 'Manager approved' && step300 == 'HR approved' ) {
+                  persistentVars.setString('result', 'approved')
+                  return true
+              }
+
+              // Either can deny
+              if( step200 == 'Manager denied' || step300 == 'HR denied' ) {
+                  persistentVars.setString('result', 'denied')
+              }
                                                 
-					]]></arg>
-				</condition>
-			</conditions>
-			
-			<default-result exit-status="JoinFinished" status="${result}" step="400"/>
-			
-		</join>
-	</joins>
-	
-	
+          ]]></arg>
+        </condition>
+      </conditions>
+      
+      <default-result exit-status="JoinFinished" status="${result}" step="400"/>
+      
+    </join>
+  </joins>
+  
+  
 </workflow>

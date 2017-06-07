@@ -1458,9 +1458,9 @@ public class DefaultOSWfEngine implements OSWfEngine {
 
             // End Split Logic ------------------------------------------------
 
-        //  Are we transitioning into a Join?
+        //  Are we transitioning into a Join? 'getJoin' returns a non-zero id.
         
-        } else if (theResult.getJoin() != 0) {
+        } else if ( theResult.getJoin() != 0 ) {
 
             JoinSteps joinSteps = new JoinSteps();
 
@@ -1473,28 +1473,30 @@ public class DefaultOSWfEngine implements OSWfEngine {
             // Create a Collection of Steps associated with this Join so that they can
             //  be passed via the 'transientVars' for evaluation 
 
-            //  First get any Current Steps which transition into this Join 
-                      
-            joinSteps.add(step);
+            // Add this step, first
             
+            joinSteps.add(step);
+
+            //  Add any other Current Steps which transition into this Join 
+                                 
             for (Step currentStep : currentSteps) {
                 StepDescriptor stepDesc = wf.getStep(currentStep.getStepId());
-                if (stepDesc.resultsInJoin(theResult.getJoin())) 
+                if ( stepDesc.resultsInJoin(theResult.getJoin()) ) 
                     joinSteps.add(currentStep);
             }
 
-            // Now get any History Steps which are finished 
+            // Add any History Steps which are waiting at the join 
             
             List<Step> historySteps = store.findHistorySteps(pi.getProcessInstanceId());
             
             for (Step historyStep : historySteps) {
                 StepDescriptor stepDesc = wf.getStep(historyStep.getStepId());
-                if (stepDesc.resultsInJoin(theResult.getJoin())) 
+                if ( stepDesc.resultsInJoin(theResult.getJoin()) ) 
                     joinSteps.add(historyStep);
             }
 
             // Add those Steps which are or were part of this Join to the transientVars
-            //  for possible evaluation in a beanshell
+            //  for possible evaluation in a script
             
             transientVars.put("jn", joinSteps);
 

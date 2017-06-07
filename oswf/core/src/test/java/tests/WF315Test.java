@@ -33,17 +33,17 @@ public class WF315Test {
         long piid = workflow.initialize(wfdescr, 0, EMPTY_MAP);
 
         workflow.doAction(piid, 20)
-            .doAction(piid, 65)
-            .doAction(piid, 75)
-            .doAction(piid, 20)
-            .doAction(piid, 65)
-            .doAction(piid, 75)
+                .doAction(piid, 65)
+                .doAction(piid, 75)
+                .doAction(piid, 20)
+                .doAction(piid, 65)
+                .doAction(piid, 75)
         ;
 
         List currentSteps = workflow.getCurrentSteps(piid);
         long[] prevIds = ((Step)currentSteps.get(0)).getPreviousStepIds();
 
-        assertEquals("Unexpected number of previous steps", 4, prevIds.length);
+        assertEquals("Unexpected number of previous steps", 2, prevIds.length);
 
     }
 
