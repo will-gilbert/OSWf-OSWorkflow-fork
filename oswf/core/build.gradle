@@ -47,7 +47,6 @@ ext.applicationName = "OSWf Core"
 
 configurations { 
     graphvizRuntime 
-    repoUploadFTP 
 }
 
 // R E P O S I T O R I E S   &   D E P E N D E N C I E S ======================================
@@ -100,11 +99,6 @@ dependencies {
          "log4j:log4j:$log4j",
     ])
 
-    repoUploadFTP([
-        "org.apache.maven.wagon:wagon-ftp:$wagon",
-        "org.apache.maven.wagon:wagon-http:$wagon",
-    ])
-
 }
 
 sourceSets {
@@ -129,7 +123,7 @@ task graphviz(dependsOn: ['jar'], type:JavaExec) {
     ])
 
     // args[0] : -P  workflow="path.../name"
-    def workflow = findProperty("workflow", 'usage/example')
+    def workflow = findProperty("workflow") ?: 'usage/example'
     def inputFile = new File("src/test/resources/${workflow}.oswf.xml")
     def outputFile = new File("${inputFile.getName()}.dot")
 
@@ -148,29 +142,3 @@ task graphviz(dependsOn: ['jar'], type:JavaExec) {
 
 }
 
-// D E P L O Y I N G --------------------------------------------------------------------------
-
-uploadArchives {
-    
-    // These values can be defined in a local 'gradle.properties' file
-    def uploadURL = findProperty('upload.url', null)
-    def username  = findProperty('upload.username', null)
-    def password  = findProperty('upload.password', null)
-
-    // Fail silently if all properties are not set
-    if(uploadURL != null && username != null && password != null) {
-        repositories.mavenDeployer {
-            configuration = configurations.repoUploadFTP
-            repository(url: uploadURL) {
-                authentication(userName: username, password: password)
-            }
-        }
-    }
-}
-
-// U T I L I T Y   M E T H O D S -------------------------------------------------------------- 
-
-def String findProperty(String propertyName, defaultValue='') {
-    def property = rootProject.hasProperty(propertyName) ? rootProject.getProperty(propertyName) : defaultValue
-    return property?.trim()
-}

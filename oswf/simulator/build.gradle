@@ -97,25 +97,25 @@ ext.excludedResources = [
 // Re: locality.properties, log4j.properties, <database>.hibernate.xml
 
 ext.log4jProperties = [
-    'log4j.logger'  : findProperty('log4j.logger', 'CONSOLE'), 
-    'log4j.pathname': findProperty('log4j.pathname', '.')
+    'log4j.logger'  : findProperty('log4j.logger') ?: 'CONSOLE',
+    'log4j.pathname': findProperty('log4j.pathname') ?: '.'
 ]
 
 // Get there properties from the command line
-ext.hibernateDatabase = findProperty('db'); 
-ext.locality = findProperty('locality', 'local'); 
+ext.hibernateDatabase = findProperty('db') 
+ext.locality = findProperty('locality') ?: 'local'
 
 // Use the command line property 'db' to load the intended set of properties from 
 //  the 'gradle.properties' file
 ext.hibernateProperties = [
-    'hibernate.connection.driver_class': findProperty(hibernateDatabase + '.connection.driver_class', 'org.h2.Driver'),
-    'hibernate.dialect'                : findProperty(hibernateDatabase + '.dialect', 'org.hibernate.dialect.H2Dialect'),
-    'hibernate.connection.url'         : findProperty(hibernateDatabase + '.connection.url', 'jdbc:h2:mem:workflow;DB_CLOSE_ON_EXIT=FALSE') ,
-    'hibernate.hbm2ddl.auto'           : findProperty(hibernateDatabase + '.hbm2ddl.auto', 'create-drop') ,
-    'hibernate.connection.autocommit'  : findProperty(hibernateDatabase + '.connection.autocommit', 'false') ,
-    'hibernate.connection.username'    : findProperty(hibernateDatabase + '.connection.username', 'sa'),
-    'hibernate.connection.password'    : findProperty(hibernateDatabase + '.connection.password', ''),
-    'hibernate.connection.pool_size'   : findProperty(hibernateDatabase + '.connection.pool_size', '1'),
+    'hibernate.connection.driver_class': findProperty(hibernateDatabase + '.connection.driver_class') ?: 'org.h2.Driver',
+    'hibernate.dialect'                : findProperty(hibernateDatabase + '.dialect') ?: 'org.hibernate.dialect.H2Dialect',
+    'hibernate.connection.url'         : findProperty(hibernateDatabase + '.connection.url') ?: 'jdbc:h2:mem:workflow;DB_CLOSE_ON_EXIT=FALSE',
+    'hibernate.hbm2ddl.auto'           : findProperty(hibernateDatabase + '.hbm2ddl.auto') ?: 'create-drop',
+    'hibernate.connection.autocommit'  : findProperty(hibernateDatabase + '.connection.autocommit') ?: 'false',
+    'hibernate.connection.username'    : findProperty(hibernateDatabase + '.connection.username') ?: 'sa',
+    'hibernate.connection.password'    : findProperty(hibernateDatabase + '.connection.password') ?: '',
+    'hibernate.connection.pool_size'   : findProperty(hibernateDatabase + '.connection.pool_size') ?: '1'
 ]
 
 
@@ -124,17 +124,11 @@ ext.localityProperties = [
     'project.name'                   : applicationName,
     'user.agent'                     : (locality == 'local') ? 'safari' : 'gecko1_8,safari,ie8,ie9,opera',
     'deployment.name'                : findProperty('deployment.name'),
-    'servlet.janitor.repeatInterval' : findProperty('servlet.janitor.repeatInterval', '30'),
-    'servlet.janitor.leakWarning'    : findProperty('servlet.janitor.leakWarning', '3'),
-    'executable.graphviz'            : findProperty(locality + '.executable.graphviz', 'dot'), 
+    'servlet.janitor.repeatInterval' : findProperty('servlet.janitor.repeatInterval') ?: '30',
+    'servlet.janitor.leakWarning'    : findProperty('servlet.janitor.leakWarning') ?: '3',
+    'executable.graphviz'            : findProperty(locality + '.executable.graphviz') ?: 'dot' 
 ]
 
-// U T I L I T Y   M E T H O D S -------------------------------------------------------------- 
-
-def String findProperty(String propertyName, defaultValue='') {
-    def property = rootProject.hasProperty(propertyName) ? rootProject.getProperty(propertyName) : defaultValue
-    return property?.trim()
-}
 
 
 // R e p o s i t o r i e s   &   D e p e n d e n c i e s --------------------------------------
@@ -419,7 +413,7 @@ test {
    
    // Display the report in the users favorite browser
    //     'defaultBrowser' can definded in ~/.gradle/gradle.properties file
-   def defaultBrowser = findProperty('defaultBrowser','safari')
+   def defaultBrowser = findProperty('defaultBrowser') ?:'safari'
    
    // NB: 'open' is available on MacOSX; Modify or remove for other OSes
    doLast {
