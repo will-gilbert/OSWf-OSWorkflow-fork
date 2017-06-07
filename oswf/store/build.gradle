@@ -102,38 +102,9 @@ dependencies {
         "com.h2database:h2:$h2"
     ])
 
-    repoUploadFTP([
-        "org.apache.maven.wagon:wagon-ftp:$wagon"
-    ])
-
 }
 
-// D E P L O Y I N G --------------------------------------------------------------------------
 
-uploadArchives {
-    
-    // These values can be defined in a local 'gradle.properties' file
-    def uploadURL = findProperty('upload.url', null)
-    def username  = findProperty('upload.username', null)
-    def password  = findProperty('upload.password', null)
-
-    // Fail silently if all properties are not set
-    if(uploadURL != null && username != null && password != null) {
-        repositories.mavenDeployer {
-            configuration = configurations.repoUploadFTP
-            repository(url: uploadURL) {
-                authentication(userName: username, password: password)
-            }
-        }
-    }
-}
-
-// U T I L I T Y   M E T H O D S -------------------------------------------------------------- 
-
-def String findProperty(String propertyName, defaultValue='') {
-    def property = rootProject.hasProperty(propertyName) ? rootProject.getProperty(propertyName) : defaultValue
-    return property?.trim()
-}
 
 // U N I T   T E S T I N G --------------------------------------------------------------------
 
@@ -153,7 +124,7 @@ test {
    
    // Display the report in the users favorite browser
    //     'defaultBrowser' definded in ~/.gradle/gradle.properties file
-   def defaultBrowser = findProperty('defaultBrowser','safari')
+   def defaultBrowser = findProperty('defaultBrowser') ?: 'safari'
    
    // NB: 'open' is only available on MacOSX
    doLast {
@@ -164,7 +135,7 @@ test {
 }
 
 
-// R U N   T A S K S ==========================================================================
+// S C H E M A   E X P O R T  ===============================================================
 
 
 task schemaExport(dependsOn: ['jar'], type:JavaExec) {
