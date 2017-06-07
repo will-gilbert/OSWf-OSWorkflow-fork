@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE workflow PUBLIC "-//Open Source Workflow//DTD OSWf 3.0//EN" "http://oswf.sourceforge.net/OSWf-3.0.dtd">
+<!DOCTYPE workflow PUBLIC "-//Open Source Workflow//DTD OSWf 3.0//EN" "http://informagen.org/OSWf/OSWf-3.0.dtd">
 
   <workflow>
 
     <initial-actions>
-      <action id="0" name="start">
+      <action id="1" name="start">
         <results>
-          <default-result id="10" exit-status="finished" status="todo" step="0"/>
+          <default-result id="10" exit-status="finished" status="todo" step="1"/>
         </results>
       </action>
     </initial-actions>
 
     <steps>
 
-      <step id="0" name="A">
+      <step id="1" name="A">
         <actions>
           <action id="20" name="to_B_C">
             <results>
@@ -58,7 +58,7 @@
             <arg name="status">todo</arg>
           </condition>
         </conditions>
-        <default-result exit-status="" status="todo" step="0"/>
+        <default-result exit-status="" status="todo" step="1"/>
       </join>
     </joins>
 

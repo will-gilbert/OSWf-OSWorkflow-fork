@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE workflow PUBLIC "-//Open Source Workflow//DTD OSWf 3.0//EN" "http://oswf.sourceforge.net/OSWf-3.0.dtd">
+<!DOCTYPE workflow PUBLIC "-//Open Source Workflow//DTD OSWf 3.0//EN" "http://informagen.org/OSWf/OSWf-3.0.dtd">
 <workflow>
  
     <meta name='Jira Ticket'><![CDATA[
@@ -82,7 +82,7 @@
         
       <!-- Multiple Conditions; type is required -->
       
-      <conditions type="AND">
+      <conditions>
           
         <condition type="beanshell">
           <arg name="script">"Finished".equals(jn.get(2).getStatus())</arg>

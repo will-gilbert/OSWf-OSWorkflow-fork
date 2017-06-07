@@ -30,7 +30,7 @@ public class WF315Test {
 
         String wfdescr = getClass().getResource("/core/WF-315.oswf.xml").toString();
 
-        long piid = workflow.initialize(wfdescr, 0, EMPTY_MAP);
+        long piid = workflow.initialize(wfdescr, 1, EMPTY_MAP);
 
         workflow.doAction(piid, 20)
                 .doAction(piid, 65)
