@@ -123,7 +123,7 @@ ext.localityProperties = [
     'project.version'                : project.version,
     'project.name'                   : applicationName,
     'user.agent'                     : (locality == 'local') ? 'safari' : 'gecko1_8,safari,ie8,ie9,opera',
-    'deployment.name'                : findProperty('deployment.name'),
+    'deployment.name'                : findProperty('deployment.name') ?: 'localhost',
     'servlet.janitor.repeatInterval' : findProperty('servlet.janitor.repeatInterval') ?: '30',
     'servlet.janitor.leakWarning'    : findProperty('servlet.janitor.leakWarning') ?: '3',
     'executable.graphviz'            : findProperty(locality + '.executable.graphviz') ?: 'dot' 
