@@ -49,15 +49,14 @@ import static org.junit.Assert.fail;
 
 public class SimultaneousInstancesTest extends OSWfHibernateTestCase implements LeaveRequest {
  
-     private static final String DBCONFIG = "H2.hibernate.xml";
-//    private static final String DBCONFIG = "MySQL.hibernate.xml";
+    public static final String RDBMS_CONFIGURATION = System.getProperty("rdbms-configuration");
 
     private OSWfEngine wfEngine;
     
      public SimultaneousInstancesTest() {
         super("oswf-store.cfg.xml",
               "oswf-propertyset.cfg.xml",
-              DBCONFIG);
+              RDBMS_CONFIGURATION);
     }
 
     

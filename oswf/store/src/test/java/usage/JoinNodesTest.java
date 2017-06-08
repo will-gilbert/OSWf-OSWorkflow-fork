@@ -58,8 +58,7 @@ import static org.junit.Assert.fail;
 
 public class JoinNodesTest extends OSWfHibernateTestCase {
 
-     private static final String RDBMS_CONFIGURATION = "H2.hibernate.xml";
-     //private static final String RDBMS_CONFIGURATION = "MySQL.hibernate.xml";
+    public static final String RDBMS_CONFIGURATION = System.getProperty("rdbms-configuration");
 
     private OSWfEngine wfEngine;
     private Logger logger;

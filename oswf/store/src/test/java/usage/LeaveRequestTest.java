@@ -52,9 +52,7 @@ import static org.junit.Assert.fail;
 
 public class LeaveRequestTest extends OSWfHibernateTestCase implements LeaveRequest {
 
-    private static final String RDBMS_CONFIGURATION = "H2.hibernate.xml";
-    //private static final String RDBMS_CONFIGURATION = "MySQL.hibernate.xml";
-
+    public static final String RDBMS_CONFIGURATION = System.getProperty("rdbms-configuration");
 
     // Process Instance variable
     private long bobId;

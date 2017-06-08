@@ -6,7 +6,7 @@ import org.informagen.typedmap.hibernate.HibernateTypedMapDAO;
 import org.informagen.typedmap.hibernate.HibernateConfigurationProvider;
 
 
-// OSWf - PropertySet
+// OSWf - TypedMap
 import org.informagen.typedmap.AbstractTypedMap;
 import org.informagen.typedmap.Type;
 import org.informagen.typedmap.exceptions.TypedMapException;
@@ -15,7 +15,7 @@ import org.informagen.typedmap.exceptions.IllegalValueException;
 // OSWf - Utilities 
 import org.informagen.oswf.util.ClassLoaderHelper;
 
-// OSWf - PropertySet Utililites
+// OSWf - TypedMap Utililites
 import org.informagen.typedmap.util.ByteArray;
 import org.informagen.typedmap.util.XMLUtils;
 import org.informagen.typedmap.util.Base64;
@@ -109,7 +109,7 @@ public class HibernateTypedMap extends AbstractTypedMap {
     }
 
     public Collection<String> getKeys(String itemKey, Type type) throws TypedMapException {
-        return configProvider.getPropertySetDAO().getKeys(piid, itemKey, type);
+        return configProvider.getPersistentVarsDAO().getKeys(piid, itemKey, type);
     }
 
     public Type getType(String itemKey) throws TypedMapException {
@@ -202,21 +202,21 @@ public class HibernateTypedMap extends AbstractTypedMap {
 
 
     public void remove(String itemKey) throws TypedMapException {
-        configProvider.getPropertySetDAO().remove(piid, itemKey);
+        configProvider.getPersistentVarsDAO().remove(piid, itemKey);
     }
 
 
     public void remove() throws TypedMapException {
-        configProvider.getPropertySetDAO().remove(piid);
+        configProvider.getPersistentVarsDAO().remove(piid);
     }
 
 
     protected void setImpl(Type type, String itemKey, Object value) throws TypedMapException {
 
-        HibernateTypedMapItem item = configProvider.getPropertySetDAO().findByKey(piid, itemKey);
+        HibernateTypedMapItem item = configProvider.getPersistentVarsDAO().findByKey(piid, itemKey);
 
         if (item == null) 
-            item = configProvider.getPropertySetDAO().create(piid, itemKey);
+            item = configProvider.getPersistentVarsDAO().create(piid, itemKey);
         else if (Type.getType(item.getType()) != type) 
             throw new TypedMapException("Existing key '" + itemKey + "' does not have matching type of " + type);
 
@@ -298,7 +298,7 @@ public class HibernateTypedMap extends AbstractTypedMap {
         
         item.setType(type.getValue());
         
-        configProvider.getPropertySetDAO().save(item);
+        configProvider.getPersistentVarsDAO().save(item);
     }
 
     public boolean supportsType(final Type type) {
@@ -514,7 +514,7 @@ public class HibernateTypedMap extends AbstractTypedMap {
 
 
     private HibernateTypedMapItem findByKey(String itemKey) throws TypedMapException {
-        return configProvider.getPropertySetDAO().findByKey(piid, itemKey);
+        return configProvider.getPersistentVarsDAO().findByKey(piid, itemKey);
     }
 
 

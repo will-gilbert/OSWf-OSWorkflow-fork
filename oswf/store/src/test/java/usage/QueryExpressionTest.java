@@ -68,8 +68,7 @@ import static org.junit.Assert.fail;
  
 public class QueryExpressionTest extends OSWfHibernateTestCase implements LeaveRequest {
 
-    private static final String DBCONFIG = "H2.hibernate.xml";
-//    private static final String DBCONFIG = "MySQL.hibernate.xml";
+    public static final String RDBMS_CONFIGURATION = System.getProperty("rdbms-configuration");
 
     // Class fields ///////////////////////////////////////////////////////////
 
@@ -83,7 +82,7 @@ public class QueryExpressionTest extends OSWfHibernateTestCase implements LeaveR
     public QueryExpressionTest() {
         super("oswf-store.cfg.xml",
               "oswf-propertyset.cfg.xml",
-              DBCONFIG);
+              RDBMS_CONFIGURATION);
         
         
         // 'log' is declared in the superclass

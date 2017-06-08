@@ -45,7 +45,7 @@ public class HibernateConfigurationProvider {
         return configuration;
     }
 
-    public HibernateTypedMapDAO getPropertySetDAO() {
+    public HibernateTypedMapDAO getPersistentVarsDAO() {
     
         if (typedMapDAO == null) 
             typedMapDAO = new HibernateTypedMapDAO(sessionFactory);
