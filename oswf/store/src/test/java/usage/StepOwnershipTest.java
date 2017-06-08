@@ -70,8 +70,7 @@ import static org.junit.Assert.fail;
 
 public class StepOwnershipTest extends OSWfHibernateTestCase implements Constants {
 
-     private static final String RDBMS_CONFIGURATION = "H2.hibernate.xml";
-//    private static final String RDBMS_CONFIGURATION = "MySQL.hibernate.xml";
+    public static final String RDBMS_CONFIGURATION = System.getProperty("rdbms-configuration");
 
     OSWfConfiguration configuration;
 

@@ -3,8 +3,7 @@ CREATE TABLE `processinstance` (
   `wfname` varchar(255) default NULL,
   `wfstate` int(11) default NULL,
   PRIMARY KEY  (`piid`)
-) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=latin1;
-
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
 
 CREATE TABLE `currentstep` (
@@ -17,10 +16,8 @@ CREATE TABLE `currentstep` (
   `duedate` datetime default NULL,
   PRIMARY KEY  (`id`),
   KEY `FK_CURRENTSTEP_PIID` (`piid`),
-  KEY `FK23E45FC51910894` (`piid`),
-  CONSTRAINT `FK23E45FC51910894` FOREIGN KEY (`piid`) REFERENCES `processinstance` (`piid`),
   CONSTRAINT `FK_CURRENTSTEP_PIID` FOREIGN KEY (`piid`) REFERENCES `processinstance` (`piid`)
-) ENGINE=InnoDB AUTO_INCREMENT=105 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
 
 CREATE TABLE `historystep` (
@@ -36,10 +33,8 @@ CREATE TABLE `historystep` (
   `finishdate` datetime default NULL,
   PRIMARY KEY  (`id`),
   KEY `FK_HISTORYSTEP_PIID` (`piid`),
-  KEY `FK150981601910894` (`piid`),
-  CONSTRAINT `FK150981601910894` FOREIGN KEY (`piid`) REFERENCES `processinstance` (`piid`),
   CONSTRAINT `FK_HISTORYSTEP_PIID` FOREIGN KEY (`piid`) REFERENCES `processinstance` (`piid`)
-) ENGINE=InnoDB AUTO_INCREMENT=148 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
 
 CREATE TABLE `processvariable` (
@@ -52,6 +47,6 @@ CREATE TABLE `processvariable` (
   `textval` text,
   `itemtype` int(11) default NULL,
   PRIMARY KEY  (`piid`,`itemkey`),
-  KEY `FK_PROPERTYSET_PIID` (`piid`),
-  CONSTRAINT `FK_PROPERTYSET_PIID` FOREIGN KEY (`piid`) REFERENCES `processinstance` (`piid`)
+  KEY `FK_PROCESSVARIABLE_PIID` (`piid`),
+  CONSTRAINT `FK_PROCESSVARIABLE_PIID` FOREIGN KEY (`piid`) REFERENCES `processinstance` (`piid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;

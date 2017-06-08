@@ -49,8 +49,7 @@ import static org.junit.Assert.fail;
 
 public class MultipleWorkflowsTest extends OSWfHibernateTestCase implements LeaveRequest {
 
-    private static final String DBCONFIG = "H2.hibernate.xml";
-//    private static final String DBCONFIG = "MySQL.hibernate.xml";
+    public static final String RDBMS_CONFIGURATION = System.getProperty("rdbms-configuration");
 
     private static final String LEAVE_REQUEST_WORKFLOW = COMPLEX;
     private static final String HOLIDAY_WORKFLOW = SIMPLE;
@@ -60,7 +59,7 @@ public class MultipleWorkflowsTest extends OSWfHibernateTestCase implements Leav
      public MultipleWorkflowsTest() {
         super("oswf-store.cfg.xml",
               "oswf-propertyset.cfg.xml",
-              DBCONFIG);
+              RDBMS_CONFIGURATION);
     }
    
     

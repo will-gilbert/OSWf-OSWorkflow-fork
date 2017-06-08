@@ -1,4 +1,4 @@
-/* U S A G E ==================================================================================
+task usage doLast { print """
 
 gradle javaCompile
   Compile Java source code displaying warnings and error to the terminal console.
@@ -8,34 +8,32 @@ gradle test; open target/reports/tests/index.html
 
 gradle clean
   Delete build files and targets
-
-gradle install
-  Install the JAR and POM files into the local Maven repository.  Gradle will pick them
-  up and copy them into its repository as needed. If a Maven artifact has '-SNAPSHOT'
-  appended to the version. Gradle will check each build for a changed file.
-
-gradle uploadArchives
-    Update the JAR and POM files to a remote Maven repository.  The upload parameters
-    are specified in a local 'gradle.properties' file.  This file is stored in the
-    code repository but is created and maintained locally.
+  
+gradle schemaExport
 
  --refresh-dependencies
 
 -----------------------------------------------------------------------------------------------
 
-After running tests into a database you can execute the following SQL commands to cleanup;
+Create a MySQL database using the SQL script: oswf-store.mysql.sql
 
-TRUNCATE TABLE xmldescriptor;
-TRUNCATE TABLE propertyset;
+After running tests into a MySQL database you can execute the following SQL commands to cleanup;
+
+TRUNCATE TABLE processvariable;
 TRUNCATE TABLE historystep;
 TRUNCATE TABLE currentstep;
 DELETE FROM processinstance;
+""" }
 
 
-============================================================================================ */
+//============================================================================================
+
+import org.apache.tools.ant.filters.ReplaceTokens
 
 apply plugin: 'java'
 apply plugin: 'maven'
+
+
 
 // C O N F I G U R A T I O N ==================================================================
 
@@ -44,12 +42,24 @@ version = '1.1.0-SNAPSHOT'
 
 ext.applicationName = "Hibernate WorkflowStore and PropertySet"
 
+// Properties Configuration -------------------------------------------------------------------
+
+// Get there properties from the command line
+ext.database = findProperty('database') ?: 'H2'
+ext.rdbms_configuration = "${database}.hibernate.xml"
+
+// Use the command line property 'db' to load the intended set of properties from 
+//  the 'gradle.properties' file
+
+ext.databaseProperties = [
+    'hibernate.connection.url'      : findProperty("${database}.connection.url") ?: 'jdbc:h2:mem:oswf;DB_CLOSE_DELAY=-1',
+    'hibernate.connection.username' : findProperty("${database}.connection.username") ?: 'sa',
+    'hibernate.connection.password' : findProperty("${database}.connection.password") ?: '',
+]
+
+
 
 compileTestJava.options.compilerArgs = compileJava.options.compilerArgs;
-
-configurations { 
-    repoUploadFTP 
-}
 
 configurations.all {
   resolutionStrategy {
@@ -69,7 +79,7 @@ dependencies {
     compile project(':core')
     compile project(':typedmap')
 
-    def hibernate = '4.3.11.Final' //'3.3.2.GA'
+    def hibernate = '4.3.11.Final' // '4.3.11.Final' '3.3.2.GA'; Does not run: '5.0.12.Final', '5.1.7.Final' '5.2.10.Final' 
     def mysql     = '5.1.25'
 
     compile ([
@@ -104,11 +114,19 @@ dependencies {
 
 }
 
+// Augment the 'processResources' task from the 'java' plugin.  Use filtering to replace 
+//   '@...@' tags with properties in order to customize the running environment
 
+processTestResources {
+    filter(ReplaceTokens, tokens: databaseProperties)
+}
 
 // U N I T   T E S T I N G --------------------------------------------------------------------
 
 test {
+
+    systemProperty 'rdbms-configuration', rdbms_configuration
+
     
    forkEvery = 5
    maxParallelForks = 4
@@ -153,8 +171,8 @@ task schemaExport(dependsOn: ['jar'], type:JavaExec) {
 
     systemProperties = [
        //"hibernate.dialect" : "org.hibernate.dialect.H2Dialect"
-       "hibernate.dialect" : "org.hibernate.dialect.OracleDialect"
-       //"hibernate.dialect" : "org.hibernate.dialect.MySQLInnoDBDialect"
+       //"hibernate.dialect" : "org.hibernate.dialect.OracleDialect"
+       "hibernate.dialect" : "org.hibernate.dialect.MySQLInnoDBDialect"
     ]    
 
     // See Hibernate Toolset Guide, Section 20.1.2. Running the tool
@@ -171,7 +189,6 @@ task schemaExport(dependsOn: ['jar'], type:JavaExec) {
       "src/main/resources/org/informagen/oswf/hbm/HibernateCurrentStep.hbm.xml",
       "src/main/resources/org/informagen/oswf/hbm/HibernateHistoryStep.hbm.xml",
       "src/main/resources/org/informagen/oswf/hbm/HibernateProcessInstance.hbm.xml",
-      "src/main/resources/org/informagen/oswf/hbm/XmlWorkflowDescriptor.hbm.xml",
       "src/main/resources/org/informagen/oswf/hbm/HibernateTypedMapItem.hbm.xml",
       "src/main/resources/org/informagen/oswf/hbm/WorkflowDescriptor.hbm.xml",
    ]
