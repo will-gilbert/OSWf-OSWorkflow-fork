@@ -48,8 +48,7 @@ import static org.junit.Assert.fail;
 
 public class HibernateTypedMapStoreTest  {
 
-    private static final String RDBMS_CONFIGURATION = "H2.hibernate.xml";
-    //private static final String RDBMS_CONFIGURATION = "MySQL.hibernate.xml";
+    public static final String RDBMS_CONFIGURATION = "H2.hibernate.xml"; //System.getProperty("rdbms-configuration");
 
 
     long piid = 1L;

@@ -61,6 +61,9 @@ import static org.junit.Assert.fail;
 
 public class ConfigureHibernatePropertySetTest  {
 
+
+    public static final String RDBMS_CONFIGURATION = "H2.hibernate.xml"; //System.getProperty("rdbms-configuration");
+
     static final Random random = new Random();
 
     /**
@@ -73,7 +76,7 @@ public class ConfigureHibernatePropertySetTest  {
      // NB: Use a single comma as the resource separator, no extra spacing please.
      //     (HBM mapping file, database configuration)
 
-    static final String resources = "oswf-propertyset.cfg.xml,H2.hibernate.xml";
+    static final String resources = "oswf-propertyset.cfg.xml," + RDBMS_CONFIGURATION;
 //    static final String resources = "oswf-propertyset.cfg.xml,MySQL.hibernate.xml";
         
 
