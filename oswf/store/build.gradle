@@ -52,12 +52,15 @@ ext.rdbms_configuration = "${database}.hibernate.xml"
 //  the 'gradle.properties' file
 
 ext.databaseProperties = [
-    'hibernate.connection.url'      : findProperty("${database}.connection.url") ?: 'jdbc:h2:mem:oswf;DB_CLOSE_DELAY=-1',
-    'hibernate.connection.username' : findProperty("${database}.connection.username") ?: 'sa',
-    'hibernate.connection.password' : findProperty("${database}.connection.password") ?: '',
+    'hibernate.connection.driver_class': findProperty("${database}.connection.driver_class") ?: 'org.h2.Driver',
+    'hibernate.dialect'                : findProperty("${database}.dialect") ?: 'org.hibernate.dialect.H2Dialect',
+    'hibernate.connection.url'         : findProperty("${database}.connection.url") ?: 'jdbc:h2:mem:oswf;DB_CLOSE_DELAY=-1',
+    'hibernate.connection.username'    : findProperty("${database}.connection.username") ?: 'sa',
+    'hibernate.connection.password'    : findProperty("${database}.connection.password") ?: '',
+    'hibernate.hbm2ddl.auto'           : findProperty("${database}.hbm2ddl.auto") ?: 'create-drop',
+    'hibernate.connection.autocommit'  : findProperty("${database}.connection.autocommit") ?: 'false',
+    'hibernate.connection.pool_size'   : findProperty("${database}.connection.pool_size") ?: '1'
 ]
-
-
 
 compileTestJava.options.compilerArgs = compileJava.options.compilerArgs;
 

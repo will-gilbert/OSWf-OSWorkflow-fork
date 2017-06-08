@@ -46,6 +46,9 @@ import static org.junit.Assert.fail;
 
 public class HibernateTypedMapTest extends TypedMapBase {
 
+    // To get this to work with MySQL we need to either remove the 'processvariable.piid'
+    //   foreign key to 'processinstance.piid' OR
+    // Create and initialize a process instance and then do the tests
 
     public static final String RDBMS_CONFIGURATION = "H2.hibernate.xml"; //System.getProperty("rdbms-configuration");
 

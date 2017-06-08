@@ -61,8 +61,11 @@ import static org.junit.Assert.fail;
 
 public class ConfigureHibernatePropertySetTest  {
 
+    // To get this to work with MySQL we need to either remove the 'processvariable.piid'
+    //   foreign key to 'processinstance.piid' OR
+    // Create and initialize a process instance and then do the tests
 
-    public static final String RDBMS_CONFIGURATION = "H2.hibernate.xml"; //System.getProperty("rdbms-configuration");
+    public static final String RDBMS_CONFIGURATION = "H2.hibernate.xml";
 
     static final Random random = new Random();
 
@@ -77,7 +80,6 @@ public class ConfigureHibernatePropertySetTest  {
      //     (HBM mapping file, database configuration)
 
     static final String resources = "oswf-propertyset.cfg.xml," + RDBMS_CONFIGURATION;
-//    static final String resources = "oswf-propertyset.cfg.xml,MySQL.hibernate.xml";
         
 
     TypedMap propertySet;
