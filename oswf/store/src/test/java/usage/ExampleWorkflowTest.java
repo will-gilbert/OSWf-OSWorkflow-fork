@@ -74,7 +74,7 @@ import static org.junit.Assert.fail;
  
 public class ExampleWorkflowTest extends OSWfHibernateTestCase {
 
-    public static final String RDBMS_CONFIGURATION = System.getProperty("rdbms-configuration");
+    public static final String RDBMS_CONFIGURATION = "H2.hibernate.xml"; //System.getProperty("rdbms-configuration");
 
 
     final static int INITIAL_ACTION         =   100;

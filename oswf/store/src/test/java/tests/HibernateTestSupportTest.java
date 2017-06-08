@@ -29,11 +29,13 @@ import java.util.List;
 
 public class HibernateTestSupportTest {
 
+    public static final String RDBMS_CONFIGURATION = System.getProperty("rdbms-configuration");
+
     HibernateTestSupport hibernateTestSupport;
     
     @Before
     public void createHibernateTestCase() {
-        hibernateTestSupport = new HibernateTestSupport("H2.hibernate.xml");
+        hibernateTestSupport = new HibernateTestSupport(RDBMS_CONFIGURATION);
     }
 
 

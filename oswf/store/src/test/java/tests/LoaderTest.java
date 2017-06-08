@@ -53,7 +53,7 @@ import static org.junit.Assert.fail;
  
 public class LoaderTest extends OSWfHibernateTestCase {
 
-    private static final String RDBMS_CONFIGURATION = "H2.hibernate.xml";
+    public static final String RDBMS_CONFIGURATION = "H2.hibernate.xml"; //System.getProperty("rdbms-configuration");
 
     private static String holiday;
 
