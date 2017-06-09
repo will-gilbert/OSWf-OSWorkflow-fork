@@ -93,11 +93,7 @@ public class StartupContextListener implements ServletContextListener {
             resource = "oswf-store.cfg.xml";
             logger.info("Configuring Hibernate Mapping: " + resource);
             configuration.configure(resource);
-
-            resource = "oswf-typedmap.cfg.xml";
-            logger.info("Configuring Hibernate Mapping: " + resource);
-            configuration.configure(resource);
-            
+          
             // Database configuration; H2 or MySQL
             resource = "hibernate.xml";
             logger.info("Configuring Hibernate Mapping: " + resource);
