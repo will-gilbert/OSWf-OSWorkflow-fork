@@ -1,6 +1,6 @@
 package tests;
 
-import org.informagen.oswf.testing.HibernateTestSupport;
+import support.HibernateTestSupport;
 
 // Hibernate
 import org.hibernate.Query;

@@ -335,6 +335,7 @@ public class DefaultOSWfConfiguration implements OSWfConfiguration, Serializable
     **     <propertyset name="memory" class="...MemoryPropertySet"/>
     **  </propertysets>
     **
+    **. Need to find a meaningfull function for this....(Will Gilbert)
     */
 
     protected void parsePropertySets(Element root) throws Exception {

@@ -1,6 +1,6 @@
 package tests;
 
-import org.informagen.oswf.testing.OSWfHibernateTestCase;
+import support.OSWfHibernateTestCase;
 
 // OSWf - Core
 import org.informagen.oswf.OSWfEngine;
@@ -51,7 +51,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
  
  
-public class LoaderTest extends OSWfHibernateTestCase {
+public class HibernateLoaderTest extends OSWfHibernateTestCase {
 
     public static final String RDBMS_CONFIGURATION = "H2.hibernate.xml"; //System.getProperty("rdbms-configuration");
 
@@ -76,8 +76,8 @@ public class LoaderTest extends OSWfHibernateTestCase {
         holiday = stringBuilder.toString();
     }
 
-
-    public LoaderTest() {
+    // Configure Hibernate by add HBM files and the database connection configuration
+    public HibernateLoaderTest() {
         super("oswf-store.cfg.xml",
               "oswf-propertyset.cfg.xml",
               RDBMS_CONFIGURATION);
@@ -97,23 +97,23 @@ public class LoaderTest extends OSWfHibernateTestCase {
 
     void loadDatabase() throws Exception {
             
-            Session session = null;
-            try {
-                session = getSession();
-                HibernateProcessDescription pd = new HibernateProcessDescription();
-                pd.setWorkflowName("Holiday-0001");
-                pd.setContent(holiday);
-                session.save(pd);
-            } finally {
-                if(session != null)
-                    session.close();
-            }  
+        Session session = null;
+        try {
+            session = getSession();
+            HibernateProcessDescription pd = new HibernateProcessDescription();
+            pd.setWorkflowName("Holiday-0001");
+            pd.setContent(holiday);
+            session.save(pd);
+        } finally {
+            if(session != null)
+                session.close();
+        }  
 	}
         
     void createConfiguration() throws Exception {
         configuration = new DefaultOSWfConfiguration()
             .addPersistenceArg("sessionFactory", getSessionFactory())
-            .load(LoaderTest.class.getResource("/oswf-LoaderTest.xml"))
+            .load(HibernateLoaderTest.class.getResource("/oswf-LoaderTest.xml"))
         ;
     }
 
@@ -140,7 +140,7 @@ public class LoaderTest extends OSWfHibernateTestCase {
     @Test
     public void loadHoliday() {
         
-        OSWfEngine wfEngine = new DefaultOSWfEngine("LoaderTest");
+        OSWfEngine wfEngine = new DefaultOSWfEngine("Hibernate Loader Test");
         wfEngine.setConfiguration(configuration);
 
         assertNotNull(wfEngine);
@@ -151,7 +151,7 @@ public class LoaderTest extends OSWfHibernateTestCase {
     @Test
     public void loadUnregisteredWorkflow() {
         
-        OSWfEngine wfEngine = new DefaultOSWfEngine("LoaderTest");
+        OSWfEngine wfEngine = new DefaultOSWfEngine("Hibernate Loader Test");
         wfEngine.setConfiguration(configuration);
 
         assertNotNull(wfEngine);

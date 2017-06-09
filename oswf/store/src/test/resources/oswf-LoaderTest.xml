@@ -14,7 +14,7 @@
     <propertysets>
 
         <!-- Use all defaults; requires 'SessionFactory' to be injected via 'persistentArgs' -->
-        <propertyset name="hibernate" class="org.informagen.typedmap.HibernateTypedMap"/>    
+        <!-- <propertyset name="hibernate" class="org.informagen.typedmap.HibernateTypedMap"/>     -->
     
         <!-- Report time in the Eastern US timezone using a non-IS8601 format -->
         <propertyset name="US-Eastern" class="org.informagen.typedmap.HibernateTypedMap" >    
