@@ -88,8 +88,7 @@ class ActionRestrictionsTest implements usage.Constants {
     @BeforeClass
     static void createSecurityModel() {
  
-        def securityManager = SecurityManager.getInstance();
-          
+        def securityManager = SecurityManager.getInstance();         
         assert securityManager
 
         // Create a set of users; Add them to groups

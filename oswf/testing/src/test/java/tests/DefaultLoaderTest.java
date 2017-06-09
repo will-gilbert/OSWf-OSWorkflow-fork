@@ -124,7 +124,7 @@ public class DefaultLoaderTest extends OSWfTestCase {
     }
 
     
-    @Test
+    @Ignore
     public void readXMLasFile() {
         
         OSWfEngine wfEngine = new DefaultOSWfEngine("XMLLoaderTest");

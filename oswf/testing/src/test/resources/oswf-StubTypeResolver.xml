@@ -1,0 +1,10 @@
+<oswf>
+
+
+	<loader>
+        <workflow name="JIRA-Default" type="resource" location="core/JIRA-Default.oswf.xml"/>
+	</loader>
+
+    <type-resolver class='org.informagen.oswf.testing.StubTypeResolver' />
+
+</oswf>

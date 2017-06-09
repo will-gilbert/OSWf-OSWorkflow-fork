@@ -1,5 +1,6 @@
 
 include 'core'
 include 'typedmap'
+include 'testing'
 include 'store'
 include 'simulator'
