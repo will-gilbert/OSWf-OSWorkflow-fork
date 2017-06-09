@@ -1,0 +1,21 @@
+<oswf>
+ 
+	<loader>
+        <workflow name="Action Restrictions" type="resource" location="usage/ActionRestrictions.oswf.xml"/>
+        <workflow name="CEP"                 type="resource" location="usage/cep.oswf.xml"/>
+        <workflow name="Example"             type="resource" location="usage/example.oswf.xml"/>
+        <workflow name="Holiday"             type="resource" location="usage/holiday.oswf.xml"/>
+        <workflow name="IC-Jira Workflow"    type="resource" location="usage/IC-Jira.oswf.oswf.xml"/>
+        <workflow name="LeaveRequest - Alt"  type="resource" location="usage/LeaveRequest-alt.oswf.xml"/>
+        <workflow name="Loan"                type="resource" location="usage/loan.oswf.xml"/>
+        <workflow name="Loan-DRL"            type="resource" location="usage/loan-drools.oswf.xml"/>
+        <workflow name="LogRegister"         type="resource" location="usage/logregister.oswf.xml"/>
+        <workflow name="StepConditions"      type="resource" location="usage/step-conditions.oswf.xml"/>
+        <workflow name="Scheduler"           type="resource" location="usage/scheduler.oswf.xml"/>
+        <workflow name="Step Ownership"      type="resource" location="usage/StepOwnership.oswf.xml"/>
+        <workflow name="Variable-Modify"     type="resource" location="usage/variable-modify.oswf.xml"/>
+        <workflow name="Work List"           type="resource" location="usage/WorkList.oswf.xml"/>
+        <workflow name="Workflow-def-1"      type="resource" location="usage/Workflow-def-1.oswf.xml"/>
+	</loader>
+
+</oswf>

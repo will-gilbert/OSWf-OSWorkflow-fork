@@ -1,0 +1,145 @@
+task usage doLast { print """
+====================================================================================================
+
+gradle javaCompile
+  Compile Java source code displaying warnings and error to the terminal console.
+
+gradle test
+  Run the Unit Tests. If an error occurs an attempt will be made to launch your browser.
+
+gradle clean
+  Delete build files and targets
+
+gradle install
+  Install the JAR and POM files into the local Maven repository.  Gradle will pick these
+  up and copy them into its own repository as needed. If a Maven artifact has '-SNAPSHOT'
+  appended to the version Gradle will check each build for a changed file.
+
+gradle uploadArchives
+    Update the JAR and POM files to a remote Maven repository.  The upload parameters
+    are specified in a local 'gradle.properties' file.  This file is stored in the
+    code repository but is created and maintained locally.
+
+gradle graphviz -P workflow=\"usage/example\"
+  Create a Graphviz 'dot' file in the current directory and open it if the current OS
+  supports the 'open' command (Mac OSX) and Graphviz has been installed.
+
+====================================================================================================
+"""}
+
+/* C O N F I G U R A T I O N  ======================================================================
+Site specific variables such as the upload repository can be specified in a a file name
+   'gradle.properties'.  This properties file should not be uploaded into the SCM. For GIT the
+   .gitignore file should be set to exclude it from consideration.
+
+================================================================================================= */
+
+apply plugin: 'groovy'  // Includes 'java' plugin  
+apply plugin: 'maven'   // Used to install in the local MAVEN repository
+
+// C O N F I G U R A T I O N ==================================================================
+
+// Project Configuration ----------------------------------------------------------------------
+group = 'org.informagen.oswf'
+version = '3.2.0-SNAPSHOT'
+
+ext.applicationName = "OSWf Core"
+
+configurations { 
+    graphvizRuntime 
+}
+
+// R E P O S I T O R I E S   &   D E P E N D E N C I E S ======================================
+
+
+dependencies {
+
+    compile project(':typedmap')
+    compile project(':core')
+
+    compile ([
+
+
+        // GroovyScript - used by Workflow Processes for step/action scripts
+        "org.codehaus.groovy:groovy:$groovy",
+
+        // BeanShell - used by Workflow Processes for step/action scripts
+        "org.beanshell:bsh:$bsh",
+        
+        // Simple Logging Facade for Java - Used by 'OSWfTestCase'   
+        "org.slf4j:slf4j-api:$slf4j",
+
+        // JUnit - Used by 'OSWfTestCase' and 'OSWfAssertions'
+        "junit:junit:$junit"
+        
+    ])
+
+    runtime ([ ])
+    
+    testCompile([
+            
+        // Simple JNDI - Used for JDBCProperySet testing
+        "simple-jndi:simple-jndi:$jndi"
+        
+    ])
+
+    testRuntime([
+                        
+         // Use 'log4j' with the SL4J logger
+         "org.slf4j:slf4j-log4j12:$slf4j",
+         "log4j:log4j:$log4j",
+         
+        // H2 Database driver, formerly HSQLDB
+        "com.h2database:h2:$h2"
+    ])
+
+    
+    graphvizRuntime([
+         // Use 'log4j' with the SL4J logger
+         "org.slf4j:slf4j-log4j12:$slf4j",
+         "log4j:log4j:$log4j",
+    ])
+
+}
+
+sourceSets {
+
+    test { 
+        java { srcDirs = [] }
+        groovy { srcDirs = ['src/test/java', 'src/test/groovy'] }
+    }
+}
+
+
+task graphviz(dependsOn: ['jar'], type:JavaExec) {
+
+    description ='Create a dot file and launch Graphviz on Mac OSX systems' 
+    
+    // Define the properties for the 'JavaExec' task; 256M Memory, increase for larger Apps
+    main ='org.informagen.oswf.util.Graphviz'
+    jvmArgs = ['-Xmx256M']
+    classpath = files([ 
+        sourceSets.main.runtimeClasspath, 
+        configurations.graphvizRuntime.files,
+    ])
+
+    // args[0] : -P  workflow="path.../name"
+    def workflow = findProperty("workflow") ?: 'usage/example'
+    def inputFile = new File("src/test/resources/${workflow}.oswf.xml")
+    def outputFile = new File("${inputFile.getName()}.dot")
+
+    args = [inputFile]
+
+    // Mac OS X: 'open' launch Graphviz if available; Otherwize remove
+    //  this line or modify for your operating system
+    //
+    //  See also:  http://www.graphviz.org/
+
+    doLast {
+      if ( outputFile.exists() )
+        exec { commandLine '/usr/local/bin/dot', '-Tpng', '-O', outputFile}
+        exec { commandLine  '/usr/bin/open', "${outputFile.name}.png" }
+    }
+
+}
+
