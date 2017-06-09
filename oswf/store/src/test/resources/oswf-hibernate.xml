@@ -10,19 +10,16 @@
 	<loader class="org.informagen.oswf.impl.loaders.URLLoader">
         <workflow name="Action Restrictions" type="resource" location="usage/ActionRestrictions.oswf.xml"/>
         <workflow name="Example"             type="resource" location="usage/example.oswf.xml"/>
-        <workflow name="LeaveRequest Wrong"  type="resource" location="usage/LeaveRequest-Wrong.xml"/>
-        <workflow name="LeaveRequest Alt"    type="resource" location="usage/LeaveRequest-alt.xml"/>
-        <workflow name="LeaveRequest"        type="resource" location="usage/LeaveRequest.xml"/>
-        <workflow name="Holiday"             type="resource" location="usage/holiday.xml"/>
+        <workflow name="LeaveRequest Wrong"  type="resource" location="usage/LeaveRequest-Wrong.oswf.xml"/>
+        <workflow name="LeaveRequest Alt"    type="resource" location="usage/LeaveRequest-alt.oswf.xml"/>
+        <workflow name="LeaveRequest"        type="resource" location="usage/LeaveRequest.oswf.xml"/>
+        <workflow name="Holiday"             type="resource" location="usage/holiday.oswf.xml"/>
         <workflow name="StepConditions"      type="resource" location="usage/step-conditions.oswf.xml"/>
         <workflow name="Step Ownership"      type="resource" location="usage/StepOwnership.oswf.xml"/>
         <workflow name="Join Nodes"          type="resource" location="usage/joinnodes.oswf.xml"/>
 	</loader>
 
     <propertysets>
-
-        <!-- Use all defaults; requires 'SessionFactory' to be injected via 'persistentArgs' -->
-        <!-- <propertyset name="hibernate" class="org.informagen.typedmap.HibernateTypedMap"/>     -->
     
         <!-- Report time in the Eastern US timezone using a non-IS8601 format -->
         <propertyset name="US-Eastern" class="org.informagen.typedmap.HibernateTypedMap" >    

@@ -64,7 +64,7 @@ public class HibernateLoaderTest extends OSWfHibernateTestCase {
     public static void readProcessDescription() throws Exception {
 
         // Read a processs definition (workflow) from the test resources
-        File xmlWorkflow = new File("src/test/resources/usage/holiday.xml");
+        File xmlWorkflow = new File("src/test/resources/usage/holiday.oswf.xml");
         BufferedReader reader = new BufferedReader(new FileReader(xmlWorkflow));
         String ls = System.getProperty("line.separator");
         StringBuilder  stringBuilder = new StringBuilder();
@@ -78,9 +78,7 @@ public class HibernateLoaderTest extends OSWfHibernateTestCase {
 
     // Configure Hibernate by add HBM files and the database connection configuration
     public HibernateLoaderTest() {
-        super("oswf-store.cfg.xml",
-              "oswf-propertyset.cfg.xml",
-              RDBMS_CONFIGURATION);
+        super("oswf-store.cfg.xml", RDBMS_CONFIGURATION);
     }
 
     @Before

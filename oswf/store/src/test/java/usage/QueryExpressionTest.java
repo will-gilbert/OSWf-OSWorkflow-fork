@@ -80,9 +80,7 @@ public class QueryExpressionTest extends OSWfHibernateTestCase implements LeaveR
     // Constructors ///////////////////////////////////////////////////////////
 
     public QueryExpressionTest() {
-        super("oswf-store.cfg.xml",
-              "oswf-propertyset.cfg.xml",
-              RDBMS_CONFIGURATION);
+        super("oswf-store.cfg.xml", RDBMS_CONFIGURATION);
         
         
         // 'log' is declared in the superclass

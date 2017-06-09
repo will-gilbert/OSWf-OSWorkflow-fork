@@ -64,9 +64,7 @@ public class JoinNodesTest extends OSWfHibernateTestCase {
     private Logger logger;
 
     public JoinNodesTest() {
-        super("oswf-store.cfg.xml",
-              "oswf-propertyset.cfg.xml",
-              RDBMS_CONFIGURATION);
+        super("oswf-store.cfg.xml", RDBMS_CONFIGURATION);
 
         setLogger(LoggerFactory.getLogger("tests.JoinNodesTest"));
         logger = LoggerFactory.getLogger("tests.JoinNodesTest");

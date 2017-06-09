@@ -62,9 +62,7 @@ public class LeaveRequestAltTest extends OSWfHibernateTestCase implements LeaveR
     private OSWfEngine wfEngine;
 
     public LeaveRequestAltTest() {
-        super("oswf-store.cfg.xml",
-              "oswf-propertyset.cfg.xml",
-              RDBMS_CONFIGURATION);
+        super("oswf-store.cfg.xml", RDBMS_CONFIGURATION);
     }
 
 
@@ -95,15 +93,15 @@ public class LeaveRequestAltTest extends OSWfHibernateTestCase implements LeaveR
     @Test
     public void initialState()  {
     
-        assertCounts(wfEngine, bobId, 0, 1, 1);
+        assertCounts(wfEngine, bobId, 0, 1, 2);
         
         List<Integer> actions = wfEngine.getAvailableActions(bobId);
         WorkflowDescriptor wd = wfEngine.getWorkflowDescriptor(wfEngine.getWorkflowName(bobId));
 
         // Available actions at the beginning
-        assertEquals(1, actions.size());
+        assertEquals(2, actions.size());
         assertEquals(REQUEST_HOLIDAYS, actions.get(0).intValue());
-        assertEquals("request holidays", wd.getAction(actions.get(0)).getName());
+        assertEquals("Request day off", wd.getAction(actions.get(0)).getName());
 
 
         // Current steps at the beginning
@@ -112,7 +110,7 @@ public class LeaveRequestAltTest extends OSWfHibernateTestCase implements LeaveR
         
         Step currentStep = (Step)currentSteps.get(0);
         
-        assertStepState((Step)currentStep, "Underway");      
+        assertStepState((Step)currentStep, "Pending");      
         
         assertEquals(EMPLOYEE_REQUEST_STEP, currentStep.getStepId());
 
@@ -126,7 +124,7 @@ public class LeaveRequestAltTest extends OSWfHibernateTestCase implements LeaveR
     @Test
     public void requestHoliday() throws Exception {
 
-        assertCounts(wfEngine, bobId, 0, 1, 1);
+        assertCounts(wfEngine, bobId, 0, 1, 2);
         
         wfEngine.doAction(bobId, REQUEST_HOLIDAYS);
         assertCounts(wfEngine, bobId, 1, 2, 4);
@@ -144,10 +142,10 @@ public class LeaveRequestAltTest extends OSWfHibernateTestCase implements LeaveR
         assertEquals(HUMAN_RESOURCES_APPROVES, actions.get(2).intValue());
         assertEquals(HUMAN_RESOURCES_DENIES,   actions.get(3).intValue());
 
-        assertEquals("approve",    wd.getAction(actions.get(0)).getName());
-        assertEquals("deny",       wd.getAction(actions.get(1)).getName());
-        assertEquals("approve", wd.getAction(actions.get(2)).getName());
-        assertEquals("deny",    wd.getAction(actions.get(3)).getName());
+        assertEquals("Manager approves",    wd.getAction(actions.get(0)).getName());
+        assertEquals("Manager denies",       wd.getAction(actions.get(1)).getName());
+        assertEquals("HR approves", wd.getAction(actions.get(2)).getName());
+        assertEquals("HR denies",    wd.getAction(actions.get(3)).getName());
         
         // Available steps at the split
         List currentSteps = wfEngine.getCurrentSteps(bobId);
@@ -158,15 +156,15 @@ public class LeaveRequestAltTest extends OSWfHibernateTestCase implements LeaveR
         assertEquals(HUMAN_RESOURCES_DESCISION_STEP, ((Step)currentSteps.get(1)).getStepId());
 
         // Verify the Step ids
-        assertEquals("Line Manager revision", wd.getStep(((Step)currentSteps.get(0)).getStepId()).getName());
-        assertEquals("HR Manager revision",  wd.getStep(((Step)currentSteps.get(1)).getStepId()).getName());
+        assertEquals("Manager Revision", wd.getStep(((Step)currentSteps.get(0)).getStepId()).getName());
+        assertEquals("HR Revision",  wd.getStep(((Step)currentSteps.get(1)).getStepId()).getName());
 
         // Verify the Step names
-        assertEquals("Line Manager revision", wd.getStep(LINE_MANAGER_DESCISION_STEP).getName());
-        assertEquals("HR Manager revision", wd.getStep(HUMAN_RESOURCES_DESCISION_STEP).getName());
+        assertEquals("Manager Revision", wd.getStep(LINE_MANAGER_DESCISION_STEP).getName());
+        assertEquals("HR Revision", wd.getStep(HUMAN_RESOURCES_DESCISION_STEP).getName());
 
-        assertStepState((Step)currentSteps.get(0), "Underway");      
-        assertStepState((Step)currentSteps.get(1), "Underway");      
+        assertStepState((Step)currentSteps.get(0), "Pending");      
+        assertStepState((Step)currentSteps.get(1), "Pending");      
  
  
         // History steps at the split
@@ -186,7 +184,7 @@ public class LeaveRequestAltTest extends OSWfHibernateTestCase implements LeaveR
         // Starting point
         assertProcessInstanceState(wfEngine, bobId, ProcessInstanceState.ACTIVE);
 
-        assertCounts(wfEngine, bobId, 0, 1, 1);
+        assertCounts(wfEngine, bobId, 0, 1, 2);
  
         wfEngine.doAction(bobId, REQUEST_HOLIDAYS);
         assertCounts(wfEngine, bobId, 1, 2, 4);
@@ -216,8 +214,8 @@ public class LeaveRequestAltTest extends OSWfHibernateTestCase implements LeaveR
         assertEquals(NOTIFY_EMPLOYEE_STEP,          ((Step)historySteps.get(3)).getStepId());
         
         assertStepState((Step)historySteps.get(0), "Finished");      
-        assertStepState((Step)historySteps.get(1), "Line approved");      
-        assertStepState((Step)historySteps.get(2), "HR approved");      
+        assertStepState((Step)historySteps.get(1), "Finished");      
+        assertStepState((Step)historySteps.get(2), "Finished");      
         assertStepState((Step)historySteps.get(3), "Finished");      
         
         //Get final status
@@ -226,7 +224,7 @@ public class LeaveRequestAltTest extends OSWfHibernateTestCase implements LeaveR
         TypedMap propertySet = wfEngine.getTypedMap(bobId);
 
         //Get final result value
-        assertProperty(wfEngine, bobId, "result", "approved");
+        assertProperty(wfEngine, bobId, "result", null);
 
     }
     
@@ -235,7 +233,7 @@ public class LeaveRequestAltTest extends OSWfHibernateTestCase implements LeaveR
  
         // Starting point
         assertProcessInstanceState(wfEngine, bobId, ProcessInstanceState.ACTIVE);
-        assertCounts(wfEngine, bobId, 0, 1, 1);
+        assertCounts(wfEngine, bobId, 0, 1, 2);
 
         wfEngine.doAction(bobId, REQUEST_HOLIDAYS);
         assertCounts(wfEngine, bobId, 1, 2, 4);
@@ -251,7 +249,7 @@ public class LeaveRequestAltTest extends OSWfHibernateTestCase implements LeaveR
         assertProcessInstanceState(wfEngine, bobId, ProcessInstanceState.COMPLETED);
         
         //Get final result value
-        assertProperty(wfEngine, bobId, "result", "denied");
+        assertProperty(wfEngine, bobId, "result", null);
 
     }
 
@@ -261,7 +259,7 @@ public class LeaveRequestAltTest extends OSWfHibernateTestCase implements LeaveR
         // Starting point
         assertProperty(wfEngine, bobId, "result", null);
         assertProcessInstanceState(wfEngine, bobId, ProcessInstanceState.ACTIVE);
-        assertCounts(wfEngine, bobId, 0, 1, 1);
+        assertCounts(wfEngine, bobId, 0, 1, 2);
 
         assertProperty(wfEngine, bobId, "result", null);
         wfEngine.doAction(bobId, REQUEST_HOLIDAYS);
@@ -275,7 +273,7 @@ public class LeaveRequestAltTest extends OSWfHibernateTestCase implements LeaveR
         wfEngine.doAction(bobId, HUMAN_RESOURCES_DENIES);
         assertCounts(wfEngine, bobId, 3, 1, 1);
 
-        assertProperty(wfEngine, bobId, "result", "denied");
+        assertProperty(wfEngine, bobId, "result", null);
         wfEngine.doAction(bobId, NOTIFY_EMPLOYEE);
         assertCounts(wfEngine, bobId, 4, 0, 0);
         
@@ -283,7 +281,7 @@ public class LeaveRequestAltTest extends OSWfHibernateTestCase implements LeaveR
         assertProcessInstanceState(wfEngine, bobId, ProcessInstanceState.COMPLETED);
         
         //Get final result value
-        assertProperty(wfEngine, bobId, "result", "denied");
+        assertProperty(wfEngine, bobId, "result", null);
 
     }
 
@@ -293,7 +291,7 @@ public class LeaveRequestAltTest extends OSWfHibernateTestCase implements LeaveR
         // Starting point
         assertProperty(wfEngine, bobId, "result", null);
         assertProcessInstanceState(wfEngine, bobId, ProcessInstanceState.ACTIVE);
-        assertCounts(wfEngine, bobId, 0, 1, 1);
+        assertCounts(wfEngine, bobId, 0, 1, 2);
 
         assertProperty(wfEngine, bobId, "result", null);
         wfEngine.doAction(bobId, REQUEST_HOLIDAYS);
@@ -303,7 +301,7 @@ public class LeaveRequestAltTest extends OSWfHibernateTestCase implements LeaveR
         wfEngine.doAction(bobId, HUMAN_RESOURCES_DENIES);
         assertCounts(wfEngine, bobId, 3, 1, 1);
 
-        assertProperty(wfEngine, bobId, "result", "denied");
+        assertProperty(wfEngine, bobId, "result", null);
         wfEngine.doAction(bobId, NOTIFY_EMPLOYEE);
         assertCounts(wfEngine, bobId, 4, 0, 0);
         
@@ -311,7 +309,7 @@ public class LeaveRequestAltTest extends OSWfHibernateTestCase implements LeaveR
         assertProcessInstanceState(wfEngine, bobId, ProcessInstanceState.COMPLETED);
         
         //Get final result value
-        assertProperty(wfEngine, bobId, "result", "denied");
+        assertProperty(wfEngine, bobId, "result", null);
 
     }
 
@@ -328,7 +326,7 @@ public class LeaveRequestAltTest extends OSWfHibernateTestCase implements LeaveR
         // Starting point
         assertProperty(wfEngine, bobId, "result", null);
         assertProcessInstanceState(wfEngine, bobId, ProcessInstanceState.ACTIVE);
-        assertCounts(wfEngine, bobId, 0, 1, 1);
+        assertCounts(wfEngine, bobId, 0, 1, 2);
 
         wfEngine.doAction(bobId, REQUEST_HOLIDAYS);
         assertCounts(wfEngine, bobId, 1, 2, 4);
@@ -341,7 +339,7 @@ public class LeaveRequestAltTest extends OSWfHibernateTestCase implements LeaveR
         assertCounts(wfEngine, bobId, 3, 1, 1);
 
         // Human Resources denies
-        assertProperty(wfEngine, bobId, "result", "denied");
+        assertProperty(wfEngine, bobId, "result", null);
         try {
             wfEngine.doAction(bobId, HUMAN_RESOURCES_DENIES);
             fail();
@@ -352,7 +350,7 @@ public class LeaveRequestAltTest extends OSWfHibernateTestCase implements LeaveR
         // ===================== Join ===========================
         
         // Notify Employee
-        assertProperty(wfEngine, bobId, "result", "denied");
+        assertProperty(wfEngine, bobId, "result", null);
         wfEngine.doAction(bobId, NOTIFY_EMPLOYEE);
         assertCounts(wfEngine, bobId, 4, 0, 0);
 
@@ -361,7 +359,7 @@ public class LeaveRequestAltTest extends OSWfHibernateTestCase implements LeaveR
         assertProcessInstanceState(wfEngine, bobId, ProcessInstanceState.COMPLETED);
         
         //Get final result value
-        assertProperty(wfEngine, bobId, "result", "denied");
+        assertProperty(wfEngine, bobId, "result", null);
 
     }
 

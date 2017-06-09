@@ -17,6 +17,7 @@ Create a MySQL database using the SQL script: oswf-store.mysql.sql
 
 After running tests into a MySQL database you can execute the following SQL commands to cleanup;
 
+TRUNCATE TABLE xmldescriptor;
 TRUNCATE TABLE processvariable;
 TRUNCATE TABLE historystep;
 TRUNCATE TABLE currentstep;
@@ -189,8 +190,9 @@ task schemaExport(dependsOn: ['jar'], type:JavaExec) {
       "src/main/resources/org/informagen/oswf/hbm/HibernateCurrentStep.hbm.xml",
       "src/main/resources/org/informagen/oswf/hbm/HibernateHistoryStep.hbm.xml",
       "src/main/resources/org/informagen/oswf/hbm/HibernateProcessInstance.hbm.xml",
+      "src/main/resources/org/informagen/oswf/hbm/HibernateProcessDescription.hbm.xml",
       "src/main/resources/org/informagen/oswf/hbm/HibernateTypedMapItem.hbm.xml",
-      "src/main/resources/org/informagen/oswf/hbm/WorkflowDescriptor.hbm.xml",
+      "src/main/resources/org/informagen/oswf/hbm/WorkflowDescriptor.hbm.xml"
    ]
     
 }

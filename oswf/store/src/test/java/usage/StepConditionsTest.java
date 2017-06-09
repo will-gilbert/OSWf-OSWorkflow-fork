@@ -77,9 +77,7 @@ public class StepConditionsTest extends OSWfHibernateTestCase implements Constan
     OSWfConfiguration configuration;
 
     public StepConditionsTest() {
-        super("oswf-store.cfg.xml",
-              "oswf-propertyset.cfg.xml",
-              RDBMS_CONFIGURATION);
+        super("oswf-store.cfg.xml", RDBMS_CONFIGURATION);
               
         logger = LoggerFactory.getLogger(StepConditionsTest.class.getName());
 

@@ -1,14 +1,9 @@
 package org.informagen.oswf.impl.loaders;
 
 
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-
-
 /**
  *
- *  Stores the Workflow Description as XML in the database instead of as resouce
+ *  Stores the Workflow Description as XML in the database instead of as a resouce
  */
  
 public class HibernateProcessDescription  {
@@ -52,8 +47,8 @@ public class HibernateProcessDescription  {
     public String toString() {
         StringBuffer buffer = new StringBuffer();
         
-        buffer.append("ID=").append(getId()).append(", ")
-              .append("WorkflowName=").append(getWorkflowName());
+        buffer.append("id=").append(getId()).append(", ")
+              .append("workflowName=").append(getWorkflowName());
     
         return buffer.toString();    
     }
