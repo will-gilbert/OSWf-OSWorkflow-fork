@@ -1,7 +1,5 @@
 package groovy.tests
 
-import org.informagen.oswf.testing.OSWfTestCase
-
 import org.informagen.oswf.OSWfEngine
 import org.informagen.oswf.Step
 import org.informagen.oswf.ProcessInstance
@@ -47,7 +45,7 @@ import static org.junit.Assert.fail
  *     URL string as the workflow name.
  */
 
-public class PersistentVariablesTest extends OSWfTestCase {
+public class PersistentVariablesTest {
 
     //  I N S T A N C E   F I E L D S  =========================================
 
