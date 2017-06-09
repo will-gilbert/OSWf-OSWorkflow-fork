@@ -1,6 +1,6 @@
 package usage;
 
-import org.informagen.oswf.testing.OSWfHibernateTestCase;
+import support.OSWfHibernateTestCase;
 
 
 import org.informagen.oswf.OSWfEngine;
@@ -115,7 +115,7 @@ public class StepOwnershipTest extends OSWfHibernateTestCase implements Constant
     public void setUp() throws Exception {
                     
         configuration = new DefaultOSWfConfiguration();
-        configuration.load(getClass().getResource("/oswf.xml"));
+        configuration.load(getClass().getResource("/oswf-hibernate.xml"));
         configuration.getPersistenceArgs().put("sessionFactory", getSessionFactory());
         
         TypedMapStore delegate = new HibernateTypedMapStore(getSessionFactory());

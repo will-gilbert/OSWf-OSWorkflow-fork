@@ -1,4 +1,4 @@
-package org.informagen.oswf.testing;
+package support;
 
 // Hibernate
 import org.hibernate.Session;

@@ -1,7 +1,7 @@
 package usage;
 
 
-import org.informagen.oswf.testing.OSWfHibernateTestCase;
+import support.OSWfHibernateTestCase;
 
 
 import org.informagen.oswf.OSWfEngine;
@@ -143,7 +143,7 @@ public class ExampleWorkflowTest extends OSWfHibernateTestCase {
     
         wfEngine = new DefaultOSWfEngine(USER_TEST)
             .setConfiguration(new DefaultOSWfConfiguration()
-                .load(getClass().getResource("/oswf.xml"))
+                .load(getClass().getResource("/oswf-hibernate.xml"))
                 .addPersistenceArg("sessionFactory", getSessionFactory())
             )
         ;

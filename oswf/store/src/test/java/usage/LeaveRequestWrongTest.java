@@ -1,6 +1,6 @@
 package usage;
 
-import org.informagen.oswf.testing.OSWfHibernateTestCase;
+import support.OSWfHibernateTestCase;
 
 
 import org.informagen.oswf.OSWfEngine;
@@ -75,7 +75,7 @@ public class LeaveRequestWrongTest extends OSWfHibernateTestCase implements Leav
         wfEngine = new DefaultOSWfEngine("Unit Testing");
                 
         OSWfConfiguration config = new DefaultOSWfConfiguration()
-            .load(getClass().getResource("/oswf.xml"))
+            .load(getClass().getResource("/oswf-hibernate.xml"))
             .addPersistenceArg("sessionFactory", getSessionFactory())
         ;
                           

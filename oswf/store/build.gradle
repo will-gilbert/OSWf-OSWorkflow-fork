@@ -11,8 +11,6 @@ gradle clean
   
 gradle schemaExport
 
- --refresh-dependencies
-
 -----------------------------------------------------------------------------------------------
 
 Create a MySQL database using the SQL script: oswf-store.mysql.sql
@@ -44,22 +42,21 @@ ext.applicationName = "Hibernate WorkflowStore and PropertySet"
 
 // Properties Configuration -------------------------------------------------------------------
 
-// Get there properties from the command line
+// Get the target database; Use H2 as the defualt if there is no 'gradle.properties' file
 ext.database = findProperty('database') ?: 'H2'
 ext.rdbms_configuration = "${database}.hibernate.xml"
 
-// Use the command line property 'db' to load the intended set of properties from 
-//  the 'gradle.properties' file
+// Configure Hibernate based on the 'gradle.properties' file; Use H2 configuration as the default
 
-ext.databaseProperties = [
+ext.hibernateProperties = [
     'hibernate.connection.driver_class': findProperty("${database}.connection.driver_class") ?: 'org.h2.Driver',
-    'hibernate.dialect'                : findProperty("${database}.dialect") ?: 'org.hibernate.dialect.H2Dialect',
-    'hibernate.connection.url'         : findProperty("${database}.connection.url") ?: 'jdbc:h2:mem:oswf;DB_CLOSE_DELAY=-1',
-    'hibernate.connection.username'    : findProperty("${database}.connection.username") ?: 'sa',
-    'hibernate.connection.password'    : findProperty("${database}.connection.password") ?: '',
-    'hibernate.hbm2ddl.auto'           : findProperty("${database}.hbm2ddl.auto") ?: 'create-drop',
-    'hibernate.connection.autocommit'  : findProperty("${database}.connection.autocommit") ?: 'false',
-    'hibernate.connection.pool_size'   : findProperty("${database}.connection.pool_size") ?: '1'
+    'hibernate.dialect'                : findProperty("${database}.dialect")                 ?: 'org.hibernate.dialect.H2Dialect',
+    'hibernate.connection.url'         : findProperty("${database}.connection.url")          ?: 'jdbc:h2:mem:oswf;DB_CLOSE_DELAY=-1',
+    'hibernate.connection.username'    : findProperty("${database}.connection.username")     ?: 'sa',
+    'hibernate.connection.password'    : findProperty("${database}.connection.password")     ?: '',
+    'hibernate.hbm2ddl.auto'           : findProperty("${database}.hbm2ddl.auto")            ?: 'create-drop',
+    'hibernate.connection.autocommit'  : findProperty("${database}.connection.autocommit")   ?: 'false',
+    'hibernate.connection.pool_size'   : findProperty("${database}.connection.pool_size")    ?: '1'
 ]
 
 compileTestJava.options.compilerArgs = compileJava.options.compilerArgs;
@@ -117,11 +114,11 @@ dependencies {
 
 }
 
-// Augment the 'processResources' task from the 'java' plugin.  Use filtering to replace 
-//   '@...@' tags with properties in order to customize the running environment
+// Augment the 'processTestResources' task from the 'java' plugin.  Use filtering to replace 
+//   any '@...@' tags with the contents of the 'tokens' map
 
 processTestResources {
-    filter(ReplaceTokens, tokens: databaseProperties)
+    filter(ReplaceTokens, tokens: hibernateProperties)
 }
 
 // U N I T   T E S T I N G --------------------------------------------------------------------

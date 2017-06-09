@@ -1,6 +1,6 @@
 package usage;
 
-import org.informagen.oswf.testing.OSWfHibernateTestCase;
+import support.OSWfHibernateTestCase;
 
 import org.informagen.oswf.OSWfEngine;
 import org.informagen.oswf.ProcessInstanceState;
@@ -65,7 +65,7 @@ public class SimultaneousInstancesTest extends OSWfHibernateTestCase implements 
     
         wfEngine = new DefaultOSWfEngine("SimultaneousInstancesTest")
             .setConfiguration(new DefaultOSWfConfiguration()
-                .load(getClass().getResource("/oswf.xml"))
+                .load(getClass().getResource("/oswf-hibernate.xml"))
                 .addPersistenceArg("sessionFactory", getSessionFactory())
             )
         ;

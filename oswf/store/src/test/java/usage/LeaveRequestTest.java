@@ -1,6 +1,6 @@
 package usage;
 
-import org.informagen.oswf.testing.OSWfHibernateTestCase;
+import support.OSWfHibernateTestCase;
 
 import org.informagen.oswf.OSWfEngine;
 import org.informagen.oswf.ProcessInstanceState;
@@ -69,9 +69,8 @@ public class LeaveRequestTest extends OSWfHibernateTestCase implements LeaveRequ
     @Before
     public void setUp() throws Exception {
             
-                
         OSWfConfiguration config = new DefaultOSWfConfiguration()
-            .load(getClass().getResource("/oswf.xml"))
+            .load(getClass().getResource("/oswf-hibernate.xml"))
             .addPersistenceArg("sessionFactory", getSessionFactory())
         ;
                           

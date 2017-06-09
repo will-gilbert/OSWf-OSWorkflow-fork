@@ -1,7 +1,7 @@
-package org.informagen.oswf.testing;
+package support;
 
 import org.informagen.oswf.testing.OSWfTestCase;
-import org.informagen.oswf.testing.HibernateTestSupport;
+import support.HibernateTestSupport;
 
 // Hibernate
 import org.hibernate.Session;
