@@ -529,7 +529,7 @@ public class HibernateTypedMapTest implements usage.LeaveRequest {
     
         closeSessionFactory();
 
-        String[] resources = {"oswf-store.cfg.xml", "oswf-propertyset.cfg.xml", RDBMS_CONFIGURATION};
+        String[] resources = {"oswf-store.cfg.xml", RDBMS_CONFIGURATION};
         
         Configuration configuration = new Configuration();
 

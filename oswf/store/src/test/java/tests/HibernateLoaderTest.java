@@ -78,9 +78,7 @@ public class HibernateLoaderTest extends OSWfHibernateTestCase {
 
     // Configure Hibernate by add HBM files and the database connection configuration
     public HibernateLoaderTest() {
-        super("oswf-store.cfg.xml",
-              "oswf-propertyset.cfg.xml",
-              RDBMS_CONFIGURATION);
+        super("oswf-store.cfg.xml", RDBMS_CONFIGURATION);
     }
 
     @Before

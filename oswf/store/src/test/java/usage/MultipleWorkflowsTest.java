@@ -57,9 +57,7 @@ public class MultipleWorkflowsTest extends OSWfHibernateTestCase implements Leav
     private OSWfEngine wfEngine;
  
      public MultipleWorkflowsTest() {
-        super("oswf-store.cfg.xml",
-              "oswf-propertyset.cfg.xml",
-              RDBMS_CONFIGURATION);
+        super("oswf-store.cfg.xml", RDBMS_CONFIGURATION);
     }
    
     

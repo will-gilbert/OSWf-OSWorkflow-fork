@@ -73,9 +73,7 @@ public class ActionRestrictionsTest extends OSWfHibernateTestCase implements Con
     OSWfConfiguration configuration;
 
     public ActionRestrictionsTest() {
-        super("oswf-store.cfg.xml",
-              "oswf-propertyset.cfg.xml",
-              RDBMS_CONFIGURATION);
+        super("oswf-store.cfg.xml", RDBMS_CONFIGURATION);
     }
 
     @BeforeClass

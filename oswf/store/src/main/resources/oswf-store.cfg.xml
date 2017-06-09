@@ -7,14 +7,16 @@
 
     <session-factory>
         
-        <!-- OSWf 3.0.0 Custom HBM files============================================ -->
-
+        <!-- OSWf 3.x Store HBM files =================================================== -->
         <mapping resource="org/informagen/oswf/hbm/HibernateCurrentStep.hbm.xml" />
         <mapping resource="org/informagen/oswf/hbm/HibernateHistoryStep.hbm.xml" />
         <mapping resource="org/informagen/oswf/hbm/HibernateProcessInstance.hbm.xml" />
 
-        <!-- OSWf Process Description as XML -->
+        <!-- OSWf Process Description as XML ============================================ --> 
         <mapping resource="org/informagen/oswf/hbm/HibernateProcessDescription.hbm.xml" /> 
+
+        <!-- Process Variable used with OSWf WorkflowStores ============================= -->
+        <mapping resource="org/informagen/oswf/hbm/HibernateTypedMapItem.hbm.xml" />
 
 
     </session-factory>

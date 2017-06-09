@@ -54,9 +54,7 @@ public class SimultaneousInstancesTest extends OSWfHibernateTestCase implements 
     private OSWfEngine wfEngine;
     
      public SimultaneousInstancesTest() {
-        super("oswf-store.cfg.xml",
-              "oswf-propertyset.cfg.xml",
-              RDBMS_CONFIGURATION);
+        super("oswf-store.cfg.xml", RDBMS_CONFIGURATION);
     }
 
     

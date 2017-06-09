@@ -7,12 +7,12 @@
 
     <class name="HibernateProcessDescription" table="xmldescriptor">
 
-        <id name="id" column="id" unsaved-value="-1">
+        <id name="id" unsaved-value="-1">
             <generator class="native"/>
         </id>
 
         <property name="workflowName" type="string" column="wfname"/>
-        <property name="content"      type="text"   column="content"/>
+        <property name="content"      type="text" column="content"/>
 
     </class>
 </hibernate-mapping>

@@ -63,9 +63,7 @@ public class LeaveRequestWrongTest extends OSWfHibernateTestCase implements Leav
     private OSWfEngine wfEngine;
 
     public LeaveRequestWrongTest() {
-        super("oswf-store.cfg.xml",
-              "oswf-propertyset.cfg.xml",
-              RDBMS_CONFIGURATION);
+        super("oswf-store.cfg.xml", RDBMS_CONFIGURATION);
     }
 
 

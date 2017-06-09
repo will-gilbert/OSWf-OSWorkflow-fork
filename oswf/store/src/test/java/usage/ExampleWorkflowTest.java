@@ -110,9 +110,7 @@ public class ExampleWorkflowTest extends OSWfHibernateTestCase {
     // Constructors ///////////////////////////////////////////////////////////
 
     public ExampleWorkflowTest() {
-        super("oswf-store.cfg.xml",
-              "oswf-propertyset.cfg.xml",
-              RDBMS_CONFIGURATION);
+        super("oswf-store.cfg.xml", RDBMS_CONFIGURATION);
 
         setLogger(LoggerFactory.getLogger(ExampleWorkflowTest.class.getName()));
     }

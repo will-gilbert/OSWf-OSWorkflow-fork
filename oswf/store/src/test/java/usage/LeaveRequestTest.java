@@ -60,9 +60,7 @@ public class LeaveRequestTest extends OSWfHibernateTestCase implements LeaveRequ
 
 
     public LeaveRequestTest() {
-        super("oswf-store.cfg.xml",
-              "oswf-propertyset.cfg.xml",
-              RDBMS_CONFIGURATION);
+        super("oswf-store.cfg.xml", RDBMS_CONFIGURATION);
     }
 
 

@@ -50,3 +50,11 @@ CREATE TABLE `processvariable` (
   KEY `FK_PROCESSVARIABLE_PIID` (`piid`),
   CONSTRAINT `FK_PROCESSVARIABLE_PIID` FOREIGN KEY (`piid`) REFERENCES `processinstance` (`piid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+CREATE TABLE `xmldescriptor` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `wfname` varchar(255) NOT NULL,
+  `content` longtext,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;

@@ -62,9 +62,7 @@ public class LeaveRequestAltTest extends OSWfHibernateTestCase implements LeaveR
     private OSWfEngine wfEngine;
 
     public LeaveRequestAltTest() {
-        super("oswf-store.cfg.xml",
-              "oswf-propertyset.cfg.xml",
-              RDBMS_CONFIGURATION);
+        super("oswf-store.cfg.xml", RDBMS_CONFIGURATION);
     }
 
 
