@@ -29,7 +29,7 @@ DELETE FROM processinstance;
 
 import org.apache.tools.ant.filters.ReplaceTokens
 
-apply plugin: 'java'
+apply plugin: 'groovy'  // Includes 'java' plugin  
 apply plugin: 'maven'
 
 
@@ -114,6 +114,16 @@ dependencies {
     ])
 
 }
+
+
+sourceSets {
+
+    test { 
+        java { srcDirs = [] }
+        groovy { srcDirs = ['src/test/java', 'src/test/groovy'] }
+    }
+}
+
 
 // Augment the 'processTestResources' task from the 'java' plugin.  Use filtering to replace 
 //   any '@...@' tags with the contents of the 'tokens' map

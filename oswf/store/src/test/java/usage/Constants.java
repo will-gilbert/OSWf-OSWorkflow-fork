@@ -2,6 +2,12 @@ package usage;
 
 
 public interface Constants  {
+
+   // Process Definitions
+    final static String SIMPLE  = "Holiday";
+    final static String COMPLEX = "LeaveRequest";
+    final static String ALT     = "LeaveRequest Alt";
+    final static String WRONG   = "LeaveRequest Wrong";
     
     final static int INITIAL_ACTION    =   1;
     final static int CONTRACTOR_ACTION =   2;

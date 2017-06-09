@@ -50,12 +50,13 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 
-public class LeaveRequestTest extends OSWfHibernateTestCase implements LeaveRequest {
+public class LeaveRequestTest extends OSWfHibernateTestCase implements Constants {
 
     public static final String RDBMS_CONFIGURATION = System.getProperty("rdbms-configuration");
 
-    // Process Instance variable
-    private long bobId;
+    // Process Instance identifier
+    protected long piid;
+    protected long bobId;
     private OSWfEngine wfEngine;
 
 
@@ -74,11 +75,17 @@ public class LeaveRequestTest extends OSWfHibernateTestCase implements LeaveRequ
                           
         wfEngine = new DefaultOSWfEngine("LeaveRequestTest");
         wfEngine.setConfiguration(config);
+
+        // Create a 'Leave Request' PI for 'Bob BobbleHead'
+        Map<String, Object> inputVariables = new HashMap<String, Object>();
+        inputVariables.put("firstName", "Bob");
+        inputVariables.put("lastName", "Bobblehead");
     
         // "Unit Testing" is the system which will owns all of the workflow instances
         //   created with 'createProcessInstance'
     
-        bobId = createProcessInstance(wfEngine, COMPLEX, INITIAL_ACTION);
+        piid = createProcessInstance(wfEngine, COMPLEX, INITIAL_ACTION, inputVariables);
+        bobId = piid;
 
     }
 
@@ -87,14 +94,13 @@ public class LeaveRequestTest extends OSWfHibernateTestCase implements LeaveRequ
         closeSessionFactory();
     }
 
-
     @Test
     public void initialState()  {
     
-        assertCounts(wfEngine, bobId, 0, 1, 1);
+        assertCounts(wfEngine, piid, 0, 1, 1);
         
-        List<Integer> actions = wfEngine.getAvailableActions(bobId);
-        WorkflowDescriptor wd = wfEngine.getWorkflowDescriptor(wfEngine.getWorkflowName(bobId));
+        List<Integer> actions = wfEngine.getAvailableActions(piid);
+        WorkflowDescriptor wd = wfEngine.getWorkflowDescriptor(wfEngine.getWorkflowName(piid));
 
         // Available actions at the beginning
         assertEquals(1, actions.size());
@@ -103,7 +109,7 @@ public class LeaveRequestTest extends OSWfHibernateTestCase implements LeaveRequ
 
 
         // Current steps at the beginning
-        List currentSteps = wfEngine.getCurrentSteps(bobId);
+        List currentSteps = wfEngine.getCurrentSteps(piid);
         assertEquals(1, currentSteps.size());
         
         Step currentStep = (Step)currentSteps.get(0);
@@ -113,7 +119,7 @@ public class LeaveRequestTest extends OSWfHibernateTestCase implements LeaveRequ
         assertEquals(EMPLOYEE_REQUEST_STEP, currentStep.getStepId());
 
         // History steps at the beginning
-        List historySteps = wfEngine.getHistorySteps(bobId);
+        List historySteps = wfEngine.getHistorySteps(piid);
         assertEquals(0, historySteps.size());
 
     }

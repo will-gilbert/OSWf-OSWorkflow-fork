@@ -34,7 +34,7 @@ Site specific variables such as the upload repository can be specified in a a fi
 
 ================================================================================================= */
 
-apply plugin: 'groovy'   
+apply plugin: 'groovy'  // Includes 'java' plugin  
 apply plugin: 'maven'   // Used to install in the local MAVEN repository
 
 // C O N F I G U R A T I O N ==================================================================

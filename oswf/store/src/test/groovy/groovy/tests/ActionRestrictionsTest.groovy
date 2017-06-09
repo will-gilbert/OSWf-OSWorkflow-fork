@@ -1,22 +1,33 @@
-package groovy.usage;
+package groovy.tests;
 
-// OSWf - Core
+import support.OSWfHibernateTestCase;
+
 import org.informagen.oswf.OSWfEngine;
 import org.informagen.oswf.ProcessInstanceState;
-import org.informagen.oswf.impl.DefaultOSWfEngine;
-import org.informagen.oswf.ProcessInstance;
+import org.informagen.oswf.exceptions.WorkflowException;
 
-// OSWf - Action exceptions
+// Action exceptions
 import org.informagen.oswf.exceptions.InvalidActionException;
 
-// OSWf - Configuration
+import org.informagen.oswf.impl.DefaultOSWfEngine;
+
 import org.informagen.oswf.OSWfConfiguration;
-import org.informagen.oswf.impl.MemoryOSWfConfiguration;
+import org.informagen.oswf.impl.DefaultOSWfConfiguration;
 
-// OSWf - Store
-import org.informagen.oswf.impl.stores.MemoryStore;
+import org.informagen.oswf.descriptors.WorkflowDescriptor;
 
-// OSWf - Query
+import org.informagen.typedmap.TypedMap;
+
+import org.informagen.oswf.Step;
+
+import org.informagen.oswf.TypedMapStore;
+
+// OSWf Security
+import org.informagen.oswf.SecurityManager;
+import org.informagen.oswf.security.User;
+import org.informagen.oswf.security.Role;
+
+// OSWf Query
 import org.informagen.oswf.query.Expression;
 import org.informagen.oswf.query.Context;
 import org.informagen.oswf.query.Field;
@@ -24,14 +35,15 @@ import org.informagen.oswf.query.Operator;
 import org.informagen.oswf.query.FieldExpression;
 import org.informagen.oswf.query.WorkflowExpressionQuery;
 
-// OSWf Security
-import org.informagen.oswf.SecurityManager;
-import org.informagen.oswf.security.User;
-import org.informagen.oswf.security.Role;
+// OSWf delegate which installs a Custom TypedMap mapping
+import org.informagen.oswf.impl.HibernateTypedMapStore;
 
-// // Java  - Collections
+// Java Util
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 
 // JUnit 4.x testing
 import org.junit.AfterClass;
@@ -49,45 +61,24 @@ import static org.junit.Assert.fail;
 
 
 /**
- *  Exercises OSWf Action restrictions using a Leave Request which
- *    limits steps to users with particular roles.
- *
- *  A 'WorkflowEngine' is an object which can manipulate a process instance
- *    as it moved through a workflow description. The 'DefaultWorkflowEngine'
- *    take an actor as its only argument. Think of this as 'logging into' the
- *    workflow.
- *
- *  This actor is used by the 'restrict-to' in order to determine elements in 
- *    determining if an action can be taken to advance the process instance.
- *
- *  In the examples below, even thought the user 'Joe' may create the 
- *    initial process instance.  The other users, 'Bob' and 'Doris' use
- *    their own 'Workflow Engines' to affect the progress of that process
- *    instance.
- *
- *  Uses:  src/test/resources/usage/ActionRestrictions.oswf.xml
- *
- *  See 'StepOwnershipTest' and 'WorkListTest' for futher examples.
+ * Basic workflow flow
  */
 
-class ActionRestrictionsTest implements usage.Constants {
 
-    static OSWfConfiguration configuration;
-    
-    @BeforeClass
-    static void createOSWfConfiguration() throws Exception {
+public class ActionRestrictionsTest extends support.OSWfHibernateTestCase implements usage.Constants {
 
-        // Use in memory store/property set; Load the configuration
-        //   in order to access workflows by name.
+    public static final String RDBMS_CONFIGURATION = System.getProperty("rdbms-configuration");
 
-        configuration = new MemoryOSWfConfiguration()
-            .load(ActionRestrictionsTest.class.getResource("/oswf-usage.xml"))
-        ;
+
+    OSWfConfiguration configuration;
+
+    public ActionRestrictionsTest() {
+        super("oswf-store.cfg.xml", RDBMS_CONFIGURATION);
     }
 
     @BeforeClass
-    static void createSecurityModel() {
- 
+    public static void createSecurityModel() {
+    
         def securityManager = SecurityManager.getInstance();         
         assert securityManager
 
@@ -117,9 +108,21 @@ class ActionRestrictionsTest implements usage.Constants {
             
     }
 
+
+    @Before
+    public void hibernateConfiguration() throws Exception {
+                    
+        configuration = new DefaultOSWfConfiguration()
+            .load(getClass().getResource("/oswf-hibernate.xml"))
+            .addPersistenceArg("sessionFactory", getSessionFactory())
+        ;
+    }
+
+
     @After
-    void teardown() {
-        MemoryStore.reset();
+    public void teardown() {
+        closeSession();
+        closeSessionFactory();
     }
 
     // Tests ==================================================================================
@@ -202,7 +205,6 @@ class ActionRestrictionsTest implements usage.Constants {
         } catch(InvalidActionException invalidActionException) {
         }
     }
-
 
     @Test
     void managerApproval() {
