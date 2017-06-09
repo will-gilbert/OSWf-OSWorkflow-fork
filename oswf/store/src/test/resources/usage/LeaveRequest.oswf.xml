@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE workflow SYSTEM "OSWf-3.0.dtd">
 
-
 <workflow>
+    
     <meta name='Description'><![CDATA[
      
        This test is designed to look at the order in which a Join is entered. There
@@ -22,15 +22,16 @@
        To turn on Logging edit the resource file 'log4j.properties'
           and set the following entry to the DEBUG level
        
-           log4j.logger.workflow.LeaveRequest             DEBUG
+           log4j.logger.usage.JoinBugTest              DEBUG
        
     ]]></meta>    
     
     <registers>
-        <register type="slf4jLogger" variable-name="logger">
-			<arg name="loggerName">workflow.LeaveRequest</arg>
+        <register type="slf4jLogger" variable-name="slf4jLogger">
+			<arg name="loggerName">usage.JoinBugTest</arg>
         </register>
     </registers>
+
 
     <!--  List of possible starting points in the workflow ===============================  -->
 	<initial-actions>
@@ -50,7 +51,7 @@
 	    
 		<step id="100" name="Employee Request">
 			<actions>
-				<action id="101" name="request holidays">
+				<action id="101" name="Request day off">
 					<results>
 						<default-result split="10000" status="Requested"/>
 					</results>
@@ -63,14 +64,14 @@
 	    
 		<step id="200" name="Manager Revision">
 			<actions>
-				<action id="201" name="approve" >
+				<action id="201" name="Manager approves" >
 					<results>
-						<default-result exit-status="Manager approved" status="joining" join="10000" />
+						<default-result exit-status="Approved" join="10000" />
 					</results>
 				</action>
-				<action id="202" name="deny" >
+				<action id="202" name="Manager denies" >
 					<results>
-						<default-result exit-status="Manager denied" status="joining" join="10000"/>
+						<default-result exit-status="Denied" join="10000"/>
 					</results>
 				</action>
 			</actions>
@@ -81,32 +82,29 @@
 		<step id="300" name="HR Revision">
 
 			<actions>
-				<action id="301" name="approve" >
+				<action id="301" name="HR approves" >
 					<results>
-						<default-result exit-status="HR approved" status="joining" join="10000"/>
+						<default-result exit-status="Approved" join="10000"/>
 					</results>
 				</action>
 
-				<action id="302" name="deny" >
+				<action id="302" name="HR denies" >
 					<results>
-						<default-result exit-status="HR denied" status="joining" join="10000"/>
+						<default-result exit-status="Denied" join="10000"/>
 					</results>
 				</action>
 			</actions>
 		</step>
 
-	    <!-- System sends e-mail to employee =================================== -->
+	    <!-- System could send e-mail to employee ============================= -->
 
 		<step id="400" name="Notify Employee">
 
 			<actions>
-				<action id="401" name="notify"  finish="TRUE" >
-                    <!--
-                        Send e-mail to employee...
-					-->
+				<action id="401" name="Send Notification" finish="true" >
 
 					<results>
-						<default-result status="Line approval"  step="-1"/>
+						<default-result/>
 					</results>
 
 				</action>
@@ -137,7 +135,7 @@
 				<condition type="beanshell">
 					<arg name="script"><![CDATA[
 
-					    logger = transientVars.get("logger");
+					    logger = transientVars.get("slf4jLogger");
 					
                         persistentVars.setString("result", "denied");
                         
@@ -148,8 +146,8 @@
                         logger.debug("Step 200 LM status: " + jn.get(200).getStatus());
                         logger.debug("Step 300 HR status: " + jn.get(300).getStatus());
                                                 
-                        if(jn.get(200).getStatus().endsWith("approved") && 
-                           jn.get(300).getStatus().endsWith("approved")) {
+                        if(jn.get(200).getStatus().equals("Approved") && 
+                           jn.get(300).getStatus().equals("Approved")) {
                             persistentVars.setString("result", "approved");
                         }
                         
@@ -164,14 +162,13 @@
 			<default-result exit-status="JoinFinished" status="${result}" step="400">
 				<pre-functions>
 					<function type='beanshell'><arg name='script'><![CDATA[
-					    logger = transientVars.get("logger");
+					    logger = transientVars.get("slf4jLogger");
  	                    logger.debug("Join 10000 finished - setting result to '${result}'");
                  	    persistentVars.setString("result", "${result}");
 					]]></arg>
 					</function>
 				</pre-functions>
 			</default-result>
-			
 		</join>
 	</joins>
 	

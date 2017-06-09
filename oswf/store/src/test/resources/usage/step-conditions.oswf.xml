@@ -7,12 +7,17 @@
   <meta name="title">LeaveRequest using 'step-conditions</meta>
   <meta name="description"><![CDATA[
 	
-	'step-conditions' are used to communicate workflow condition back to the
-	driving application.  The application can then control if the user is allow
+	'step-conditions' are used to communicate workflow conditions back to the
+	driving application.  The application can then control if the actor is allowed
 	access to the steps actions.
 	
 	'step-conditions' do not implicitly restrict access to a steps actions nor
 	are querying 'step-conditions' an effective way to create a work list.
+	
+	Using 'step-conditions' with action restriction is redundant and not recommended.
+	
+	Using 'external-step-condition' might be useful for querying the state of a workflow from the
+	application.
 	
   ]]></meta>
 
@@ -29,6 +34,14 @@
 
 
     <!-- Steps ============================================================================ -->
+    <!--
+        Step 100 'Emplyee Request' has four external step-conditions
+          - 'Joe Average is Underway': Step Owner is 'Joe' and Step status is 'Underway'
+          - 'Joe Average is Finished': Step Owner is 'Joe' and Step status is 'Finished'
+          - 'AlwaysTrue': StepCondition is always true via beanshell evaluation
+          - 'AlwaysFalse': StepCondition is always false via beanshell evaluation
+        
+    ======================================================================================= -->
     
 	<steps>
 	
@@ -41,10 +54,10 @@
                 <step-condition name="Joe Average is Underway">
                     <restrict-to>
                         <conditions>
-                            <condition type="class" name='org.informagen.oswf.conditions.HasStatusOf'>
+                            <condition type="alias" name='hasStatusOf'>
                                     <arg name="status">Underway</arg>
                             </condition>
-                            <condition type="class" name='org.informagen.oswf.conditions.IsStepOwner' />
+                            <condition type="alias" name='isStepOwner' />
                         </conditions>
                     </restrict-to>
                 </step-condition>
@@ -52,13 +65,10 @@
                 <step-condition name="Joe Average is Finished">
                     <restrict-to>
                         <conditions>
-                            <condition type="class">
-                                    <arg name="class.name">org.informagen.oswf.conditions.HasStatusOf</arg>
-                                    <arg name="status">Finished</arg>
+                            <condition type="alias" name='hasStatusOf'>
+                                <arg name="status">Finished</arg>
                             </condition>
-                            <condition name="allow.owner.only" type="class">
-                                <arg name="class.name">org.informagen.oswf.conditions.IsStepOwner</arg>
-                            </condition>
+                            <condition type="alias" name="isStepOwner" />
                         </conditions>
                     </restrict-to>
                 </step-condition>
@@ -132,7 +142,7 @@
 				    <restrict-to>
 				        <conditions>
 							<condition type='alias' name='hasRole'>
-								<arg name="role">HR Director</arg>
+								<arg name='role'>HR Director</arg>
 						    </condition>
 				        </conditions>
 				    </restrict-to>

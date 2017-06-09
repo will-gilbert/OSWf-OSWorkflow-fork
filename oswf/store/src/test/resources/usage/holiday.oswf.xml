@@ -6,9 +6,6 @@
 
 	<initial-actions>
 		<action id='1' name='Start Workflow'>
-            <pre-functions>
-                <function type='alias' name='setActor'/>
-            </pre-functions>
 			<results>
 				<default-result status='Underway' step='100' owner="${actor}"/>
 			</results>

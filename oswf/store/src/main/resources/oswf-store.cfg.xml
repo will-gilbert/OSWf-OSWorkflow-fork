@@ -18,6 +18,9 @@
         <!-- Process Variable used with OSWf WorkflowStores ============================= -->
         <mapping resource="org/informagen/oswf/hbm/HibernateTypedMapItem.hbm.xml" />
 
+        <!-- EXPERIMENTAL: Workflow Description as schema  ============================== -->
+        <!-- <mapping resource="org/informagen/oswf/hbm/WorkflowDescriptor.hbm.xml" /> -->
+
 
     </session-factory>
 

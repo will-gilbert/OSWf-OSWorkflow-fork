@@ -99,7 +99,7 @@ public class LeaveRequestTest extends OSWfHibernateTestCase implements LeaveRequ
         // Available actions at the beginning
         assertEquals(1, actions.size());
         assertEquals(REQUEST_HOLIDAYS, actions.get(0).intValue());
-        assertEquals("request holidays", wd.getAction(actions.get(0)).getName());
+        assertEquals("Request day off", wd.getAction(actions.get(0)).getName());
 
 
         // Current steps at the beginning
@@ -140,10 +140,10 @@ public class LeaveRequestTest extends OSWfHibernateTestCase implements LeaveRequ
         assertEquals(HUMAN_RESOURCES_APPROVES, actions.get(2).intValue());
         assertEquals(HUMAN_RESOURCES_DENIES,   actions.get(3).intValue());
 
-        assertEquals("approve", wd.getAction(actions.get(0)).getName());
-        assertEquals("deny",    wd.getAction(actions.get(1)).getName());
-        assertEquals("approve", wd.getAction(actions.get(2)).getName());
-        assertEquals("deny",    wd.getAction(actions.get(3)).getName());
+        assertEquals("Manager approves", wd.getAction(actions.get(0)).getName());
+        assertEquals("Manager denies",    wd.getAction(actions.get(1)).getName());
+        assertEquals("HR approves", wd.getAction(actions.get(2)).getName());
+        assertEquals("HR denies",    wd.getAction(actions.get(3)).getName());
         
         // Available steps at the split
         List<Step> currentSteps = wfEngine.getCurrentSteps(bobId);
@@ -208,8 +208,8 @@ public class LeaveRequestTest extends OSWfHibernateTestCase implements LeaveRequ
         assertEquals(NOTIFY_EMPLOYEE_STEP,          ((Step)historySteps.get(3)).getStepId());
         
         assertStepState((Step)historySteps.get(0), "Finished");      
-        assertStepState((Step)historySteps.get(1), "Manager approved");      
-        assertStepState((Step)historySteps.get(2), "HR approved");      
+        assertStepState((Step)historySteps.get(1), "Approved");      
+        assertStepState((Step)historySteps.get(2), "Approved");      
         assertStepState((Step)historySteps.get(3), "Finished");      
         
         //Get final status
