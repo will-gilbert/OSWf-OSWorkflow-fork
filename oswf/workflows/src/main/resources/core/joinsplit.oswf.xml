@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone='no' ?>
 
-<!DOCTYPE workflow PUBLIC "-//Open Source Workflow//DTD OSWf 3.0//EN" "http://informagen.org/OSWf/OSWf-3.0.dtd">
+<!DOCTYPE workflow SYSTEM 'OSWf-3.0.dtd'>
 
 <workflow>
   <initial-actions>
