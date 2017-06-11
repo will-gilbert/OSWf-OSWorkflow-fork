@@ -1,6 +1,7 @@
 package tests;
 
 import org.informagen.oswf.OSWfEngine;
+import org.informagen.oswf.OSWfLogging;
 import org.informagen.oswf.impl.DefaultOSWfEngine;
 
 import org.informagen.oswf.testing.OSWfAssertions;
@@ -109,11 +110,11 @@ public class WF373Test {
             
             if(logSteps) {
                 logger.debug("---------------------------");
-                OSWfAssertions.logHistorySteps(logger, piid, wfEngine);
+                OSWfLogging.logHistorySteps(logger, piid, wfEngine);
                 logger.debug("");
-                OSWfAssertions.logCurrentSteps(logger, piid, wfEngine);
+                OSWfLogging.logCurrentSteps(logger, piid, wfEngine);
                 logger.debug("");
-                OSWfAssertions.logAvailableActions(logger, piid, wfEngine);
+                OSWfLogging.logAvailableActions(logger, piid, wfEngine);
                 logger.debug("");
                 logger.debug("doAction: " + actions[i]);
             }

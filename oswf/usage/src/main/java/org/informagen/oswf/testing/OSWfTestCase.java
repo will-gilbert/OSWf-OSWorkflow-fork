@@ -2,6 +2,7 @@ package org.informagen.oswf.testing;
 
 
 import org.informagen.oswf.OSWfEngine;
+import org.informagen.oswf.OSWfLogging;
 import org.informagen.oswf.Step;
 import org.informagen.oswf.StepCondition;
 import org.informagen.oswf.ProcessInstance;
@@ -174,7 +175,7 @@ public abstract class OSWfTestCase  {
         if(cannotLog()) 
             return;
 
-        OSWfAssertions.logCurrentSteps(logger, piid, wfEngine);
+        OSWfLogging.logCurrentSteps(logger, piid, wfEngine);
             
     }
 
@@ -191,7 +192,7 @@ public abstract class OSWfTestCase  {
         if(cannotLog())
             return;
 
-        OSWfAssertions.logAvailableActions(logger, piid, wfEngine);
+        OSWfLogging.logAvailableActions(logger, piid, wfEngine);
     }
 
     
@@ -201,7 +202,7 @@ public abstract class OSWfTestCase  {
         if(cannotLog())
             return;
         
-        OSWfAssertions.logHistorySteps(logger, piid, wfEngine);
+        OSWfLogging.logHistorySteps(logger, piid, wfEngine);
     }
 
     protected String getProcessInstanceState(OSWfEngine wfEngine, long piid) {

@@ -79,7 +79,8 @@ dependencies {
 
     compile project(':core')
     compile project(':typedmap')
-    compile project(':testing')
+    compile project(':usage')
+    compile project(':workflows')
 
     def hibernate = '4.3.11.Final' // '4.3.11.Final' '3.3.2.GA'; Does not run: '5.0.12.Final', '5.1.7.Final' '5.2.10.Final' 
     def mysql     = '5.1.25'

@@ -1,6 +1,7 @@
 
 include 'core'
 include 'typedmap'
-include 'testing'
+include 'usage'
 include 'store'
+include 'workflows'
 include 'simulator'
