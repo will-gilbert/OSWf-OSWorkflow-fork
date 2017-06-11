@@ -37,6 +37,12 @@
         <workflow name="WF-315"              type="resource" location="core/WF-315.oswf.xml"/>
         <workflow name="WF-373"              type="resource" location="core/WF-373.oswf.xml"/>
 
+        <!-- Will require Security Manger setup -->
+
+        <workflow name="Action Restictions"  type="resource" location="usage/ActionRestrictions.oswf.xml"/>
+        <workflow name="Step Ownership"      type="resource" location="usage/StepOwnership.oswf.xml"/>
+
+
 	</loader>
 
     <propertysets>

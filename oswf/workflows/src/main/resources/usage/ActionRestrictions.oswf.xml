@@ -1,5 +1,7 @@
-<?xml version='1.0' encoding='UTF-8'?>
+<?xml version='1.0' encoding='UTF-8' standalone='no' ?>
 <!DOCTYPE workflow SYSTEM 'OSWf-3.0.dtd'>
+
+<!-- <!DOCTYPE workflow PUBLIC "-//Open Source Workflow//DTD OSWf 3.0//EN" "http://informagen.org/OSWf/OSWf-3.0.dtd"> -->
 
 <workflow>
 
@@ -184,28 +186,28 @@
 
               // Get both incoming step statuses; 'null' if the step has not yet arrived.
 
-              def step200 = jn.get(200)?.getStatus()
-              def step300 = jn.get(300)?.getStatus()
+              def supervisor = jn.get(200)?.getStatus()
+              def hr = jn.get(300)?.getStatus()
 
-              // Ensure that both pathways from the split have arrived at the join
+              // Ensure that all pathways from the split have arrived at the join
               //   before we can start evaluating any statuses
 
-              if( step200 == null || step300 == null)
+              if( supervisor == null || hr == null)
                 return false
 
               // But we wait for both descisions before setting the 'result'
 
-              if ( step200 == 'Descision Pending' || step300 == 'Descision Pending')
+              if ( supervisor == 'Descision Pending' || hr == 'Descision Pending')
                 return false
 
               // Both must approve
-              if( step200 == 'Manager approved' && step300 == 'HR approved' ) {
+              if( supervisor == 'Manager approved' && hr == 'HR approved' ) {
                   persistentVars.setString('result', 'approved')
                   return true
               }
 
               // Either can deny
-              if( step200 == 'Manager denied' || step300 == 'HR denied' ) {
+              if( supervisor == 'Manager denied' || hr == 'HR denied' ) {
                   persistentVars.setString('result', 'denied')
               }
 
