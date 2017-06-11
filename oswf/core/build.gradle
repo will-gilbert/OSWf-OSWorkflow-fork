@@ -55,6 +55,7 @@ configurations {
 dependencies {
 
     compile project(':typedmap')
+    compile project(':workflows')
 
     compile ([
 

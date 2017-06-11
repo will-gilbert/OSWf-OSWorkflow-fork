@@ -35,7 +35,7 @@ import static org.junit.Assert.fail;
  *
  *
  *  Step 100 action: 101 - 'Employee request' into split 10000
- *  Split 10000 into Steps 200 & 300
+ *  Split 10000 into Steps 200 &amp; 300
  *  Step 200 action 201 - 'LM Approve' into Join 10000
  *  Step 200 action 202 - 'LM Deny' into Join 10000
  *  Step 300 action 301 - 'HR Approve' into Join 10000
