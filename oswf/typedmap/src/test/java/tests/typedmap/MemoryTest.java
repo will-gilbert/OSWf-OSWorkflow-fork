@@ -20,24 +20,24 @@ public class MemoryTest extends AbstractTestClass {
 
     @Before
     public void createPropertySet() {
-        typedMap = new MemoryPersistentVars();
+        persistentVars = new MemoryPersistentVars();
     }
 
     // All other tests are in the superclass 'AbstractTestClass' 
 
     @Test
     public void supportsType() {
-        assertTrue(typedMap.supportsType(Type.BOOLEAN));
-        assertTrue(typedMap.supportsType(Type.DATA));
-        assertTrue(typedMap.supportsType(Type.DATE));
-        assertTrue(typedMap.supportsType(Type.DOUBLE));
-        assertTrue(typedMap.supportsType(Type.INT));
-        assertTrue(typedMap.supportsType(Type.LONG));
-        assertTrue(typedMap.supportsType(Type.OBJECT));
-        assertTrue(typedMap.supportsType(Type.PROPERTIES));
-        assertTrue(typedMap.supportsType(Type.STRING));
-        assertTrue(typedMap.supportsType(Type.TEXT));
-        assertTrue(typedMap.supportsType(Type.XML));
+        assertTrue(persistentVars.supportsType(Type.BOOLEAN));
+        assertTrue(persistentVars.supportsType(Type.DATA));
+        assertTrue(persistentVars.supportsType(Type.DATE));
+        assertTrue(persistentVars.supportsType(Type.DOUBLE));
+        assertTrue(persistentVars.supportsType(Type.INT));
+        assertTrue(persistentVars.supportsType(Type.LONG));
+        assertTrue(persistentVars.supportsType(Type.OBJECT));
+        assertTrue(persistentVars.supportsType(Type.PROPERTIES));
+        assertTrue(persistentVars.supportsType(Type.STRING));
+        assertTrue(persistentVars.supportsType(Type.TEXT));
+        assertTrue(persistentVars.supportsType(Type.XML));
     }
 
 }

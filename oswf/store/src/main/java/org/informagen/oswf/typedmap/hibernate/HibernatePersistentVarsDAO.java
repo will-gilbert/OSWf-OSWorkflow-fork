@@ -1,7 +1,7 @@
 package org.informagen.oswf.hibernate;
 
 // This package
-import org.informagen.oswf.hibernate.HibernateTypedMapItem;
+import org.informagen.oswf.hibernate.HibernatePersistentVarsItem;
 
 // OSWf PropertySet
 import org.informagen.oswf.Type;
@@ -33,13 +33,13 @@ import static java.util.Collections.EMPTY_LIST;
  * @author will gilbert
  */
 
-public class HibernateTypedMapDAO  {
+public class HibernatePersistentVarsDAO  {
 
     protected SessionFactory sessionFactory;
 
     // C O N S T R U C T O R  -----------------------------------------------------------------
 
-    public HibernateTypedMapDAO(SessionFactory sessionFactory) {
+    public HibernatePersistentVarsDAO(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
@@ -47,11 +47,11 @@ public class HibernateTypedMapDAO  {
     // M E T H O D S  -------------------------------------------------------------------------
 
     public Class getPersistentClass() {
-        return HibernateTypedMapItem.class;
+        return HibernatePersistentVarsItem.class;
     }
 
 
-    public void save(HibernateTypedMapItem item) {
+    public void save(HibernatePersistentVarsItem item) {
 
         if( item == null)
             throw new PersistentVarsException("Could not save 'null' PropertyItem");
@@ -101,7 +101,7 @@ public class HibernateTypedMapDAO  {
         return list;
     }
 
-    public HibernateTypedMapItem findByKey(Long piid, String key) {
+    public HibernatePersistentVarsItem findByKey(Long piid, String key) {
 
         if( piid == null)
             throw new PersistentVarsException("Could not find property for 'null' piid");
@@ -110,7 +110,7 @@ public class HibernateTypedMapDAO  {
             throw new PersistentVarsException("Could not find property for 'null' key");
         
         Session session = null;
-        HibernateTypedMapItem item = null;
+        HibernatePersistentVarsItem item = null;
 
         try {
             session = sessionFactory.openSession();
@@ -127,7 +127,7 @@ public class HibernateTypedMapDAO  {
     }
 
 
-    public HibernateTypedMapItem create(Long piid, String key) {
+    public HibernatePersistentVarsItem create(Long piid, String key) {
  
         if( piid == null)
             throw new PersistentVarsException("Could not create property with 'null' piid");
@@ -138,7 +138,7 @@ public class HibernateTypedMapDAO  {
        Session session = null;
        Transaction transaction = null;
     
-        HibernateTypedMapItem item = new HibernateTypedMapItem(piid, key);
+        HibernatePersistentVarsItem item = new HibernatePersistentVarsItem(piid, key);
 
         try {
             session = this.sessionFactory.openSession();
@@ -222,12 +222,12 @@ public class HibernateTypedMapDAO  {
 
     // P R O T E C T E D   M E T H O D S  -----------------------------------------------------
 
-    protected HibernateTypedMapItem getItem(Session session, Long piid, String key) throws HibernateException {
+    protected HibernatePersistentVarsItem getItem(Session session, Long piid, String key) throws HibernateException {
 
         if( piid == null || key == null)
             return null;
 
-        return (HibernateTypedMapItem) session.createCriteria(getPersistentClass())
+        return (HibernatePersistentVarsItem) session.createCriteria(getPersistentClass())
             .add(Restrictions.eq("processInstanceId", piid))
             .add(Restrictions.eq("key", key))
             .uniqueResult();

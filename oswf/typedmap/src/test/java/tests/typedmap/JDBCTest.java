@@ -83,7 +83,7 @@ public class JDBCTest extends AbstractTestClass  {
 
     @Before
     public void before() throws Exception {
-        typedMap = jdbcTypedMap;
+        persistentVars = jdbcTypedMap;
 
         Connection connection = jdbcTypedMap.getConnection();
         Statement statement = connection.createStatement();
@@ -117,17 +117,17 @@ public class JDBCTest extends AbstractTestClass  {
 
     @Test
     public void supportsType() {
-        assertTrue(typedMap.supportsType(Type.BOOLEAN));
-        assertTrue(typedMap.supportsType(Type.DATA));
-        assertTrue(typedMap.supportsType(Type.DATE));
-        assertTrue(typedMap.supportsType(Type.DOUBLE));
-        assertTrue(typedMap.supportsType(Type.INT));
-        assertTrue(typedMap.supportsType(Type.LONG));
-        assertTrue(typedMap.supportsType(Type.OBJECT));
-        assertFalse(typedMap.supportsType(Type.PROPERTIES));
-        assertTrue(typedMap.supportsType(Type.STRING));
-        assertTrue(typedMap.supportsType(Type.TEXT));
-        assertFalse(typedMap.supportsType(Type.XML));
+        assertTrue(persistentVars.supportsType(Type.BOOLEAN));
+        assertTrue(persistentVars.supportsType(Type.DATA));
+        assertTrue(persistentVars.supportsType(Type.DATE));
+        assertTrue(persistentVars.supportsType(Type.DOUBLE));
+        assertTrue(persistentVars.supportsType(Type.INT));
+        assertTrue(persistentVars.supportsType(Type.LONG));
+        assertTrue(persistentVars.supportsType(Type.OBJECT));
+        assertFalse(persistentVars.supportsType(Type.PROPERTIES));
+        assertTrue(persistentVars.supportsType(Type.STRING));
+        assertTrue(persistentVars.supportsType(Type.TEXT));
+        assertFalse(persistentVars.supportsType(Type.XML));
     }
     
  
@@ -140,17 +140,17 @@ public class JDBCTest extends AbstractTestClass  {
     @Override
     public void testString() {
         
-        typedMap.setString("a-string", "A String value");
-        typedMap.setString("string", "string");
-        typedMap.setString("string-space", " ");
-        typedMap.setString("string-empty", "");
-        typedMap.setString("string-100", "100");
+        persistentVars.setString("a-string", "A String value");
+        persistentVars.setString("string", "string");
+        persistentVars.setString("string-space", " ");
+        persistentVars.setString("string-empty", "");
+        persistentVars.setString("string-100", "100");
 
-        assertEquals("A String value", typedMap.getString("a-string"));
-        assertNull(typedMap.getString("non.existent.key"));
+        assertEquals("A String value", persistentVars.getString("a-string"));
+        assertNull(persistentVars.getString("non.existent.key"));
 
-        if (typedMap.supportsType(Type.STRING)) 
-            assertEquals(Type.STRING, typedMap.getType("string"));
+        if (persistentVars.supportsType(Type.STRING)) 
+            assertEquals(Type.STRING, persistentVars.getType("string"));
    }
    
     @Test

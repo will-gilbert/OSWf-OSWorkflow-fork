@@ -1,7 +1,7 @@
 package org.informagen.oswf.hibernate;
 
 // This package
-import org.informagen.oswf.hibernate.HibernateTypedMapDAO;
+import org.informagen.oswf.hibernate.HibernatePersistentVarsDAO;
 
 // Logging
 import org.slf4j.Logger;
@@ -23,7 +23,7 @@ public class HibernateConfigurationProvider {
     protected static Logger logger = LoggerFactory.getLogger(HibernateConfigurationProvider.class);
 
     protected Configuration configuration;
-    protected HibernateTypedMapDAO typedMapDAO = null;
+    protected HibernatePersistentVarsDAO typedMapDAO = null;
     protected SessionFactory sessionFactory = null;
 
     // C O N S T R U C T O R S  ---------------------------------------------------------------
@@ -45,10 +45,10 @@ public class HibernateConfigurationProvider {
         return configuration;
     }
 
-    public HibernateTypedMapDAO getPersistentVarsDAO() {
+    public HibernatePersistentVarsDAO getPersistentVarsDAO() {
     
         if (typedMapDAO == null) 
-            typedMapDAO = new HibernateTypedMapDAO(sessionFactory);
+            typedMapDAO = new HibernatePersistentVarsDAO(sessionFactory);
 
         return typedMapDAO;
     }

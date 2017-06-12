@@ -7,7 +7,7 @@ package org.informagen.oswf.hibernate;
 
 import java.io.Serializable;
 
-public class HibernateTypedMapItem implements Serializable {
+public class HibernatePersistentVarsItem implements Serializable {
 
     // Composite Key: piid + key
      private Long piid;
@@ -20,14 +20,14 @@ public class HibernateTypedMapItem implements Serializable {
      private Long longVal;
      private String textVal;
 
-    public HibernateTypedMapItem() {}
+    public HibernatePersistentVarsItem() {}
 
 	
-    public HibernateTypedMapItem(Long piid, String key) {
+    public HibernatePersistentVarsItem(Long piid, String key) {
         this.piid = piid;
         this.key = key;
     }
-    public HibernateTypedMapItem(Long piid, String key, int type, String stringVal, Integer intVal, Double doubleVal, Long longVal, String textVal) {
+    public HibernatePersistentVarsItem(Long piid, String key, int type, String stringVal, Integer intVal, Double doubleVal, Long longVal, String textVal) {
        this.piid = piid;
        this.key = key;
        this.type = type;

@@ -1,8 +1,8 @@
 package org.informagen.oswf;
 
 // This package
-import org.informagen.oswf.hibernate.HibernateTypedMapItem;
-import org.informagen.oswf.hibernate.HibernateTypedMapDAO;
+import org.informagen.oswf.hibernate.HibernatePersistentVarsItem;
+import org.informagen.oswf.hibernate.HibernatePersistentVarsDAO;
 import org.informagen.oswf.hibernate.HibernateConfigurationProvider;
 
 
@@ -213,7 +213,7 @@ public class HibernatePersistentVars extends AbstractPersistentVars {
 
     protected void setImpl(Type type, String itemKey, Object value) throws PersistentVarsException {
 
-        HibernateTypedMapItem item = configProvider.getPersistentVarsDAO().findByKey(piid, itemKey);
+        HibernatePersistentVarsItem item = configProvider.getPersistentVarsDAO().findByKey(piid, itemKey);
 
         if (item == null) 
             item = configProvider.getPersistentVarsDAO().create(piid, itemKey);
@@ -328,7 +328,7 @@ public class HibernatePersistentVars extends AbstractPersistentVars {
             throw new PersistentVarsException("Type " + type(type) + " not supported");
 
         // Move this snippet into getImpl() -----------------
-        HibernateTypedMapItem item = findByKey(itemKey);
+        HibernatePersistentVarsItem item = findByKey(itemKey);
         
         // Convert database 'int' to Type 'enum'
         Type actualType = Type.getType(item.getType());
@@ -513,7 +513,7 @@ public class HibernatePersistentVars extends AbstractPersistentVars {
     }
 
 
-    private HibernateTypedMapItem findByKey(String itemKey) throws PersistentVarsException {
+    private HibernatePersistentVarsItem findByKey(String itemKey) throws PersistentVarsException {
         return configProvider.getPersistentVarsDAO().findByKey(piid, itemKey);
     }
 
