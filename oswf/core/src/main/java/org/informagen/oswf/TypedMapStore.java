@@ -1,17 +1,16 @@
 package org.informagen.oswf;
 
-import org.informagen.typedmap.TypedMap;
-import org.informagen.typedmap.exceptions.TypedMapException;
+import org.informagen.oswf.exceptions.PersistentVarsException;
 
 public interface TypedMapStore {
 
     /**
-     *  Gets the TypedMap for a Process Instance from the TypedMapStore
+     *  Gets the persistent variables for a Process Instance from the TypedMapStore
      *
      *  @param piid the process instance id
      *  @return the property set implementation
-     *  @throws TypedMapException a possible exception
+     *  @throws PersistentVarsException a possible exception
      */
      
-    TypedMap getTypedMap(long piid) throws TypedMapException;
+    PersistentVars getPersistentVars(long piid) throws PersistentVarsException;
 }

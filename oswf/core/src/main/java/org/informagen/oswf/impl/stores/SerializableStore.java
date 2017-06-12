@@ -3,8 +3,8 @@ package org.informagen.oswf.impl.stores;
 import org.informagen.oswf.ProcessInstance;
 import org.informagen.oswf.Step;
 
-import org.informagen.typedmap.TypedMap;
-import org.informagen.typedmap.TypedMapFactory;
+import org.informagen.oswf.PersistentVars;
+import org.informagen.oswf.PersistentVarsFactory;
 
 import org.informagen.oswf.impl.*;
 
@@ -56,12 +56,12 @@ public class SerializableStore extends MemoryStore {
     }
 
 
-    public TypedMap getTypedMap(long entryId) {
+    public PersistentVars getPersistentVars(long entryId) {
 
-        TypedMap persistentVars = (TypedMap) SerializableCache.getInstance().propertySetCache.get(new Long(entryId));
+        PersistentVars persistentVars = (PersistentVars) SerializableCache.getInstance().propertySetCache.get(new Long(entryId));
 
         if (persistentVars == null) {
-            persistentVars = TypedMapFactory.getInstance().createTypedMap("serializable", null);
+            persistentVars = PersistentVarsFactory.getInstance().createTypedMap("serializable", null);
             SerializableCache.getInstance().propertySetCache.put(new Long(entryId), persistentVars);
         }
 

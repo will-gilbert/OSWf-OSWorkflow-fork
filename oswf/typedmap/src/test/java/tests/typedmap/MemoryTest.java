@@ -4,9 +4,9 @@ package tests.typedmap;
 // This package - Super class tests
 import tests.typedmap.AbstractTestClass;
 
-import org.informagen.typedmap.TypedMap;
-import org.informagen.typedmap.Type;
-import org.informagen.typedmap.MemoryTypedMap;
+import org.informagen.oswf.PersistentVars;
+import org.informagen.oswf.Type;
+import org.informagen.oswf.MemoryPersistentVars;
 
 
 // JUnit 4.x testing
@@ -20,7 +20,7 @@ public class MemoryTest extends AbstractTestClass {
 
     @Before
     public void createPropertySet() {
-        typedMap = new MemoryTypedMap();
+        typedMap = new MemoryPersistentVars();
     }
 
     // All other tests are in the superclass 'AbstractTestClass' 

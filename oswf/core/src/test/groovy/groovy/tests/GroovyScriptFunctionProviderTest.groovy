@@ -1,6 +1,6 @@
 package groovy.tests
 
-import org.informagen.typedmap.MemoryTypedMap
+import org.informagen.oswf.MemoryPersistentVars
 
 import org.informagen.oswf.functions.GroovyScript
 import org.informagen.oswf.exceptions.WorkflowException;
@@ -42,7 +42,7 @@ public class GroovyScriptFunctionProviderTest {
         
         transientVars = [:]
         args = [:]
-        persistentVars = new MemoryTypedMap()
+        persistentVars = new MemoryPersistentVars()
     }
 
     @Test

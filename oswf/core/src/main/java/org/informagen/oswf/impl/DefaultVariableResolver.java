@@ -2,7 +2,7 @@ package org.informagen.oswf.impl;
 
 import org.informagen.oswf.VariableResolver;
 
-import org.informagen.typedmap.TypedMap;
+import org.informagen.oswf.PersistentVars;
 
 import java.io.Serializable;
 
@@ -40,7 +40,7 @@ public class DefaultVariableResolver implements VariableResolver, Serializable {
      * then the actual object is returned instead of converting it to a string.
      */
        
-    public String translateVariables(String s, Map<String,Object> transientVars, TypedMap persistentVars) {
+    public String translateVariables(String s, Map<String,Object> transientVars, PersistentVars persistentVars) {
 
         String temp = s.trim();
 
@@ -92,7 +92,7 @@ public class DefaultVariableResolver implements VariableResolver, Serializable {
     //     return (BeanProvider)beanProvider;
     // }
 
-    public Object getVariableFromMaps(String var, Map<String,Object> transientVars, TypedMap persistentVars) {
+    public Object getVariableFromMaps(String var, Map<String,Object> transientVars, PersistentVars persistentVars) {
 
         int firstDot = var.indexOf('.');
         String actualVar = var;
@@ -104,7 +104,7 @@ public class DefaultVariableResolver implements VariableResolver, Serializable {
         // Check the transient variables map firist
         Object o = transientVars.get(actualVar);
         
-        // If not found, the check the TypedMap; beware that HibernateTypedMap
+        // If not found, the check the persistent varialbes; beware that HibernateTypedMap
         //  is currently throwing an exception if the variable is not available.
         //  Need to fix this.
         if (o == null) {

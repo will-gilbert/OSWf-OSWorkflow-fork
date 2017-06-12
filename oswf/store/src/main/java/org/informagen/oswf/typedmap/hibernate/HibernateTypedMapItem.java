@@ -1,4 +1,4 @@
-package org.informagen.typedmap.hibernate;
+package org.informagen.oswf.hibernate;
 
 /**
 **  Pojo used by the HibernatePropertySet, in the implementation this file is 

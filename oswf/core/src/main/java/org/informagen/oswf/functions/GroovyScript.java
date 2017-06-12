@@ -5,7 +5,7 @@ import groovy.lang.GroovyShell;
 import groovy.lang.Binding;
 import groovy.lang.GroovyRuntimeException;
 
-import org.informagen.typedmap.TypedMap;
+import org.informagen.oswf.PersistentVars;
 
 import org.informagen.oswf.*;
 import org.informagen.oswf.ProcessInstance;
@@ -32,7 +32,7 @@ public class GroovyScript implements FunctionProvider {
 
     // M E T H O D S  -------------------------------------------------------------------------
 
-    public void execute(Map<String,Object> transientVars, Map<String,String> args, TypedMap persistentVars) throws WorkflowException {
+    public void execute(Map<String,Object> transientVars, Map<String,String> args, PersistentVars persistentVars) throws WorkflowException {
 
         String script = (String) args.get(OSWfEngine.BSH_SCRIPT);
 

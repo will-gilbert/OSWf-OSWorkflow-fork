@@ -1,6 +1,6 @@
 package org.informagen.oswf.impl.stores;
 
-import org.informagen.typedmap.TypedMap;
+import org.informagen.oswf.PersistentVars;
 
 import org.informagen.oswf.exceptions.QueryNotSupportedException;
 import org.informagen.oswf.exceptions.WorkflowStoreException;
@@ -73,12 +73,8 @@ public abstract class AbstractWorkflowStore implements WorkflowStore {
         }
     }
 
-    public TypedMap getTypedMap(long piid) {
-        return getTypedMapStore().getTypedMap(piid);
-    }
-
-    public TypedMap getPersistentVars(long piid) {
-        return getTypedMap(piid);
+    public PersistentVars getPersistentVars(long piid) {
+        return getTypedMapStore().getPersistentVars(piid);
     }
 
     public Step markFinished(Step step, int actionId, Date finishDate, String status, String actor) throws WorkflowStoreException {

@@ -1,6 +1,6 @@
 package org.informagen.oswf.functions;
 
-import org.informagen.typedmap.TypedMap;
+import org.informagen.oswf.PersistentVars;
 
 import org.informagen.oswf.FunctionProvider;
 import org.informagen.oswf.exceptions.WorkflowException;
@@ -14,7 +14,7 @@ import java.util.Map;
  
 public class AssertEquals implements FunctionProvider {
 
-    public void execute(Map<String,Object> transientVars, Map<String,String> args, TypedMap persistentVars) throws WorkflowException {
+    public void execute(Map<String,Object> transientVars, Map<String,String> args, PersistentVars persistentVars) throws WorkflowException {
         String expected = args.get("expected");
         String actual = args.get("actual");
         

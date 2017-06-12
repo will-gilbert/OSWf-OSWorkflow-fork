@@ -1,6 +1,6 @@
 package org.informagen.oswf;
 
-import org.informagen.typedmap.TypedMap;
+import org.informagen.oswf.PersistentVars;
 import org.informagen.oswf.TypedMapStore;
 
 import org.informagen.oswf.Step;
@@ -43,12 +43,12 @@ public interface WorkflowStore {
     public void setEntryState(long piid, ProcessInstanceState state) throws WorkflowStoreException;
 
     /**
-     * Returns a TypedMap that is associated with this process instance ID.
+     * Returns a PersistentVars that is associated with this process instance ID.
      * @param piid The workflow instance id.
      * @return a property set unique to this process instance (piid)
      */
-    public TypedMap getTypedMap(long piid);
-    public TypedMap getPersistentVars(long piid);
+
+    public PersistentVars getPersistentVars(long piid);
 
     /**
      * Persists a step with the given parameters.

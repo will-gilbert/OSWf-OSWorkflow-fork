@@ -1,12 +1,13 @@
 package tests;
 
-import org.informagen.typedmap.TypedMap;
-import org.informagen.typedmap.JDBCTypedMap;
+import org.informagen.oswf.OSWfEngine;
+import org.informagen.oswf.impl.DefaultOSWfEngine;
+import org.informagen.oswf.PersistentVars;
 
 import org.informagen.oswf.functions.BeanShell;
 
-import org.informagen.oswf.OSWfEngine;
-import org.informagen.oswf.impl.DefaultOSWfEngine;
+import org.informagen.oswf.JDBCPersistentVars;
+
 
 //import org.apache.commons.lang.exception.ExceptionUtils;
 
@@ -62,7 +63,7 @@ public class BeanShellFunctionProviderTest {
         
         Map transientVars = new HashMap<String,Object>();
         Map args = new HashMap<String,String>();
-        TypedMap persistentVars = new JDBCTypedMap(Collections.EMPTY_MAP, Collections.EMPTY_MAP);
+        PersistentVars persistentVars = new JDBCPersistentVars(Collections.EMPTY_MAP, Collections.EMPTY_MAP);
 
         args.put(OSWfEngine.BSH_SCRIPT, "String actor = \"testactor\"; propertySet.setString(\"actor\", actor);");
 

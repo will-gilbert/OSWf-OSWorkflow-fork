@@ -2,13 +2,11 @@ package org.informagen.oswf;
 
 // OSWorkflow
 import org.informagen.oswf.OSWfEngine;
+import org.informagen.oswf.PersistentVars;
 import org.informagen.oswf.ProcessInstanceState;
 import org.informagen.oswf.Step;
 
 import org.informagen.oswf.descriptors.WorkflowDescriptor;
-
-// OSWf - TypedMap
-import org.informagen.typedmap.TypedMap;
 
 
 // Java Collections

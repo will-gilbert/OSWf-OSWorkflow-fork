@@ -11,7 +11,7 @@ import org.informagen.oswf.exceptions.WorkflowStoreException;
 
 // Persistence
 import org.informagen.oswf.WorkflowStore;
-import org.informagen.typedmap.TypedMapFactory;
+import org.informagen.oswf.PersistentVarsFactory;
 
 // Variable and Type Resolvers
 import org.informagen.oswf.VariableResolver;
@@ -361,7 +361,7 @@ public class DefaultOSWfConfiguration implements OSWfConfiguration, Serializable
                     );
                 }
 
-                TypedMapFactory.getInstance()
+                PersistentVarsFactory.getInstance()
                     .addNamedTypedMap(
                         propertySetName, 
                         propertySetClassname, 

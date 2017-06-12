@@ -18,7 +18,7 @@ import org.informagen.oswf.exceptions.WorkflowException;
 
 import org.informagen.oswf.testing.OSWfAssertions;
 
-import org.informagen.typedmap.TypedMap;
+import org.informagen.oswf.PersistentVars;
 
 // Logging
 import org.slf4j.Logger;
@@ -142,7 +142,7 @@ public abstract class OSWfTestCase  {
 
     protected void assertProperty(OSWfEngine wfEngine, long piid, String property, String result) {
         OSWfAssertions.assertProperty(wfEngine, piid, property, result);
-        // TypedMap persistentVars = wfEngine.getTypedMap(piid);
+        // PersistentVars persistentVars = wfEngine.getPersistentVars(piid);
         // assertEquals(result, persistentVars.getString(property));
     }
 

@@ -18,7 +18,7 @@ import org.informagen.oswf.impl.DefaultOSWfConfiguration;
 import org.informagen.oswf.descriptors.WorkflowDescriptor;
 
 
-import org.informagen.typedmap.TypedMap;
+import org.informagen.oswf.PersistentVars;
 
 
 import org.informagen.oswf.TypedMapStore;
@@ -221,7 +221,7 @@ public class LeaveRequestAltTest extends OSWfHibernateTestCase implements LeaveR
         //Get final status
         assertProcessInstanceState(wfEngine, bobId, ProcessInstanceState.COMPLETED);
         
-        TypedMap propertySet = wfEngine.getTypedMap(bobId);
+        PersistentVars persistentVars = wfEngine.getPersistentVars(bobId);
 
         //Get final result value
         assertProperty(wfEngine, bobId, "result", null);

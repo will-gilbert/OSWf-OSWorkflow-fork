@@ -1,8 +1,8 @@
 package org.informagen.oswf.security;
 
 import org.informagen.oswf.security.Role;
-import org.informagen.typedmap.TypedMap;
-import org.informagen.typedmap.MemoryTypedMap;
+import org.informagen.oswf.PersistentVars;
+import org.informagen.oswf.MemoryPersistentVars;
 
 import java.security.Principal;
 
@@ -23,16 +23,16 @@ public class DefaultUser implements User {
 
         final Set<Role> roles = new HashSet<Role>();
         final String name;
-        TypedMap propertySet = null;
+        PersistentVars persistentVars = null;
 
 
         public DefaultUser(String name) {
             this.name = name;
         }
 
-        public DefaultUser(String name, TypedMap propertySet) {
+        public DefaultUser(String name, PersistentVars persistentVars) {
             this.name = name;
-            this.propertySet = propertySet;
+            this.persistentVars = persistentVars;
         }
 
         public String getName() {
@@ -68,31 +68,31 @@ public class DefaultUser implements User {
 
         // Convenience methods to access property
         public void setEmail(String email) {
-            getTypedMap().setString(EMAIL, email);
+            getPersistentVars().setString(EMAIL, email);
         }
 
         // Convenience method to access property
         public String getEmail() {
-            return getTypedMap().getString(EMAIL);
+            return getPersistentVars().getString(EMAIL);
         }
 
         // Convenience method to access property
         public void setFullName(String fullName) {
-            getTypedMap().setString(FULLNAME, fullName);
+            getPersistentVars().setString(FULLNAME, fullName);
         }
 
         // Convenience method to access property
         public String getFullName() {
-            return getTypedMap().getString(FULLNAME);
+            return getPersistentVars().getString(FULLNAME);
         }
 
 
         // Extra properties associated with entity
-        public TypedMap getTypedMap() {
-            if(propertySet == null)
-                propertySet = new MemoryTypedMap();
+        public PersistentVars getPersistentVars() {
+            if(persistentVars == null)
+                persistentVars = new MemoryPersistentVars();
 
-            return propertySet;
+            return persistentVars;
         }
 
 

@@ -2,7 +2,7 @@ package org.informagen.oswf.impl.stores;
 
 import org.informagen.oswf.impl.stores.AbstractWorkflowStore;
 
-import org.informagen.typedmap.TypedMap;
+import org.informagen.oswf.PersistentVars;
 import org.informagen.oswf.TypedMapStore;
 
 import org.informagen.oswf.ProcessInstance;
@@ -52,7 +52,7 @@ public class MemoryStore extends AbstractWorkflowStore  {
     private static Map<Long,ProcessInstance> piidCache = new HashMap<Long,ProcessInstance>();
     private static Map<Long,List<Step>>    currentStepsCache = new HashMap<Long,List<Step>>();
     private static Map<Long,List<Step>>    historyStepsCache = new HashMap<Long,List<Step>>();
-    private static Map<Long,TypedMap>   propertySetCache = new HashMap<Long,TypedMap>();
+    private static Map<Long,PersistentVars>      propertySetCache = new HashMap<Long,PersistentVars>();
 
     private static long nextPIID = 1;
     private static long nextStepId = 1;
@@ -74,16 +74,12 @@ public class MemoryStore extends AbstractWorkflowStore  {
 
 
     /**
-     ** returns the TypedMap for a Process Instance; Here from a Map class
+     ** returns the PersistentVars for a Process Instance; Here from a Map class
      **
      */
 
-    public TypedMap getTypedMap(long piid) {
-        return getTypedMapStore().getTypedMap(piid);
-    }
-
-    public TypedMap getPersistentVars(long piid) {
-        return getTypedMap(piid);
+    public PersistentVars getPersistentVars(long piid) {
+        return getTypedMapStore().getPersistentVars(piid);
     }
         
     public ProcessInstance createEntry(String workflowName) throws WorkflowStoreException {

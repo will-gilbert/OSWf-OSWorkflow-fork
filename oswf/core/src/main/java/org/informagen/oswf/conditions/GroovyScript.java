@@ -4,7 +4,7 @@ import groovy.lang.GroovyShell;
 import groovy.lang.Binding;
 import groovy.lang.GroovyRuntimeException;
 
-import org.informagen.typedmap.TypedMap;
+import org.informagen.oswf.PersistentVars;
 
 import org.informagen.oswf.Condition;
 import org.informagen.oswf.Register;
@@ -33,7 +33,7 @@ public class GroovyScript implements Condition {
 
     // M E T H O D S  -------------------------------------------------------------------------
 
-    public boolean passesCondition(Map<String,Object> transientVars, Map<String,String> args, TypedMap persistentVars) throws WorkflowException {
+    public boolean passesCondition(Map<String,Object> transientVars, Map<String,String> args, PersistentVars persistentVars) throws WorkflowException {
 
         String script = args.get(OSWfEngine.BSH_SCRIPT);
 

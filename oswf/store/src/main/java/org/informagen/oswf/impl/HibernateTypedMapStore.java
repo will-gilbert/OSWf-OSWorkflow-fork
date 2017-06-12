@@ -1,17 +1,18 @@
 package org.informagen.oswf.impl;
 
+import org.informagen.oswf.PersistentVars;
 
-// OSWf -  TypedMap Hibernate 3.x
-import org.informagen.typedmap.HibernateTypedMap;
-import org.informagen.typedmap.hibernate.HibernateConfigurationProvider;
+// OSWf -  PersistentVars Hibernate 3.x
+import org.informagen.oswf.HibernateTypedMap;
+import org.informagen.oswf.hibernate.HibernateConfigurationProvider;
 
 
 // OSWf - Core
 import org.informagen.oswf.TypedMapStore;
 
-// OpenSymphony - TypedMap 
-import org.informagen.typedmap.TypedMap;
-import org.informagen.typedmap.TypedMapFactory;
+// OSWf - PersistentVars 
+import org.informagen.oswf.PersistentVars;
+import org.informagen.oswf.PersistentVarsFactory;
 import org.informagen.oswf.exceptions.WorkflowStoreException;
 
 // Hibernate 3.2.x
@@ -60,10 +61,10 @@ public class HibernateTypedMapStore implements TypedMapStore  {
      * Get the propery set for a process instance
      *
      * @param piid - long, the process instance ID
-     * @return ProperySet - the propertySet
+     * @return PersistentVars - A map with typed objects
      */
 
-    public TypedMap getTypedMap(long piid)  {
+    public PersistentVars getPersistentVars(long piid)  {
         
         HashMap<String,Object>args = new HashMap<String,Object>();
         
@@ -78,9 +79,9 @@ public class HibernateTypedMapStore implements TypedMapStore  {
         configurationProvider = new HibernateConfigurationProvider(sessionFactory);
         args.put("configurationProvider", configurationProvider);
 
-        TypedMap propertySet = null;
+        PersistentVars propertySet = null;
         if (propertySetName != null)
-            propertySet = TypedMapFactory.getInstance().createTypedMap(propertySetName, args);
+            propertySet = PersistentVarsFactory.getInstance().createTypedMap(propertySetName, args);
         else {
             propertySet = new HibernateTypedMap(null, args);
         }

@@ -1,11 +1,11 @@
-package org.informagen.typedmap.hibernate;
+package org.informagen.oswf.hibernate;
 
 // This package
-import org.informagen.typedmap.hibernate.HibernateTypedMapItem;
+import org.informagen.oswf.hibernate.HibernateTypedMapItem;
 
 // OSWf PropertySet
-import org.informagen.typedmap.Type;
-import org.informagen.typedmap.exceptions.TypedMapException;
+import org.informagen.oswf.Type;
+import org.informagen.oswf.exceptions.PersistentVarsException;
 
 
 // Hibernate
@@ -54,7 +54,7 @@ public class HibernateTypedMapDAO  {
     public void save(HibernateTypedMapItem item) {
 
         if( item == null)
-            throw new TypedMapException("Could not save 'null' PropertyItem");
+            throw new PersistentVarsException("Could not save 'null' PropertyItem");
  
        Session session = null;
        Transaction transaction = null;
@@ -69,7 +69,7 @@ public class HibernateTypedMapDAO  {
             transaction.commit();
             
         } catch (HibernateException hibernateException) {
-            throw new TypedMapException("Could not save key '" + item.getKey() + "':" + hibernateException.getMessage());
+            throw new PersistentVarsException("Could not save key '" + item.getKey() + "':" + hibernateException.getMessage());
         } finally {
             
             if (transaction != null && transaction.isActive())
@@ -83,7 +83,7 @@ public class HibernateTypedMapDAO  {
     public Collection<String> getKeys(Long piid, String prefix, Type type) {
 
         if( piid == null)
-            throw new TypedMapException("Could not find keys for 'null' piid");
+            throw new PersistentVarsException("Could not find keys for 'null' piid");
 
         Session session = null;
         Collection<String> list = null;
@@ -92,7 +92,7 @@ public class HibernateTypedMapDAO  {
             session = sessionFactory.openSession();
             list = getKeysImpl(session, piid, prefix, type);
         } catch (HibernateException hibernateException) {
-            throw new TypedMapException("HibernatePropertySet.getKeys: " + hibernateException.getMessage());
+            throw new PersistentVarsException("HibernatePropertySet.getKeys: " + hibernateException.getMessage());
         } finally {
             if (session != null) 
                 session.close();
@@ -104,10 +104,10 @@ public class HibernateTypedMapDAO  {
     public HibernateTypedMapItem findByKey(Long piid, String key) {
 
         if( piid == null)
-            throw new TypedMapException("Could not find property for 'null' piid");
+            throw new PersistentVarsException("Could not find property for 'null' piid");
 
         if( key == null)
-            throw new TypedMapException("Could not find property for 'null' key");
+            throw new PersistentVarsException("Could not find property for 'null' key");
         
         Session session = null;
         HibernateTypedMapItem item = null;
@@ -117,7 +117,7 @@ public class HibernateTypedMapDAO  {
             item = getItem(session, piid, key);
             session.flush();
         } catch (HibernateException hibernateException) {
-            throw new TypedMapException("Could not find key '" + key + "': " + hibernateException.getMessage());
+            throw new PersistentVarsException("Could not find key '" + key + "': " + hibernateException.getMessage());
         } finally {
             if (session != null) 
                 session.close();
@@ -130,10 +130,10 @@ public class HibernateTypedMapDAO  {
     public HibernateTypedMapItem create(Long piid, String key) {
  
         if( piid == null)
-            throw new TypedMapException("Could not create property with 'null' piid");
+            throw new PersistentVarsException("Could not create property with 'null' piid");
 
         if( key == null)
-            throw new TypedMapException("Could not create property with 'null' key");
+            throw new PersistentVarsException("Could not create property with 'null' key");
             
        Session session = null;
        Transaction transaction = null;
@@ -146,7 +146,7 @@ public class HibernateTypedMapDAO  {
             session.save(item);
             transaction.commit();
         } catch (HibernateException hibernateException) {
-            throw new TypedMapException("Could not save key '" + key + "': " + hibernateException.getMessage());
+            throw new PersistentVarsException("Could not save key '" + key + "': " + hibernateException.getMessage());
         } finally {
             
             if (transaction != null && transaction.isActive())
@@ -164,10 +164,10 @@ public class HibernateTypedMapDAO  {
 
 
         if( piid == null)
-            throw new TypedMapException("Could not remove property for 'null' piid");
+            throw new PersistentVarsException("Could not remove property for 'null' piid");
 
         if( key == null)
-            throw new TypedMapException("Could not remove property with 'null' key");
+            throw new PersistentVarsException("Could not remove property with 'null' key");
 
        Session session = null;
        Transaction transaction = null;
@@ -179,7 +179,7 @@ public class HibernateTypedMapDAO  {
             session.flush();
             transaction.commit();
         } catch (HibernateException hibernateException) {
-            throw new TypedMapException("Could not remove key '" + key + "': " + hibernateException.getMessage());
+            throw new PersistentVarsException("Could not remove key '" + key + "': " + hibernateException.getMessage());
         } finally {
             
             if (transaction != null && transaction.isActive())
@@ -193,7 +193,7 @@ public class HibernateTypedMapDAO  {
     public void remove(Long piid) {
 
         if( piid == null)
-            throw new TypedMapException("Could not remove properties for 'null' piid");
+            throw new PersistentVarsException("Could not remove properties for 'null' piid");
 
         Session session = null;
         Transaction transaction = null;
@@ -209,7 +209,7 @@ public class HibernateTypedMapDAO  {
 
             transaction.commit();
         } catch( HibernateException hibernateException ) {
-            throw new TypedMapException("Could not remove all keys: " + hibernateException.getMessage());
+            throw new PersistentVarsException("Could not remove all keys: " + hibernateException.getMessage());
         } finally {
             // Rollback if 'commit' failed 
             if(transaction != null && transaction.isActive())
