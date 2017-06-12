@@ -15,7 +15,7 @@ import org.informagen.oswf.exceptions.IllegalValueException;
 // OSWf - Utilities 
 import org.informagen.oswf.util.ClassLoaderHelper;
 
-// OSWf - TypedMap Utililites
+// OSWf - PersistentVars Utililites
 import org.informagen.oswf.util.ByteArray;
 import org.informagen.oswf.util.XMLUtils;
 import org.informagen.oswf.util.Base64;

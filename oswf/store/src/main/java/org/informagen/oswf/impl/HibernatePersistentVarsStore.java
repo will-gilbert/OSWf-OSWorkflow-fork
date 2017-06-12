@@ -26,29 +26,29 @@ import java.util.HashMap;
 /**
  */
 
-public class HibernateTypedMapStore implements PeristentVarsStore  {
+public class HibernatePersistentVarsStore implements PeristentVarsStore  {
 
     private HibernateConfigurationProvider configurationProvider;
     private SessionFactory sessionFactory = null;
     private String propertySetName = null;
 
-    public HibernateTypedMapStore() {}
+    public HibernatePersistentVarsStore() {}
 
-    public HibernateTypedMapStore(Map<String,String> config, Map<String,Object> args) {
+    public HibernatePersistentVarsStore(Map<String,String> config, Map<String,Object> args) {
         this.sessionFactory = (SessionFactory)args.get("sessionFactory");
         this.propertySetName = config.get("propertySet");
     }
 
 
-    public HibernateTypedMapStore(String propertySetName) {
+    public HibernatePersistentVarsStore(String propertySetName) {
         this(propertySetName, null);
     }
 
-    public HibernateTypedMapStore(SessionFactory sessionFactory) {
+    public HibernatePersistentVarsStore(SessionFactory sessionFactory) {
         this(null, sessionFactory);
     }
 
-    public HibernateTypedMapStore(String propertySetName, SessionFactory sessionFactory) {
+    public HibernatePersistentVarsStore(String propertySetName, SessionFactory sessionFactory) {
         this.propertySetName = propertySetName;
         this.sessionFactory = sessionFactory;
     }

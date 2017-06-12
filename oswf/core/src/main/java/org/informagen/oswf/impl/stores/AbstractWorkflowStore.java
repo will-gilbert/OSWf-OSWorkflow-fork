@@ -53,7 +53,7 @@ public abstract class AbstractWorkflowStore implements WorkflowStore {
         this.typedMapStore = typedMapStore;
     }
 
-    public PeristentVarsStore getTypedMapStore() {
+    public PeristentVarsStore getPersistentVarsStore() {
 
         if(typedMapStore == null) {
             typedMapStore = new MemoryPeristentVarsStore();
@@ -74,7 +74,7 @@ public abstract class AbstractWorkflowStore implements WorkflowStore {
     }
 
     public PersistentVars getPersistentVars(long piid) {
-        return getTypedMapStore().getPersistentVars(piid);
+        return getPersistentVarsStore().getPersistentVars(piid);
     }
 
     public Step markFinished(Step step, int actionId, Date finishDate, String status, String actor) throws WorkflowStoreException {

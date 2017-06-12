@@ -35,8 +35,8 @@ import org.informagen.oswf.query.Operator;
 import org.informagen.oswf.query.FieldExpression;
 import org.informagen.oswf.query.WorkflowExpressionQuery;
 
-// OSWf delegate which installs a Custom TypedMap mapping
-import org.informagen.oswf.impl.HibernateTypedMapStore;
+// OSWf delegate which installs a Custom PersistentVars mapping
+import org.informagen.oswf.impl.HibernatePersistentVarsStore;
 
 // Java Util
 import java.util.Collection;

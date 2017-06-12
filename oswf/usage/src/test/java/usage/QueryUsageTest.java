@@ -13,7 +13,7 @@ import org.informagen.oswf.exceptions.WorkflowException;
 import org.informagen.oswf.impl.DefaultOSWfEngine;
 import org.informagen.oswf.impl.MemoryOSWfConfiguration;
 
-import org.informagen.oswf.impl.stores.MemoryStore;
+import org.informagen.oswf.impl.stores.MemoryWorkflowStore;
 
 
 import org.informagen.oswf.descriptors.WorkflowDescriptor;
@@ -99,7 +99,7 @@ public class QueryUsageTest extends OSWfTestCase implements LeaveRequest {
 
     @After
     public void teardown() {
-        MemoryStore.reset();
+        MemoryWorkflowStore.reset();
     }
 
     // Tests ==================================================================================

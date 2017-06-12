@@ -13,7 +13,7 @@ import org.informagen.oswf.OSWfConfiguration;
 import org.informagen.oswf.impl.MemoryOSWfConfiguration;
 
 // OSWf Store - Use in-memory Java Collection classes
-import org.informagen.oswf.impl.stores.MemoryStore;
+import org.informagen.oswf.impl.stores.MemoryWorkflowStore;
 
 // OSWf Query
 import org.informagen.oswf.query.Expression;
@@ -129,7 +129,7 @@ class WorkListTest implements usage.Constants {
 
     @After
     void teardown() {
-        MemoryStore.reset();
+        MemoryWorkflowStore.reset();
     }
 
     // Tests ==================================================================================

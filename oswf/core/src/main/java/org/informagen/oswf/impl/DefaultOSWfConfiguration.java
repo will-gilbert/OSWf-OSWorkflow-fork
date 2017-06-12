@@ -93,8 +93,8 @@ public class DefaultOSWfConfiguration implements OSWfConfiguration, Serializable
     protected String workflowStoreClassname = null;
     protected Map<String,String> workflowStoreParameters = new HashMap<String,String>();
 
-    protected String typedMapStoreClassname = null;
-    protected Map<String,String> typedMapStoreParameters = new HashMap<String,String>();
+    protected String persistentVarsStoreClassname = null;
+    protected Map<String,String> persistentVarsStoreParameters = new HashMap<String,String>();
 
     // The instatiated workflow store
     protected transient WorkflowStore workflowStore = null;
@@ -233,12 +233,12 @@ public class DefaultOSWfConfiguration implements OSWfConfiguration, Serializable
     /* Persistence - Store & PropertySet ----------------------------------------------
     **
     **   <persistence>
-    **      <workflow-store class="org.informagen.oswf.impl.stores.MemoryStore"/>
+    **      <workflow-store class="org.informagen.oswf.impl.stores.MemoryWorkflowStore"/>
     **      <propertyset-store class="org.informagen.oswf.impl.MemoryPropertySetStore"/>
     **   </persistence>
     **
     ** Read the WorkflowStore classname aka persistence.
-    **  If not found use 'MemoryStore' and 'MemoryTypedMap'
+    **  If not found use 'MemoryWorkflowStore' and 'MemoryTypedMap'
     */
  
     protected void parsePersistence(Element root) throws Exception {
@@ -259,12 +259,12 @@ public class DefaultOSWfConfiguration implements OSWfConfiguration, Serializable
 
             Element propertySetElement = XMLHelper.getChildElement(persistenceElement, "propertyset-store");
             if(propertySetElement != null) {
-                typedMapStoreClassname = propertySetElement.getAttribute("class");
+                persistentVarsStoreClassname = propertySetElement.getAttribute("class");
         
                 // Load any name/value properties which the WorkflowStore may need
                 List<Element> propertyElements = XMLHelper.getChildElements(propertySetElement, "parameter");
                 for (Element e : propertyElements) 
-                    typedMapStoreParameters.put(e.getAttribute("name"), e.getAttribute("value"));
+                    persistentVarsStoreParameters.put(e.getAttribute("name"), e.getAttribute("value"));
             } 
         } 
     }
@@ -456,7 +456,7 @@ public class DefaultOSWfConfiguration implements OSWfConfiguration, Serializable
         try {
             Class workflowStoreClass = ClassLoaderHelper.loadClass(classname, getClass());
             Constructor<WorkflowStore> constructor = workflowStoreClass.getConstructor(new Class[]{Map.class, Map.class});
-            workflowStore = constructor.newInstance(typedMapStoreParameters, getPersistenceArgs());
+            workflowStore = constructor.newInstance(persistentVarsStoreParameters, getPersistenceArgs());
 
         } catch (Exception exception) {
             throw new WorkflowStoreException("Error creating WorkflowStore: " + classname, exception);
@@ -468,14 +468,14 @@ public class DefaultOSWfConfiguration implements OSWfConfiguration, Serializable
     protected PeristentVarsStore createTypedMapStore() throws WorkflowStoreException {
         
         PeristentVarsStore typedMapStore = null;
-        String classname = typedMapStoreClassname;
+        String classname = persistentVarsStoreClassname;
         
         if((classname != null) && (getPersistenceArgs().containsKey("typedMapStore") == false) ) {
 
             try {
                 Class typedMapStoreClass = ClassLoaderHelper.loadClass(classname, getClass());
                 Constructor<PeristentVarsStore> constructor = typedMapStoreClass.getConstructor(new Class[]{Map.class, Map.class});
-                typedMapStore = constructor.newInstance(typedMapStoreParameters, getPersistenceArgs());
+                typedMapStore = constructor.newInstance(persistentVarsStoreParameters, getPersistenceArgs());
             } catch (Exception exception) {
                 throw new WorkflowStoreException("Error creating PeristentVarsStore: " + classname, exception);
             }

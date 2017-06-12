@@ -28,7 +28,7 @@ import java.util.*;
  *
  * @author <a href="mailto:gbort@msn.com">Guillaume Bort</a>
  */
-public class SerializableStore extends MemoryStore {
+public class SerializableStore extends MemoryWorkflowStore {
     //~ Static fields/initializers /////////////////////////////////////////////
 
     protected static final Marker fatal = MarkerFactory.getMarker("FATAL");

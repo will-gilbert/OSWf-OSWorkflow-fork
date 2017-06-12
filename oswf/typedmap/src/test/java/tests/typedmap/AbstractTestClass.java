@@ -1,7 +1,7 @@
 package tests.typedmap;
 
 
-// OSWf - TypedMap
+// OSWf - Persistent Variables
 import org.informagen.oswf.PersistentVars;
 import org.informagen.oswf.Type;
 import org.informagen.oswf.util.XMLUtils;

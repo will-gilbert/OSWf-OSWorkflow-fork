@@ -58,7 +58,7 @@ public class BeanShellFunctionProviderTest {
         
         BeanShell function = new BeanShell();
         
-        // Create a JDBC TypedMap without parameters succeeds but throws
+        // Create a JDBC PersistentVars without parameters succeeds but throws
         //     an exception when used
         
         Map transientVars = new HashMap<String,Object>();

@@ -1,6 +1,6 @@
 package tests;
 
-import org.informagen.oswf.impl.stores.MemoryStore;
+import org.informagen.oswf.impl.stores.MemoryWorkflowStore;
 import tests.AbstractFunctionalWorkflow;
 
 
@@ -34,7 +34,7 @@ public class MemoryFunctionalWorkflowTest extends AbstractFunctionalWorkflow {
     
     @Before
     public void setup() throws Exception {
-        MemoryStore.reset();
+        MemoryWorkflowStore.reset();
         super.setup();
     }
 }

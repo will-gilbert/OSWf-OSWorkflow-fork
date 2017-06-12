@@ -16,7 +16,7 @@ import org.informagen.oswf.exceptions.WorkflowLoaderException;
 
 import org.informagen.oswf.impl.DefaultOSWfEngine;
 import org.informagen.oswf.impl.MemoryOSWfConfiguration;
-import org.informagen.oswf.impl.stores.MemoryStore;
+import org.informagen.oswf.impl.stores.MemoryWorkflowStore;
 
 // JUnit 4.x testing
 import org.junit.AfterClass;
@@ -38,7 +38,7 @@ public class TypeResolverTest extends OSWfTestCase {
      
     @After
     public void teardown() {
-        MemoryStore.reset();
+        MemoryWorkflowStore.reset();
     }
 
     @Test

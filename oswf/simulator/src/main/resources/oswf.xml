@@ -2,7 +2,7 @@
 
     <persistence>
         <workflow-store class="org.informagen.oswf.impl.stores.HibernateStore"/>  
-        <propertyset-store class="org.informagen.oswf.impl.HibernateTypedMapStore">
+        <propertyset-store class="org.informagen.oswf.impl.HibernatePersistentVarsStore">
             <parameter name="propertySet" value="simulator" />
         </propertyset-store>    
     </persistence>

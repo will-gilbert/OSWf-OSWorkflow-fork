@@ -27,8 +27,8 @@ import org.informagen.oswf.descriptors.StepConditionDescriptor;
 import org.informagen.oswf.PersistentVars;
 import org.informagen.oswf.PeristentVarsStore;
 
-// OSWf delegate which installs a Custom TypedMap mapping
-import org.informagen.oswf.impl.HibernateTypedMapStore;
+// OSWf delegate which installs a Custom PersistentVars mapping
+import org.informagen.oswf.impl.HibernatePersistentVarsStore;
 
 
 import java.util.ArrayList;
@@ -91,7 +91,7 @@ public class StepConditionsTest extends OSWfHibernateTestCase implements Constan
         configuration.load(getClass().getResource("/oswf-hibernate.xml"));
         configuration.getPersistenceArgs().put("sessionFactory", getSessionFactory());
         
-        PeristentVarsStore delegate = new HibernateTypedMapStore(getSessionFactory());
+        PeristentVarsStore delegate = new HibernatePersistentVarsStore(getSessionFactory());
         configuration.getPersistenceArgs().put("propertySetDelegate", delegate);
     }
 

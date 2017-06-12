@@ -18,7 +18,6 @@ import java.util.*;
  * if your persistence connections (such as java.sql.Connection) time out,
  * it would be un-wise to use just one Connection for the entire object.
  *
- * @author <a href="mailto:plightbo@hotmail.com">Pat Lightbody</a>
  */
 public interface WorkflowStore {
 
@@ -27,12 +26,12 @@ public interface WorkflowStore {
     /**
      *  DOCUMENT THIS
      */
-    void setTypedMapStore(PeristentVarsStore typedMapStore);
+    void setTypedMapStore(PeristentVarsStore persistentVarsStore);
 
     /**
      *  DOCUMENT THIS
      */
-    PeristentVarsStore getTypedMapStore();
+    PeristentVarsStore getPersistentVarsStore();
 
 
     /**

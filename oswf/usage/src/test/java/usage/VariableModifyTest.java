@@ -14,7 +14,7 @@ import org.informagen.oswf.ProcessInstance;
 
 import org.informagen.oswf.descriptors.WorkflowDescriptor;
 
-import org.informagen.oswf.impl.stores.MemoryStore;
+import org.informagen.oswf.impl.stores.MemoryWorkflowStore;
 
 import org.informagen.oswf.exceptions.InvalidInputException;
 import org.informagen.oswf.exceptions.WorkflowException;
@@ -68,7 +68,7 @@ public class VariableModifyTest extends OSWfTestCase {
 
     @After
     public void teardown() {
-        MemoryStore.reset();
+        MemoryWorkflowStore.reset();
     }
 
     /*

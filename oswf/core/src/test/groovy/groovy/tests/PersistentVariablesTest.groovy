@@ -36,7 +36,7 @@ import static org.junit.Assert.fail
  *
  * <pre>
  *   <persistence>
- *       <workflow-store class="org.informagen.oswf.impl.stores.MemoryStore"/>
+ *       <workflow-store class="org.informagen.oswf.impl.stores.MemoryWorkflowStore"/>
  *       <propertyset-store class="org.informagen.oswf.impl.MemoryPeristentVarsStore"/>
  *  </persistence>
  * <pre>

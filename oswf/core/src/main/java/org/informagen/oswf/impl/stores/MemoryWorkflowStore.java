@@ -45,7 +45,7 @@ import java.util.Iterator;
  * @author <a href="mailto:plightbo@hotmail.com">Pat Lightbody</a>
  */
 
-public class MemoryStore extends AbstractWorkflowStore  {
+public class MemoryWorkflowStore extends AbstractWorkflowStore  {
 
     // Instance Variables =====================================================================
 
@@ -58,11 +58,11 @@ public class MemoryStore extends AbstractWorkflowStore  {
     private static long nextStepId = 1;
 
 
-    public MemoryStore() {
+    public MemoryWorkflowStore() {
         setTypedMapStore(new MemoryPeristentVarsStore());
     }
 
-    public MemoryStore(Map<String,String> config, Map<String,Object> args) {
+    public MemoryWorkflowStore(Map<String,String> config, Map<String,Object> args) {
         super(config, args);
     }
 
@@ -79,7 +79,7 @@ public class MemoryStore extends AbstractWorkflowStore  {
      */
 
     public PersistentVars getPersistentVars(long piid) {
-        return getTypedMapStore().getPersistentVars(piid);
+        return getPersistentVarsStore().getPersistentVars(piid);
     }
         
     public ProcessInstance createEntry(String workflowName) throws WorkflowStoreException {
@@ -155,11 +155,11 @@ public class MemoryStore extends AbstractWorkflowStore  {
     // End: WorkflowStore interface ===========================================================
     
 
-    // MemoryStore methods ============================================================
+    // MemoryWorkflowStore methods ============================================================
 
     /**
-    * Reset the MemoryStore so it doesn't have any information.
-    *   Useful for Unit Testing and when you don't want the MemoryStore to 
+    * Reset the MemoryWorkflowStore so it doesn't have any information.
+    *   Useful for Unit Testing and when you don't want the MemoryWorkflowStore to 
     *   have old data in it.
     */
 
