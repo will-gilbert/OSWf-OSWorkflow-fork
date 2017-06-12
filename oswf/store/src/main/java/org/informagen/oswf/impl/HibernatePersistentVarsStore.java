@@ -3,7 +3,7 @@ package org.informagen.oswf.impl;
 import org.informagen.oswf.PersistentVars;
 
 // OSWf -  PersistentVars Hibernate 3.x
-import org.informagen.oswf.HibernateTypedMap;
+import org.informagen.oswf.HibernatePersistentVars;
 import org.informagen.oswf.hibernate.HibernateConfigurationProvider;
 
 
@@ -83,7 +83,7 @@ public class HibernatePersistentVarsStore implements PeristentVarsStore  {
         if (propertySetName != null)
             propertySet = PersistentVarsFactory.getInstance().createTypedMap(propertySetName, args);
         else {
-            propertySet = new HibernateTypedMap(null, args);
+            propertySet = new HibernatePersistentVars(null, args);
         }
 
         return propertySet;

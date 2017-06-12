@@ -77,11 +77,11 @@ import javax.xml.parsers.ParserConfigurationException;
  */
 
 
-public class HibernateTypedMap extends AbstractPersistentVars {
+public class HibernatePersistentVars extends AbstractPersistentVars {
 
     //~ Static fields/initializers /////////////////////////////////////////////
 
-    protected static Logger logger = LoggerFactory.getLogger(HibernateTypedMap.class);
+    protected static Logger logger = LoggerFactory.getLogger(HibernatePersistentVars.class);
     
     // To avoid confusion we are really saving a DOM not serialized DOM which
     //  is known generically as 'XML'
@@ -97,7 +97,7 @@ public class HibernateTypedMap extends AbstractPersistentVars {
 
     // C O N S T R U C T O R  -----------------------------------------------------------------
 
-    public HibernateTypedMap(Map<String,String> configurationProperties, Map<String,Object> args) {
+    public HibernatePersistentVars(Map<String,String> configurationProperties, Map<String,Object> args) {
         init(configurationProperties, args);       
     }
 
