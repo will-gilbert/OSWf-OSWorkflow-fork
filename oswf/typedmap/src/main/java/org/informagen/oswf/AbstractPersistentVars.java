@@ -21,7 +21,7 @@ import java.util.Date;
 import java.util.Properties;
 
 /**
- * Base implementation of TypedMap.
+ * Base implementation of PersistentVars.
  *
  * <p>Performs necessary casting for get???/set??? methods which wrap around the
  * following 2 methods which are declared <code>protected abstract</code> and need

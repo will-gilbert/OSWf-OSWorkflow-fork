@@ -1,8 +1,8 @@
 package org.informagen.oswf;
 
 // This package
-import org.informagen.oswf.hibernate.HibernateTypedMapItem;
-import org.informagen.oswf.hibernate.HibernateTypedMapDAO;
+import org.informagen.oswf.hibernate.HibernatePersistentVarsItem;
+import org.informagen.oswf.hibernate.HibernatePersistentVarsDAO;
 import org.informagen.oswf.hibernate.HibernateConfigurationProvider;
 
 
@@ -15,7 +15,7 @@ import org.informagen.oswf.exceptions.IllegalValueException;
 // OSWf - Utilities 
 import org.informagen.oswf.util.ClassLoaderHelper;
 
-// OSWf - TypedMap Utililites
+// OSWf - PersistentVars Utililites
 import org.informagen.oswf.util.ByteArray;
 import org.informagen.oswf.util.XMLUtils;
 import org.informagen.oswf.util.Base64;
@@ -77,11 +77,11 @@ import javax.xml.parsers.ParserConfigurationException;
  */
 
 
-public class HibernateTypedMap extends AbstractPersistentVars {
+public class HibernatePersistentVars extends AbstractPersistentVars {
 
     //~ Static fields/initializers /////////////////////////////////////////////
 
-    protected static Logger logger = LoggerFactory.getLogger(HibernateTypedMap.class);
+    protected static Logger logger = LoggerFactory.getLogger(HibernatePersistentVars.class);
     
     // To avoid confusion we are really saving a DOM not serialized DOM which
     //  is known generically as 'XML'
@@ -97,7 +97,7 @@ public class HibernateTypedMap extends AbstractPersistentVars {
 
     // C O N S T R U C T O R  -----------------------------------------------------------------
 
-    public HibernateTypedMap(Map<String,String> configurationProperties, Map<String,Object> args) {
+    public HibernatePersistentVars(Map<String,String> configurationProperties, Map<String,Object> args) {
         init(configurationProperties, args);       
     }
 
@@ -213,7 +213,7 @@ public class HibernateTypedMap extends AbstractPersistentVars {
 
     protected void setImpl(Type type, String itemKey, Object value) throws PersistentVarsException {
 
-        HibernateTypedMapItem item = configProvider.getPersistentVarsDAO().findByKey(piid, itemKey);
+        HibernatePersistentVarsItem item = configProvider.getPersistentVarsDAO().findByKey(piid, itemKey);
 
         if (item == null) 
             item = configProvider.getPersistentVarsDAO().create(piid, itemKey);
@@ -328,7 +328,7 @@ public class HibernateTypedMap extends AbstractPersistentVars {
             throw new PersistentVarsException("Type " + type(type) + " not supported");
 
         // Move this snippet into getImpl() -----------------
-        HibernateTypedMapItem item = findByKey(itemKey);
+        HibernatePersistentVarsItem item = findByKey(itemKey);
         
         // Convert database 'int' to Type 'enum'
         Type actualType = Type.getType(item.getType());
@@ -513,7 +513,7 @@ public class HibernateTypedMap extends AbstractPersistentVars {
     }
 
 
-    private HibernateTypedMapItem findByKey(String itemKey) throws PersistentVarsException {
+    private HibernatePersistentVarsItem findByKey(String itemKey) throws PersistentVarsException {
         return configProvider.getPersistentVarsDAO().findByKey(piid, itemKey);
     }
 

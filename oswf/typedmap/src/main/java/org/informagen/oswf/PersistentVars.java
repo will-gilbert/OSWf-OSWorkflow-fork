@@ -36,11 +36,6 @@ import java.util.Properties;
  * <p>If a property is retrieved that does not exist, null (or the primitive
  * equivalent) is returned.</p>
  *
- * <p>If an Exception is encountered in the actual implementation of the
- * PropertySet that needs to be rethrown, it should be wrapped in a
- * ValueImplementationException
- * .</p>
- *
  * <p>Some PropertySet implementations may not store along side the data the original
  * type it was set as. This means that it could be retrieved using a get method of
  * a different type without throwing an InvalidValueTypeException (so long as the

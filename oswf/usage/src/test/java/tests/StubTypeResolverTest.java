@@ -11,7 +11,7 @@ import org.informagen.oswf.OSWfConfiguration;
 import org.informagen.oswf.impl.MemoryOSWfConfiguration;
 
 // OSWf - Store
-import org.informagen.oswf.impl.stores.MemoryStore;
+import org.informagen.oswf.impl.stores.MemoryWorkflowStore;
 
 // Logging
 import org.slf4j.Logger;
@@ -84,7 +84,7 @@ public class StubTypeResolverTest extends OSWfTestCase {
 
     @After
     public void teardown() {
-        MemoryStore.reset();
+        MemoryWorkflowStore.reset();
     }
 
     // Tests ====================================================================

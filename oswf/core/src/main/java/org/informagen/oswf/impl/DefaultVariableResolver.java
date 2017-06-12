@@ -104,7 +104,7 @@ public class DefaultVariableResolver implements VariableResolver, Serializable {
         // Check the transient variables map firist
         Object o = transientVars.get(actualVar);
         
-        // If not found, the check the persistent varialbes; beware that HibernateTypedMap
+        // If not found, the check the persistent varialbes; beware that HibernatePersistentVars
         //  is currently throwing an exception if the variable is not available.
         //  Need to fix this.
         if (o == null) {

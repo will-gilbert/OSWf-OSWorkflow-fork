@@ -11,7 +11,7 @@ import org.informagen.oswf.util.XMLUtils;
 
 
 import org.informagen.oswf.hibernate.HibernateConfigurationProvider;
-import org.informagen.oswf.HibernateTypedMap;
+import org.informagen.oswf.HibernatePersistentVars;
 import org.informagen.oswf.exceptions.PersistentVarsException;
 
 import org.hibernate.SessionFactory;

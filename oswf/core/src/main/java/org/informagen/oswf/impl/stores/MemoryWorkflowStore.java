@@ -3,7 +3,7 @@ package org.informagen.oswf.impl.stores;
 import org.informagen.oswf.impl.stores.AbstractWorkflowStore;
 
 import org.informagen.oswf.PersistentVars;
-import org.informagen.oswf.TypedMapStore;
+import org.informagen.oswf.PeristentVarsStore;
 
 import org.informagen.oswf.ProcessInstance;
 import org.informagen.oswf.WorkflowStore;
@@ -23,7 +23,7 @@ import org.informagen.oswf.query.WorkflowExpressionQuery;
 
 import org.informagen.oswf.impl.DefaultStep;
 import org.informagen.oswf.impl.DefaultProcessInstance;
-import org.informagen.oswf.impl.MemoryTypedMapStore;
+import org.informagen.oswf.impl.MemoryPeristentVarsStore;
 
 import java.security.InvalidParameterException;
 
@@ -45,7 +45,7 @@ import java.util.Iterator;
  * @author <a href="mailto:plightbo@hotmail.com">Pat Lightbody</a>
  */
 
-public class MemoryStore extends AbstractWorkflowStore  {
+public class MemoryWorkflowStore extends AbstractWorkflowStore  {
 
     // Instance Variables =====================================================================
 
@@ -58,18 +58,18 @@ public class MemoryStore extends AbstractWorkflowStore  {
     private static long nextStepId = 1;
 
 
-    public MemoryStore() {
-        setTypedMapStore(new MemoryTypedMapStore());
+    public MemoryWorkflowStore() {
+        setTypedMapStore(new MemoryPeristentVarsStore());
     }
 
-    public MemoryStore(Map<String,String> config, Map<String,Object> args) {
+    public MemoryWorkflowStore(Map<String,String> config, Map<String,Object> args) {
         super(config, args);
     }
 
     // WorkflowStore methods ==================================================================
 
-    public void setTypedMapStore(TypedMapStore typedMapStore) {
-        //throw new UnsupportedOperationException("CollectionStore uses MemoryTypedMapStore and cannot be set");
+    public void setTypedMapStore(PeristentVarsStore typedMapStore) {
+        //throw new UnsupportedOperationException("CollectionStore uses MemoryPeristentVarsStore and cannot be set");
     }
 
 
@@ -79,7 +79,7 @@ public class MemoryStore extends AbstractWorkflowStore  {
      */
 
     public PersistentVars getPersistentVars(long piid) {
-        return getTypedMapStore().getPersistentVars(piid);
+        return getPersistentVarsStore().getPersistentVars(piid);
     }
         
     public ProcessInstance createEntry(String workflowName) throws WorkflowStoreException {
@@ -155,11 +155,11 @@ public class MemoryStore extends AbstractWorkflowStore  {
     // End: WorkflowStore interface ===========================================================
     
 
-    // MemoryStore methods ============================================================
+    // MemoryWorkflowStore methods ============================================================
 
     /**
-    * Reset the MemoryStore so it doesn't have any information.
-    *   Useful for Unit Testing and when you don't want the MemoryStore to 
+    * Reset the MemoryWorkflowStore so it doesn't have any information.
+    *   Useful for Unit Testing and when you don't want the MemoryWorkflowStore to 
     *   have old data in it.
     */
 
@@ -173,7 +173,7 @@ public class MemoryStore extends AbstractWorkflowStore  {
         historyStepsCache.clear();
         propertySetCache.clear();
         
-        MemoryTypedMapStore.clear();
+        MemoryPeristentVarsStore.clear();
     }
 
     // Abstract method implementations =======================================================

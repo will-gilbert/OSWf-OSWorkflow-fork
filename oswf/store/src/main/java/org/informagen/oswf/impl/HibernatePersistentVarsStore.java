@@ -3,12 +3,12 @@ package org.informagen.oswf.impl;
 import org.informagen.oswf.PersistentVars;
 
 // OSWf -  PersistentVars Hibernate 3.x
-import org.informagen.oswf.HibernateTypedMap;
+import org.informagen.oswf.HibernatePersistentVars;
 import org.informagen.oswf.hibernate.HibernateConfigurationProvider;
 
 
 // OSWf - Core
-import org.informagen.oswf.TypedMapStore;
+import org.informagen.oswf.PeristentVarsStore;
 
 // OSWf - PersistentVars 
 import org.informagen.oswf.PersistentVars;
@@ -26,29 +26,29 @@ import java.util.HashMap;
 /**
  */
 
-public class HibernateTypedMapStore implements TypedMapStore  {
+public class HibernatePersistentVarsStore implements PeristentVarsStore  {
 
     private HibernateConfigurationProvider configurationProvider;
     private SessionFactory sessionFactory = null;
     private String propertySetName = null;
 
-    public HibernateTypedMapStore() {}
+    public HibernatePersistentVarsStore() {}
 
-    public HibernateTypedMapStore(Map<String,String> config, Map<String,Object> args) {
+    public HibernatePersistentVarsStore(Map<String,String> config, Map<String,Object> args) {
         this.sessionFactory = (SessionFactory)args.get("sessionFactory");
         this.propertySetName = config.get("propertySet");
     }
 
 
-    public HibernateTypedMapStore(String propertySetName) {
+    public HibernatePersistentVarsStore(String propertySetName) {
         this(propertySetName, null);
     }
 
-    public HibernateTypedMapStore(SessionFactory sessionFactory) {
+    public HibernatePersistentVarsStore(SessionFactory sessionFactory) {
         this(null, sessionFactory);
     }
 
-    public HibernateTypedMapStore(String propertySetName, SessionFactory sessionFactory) {
+    public HibernatePersistentVarsStore(String propertySetName, SessionFactory sessionFactory) {
         this.propertySetName = propertySetName;
         this.sessionFactory = sessionFactory;
     }
@@ -83,7 +83,7 @@ public class HibernateTypedMapStore implements TypedMapStore  {
         if (propertySetName != null)
             propertySet = PersistentVarsFactory.getInstance().createTypedMap(propertySetName, args);
         else {
-            propertySet = new HibernateTypedMap(null, args);
+            propertySet = new HibernatePersistentVars(null, args);
         }
 
         return propertySet;

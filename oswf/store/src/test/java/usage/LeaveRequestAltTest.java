@@ -17,15 +17,8 @@ import org.informagen.oswf.impl.DefaultOSWfConfiguration;
 
 import org.informagen.oswf.descriptors.WorkflowDescriptor;
 
-
 import org.informagen.oswf.PersistentVars;
 
-
-import org.informagen.oswf.TypedMapStore;
-
-
-// OSWf TypedMap delegate which installs a Custom TypedMap mapping
-import org.informagen.oswf.impl.HibernateTypedMapStore;
 
 // Java Util
 import java.util.Collection;

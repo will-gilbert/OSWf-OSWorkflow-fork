@@ -2,7 +2,7 @@
 
     <persistence>
         <workflow-store class="org.informagen.oswf.impl.stores.HibernateStore"/>  
-        <propertyset-store class="org.informagen.oswf.impl.HibernateTypedMapStore">
+        <propertyset-store class="org.informagen.oswf.impl.HibernatePersistentVarsStore">
             <parameter name="propertySet" value="US-Eastern" />
         </propertyset-store>    
     </persistence>
@@ -14,7 +14,7 @@
     <propertysets>
     
         <!-- Report time in the Eastern US timezone using a non-IS8601 format -->
-        <propertyset name="US-Eastern" class="org.informagen.oswf.HibernateTypedMap" >    
+        <propertyset name="US-Eastern" class="org.informagen.oswf.HibernatePersistentVars" >    
             <parameter name="timeZone" value="US/Eastern" />
             <parameter name="dateFormat" value="EEE, dd-MMM-yyyy hh:mm Z" />
         </propertyset>

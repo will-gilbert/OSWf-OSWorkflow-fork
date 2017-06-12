@@ -73,9 +73,9 @@ import javax.sql.DataSource;
  *
  * @author <a href="mailto:plightbo@hotmail.com">Pat Lightbody</a>
  */
-public class JDBCStore extends AbstractWorkflowStore implements WorkflowStore {
+public class JDBCWorkflowStore extends AbstractWorkflowStore implements WorkflowStore {
 
-    private static final Logger logger = LoggerFactory.getLogger(JDBCStore.class);
+    private static final Logger logger = LoggerFactory.getLogger(JDBCWorkflowStore.class);
 
     private static final String GENERATED = "generated";
 
@@ -107,7 +107,7 @@ public class JDBCStore extends AbstractWorkflowStore implements WorkflowStore {
 
     // M E T H O D S  -------------------------------------------------------------------------
 
-    public JDBCStore(Map<String,String> props, Map<String,Object> args) throws WorkflowStoreException {
+    public JDBCWorkflowStore(Map<String,String> props, Map<String,Object> args) throws WorkflowStoreException {
         super(props, args);
         
         entrySequence = getInitProperty(props, "entry.sequence", "SELECT nextVal('seq_os_wfentry')");

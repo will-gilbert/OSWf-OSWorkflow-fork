@@ -203,7 +203,7 @@ task schemaExport(dependsOn: ['jar'], type:JavaExec) {
       "src/main/resources/org/informagen/oswf/hbm/HibernateHistoryStep.hbm.xml",
       "src/main/resources/org/informagen/oswf/hbm/HibernateProcessInstance.hbm.xml",
       "src/main/resources/org/informagen/oswf/hbm/HibernateProcessDescription.hbm.xml",
-      "src/main/resources/org/informagen/oswf/hbm/HibernateTypedMapItem.hbm.xml",
+      "src/main/resources/org/informagen/oswf/hbm/HibernatePersistentVarsItem.hbm.xml",
       "src/main/resources/org/informagen/oswf/hbm/WorkflowDescriptor.hbm.xml"
    ]
     
