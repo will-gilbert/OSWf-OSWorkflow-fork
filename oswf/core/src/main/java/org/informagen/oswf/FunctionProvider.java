@@ -3,7 +3,7 @@ package org.informagen.oswf;
 // OSWf Exceptions
 import org.informagen.oswf.exceptions.WorkflowException;
 
-import org.informagen.typedmap.TypedMap;
+import org.informagen.oswf.PersistentVars;
 
 import java.util.Map;
 
@@ -46,5 +46,5 @@ public interface FunctionProvider {
      * instance of the workflow. Any change made to the propertyset are persisted to
      * the propertyset implementation's persistent store.
      */
-    public void execute(Map<String,Object> transientVars, Map<String,String> args, TypedMap persistentVars) throws WorkflowException;
+    public void execute(Map<String,Object> transientVars, Map<String,String> args, PersistentVars persistentVars) throws WorkflowException;
 }

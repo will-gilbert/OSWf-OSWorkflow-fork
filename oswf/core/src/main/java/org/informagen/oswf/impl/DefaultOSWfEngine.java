@@ -55,8 +55,8 @@ import org.informagen.oswf.exceptions.WorkflowLoaderException;
 
 
 // OpenSymphony PropertySet
-import org.informagen.typedmap.TypedMap;
-import org.informagen.typedmap.MemoryTypedMap;
+import org.informagen.oswf.PersistentVars;
+import org.informagen.oswf.MemoryPersistentVars;
 
 // Simple Logging
 import org.slf4j.Logger;
@@ -167,7 +167,7 @@ public class DefaultOSWfEngine implements OSWfEngine {
         
         boolean canInitialize = false;
         try {
-            TypedMap persistentVars = new MemoryTypedMap();
+            PersistentVars persistentVars = new MemoryPersistentVars();
             populateTransientMap(mockEntry, transientVars, EMPTY_LIST, new Integer(initialAction), EMPTY_LIST, persistentVars);
             canInitialize = canInitialize(workflowName, initialAction, transientVars, persistentVars);
         } catch (InvalidActionException e) {
@@ -211,7 +211,7 @@ public class DefaultOSWfEngine implements OSWfEngine {
         Long piid = pi.getProcessInstanceId();
 
         // Get PropertySet from the Workflow (persistence) store
-        TypedMap persistentVars = store.getTypedMap(piid);
+        PersistentVars persistentVars = store.getPersistentVars(piid);
         Map<String,Object> transientVars = new HashMap<String,Object>();
 
         if (inputs != null) {
@@ -267,7 +267,7 @@ public class DefaultOSWfEngine implements OSWfEngine {
 
         WorkflowDescriptor wf = getOSWfConfiguration().getWorkflow(pi.getWorkflowName());
         List<Step> currentSteps = store.findCurrentSteps(piid);
-        TypedMap persistentVars = store.getTypedMap(piid);
+        PersistentVars persistentVars = store.getPersistentVars(piid);
         Map<String,Object> transientVars = new HashMap<String,Object>();
 
         if (inputs != null) 
@@ -366,7 +366,7 @@ public class DefaultOSWfEngine implements OSWfEngine {
             }
 
             List<Integer> list = new ArrayList<Integer>();
-            TypedMap persistentVars = store.getTypedMap(piid);
+            PersistentVars persistentVars = store.getPersistentVars(piid);
             Map<String,Object> transientVars = (inputs == null) ? new HashMap<String,Object>() : new HashMap<String,Object>(inputs);
             Collection<Step> currentSteps = store.findCurrentSteps(piid);
 
@@ -494,23 +494,19 @@ public class DefaultOSWfEngine implements OSWfEngine {
 
 
     /**
-     * Get the TypedMap for the specified workflow ID
-     * @param id The workflow ID
+     * Get the persistent variables for the specified process id
+     * @param piid The process id
      */
-    public TypedMap getTypedMap(long piid) {
-        TypedMap persistentVars = null;
+    public PersistentVars getPersistentVars(long piid) {
+        PersistentVars persistentVars = null;
 
         try {
-            persistentVars = getPersistence().getTypedMap(piid);
+            persistentVars = getPersistence().getPersistentVars(piid);
         } catch (WorkflowStoreException e) {
-            logger.error("Error getting TypedMap for piid " + piid, e);
+            logger.error("Error getting persistent variables for piid " + piid, e);
         }
 
         return persistentVars;
-    }
-
-    public TypedMap getPersistentVars(long piid) {
-        return getTypedMap(piid);
     }
 
 
@@ -544,7 +540,7 @@ public class DefaultOSWfEngine implements OSWfEngine {
             ProcessInstance pi = store.findProcessInstance(piid);
             WorkflowDescriptor wd = getOSWfConfiguration().getWorkflow(pi.getWorkflowName());
 
-            TypedMap persistentVars = store.getTypedMap(piid);
+            PersistentVars persistentVars = store.getPersistentVars(piid);
             Map<String,Object> transientVars = (inputs == null) ? new HashMap<String,Object>() : new HashMap<String,Object>(inputs);
             Collection<Step> currentSteps = store.findCurrentSteps(piid);
             populateTransientMap(pi, transientVars, wd.getRegisters(), null, currentSteps, persistentVars);
@@ -737,7 +733,7 @@ public class DefaultOSWfEngine implements OSWfEngine {
 
         WorkflowDescriptor wf = getOSWfConfiguration().getWorkflow(pi.getWorkflowName());
 
-        TypedMap persistentVars = store.getTypedMap(piid);
+        PersistentVars persistentVars = store.getPersistentVars(piid);
         Map<String,Object> transientVars = new HashMap<String,Object>();
         populateTransientMap(pi, transientVars, wf.getRegisters(), null, store.findCurrentSteps(piid), persistentVars);
         executeFunction(wf.getTriggerFunction(triggerId), transientVars, persistentVars);
@@ -754,7 +750,7 @@ public class DefaultOSWfEngine implements OSWfEngine {
      * @param action The action descriptor
      * @return true if the action is available
      */
-    protected boolean isActionAvailable(ActionDescriptor action, Map<String,Object> transientVars, TypedMap persistentVars, int stepId) throws WorkflowException {
+    protected boolean isActionAvailable(ActionDescriptor action, Map<String,Object> transientVars, PersistentVars persistentVars, int stepId) throws WorkflowException {
         if (action == null) {
             return false;
         }
@@ -787,7 +783,7 @@ public class DefaultOSWfEngine implements OSWfEngine {
         return result.booleanValue();
     }
 
-    protected List<Integer> getAvailableActionsForStep(WorkflowDescriptor workflowDescriptor, Step step, Map<String,Object> transientVars, TypedMap persistentVars) throws WorkflowException {
+    protected List<Integer> getAvailableActionsForStep(WorkflowDescriptor workflowDescriptor, Step step, Map<String,Object> transientVars, PersistentVars persistentVars) throws WorkflowException {
 
         List<Integer> list = new ArrayList<Integer>();
 
@@ -847,7 +843,7 @@ public class DefaultOSWfEngine implements OSWfEngine {
                 throw new IllegalArgumentException("No such workflow " + pi.getWorkflowName());
             }
 
-            TypedMap persistentVars = store.getTypedMap(piid);
+            PersistentVars persistentVars = store.getPersistentVars(piid);
             Map<String,Object> transientVars = (inputs == null) ? new HashMap<String,Object>() : new HashMap<String,Object>(inputs);
             Collection<Step> currentSteps = store.findCurrentSteps(piid);
 
@@ -884,7 +880,7 @@ public class DefaultOSWfEngine implements OSWfEngine {
      * Get just auto action availables for a step
      */
 
-    protected List getAvailableAutoActionsForStep(WorkflowDescriptor wf, Step step, Map<String,Object> transientVars, TypedMap persistentVars) throws WorkflowException {
+    protected List getAvailableAutoActionsForStep(WorkflowDescriptor wf, Step step, Map<String,Object> transientVars, PersistentVars persistentVars) throws WorkflowException {
 
         List list = new ArrayList();
         StepDescriptor s = wf.getStep(step.getStepId());
@@ -915,7 +911,7 @@ public class DefaultOSWfEngine implements OSWfEngine {
         return list;
     }
 
-    protected Step getCurrentStep(WorkflowDescriptor wfDesc, int actionId, List<Step> currentSteps, Map<String,Object> transientVars, TypedMap persistentVars) throws WorkflowException {
+    protected Step getCurrentStep(WorkflowDescriptor wfDesc, int actionId, List<Step> currentSteps, Map<String,Object> transientVars, PersistentVars persistentVars) throws WorkflowException {
         
         // Only one step, return it as the current step
         if (currentSteps.size() == 1) {
@@ -937,7 +933,7 @@ public class DefaultOSWfEngine implements OSWfEngine {
         return getOSWfConfiguration().getWorkflowStore();
     }
 
-    protected boolean canInitialize(String workflowName, int initialAction, Map<String,Object> transientVars, TypedMap persistentVars) throws WorkflowException {
+    protected boolean canInitialize(String workflowName, int initialAction, Map<String,Object> transientVars, PersistentVars persistentVars) throws WorkflowException {
 
         // Attempt to get the 'initialAction' from the PD
         WorkflowDescriptor wf = getOSWfConfiguration().getWorkflow(workflowName);
@@ -1012,7 +1008,7 @@ public class DefaultOSWfEngine implements OSWfEngine {
                     Step currentStep, 
                     long[] previousIds, 
                     Map<String,Object> transientVars, 
-                    TypedMap persistentVars) throws WorkflowException {
+                    PersistentVars persistentVars) throws WorkflowException {
                         
 
         try {
@@ -1124,7 +1120,7 @@ public class DefaultOSWfEngine implements OSWfEngine {
      * @param persistentVars the persistence variables
      */
 
-    protected void executeFunction(FunctionDescriptor function, Map<String,Object> transientVars, TypedMap persistentVars) throws WorkflowException {
+    protected void executeFunction(FunctionDescriptor function, Map<String,Object> transientVars, PersistentVars persistentVars) throws WorkflowException {
 
         if (function != null) {
 
@@ -1155,7 +1151,7 @@ public class DefaultOSWfEngine implements OSWfEngine {
         }
     }
 
-    protected boolean passesCondition(ConditionDescriptor conditionDesc, Map<String,Object> transientVars, TypedMap persistentVars, int currentStepId) throws WorkflowException {
+    protected boolean passesCondition(ConditionDescriptor conditionDesc, Map<String,Object> transientVars, PersistentVars persistentVars, int currentStepId) throws WorkflowException {
 
         String type = conditionDesc.getType();
         String name = conditionDesc.getName();
@@ -1207,7 +1203,7 @@ public class DefaultOSWfEngine implements OSWfEngine {
         }
     }
 
-    protected boolean passesConditions(String conditionType, List conditions, Map<String,Object> transientVars, TypedMap persistentVars, int currentStepId) throws WorkflowException {
+    protected boolean passesConditions(String conditionType, List conditions, Map<String,Object> transientVars, PersistentVars persistentVars, int currentStepId) throws WorkflowException {
 
         if ((conditions == null) || (conditions.size() == 0))
             return true;
@@ -1244,7 +1240,7 @@ public class DefaultOSWfEngine implements OSWfEngine {
             return false;
     }
 
-    protected boolean passesConditions(ConditionsDescriptor descriptor, Map<String,Object> transientVars, TypedMap persistentVars, int currentStepId) throws WorkflowException {
+    protected boolean passesConditions(ConditionsDescriptor descriptor, Map<String,Object> transientVars, PersistentVars persistentVars, int currentStepId) throws WorkflowException {
         if (descriptor == null) {
             return true;
         }
@@ -1260,7 +1256,7 @@ public class DefaultOSWfEngine implements OSWfEngine {
      *  - Add Register variable name and value to transientVars
      */
 
-    protected void populateTransientMap(ProcessInstance pi, Map<String,Object> transientVars, List<RegisterDescriptor> registers, Integer actionId, Collection<Step> currentSteps, TypedMap persistentVars) throws WorkflowException {
+    protected void populateTransientMap(ProcessInstance pi, Map<String,Object> transientVars, List<RegisterDescriptor> registers, Integer actionId, Collection<Step> currentSteps, PersistentVars persistentVars) throws WorkflowException {
 
         transientVars.put("context", context);
         transientVars.put("pi", pi);
@@ -1322,7 +1318,7 @@ public class DefaultOSWfEngine implements OSWfEngine {
                                      ActionDescriptor action, 
                                      Map<String,Object> transientVars, 
                                      Map<String,Object> inputs, 
-                                     TypedMap persistentVars) throws WorkflowException {
+                                     PersistentVars persistentVars) throws WorkflowException {
 
 
         // Obtain and ensure we have an empty state cache
@@ -1603,7 +1599,7 @@ public class DefaultOSWfEngine implements OSWfEngine {
         return false;
     }
 
-    protected void executeFunctions(List<FunctionDescriptor> functions, Map<String,Object> transientVars, TypedMap persistentVars) throws WorkflowException {
+    protected void executeFunctions(List<FunctionDescriptor> functions, Map<String,Object> transientVars, PersistentVars persistentVars) throws WorkflowException {
         
         if(functions == null)
             return;
@@ -1623,7 +1619,7 @@ public class DefaultOSWfEngine implements OSWfEngine {
      * @param persistentVars the persistence variables
      * @throws InvalidInputException if the input is deemed invalid by any validator
      */
-    protected void verifyInputs(ProcessInstance pi, List<ValidatorDescriptor> validators, Map<String,Object> transientVars, TypedMap persistentVars) throws WorkflowException {
+    protected void verifyInputs(ProcessInstance pi, List<ValidatorDescriptor> validators, Map<String,Object> transientVars, PersistentVars persistentVars) throws WorkflowException {
 
 
         for(ValidatorDescriptor input : validators) {

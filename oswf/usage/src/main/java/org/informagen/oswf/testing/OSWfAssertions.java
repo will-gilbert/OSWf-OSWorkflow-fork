@@ -7,8 +7,8 @@ import org.informagen.oswf.Step;
 
 import org.informagen.oswf.descriptors.WorkflowDescriptor;
 
-// OSWf - TypedMap
-import org.informagen.typedmap.TypedMap;
+// OSWf - Persistent Variables
+import org.informagen.oswf.PersistentVars;
 
 
 // Java Collections
@@ -84,7 +84,7 @@ public class OSWfAssertions  {
      */
 
     public static void assertProperty(OSWfEngine wfEngine, long piid, String property, String result) {
-        TypedMap propertySet = wfEngine.getTypedMap(piid);
+        PersistentVars propertySet = wfEngine.getPersistentVars(piid);
         assertEquals(result, propertySet.getString(property));
     }
 

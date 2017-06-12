@@ -1,6 +1,6 @@
 package org.informagen.oswf.functions;
 
-import org.informagen.typedmap.TypedMap;
+import org.informagen.oswf.PersistentVars;
 
 import org.informagen.oswf.FunctionProvider;
 import org.informagen.oswf.WorkflowContext;
@@ -19,7 +19,7 @@ import java.util.Map;
 
 public class GetStringProperty implements FunctionProvider {
 
-    public void execute(Map<String,Object> transientVars, Map<String,String> args, TypedMap persistentVars) {
+    public void execute(Map<String,Object> transientVars, Map<String,String> args, PersistentVars persistentVars) {
 
         // Expects a name/variable pair as argument inputs
         String name = args.get("name");

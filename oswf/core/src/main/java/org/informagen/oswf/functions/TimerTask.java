@@ -13,7 +13,7 @@ import org.informagen.oswf.impl.DefaultOSWfEngine;
 import org.informagen.oswf.descriptors.WorkflowDescriptor;
 
 
-import org.informagen.typedmap.TypedMap;
+import org.informagen.oswf.PersistentVars;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +34,7 @@ public class TimerTask implements FunctionProvider {
     public static OSWfEngine wfEngine = new DefaultOSWfEngine(ACTOR); 
     public static Timer timer = new Timer();
     
-    public void execute(Map<String,Object> transientVars, Map<String,String> args, TypedMap persistentVars) throws WorkflowException {
+    public void execute(Map<String,Object> transientVars, Map<String,String> args, PersistentVars persistentVars) throws WorkflowException {
 
         ProcessInstance processInstance = (ProcessInstance)transientVars.get("pi");
 

@@ -2,10 +2,10 @@ package tests.typedmap;
 
 
 // OSWf - TypedMap
-import org.informagen.typedmap.TypedMap;
-import org.informagen.typedmap.Type;
-import org.informagen.typedmap.util.XMLUtils;
-import org.informagen.typedmap.exceptions.TypedMapException;
+import org.informagen.oswf.PersistentVars;
+import org.informagen.oswf.Type;
+import org.informagen.oswf.util.XMLUtils;
+import org.informagen.oswf.exceptions.PersistentVarsException;
 
 import java.lang.StringBuffer;
 import java.util.Date;
@@ -28,7 +28,7 @@ public abstract class AbstractTestClass {
     protected final String TEXT_VALUE = "12345678901234567890123456789012345678901234567890" + "12345678901234567890123456789012345678901234567890" + "12345678901234567890123456789012345678901234567890" + "12345678901234567890123456789012345678901234567890" + "12345678901234567890123456789012345678901234567890" + "12345678901234567890123456789012345678901234567890";
     protected final String XML_STRING = "<property-set>" + "<property key=\"testBoolean\" type=\"boolean\">true</property>" + "<property key=\"testData\" type=\"data\">dmFsdWUx</property>" + "<property key=\"testDate\" type=\"date\">2004-05-23 10:06:00</property>" + "<property key=\"testDouble\" type=\"double\">10.245</property>" + "<property key=\"testInt\" type=\"int\">7</property>" + "<property key=\"testLong\" type=\"long\">100000</property>" + "<property key=\"testObject\" type=\"object\">rO0ABXNyAC5jb20ub3BlbnN5bXBob255Lm1vZHVsZS5wcm9wZXJ0eXNldC5UZXN0T2JqZWN0A6KYOgP1WoYCAAFKAAJpZHhwAAAAAAAAAAE=</property>" + "<property key=\"testString\" type=\"string\">value1</property>" + "<property key=\"testProperties\" type=\"properties\">" + "<properties><property key=\"prop1\" type=\"string\">value1</property></properties>" + "</property>" + "<property key=\"testText\" type=\"text\"><![CDATA[" + TEXT_VALUE + "]]></property>" + "<property key=\"testUnknown\" type=\"unknown\">unknown</property>" + "</property-set>";
 
-    protected TypedMap typedMap;
+    protected PersistentVars typedMap;
 
 
     @Test
@@ -58,7 +58,7 @@ public abstract class AbstractTestClass {
         try {
             typedMap.remove();
             assertEquals(0, typedMap.getKeys().size());
-        } catch (TypedMapException e) {
+        } catch (PersistentVarsException e) {
             // this is ok too for read only PropertySets
         }
     }
@@ -72,7 +72,7 @@ public abstract class AbstractTestClass {
         try {
             typedMap.remove("test1");
             assertEquals(1, typedMap.getKeys().size());
-        } catch (TypedMapException e) {
+        } catch (PersistentVarsException e) {
             // this is ok too for read only PropertySets
         }
     }

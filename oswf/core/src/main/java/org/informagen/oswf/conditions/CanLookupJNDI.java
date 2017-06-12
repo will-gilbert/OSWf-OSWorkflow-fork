@@ -1,6 +1,6 @@
 package org.informagen.oswf.conditions;
 
-import org.informagen.typedmap.TypedMap;
+import org.informagen.oswf.PersistentVars;
 
 import org.informagen.oswf.Condition;
 
@@ -16,7 +16,7 @@ import javax.naming.NamingException;
 
 public class CanLookupJNDI implements Condition {
 
-    public boolean passesCondition(Map<String,Object> transientVars, Map<String,String> args, TypedMap persistentVars) throws WorkflowException {
+    public boolean passesCondition(Map<String,Object> transientVars, Map<String,String> args, PersistentVars persistentVars) throws WorkflowException {
 
         String location = (String) args.get(OSWfEngine.JNDI_LOCATION);
         location = location.trim();

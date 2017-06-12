@@ -3,7 +3,7 @@ package org.informagen.oswf.validators;
 import bsh.Interpreter;
 import bsh.TargetError;
 
-import org.informagen.typedmap.TypedMap;
+import org.informagen.oswf.PersistentVars;
 
 import org.informagen.oswf.Validator;
 import org.informagen.oswf.WorkflowContext;
@@ -33,7 +33,7 @@ public class BeanShellValidator implements Validator {
 
     // M E T H O D S  -------------------------------------------------------------------------
 
-    public void validate(Map<String,Object> transientVars, Map<String,String> args, TypedMap persistentVars) throws WorkflowException {
+    public void validate(Map<String,Object> transientVars, Map<String,String> args, PersistentVars persistentVars) throws WorkflowException {
  
         Interpreter interpreter = new Interpreter();
         ClassLoader loader = Thread.currentThread().getContextClassLoader();

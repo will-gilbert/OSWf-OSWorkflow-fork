@@ -2,7 +2,7 @@ package org.informagen.oswf.security;
 
 import org.informagen.oswf.security.User;
 
-import org.informagen.typedmap.TypedMap;
+import org.informagen.oswf.PersistentVars;
 
 // Java - Security
 import java.security.Principal;
@@ -33,7 +33,7 @@ public interface Role extends Principal {
         void removeUser(User user); 
 
         // Extra properties associated with this Role
-        TypedMap getTypedMap();
+        PersistentVars getPersistentVars();
          
 
 }

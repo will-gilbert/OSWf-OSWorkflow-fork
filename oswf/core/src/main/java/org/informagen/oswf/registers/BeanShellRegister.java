@@ -4,7 +4,7 @@ import bsh.EvalError;
 import bsh.Interpreter;
 import bsh.TargetError;
 
-import org.informagen.typedmap.TypedMap;
+import org.informagen.oswf.PersistentVars;
 
 import org.informagen.oswf.Register;
 import org.informagen.oswf.WorkflowContext;
@@ -25,7 +25,7 @@ import java.util.Map;
  */
 public class BeanShellRegister implements Register {
 
-    public Object registerVariable(WorkflowContext context, ProcessInstance pi, Map<String,String> args, TypedMap persistentVars) throws WorkflowException {
+    public Object registerVariable(WorkflowContext context, ProcessInstance pi, Map<String,String> args, PersistentVars persistentVars) throws WorkflowException {
 
         String script = (String) args.get(OSWfEngine.BSH_SCRIPT);
 

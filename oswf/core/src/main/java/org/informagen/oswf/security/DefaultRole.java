@@ -2,8 +2,8 @@ package org.informagen.oswf.security;
 
 import org.informagen.oswf.security.User;
 
-import org.informagen.typedmap.TypedMap;
-import org.informagen.typedmap.MemoryTypedMap;
+import org.informagen.oswf.PersistentVars;
+import org.informagen.oswf.MemoryPersistentVars;
 
 // Java - Security
 import java.security.Principal;
@@ -21,15 +21,15 @@ public class DefaultRole implements Role {
 
         final Set<User> users = new HashSet<User>();
         final String name;
-        TypedMap propertySet = null;
+        PersistentVars persistentVars = null;
 
         public DefaultRole(String name) {
             this.name = name;
         }
 
-        public DefaultRole(String name, TypedMap propertySet) {
+        public DefaultRole(String name, PersistentVars persistentVars) {
             this.name = name;
-            this.propertySet = propertySet;
+            this.persistentVars = persistentVars;
         }
  
         public String getName() {
@@ -67,11 +67,11 @@ public class DefaultRole implements Role {
         } 
 
         // Extra properties associated with this Role
-        public TypedMap getTypedMap() {
-            if(propertySet == null)
-                propertySet = new MemoryTypedMap();
+        public PersistentVars getPersistentVars() {
+            if(persistentVars == null)
+                persistentVars = new MemoryPersistentVars();
 
-            return propertySet;
+            return persistentVars;
         }
 
         public String toString() {

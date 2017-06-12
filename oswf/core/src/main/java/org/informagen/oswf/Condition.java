@@ -3,7 +3,7 @@ package org.informagen.oswf;
 // OSWf Exceptions
 import org.informagen.oswf.exceptions.WorkflowException;
 
-import org.informagen.typedmap.TypedMap;
+import org.informagen.oswf.PersistentVars;
 
 import java.util.Map;
 
@@ -47,5 +47,5 @@ public interface Condition {
      * instance of the workflow. Any change made to this will be seen on the next
      * function call in the workflow lifetime.
      */
-    public boolean passesCondition(Map<String,Object> transientVars, Map<String,String> args, TypedMap persistentVars) throws WorkflowException;
+    public boolean passesCondition(Map<String,Object> transientVars, Map<String,String> args, PersistentVars persistentVars) throws WorkflowException;
 }

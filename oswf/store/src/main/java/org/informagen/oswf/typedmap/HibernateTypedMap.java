@@ -1,24 +1,24 @@
-package org.informagen.typedmap;
+package org.informagen.oswf;
 
 // This package
-import org.informagen.typedmap.hibernate.HibernateTypedMapItem;
-import org.informagen.typedmap.hibernate.HibernateTypedMapDAO;
-import org.informagen.typedmap.hibernate.HibernateConfigurationProvider;
+import org.informagen.oswf.hibernate.HibernateTypedMapItem;
+import org.informagen.oswf.hibernate.HibernateTypedMapDAO;
+import org.informagen.oswf.hibernate.HibernateConfigurationProvider;
 
 
-// OSWf - TypedMap
-import org.informagen.typedmap.AbstractTypedMap;
-import org.informagen.typedmap.Type;
-import org.informagen.typedmap.exceptions.TypedMapException;
-import org.informagen.typedmap.exceptions.IllegalValueException;
+// OSWf - PersistentVars
+import org.informagen.oswf.AbstractPersistentVars;
+import org.informagen.oswf.Type;
+import org.informagen.oswf.exceptions.PersistentVarsException;
+import org.informagen.oswf.exceptions.IllegalValueException;
 
 // OSWf - Utilities 
 import org.informagen.oswf.util.ClassLoaderHelper;
 
 // OSWf - TypedMap Utililites
-import org.informagen.typedmap.util.ByteArray;
-import org.informagen.typedmap.util.XMLUtils;
-import org.informagen.typedmap.util.Base64;
+import org.informagen.oswf.util.ByteArray;
+import org.informagen.oswf.util.XMLUtils;
+import org.informagen.oswf.util.Base64;
 
 // Logging
 import org.slf4j.Logger;
@@ -77,7 +77,7 @@ import javax.xml.parsers.ParserConfigurationException;
  */
 
 
-public class HibernateTypedMap extends AbstractTypedMap {
+public class HibernateTypedMap extends AbstractPersistentVars {
 
     //~ Static fields/initializers /////////////////////////////////////////////
 
@@ -108,14 +108,14 @@ public class HibernateTypedMap extends AbstractTypedMap {
         return configProvider;
     }
 
-    public Collection<String> getKeys(String itemKey, Type type) throws TypedMapException {
+    public Collection<String> getKeys(String itemKey, Type type) throws PersistentVarsException {
         return configProvider.getPersistentVarsDAO().getKeys(piid, itemKey, type);
     }
 
-    public Type getType(String itemKey) throws TypedMapException {
+    public Type getType(String itemKey) throws PersistentVarsException {
         
         if(exists(itemKey) == false)
-            throw new TypedMapException("itemKey: " + itemKey + " does not exist.");
+            throw new PersistentVarsException("itemKey: " + itemKey + " does not exist.");
 
         // Convert database 'int' to Type enum
         return Type.getType(findByKey(itemKey).getType());
@@ -126,7 +126,7 @@ public class HibernateTypedMap extends AbstractTypedMap {
         try {
             findByKey(itemKey);
             return (findByKey(itemKey) != null);
-        } catch (TypedMapException e) {
+        } catch (PersistentVarsException e) {
             return false;
         }
     }
@@ -201,24 +201,24 @@ public class HibernateTypedMap extends AbstractTypedMap {
 
 
 
-    public void remove(String itemKey) throws TypedMapException {
+    public void remove(String itemKey) throws PersistentVarsException {
         configProvider.getPersistentVarsDAO().remove(piid, itemKey);
     }
 
 
-    public void remove() throws TypedMapException {
+    public void remove() throws PersistentVarsException {
         configProvider.getPersistentVarsDAO().remove(piid);
     }
 
 
-    protected void setImpl(Type type, String itemKey, Object value) throws TypedMapException {
+    protected void setImpl(Type type, String itemKey, Object value) throws PersistentVarsException {
 
         HibernateTypedMapItem item = configProvider.getPersistentVarsDAO().findByKey(piid, itemKey);
 
         if (item == null) 
             item = configProvider.getPersistentVarsDAO().create(piid, itemKey);
         else if (Type.getType(item.getType()) != type) 
-            throw new TypedMapException("Existing key '" + itemKey + "' does not have matching type of " + type);
+            throw new PersistentVarsException("Existing key '" + itemKey + "' does not have matching type of " + type);
 
         switch (type) {
             case BOOLEAN:
@@ -286,12 +286,12 @@ public class HibernateTypedMap extends AbstractTypedMap {
                     }
                         
                 } catch (IOException ioException) {
-                    throw new TypedMapException(ioException.getMessage());
+                    throw new PersistentVarsException(ioException.getMessage());
                 }
                 break;
     
             default:
-                throw new TypedMapException("type " + type + " not supported");
+                throw new PersistentVarsException("type " + type + " not supported");
         }
 
         // Set item 'type' and save via DAO
@@ -322,10 +322,10 @@ public class HibernateTypedMap extends AbstractTypedMap {
         }
     }
 
-    protected Object get(Type type, String itemKey) throws TypedMapException {
+    protected Object get(Type type, String itemKey) throws PersistentVarsException {
 
         if(supportsType(type) == false)
-            throw new TypedMapException("Type " + type(type) + " not supported");
+            throw new PersistentVarsException("Type " + type(type) + " not supported");
 
         // Move this snippet into getImpl() -----------------
         HibernateTypedMapItem item = findByKey(itemKey);
@@ -488,11 +488,11 @@ public class HibernateTypedMap extends AbstractTypedMap {
                     }
                     
                 } catch (SAXException saxException) {
-                    throw new TypedMapException(saxException.getMessage());
+                    throw new PersistentVarsException(saxException.getMessage());
                 } catch (ParserConfigurationException parserConfigurationException) {
-                    throw new TypedMapException(parserConfigurationException.getMessage());
+                    throw new PersistentVarsException(parserConfigurationException.getMessage());
                 } catch (IOException ioException) {
-                    throw new TypedMapException(ioException.getMessage());
+                    throw new PersistentVarsException(ioException.getMessage());
                 }
                 
         }
@@ -508,17 +508,17 @@ public class HibernateTypedMap extends AbstractTypedMap {
               .append(type.getName())
               .append("'");
                     
-        throw new TypedMapException(buffer.toString()); 
+        throw new PersistentVarsException(buffer.toString()); 
 
     }
 
 
-    private HibernateTypedMapItem findByKey(String itemKey) throws TypedMapException {
+    private HibernateTypedMapItem findByKey(String itemKey) throws PersistentVarsException {
         return configProvider.getPersistentVarsDAO().findByKey(piid, itemKey);
     }
 
 
-    private String encodeObject(Object object) throws TypedMapException {
+    private String encodeObject(Object object) throws PersistentVarsException {
     
         ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
     
@@ -529,13 +529,13 @@ public class HibernateTypedMap extends AbstractTypedMap {
             byteStream.flush();
             byteStream.close();
         } catch (IOException ioException) {
-            throw new TypedMapException(ioException.getMessage());
+            throw new PersistentVarsException(ioException.getMessage());
         }
 
         return new String(Base64.getInstance().encode(byteStream.toByteArray()));
     }
 
-    private Object decodeObject(String base64String) throws TypedMapException {
+    private Object decodeObject(String base64String) throws PersistentVarsException {
     
         Object object = null;
         
@@ -548,9 +548,9 @@ public class HibernateTypedMap extends AbstractTypedMap {
             objectStream.close();
             inputStream.close();
         } catch (ClassNotFoundException classNotFoundException) {
-            throw new TypedMapException(classNotFoundException.getMessage());
+            throw new PersistentVarsException(classNotFoundException.getMessage());
         } catch (IOException ioException) {
-            throw new TypedMapException(ioException.getMessage());
+            throw new PersistentVarsException(ioException.getMessage());
         }
 
         return object;

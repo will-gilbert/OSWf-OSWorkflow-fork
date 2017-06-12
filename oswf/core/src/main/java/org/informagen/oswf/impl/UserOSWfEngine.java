@@ -16,8 +16,8 @@ import org.informagen.oswf.security.User;
 // OSWf - Exceptions
 import org.informagen.oswf.exceptions.WorkflowException;
 
-// OSWF - TypedMap
-import org.informagen.typedmap.TypedMap;
+// OSWF - Persistent Variables
+import org.informagen.oswf.PersistentVars;
 
 // Java - Collections
 import java.util.Collection;
@@ -41,7 +41,7 @@ public class UserOSWfEngine extends DefaultOSWfEngine {
         this.user = user;
     }
 
-    protected void populateTransientMap(ProcessInstance processInstance, Map<String,Object> transientVars, List<RegisterDescriptor> registers, Integer actionId, Collection<Step> currentSteps, TypedMap persistentVars) throws WorkflowException {
+    protected void populateTransientMap(ProcessInstance processInstance, Map<String,Object> transientVars, List<RegisterDescriptor> registers, Integer actionId, Collection<Step> currentSteps, PersistentVars persistentVars) throws WorkflowException {
         super.populateTransientMap(processInstance, transientVars, registers, actionId, currentSteps, persistentVars);
         transientVars.put("actor", user.getName());
     }

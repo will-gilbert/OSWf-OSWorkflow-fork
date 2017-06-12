@@ -18,7 +18,7 @@ import org.informagen.oswf.exceptions.InvalidInputException;
 
 import org.informagen.oswf.impl.stores.MemoryStore;
 
-import org.informagen.typedmap.TypedMap;
+import org.informagen.oswf.PersistentVars;
 
 import org.informagen.oswf.Step;
 import org.informagen.oswf.ProcessInstance;
@@ -223,7 +223,7 @@ public class LeaveRequestTest extends OSWfTestCase implements Constants {
         //Get final status
         assertProcessInstanceState(wfEngine, piid, ProcessInstanceState.COMPLETED);
         
-        TypedMap propertySet = wfEngine.getTypedMap(piid);
+        PersistentVars propertySet = wfEngine.getPersistentVars(piid);
         
         //Get final result value
         assertProperty(wfEngine, piid, "Employee Request", "approved");
@@ -272,7 +272,7 @@ public class LeaveRequestTest extends OSWfTestCase implements Constants {
         //Get final status
         assertProcessInstanceState(wfEngine, piid, ProcessInstanceState.COMPLETED);
         
-        TypedMap propertySet = wfEngine.getTypedMap(piid);
+        PersistentVars propertySet = wfEngine.getPersistentVars(piid);
         
         //Get final result value
         assertProperty(wfEngine, piid, "Employee Request", "approved");

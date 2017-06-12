@@ -1,6 +1,6 @@
 package org.informagen.oswf.registers;
 
-import org.informagen.typedmap.TypedMap;
+import org.informagen.oswf.PersistentVars;
 
 import org.informagen.oswf.Register;
 import org.informagen.oswf.WorkflowContext;
@@ -27,7 +27,7 @@ import javax.naming.NamingException;
 public class JNDIRegister implements Register {
     // M E T H O D S  -------------------------------------------------------------------------
 
-    public Object registerVariable(WorkflowContext context, ProcessInstance entry, Map<String,String> args, TypedMap persistentVars) throws WorkflowException {
+    public Object registerVariable(WorkflowContext context, ProcessInstance entry, Map<String,String> args, PersistentVars persistentVars) throws WorkflowException {
         String location = (String) args.get(OSWfEngine.JNDI_LOCATION);
 
         if (location == null) {

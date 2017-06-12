@@ -38,9 +38,9 @@ import org.informagen.oswf.exceptions.InvalidInputException;
 import org.informagen.oswf.exceptions.InvalidActionException;
 
 // OSWf - PropertSet
-import org.informagen.typedmap.TypedMap;
-import org.informagen.typedmap.Type;
-import org.informagen.typedmap.exceptions.InvalidValueTypeException;
+import org.informagen.oswf.PersistentVars;
+import org.informagen.oswf.Type;
+import org.informagen.oswf.exceptions.InvalidValueTypeException;
 
 
 
@@ -220,14 +220,14 @@ public class OSWfServiceImpl implements OSWfService {
        // Process Variables; interate over all types but access as 'String' for display
        try { 
            
-           TypedMap propertySet = wfEngine.getTypedMap(piid);
+           PersistentVars persistentVars = wfEngine.getPersistentVars(piid);
 
            for(Type type : Type.getTypes())
-               for(String key : propertySet.getKeys(type) ) 
+               for(String key : persistentVars.getKeys(type) ) 
                    dto.addProcessVariable(new ProcessVariable()
                       .name(key)
                       .type(type.getName())
-                      .value(propertySet.getString(key))
+                      .value(persistentVars.getString(key))
                    ); 
            
        } catch (InvalidValueTypeException invalidPropertyTypeException) {

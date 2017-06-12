@@ -2,15 +2,13 @@ package org.informagen.oswf;
 
 import org.informagen.oswf.ProcessInstanceState;
 
- 
-// TypedMap
-import org.informagen.typedmap.TypedMap;
 
 
 // OSWf Core
 import org.informagen.oswf.OSWfConfiguration;
 import org.informagen.oswf.Step;
 import org.informagen.oswf.StepCondition;
+import org.informagen.oswf.PersistentVars;
 import org.informagen.oswf.descriptors.WorkflowDescriptor;
 import org.informagen.oswf.query.WorkflowExpressionQuery;
 
@@ -71,12 +69,11 @@ public interface OSWfEngine {
     List<Step> getHistorySteps(long piid);
 
     /**
-     * Get the TypedMap for the specified workflow process nstance id
+     * Get the PersistentVars for the specified workflow process nstance id
      * @param piid The workflow instance id.
      */
 
-    TypedMap getTypedMap(long piid);
-    TypedMap getPersistentVars(long piid);
+    PersistentVars getPersistentVars(long piid);
 
     /**
      * Get a collection (Strings) of currently defined stepConditions for the specified workflow instance.

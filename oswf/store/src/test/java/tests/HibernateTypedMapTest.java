@@ -5,14 +5,14 @@ import org.informagen.oswf.impl.DefaultOSWfConfiguration;
 import org.informagen.oswf.impl.DefaultOSWfEngine;
 import org.informagen.oswf.OSWfConfiguration;
 
-import org.informagen.typedmap.TypedMap;
-import org.informagen.typedmap.Type;
-import org.informagen.typedmap.util.XMLUtils;
+import org.informagen.oswf.PersistentVars;
+import org.informagen.oswf.Type;
+import org.informagen.oswf.util.XMLUtils;
 
 
-import org.informagen.typedmap.hibernate.HibernateConfigurationProvider;
-import org.informagen.typedmap.HibernateTypedMap;
-import org.informagen.typedmap.exceptions.TypedMapException;
+import org.informagen.oswf.hibernate.HibernateConfigurationProvider;
+import org.informagen.oswf.HibernateTypedMap;
+import org.informagen.oswf.exceptions.PersistentVarsException;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -48,7 +48,7 @@ public class HibernateTypedMapTest implements usage.LeaveRequest {
 
     public static final String RDBMS_CONFIGURATION = System.getProperty("rdbms-configuration");
 
-    private TypedMap persistentVars;
+    private PersistentVars persistentVars;
     private SessionFactory sessionFactory = null;
     
     @Before
@@ -203,7 +203,7 @@ public class HibernateTypedMapTest implements usage.LeaveRequest {
         try {
             persistentVars.getInt("date");
             fail("No conversion from date to int");
-        } catch (TypedMapException pe) {
+        } catch (PersistentVarsException pe) {
             assertEquals("Key 'date' of type 'DATE' does not have conversion to type 'INT'",
                         pe.getMessage());
         }
@@ -240,7 +240,7 @@ public class HibernateTypedMapTest implements usage.LeaveRequest {
         try {
             persistentVars.getDouble("date");
             fail("No conversion from date to double");
-        } catch (TypedMapException pe) {
+        } catch (PersistentVarsException pe) {
             assertEquals("Key 'date' of type 'DATE' does not have conversion to type 'DOUBLE'", 
                        pe.getMessage());
         }

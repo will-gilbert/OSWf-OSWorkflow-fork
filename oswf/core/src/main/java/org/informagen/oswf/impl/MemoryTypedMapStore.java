@@ -1,9 +1,9 @@
 package org.informagen.oswf.impl;
 
+import org.informagen.oswf.PersistentVars;
 import org.informagen.oswf.TypedMapStore;
 
-import org.informagen.typedmap.TypedMap;
-import org.informagen.typedmap.MemoryTypedMap;
+import org.informagen.oswf.MemoryPersistentVars;
 
 // Java - Collections
 import java.util.Map;
@@ -16,7 +16,7 @@ import java.util.HashMap;
  
 public class MemoryTypedMapStore implements TypedMapStore {
 
-    private static Map<Long,MemoryTypedMap> persistentVars = new HashMap();
+    private static Map<Long,PersistentVars> persistentVarsMap = new HashMap();
     
     public MemoryTypedMapStore() {
         // no-op
@@ -26,18 +26,18 @@ public class MemoryTypedMapStore implements TypedMapStore {
         // no-op
     }
 
-    // Find the TypedMap for this process instance
-    public TypedMap getTypedMap(long piid) {
+    // Find the persistent variables for this process instance
+    public PersistentVars getPersistentVars(long piid) {
         
-        if(persistentVars.containsKey(piid) == false)
-            persistentVars.put(piid, new MemoryTypedMap());
+        if(persistentVarsMap.containsKey(piid) == false)
+            persistentVarsMap.put(piid, new MemoryPersistentVars());
         
-        return persistentVars.get(piid);
+        return persistentVarsMap.get(piid);
     }
     
     // Useful for Unit Testing
     public static void clear() {
-        persistentVars.clear();
+        persistentVarsMap.clear();
     }
     
 }

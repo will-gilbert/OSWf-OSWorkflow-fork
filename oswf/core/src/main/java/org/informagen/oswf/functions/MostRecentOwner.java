@@ -1,6 +1,6 @@
 package org.informagen.oswf.functions;
 
-import org.informagen.typedmap.TypedMap;
+import org.informagen.oswf.PersistentVars;
 
 import org.informagen.oswf.FunctionProvider;
 import org.informagen.oswf.Step;
@@ -31,7 +31,7 @@ public class MostRecentOwner implements FunctionProvider {
 
     // M E T H O D S  -------------------------------------------------------------------------
 
-    public void execute(Map<String,Object> transientVars, Map<String,String> args, TypedMap persistentVars) throws WorkflowException {
+    public void execute(Map<String,Object> transientVars, Map<String,String> args, PersistentVars persistentVars) throws WorkflowException {
 
         // Expects a stepId name/value pair
         String stepIdString = args.get("stepId");

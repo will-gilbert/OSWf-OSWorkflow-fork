@@ -1,8 +1,8 @@
 package tests.typedmap;
 
-import org.informagen.typedmap.TypedMap;
-import org.informagen.typedmap.Type;
-import org.informagen.typedmap.JDBCTypedMap;
+import org.informagen.oswf.PersistentVars;
+import org.informagen.oswf.Type;
+import org.informagen.oswf.JDBCPersistentVars;
 
 import org.osjava.sj.loader.SJDataSource;
 
@@ -40,7 +40,7 @@ import static org.junit.Assert.fail;
 public class JDBCTest extends AbstractTestClass  {
 
 
-    static JDBCTypedMap jdbcTypedMap;
+    static JDBCPersistentVars jdbcTypedMap;
 
     @BeforeClass
     public static void setup() throws Exception {
@@ -72,7 +72,7 @@ public class JDBCTest extends AbstractTestClass  {
             
         args.put("datasource", dataSource);
 
-        jdbcTypedMap = new JDBCTypedMap(config, args);
+        jdbcTypedMap = new JDBCPersistentVars(config, args);
         
     }
 

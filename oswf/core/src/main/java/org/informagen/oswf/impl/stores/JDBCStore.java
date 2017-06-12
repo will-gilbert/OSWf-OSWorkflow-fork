@@ -1,7 +1,7 @@
 package org.informagen.oswf.impl.stores;
 
-import org.informagen.typedmap.TypedMap;
-import org.informagen.typedmap.TypedMapFactory;
+import org.informagen.oswf.PersistentVars;
+import org.informagen.oswf.PersistentVarsFactory;
 
 import org.informagen.oswf.Step;
 import org.informagen.oswf.ProcessInstance;
@@ -168,15 +168,11 @@ public class JDBCStore extends AbstractWorkflowStore implements WorkflowStore {
         }
     }
 
-    public TypedMap getTypedMap(long piid) {
+    public PersistentVars getPersistentVars(long piid) {
         HashMap args = new HashMap(1);
         args.put("globalKey", "oswf_" + piid);
 
-        return TypedMapFactory.getInstance().createTypedMap("jdbc", args);
-    }
-
-    public TypedMap getPersistentVars(long piid) {
-        return getTypedMap(piid);
+        return PersistentVarsFactory.getInstance().createTypedMap("jdbc", args);
     }
 
     ////////////METHOD #2 OF 3 //////////////////

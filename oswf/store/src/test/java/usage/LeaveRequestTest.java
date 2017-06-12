@@ -15,7 +15,7 @@ import org.informagen.oswf.descriptors.WorkflowDescriptor;
 
 import org.informagen.oswf.exceptions.InvalidInputException;
 
-import org.informagen.typedmap.TypedMap;
+import org.informagen.oswf.PersistentVars;
 
 import org.informagen.oswf.Step;
 
@@ -221,7 +221,7 @@ public class LeaveRequestTest extends OSWfHibernateTestCase implements Constants
         //Get final status
         assertProcessInstanceState(wfEngine, bobId, ProcessInstanceState.COMPLETED);
         
-        TypedMap propertySet = wfEngine.getTypedMap(bobId);
+        PersistentVars persistentVars = wfEngine.getPersistentVars(bobId);
         
         //Get final result value
         assertProperty(wfEngine, bobId, "result", "approved");

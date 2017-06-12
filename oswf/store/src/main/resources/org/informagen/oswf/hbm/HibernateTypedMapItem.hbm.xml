@@ -5,7 +5,7 @@
 
 <hibernate-mapping>
 
-    <class name="org.informagen.typedmap.hibernate.HibernateTypedMapItem" table="processvariable">
+    <class name="org.informagen.oswf.hibernate.HibernateTypedMapItem" table="processvariable">
 
         <!-- Composite Key Properties ==============================================
                     
@@ -21,7 +21,7 @@
             <key-property name="key" column="itemKey"  type="string" length="255"/>
         </composite-id>
 
-        <!-- See 'org.informagen.typedmap.Type' for definition of 'type' ================== -->
+        <!-- See 'org.informagen.oswf.Type' for definition of 'type' ================== -->
 
         <property name="type"       column="itemtype"   type="int" />
         
