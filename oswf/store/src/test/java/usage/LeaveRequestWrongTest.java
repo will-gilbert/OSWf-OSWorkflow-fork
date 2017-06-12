@@ -20,7 +20,7 @@ import org.informagen.oswf.PersistentVars;
 
 import org.informagen.oswf.Step;
 
-import org.informagen.oswf.TypedMapStore;
+import org.informagen.oswf.PeristentVarsStore;
 
 
 // OSWf TypedMap delegate which installs a Custom TypedMap mapping

@@ -3,7 +3,7 @@ package org.informagen.oswf.impl;
 
 // OSWf Interface 
 import org.informagen.oswf.OSWfConfiguration; 
-import org.informagen.oswf.TypedMapStore; 
+import org.informagen.oswf.PeristentVarsStore; 
 
 // OSWf Exceptions
 import org.informagen.oswf.exceptions.WorkflowLoaderException;
@@ -98,7 +98,7 @@ public class DefaultOSWfConfiguration implements OSWfConfiguration, Serializable
 
     // The instatiated workflow store
     protected transient WorkflowStore workflowStore = null;
-    protected transient TypedMapStore typedMapStore = null;
+    protected transient PeristentVarsStore typedMapStore = null;
     
     protected boolean initialized = false;
 
@@ -465,23 +465,23 @@ public class DefaultOSWfConfiguration implements OSWfConfiguration, Serializable
         return workflowStore;
     }
 
-    protected TypedMapStore createTypedMapStore() throws WorkflowStoreException {
+    protected PeristentVarsStore createTypedMapStore() throws WorkflowStoreException {
         
-        TypedMapStore typedMapStore = null;
+        PeristentVarsStore typedMapStore = null;
         String classname = typedMapStoreClassname;
         
         if((classname != null) && (getPersistenceArgs().containsKey("typedMapStore") == false) ) {
 
             try {
                 Class typedMapStoreClass = ClassLoaderHelper.loadClass(classname, getClass());
-                Constructor<TypedMapStore> constructor = typedMapStoreClass.getConstructor(new Class[]{Map.class, Map.class});
+                Constructor<PeristentVarsStore> constructor = typedMapStoreClass.getConstructor(new Class[]{Map.class, Map.class});
                 typedMapStore = constructor.newInstance(typedMapStoreParameters, getPersistenceArgs());
             } catch (Exception exception) {
-                throw new WorkflowStoreException("Error creating TypedMapStore: " + classname, exception);
+                throw new WorkflowStoreException("Error creating PeristentVarsStore: " + classname, exception);
             }
             
         } else if(getPersistenceArgs().containsKey("typedMapStore") == false)
-            throw new WorkflowStoreException("TypedMapStore not defined");
+            throw new WorkflowStoreException("PeristentVarsStore not defined");
             
         return typedMapStore;
     }

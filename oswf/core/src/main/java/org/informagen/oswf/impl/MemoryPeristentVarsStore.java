@@ -1,7 +1,7 @@
 package org.informagen.oswf.impl;
 
 import org.informagen.oswf.PersistentVars;
-import org.informagen.oswf.TypedMapStore;
+import org.informagen.oswf.PeristentVarsStore;
 
 import org.informagen.oswf.MemoryPersistentVars;
 
@@ -14,15 +14,15 @@ import java.util.HashMap;
  *  the property set for each processes instance. 
  */
  
-public class MemoryTypedMapStore implements TypedMapStore {
+public class MemoryPeristentVarsStore implements PeristentVarsStore {
 
     private static Map<Long,PersistentVars> persistentVarsMap = new HashMap();
     
-    public MemoryTypedMapStore() {
+    public MemoryPeristentVarsStore() {
         // no-op
     }
 
-    public MemoryTypedMapStore(Map<String,String> config, Map<String,Object> args) {
+    public MemoryPeristentVarsStore(Map<String,String> config, Map<String,Object> args) {
         // no-op
     }
 

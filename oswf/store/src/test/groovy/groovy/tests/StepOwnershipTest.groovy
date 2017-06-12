@@ -19,7 +19,7 @@ import org.informagen.oswf.exceptions.InvalidInputException;
 
 import org.informagen.oswf.Step;
 
-import org.informagen.oswf.TypedMapStore;
+import org.informagen.oswf.PeristentVarsStore;
 
 
 // OSWf - Security
@@ -116,7 +116,7 @@ public class StepOwnershipTest extends support.OSWfHibernateTestCase implements 
         configuration.load(getClass().getResource("/oswf-hibernate.xml"));
         configuration.getPersistenceArgs().put("sessionFactory", getSessionFactory());
         
-        TypedMapStore delegate = new HibernateTypedMapStore(getSessionFactory());
+        PeristentVarsStore delegate = new HibernateTypedMapStore(getSessionFactory());
         configuration.getPersistenceArgs().put("propertySetDelegate", delegate);
     }
 

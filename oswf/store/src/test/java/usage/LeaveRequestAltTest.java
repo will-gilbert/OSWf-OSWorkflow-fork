@@ -21,7 +21,7 @@ import org.informagen.oswf.descriptors.WorkflowDescriptor;
 import org.informagen.oswf.PersistentVars;
 
 
-import org.informagen.oswf.TypedMapStore;
+import org.informagen.oswf.PeristentVarsStore;
 
 
 // OSWf TypedMap delegate which installs a Custom TypedMap mapping

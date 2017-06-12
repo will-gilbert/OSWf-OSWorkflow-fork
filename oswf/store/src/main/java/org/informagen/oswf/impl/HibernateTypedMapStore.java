@@ -8,7 +8,7 @@ import org.informagen.oswf.hibernate.HibernateConfigurationProvider;
 
 
 // OSWf - Core
-import org.informagen.oswf.TypedMapStore;
+import org.informagen.oswf.PeristentVarsStore;
 
 // OSWf - PersistentVars 
 import org.informagen.oswf.PersistentVars;
@@ -26,7 +26,7 @@ import java.util.HashMap;
 /**
  */
 
-public class HibernateTypedMapStore implements TypedMapStore  {
+public class HibernateTypedMapStore implements PeristentVarsStore  {
 
     private HibernateConfigurationProvider configurationProvider;
     private SessionFactory sessionFactory = null;

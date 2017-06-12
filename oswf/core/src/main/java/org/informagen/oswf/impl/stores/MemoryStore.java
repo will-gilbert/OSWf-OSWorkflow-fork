@@ -3,7 +3,7 @@ package org.informagen.oswf.impl.stores;
 import org.informagen.oswf.impl.stores.AbstractWorkflowStore;
 
 import org.informagen.oswf.PersistentVars;
-import org.informagen.oswf.TypedMapStore;
+import org.informagen.oswf.PeristentVarsStore;
 
 import org.informagen.oswf.ProcessInstance;
 import org.informagen.oswf.WorkflowStore;
@@ -23,7 +23,7 @@ import org.informagen.oswf.query.WorkflowExpressionQuery;
 
 import org.informagen.oswf.impl.DefaultStep;
 import org.informagen.oswf.impl.DefaultProcessInstance;
-import org.informagen.oswf.impl.MemoryTypedMapStore;
+import org.informagen.oswf.impl.MemoryPeristentVarsStore;
 
 import java.security.InvalidParameterException;
 
@@ -59,7 +59,7 @@ public class MemoryStore extends AbstractWorkflowStore  {
 
 
     public MemoryStore() {
-        setTypedMapStore(new MemoryTypedMapStore());
+        setTypedMapStore(new MemoryPeristentVarsStore());
     }
 
     public MemoryStore(Map<String,String> config, Map<String,Object> args) {
@@ -68,8 +68,8 @@ public class MemoryStore extends AbstractWorkflowStore  {
 
     // WorkflowStore methods ==================================================================
 
-    public void setTypedMapStore(TypedMapStore typedMapStore) {
-        //throw new UnsupportedOperationException("CollectionStore uses MemoryTypedMapStore and cannot be set");
+    public void setTypedMapStore(PeristentVarsStore typedMapStore) {
+        //throw new UnsupportedOperationException("CollectionStore uses MemoryPeristentVarsStore and cannot be set");
     }
 
 
@@ -173,7 +173,7 @@ public class MemoryStore extends AbstractWorkflowStore  {
         historyStepsCache.clear();
         propertySetCache.clear();
         
-        MemoryTypedMapStore.clear();
+        MemoryPeristentVarsStore.clear();
     }
 
     // Abstract method implementations =======================================================

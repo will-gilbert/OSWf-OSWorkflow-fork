@@ -2,10 +2,10 @@ package org.informagen.oswf;
 
 import org.informagen.oswf.exceptions.PersistentVarsException;
 
-public interface TypedMapStore {
+public interface PeristentVarsStore {
 
     /**
-     *  Gets the persistent variables for a Process Instance from the TypedMapStore
+     *  Gets the persistent variables for a Process Instance from the PeristentVarsStore
      *
      *  @param piid the process instance id
      *  @return the property set implementation

@@ -1,7 +1,7 @@
 package org.informagen.oswf;
 
 import org.informagen.oswf.PersistentVars;
-import org.informagen.oswf.TypedMapStore;
+import org.informagen.oswf.PeristentVarsStore;
 
 import org.informagen.oswf.Step;
 import org.informagen.oswf.ProcessInstance;
@@ -27,12 +27,12 @@ public interface WorkflowStore {
     /**
      *  DOCUMENT THIS
      */
-    void setTypedMapStore(TypedMapStore typedMapStore);
+    void setTypedMapStore(PeristentVarsStore typedMapStore);
 
     /**
      *  DOCUMENT THIS
      */
-    TypedMapStore getTypedMapStore();
+    PeristentVarsStore getTypedMapStore();
 
 
     /**
