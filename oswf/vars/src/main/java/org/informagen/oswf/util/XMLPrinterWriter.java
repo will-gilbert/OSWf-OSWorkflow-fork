@@ -1,7 +1,4 @@
-package org.informagen.oswf.provider.xmlprinter;
-
-import org.informagen.oswf.provider.ProviderConfigurationException;
-import org.informagen.oswf.provider.XMLPrinterProvider;
+package org.informagen.oswf.util;
 
 import org.w3c.dom.*;
 
@@ -17,17 +14,13 @@ import java.io.Writer;
  * and flexible formatting options, but it's fast, very small and standalone.
  *
  */
-public class PrintWriterXMLPrinterProvider implements XMLPrinterProvider {
+public class XMLPrinterWriter {
     
     //~ Static fields/initializers /////////////////////////////////////////////
 
     private static final String INDENT = "  ";
 
     // M E T H O D S  -------------------------------------------------------------------------
-
-    public void destroy() {}
-
-    public void init() throws ProviderConfigurationException {}
 
     public void print(Document doc, Writer out) throws IOException {
         PrintWriter printWriter = new PrintWriter(out);

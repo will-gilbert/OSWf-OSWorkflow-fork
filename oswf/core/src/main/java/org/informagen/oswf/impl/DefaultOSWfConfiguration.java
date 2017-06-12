@@ -98,7 +98,7 @@ public class DefaultOSWfConfiguration implements OSWfConfiguration, Serializable
 
     // The instatiated workflow store
     protected transient WorkflowStore workflowStore = null;
-    protected transient PeristentVarsStore typedMapStore = null;
+    protected transient PeristentVarsStore persistentVarsStore = null;
     
     protected boolean initialized = false;
 
@@ -238,7 +238,7 @@ public class DefaultOSWfConfiguration implements OSWfConfiguration, Serializable
     **   </persistence>
     **
     ** Read the WorkflowStore classname aka persistence.
-    **  If not found use 'MemoryWorkflowStore' and 'MemoryTypedMap'
+    **  If not found use 'MemoryWorkflowStore' and 'MemoryPersistentVars'
     */
  
     protected void parsePersistence(Element root) throws Exception {
@@ -362,7 +362,7 @@ public class DefaultOSWfConfiguration implements OSWfConfiguration, Serializable
                 }
 
                 PersistentVarsFactory.getInstance()
-                    .addNamedTypedMap(
+                    .addNamedPersistentVars(
                         propertySetName, 
                         propertySetClassname, 
                         parameters
@@ -451,7 +451,7 @@ public class DefaultOSWfConfiguration implements OSWfConfiguration, Serializable
         if(classname == null)
             throw new WorkflowStoreException("'workflow-store' class not defined");
 
-        addPersistenceArg("typedMapStore", createTypedMapStore());
+        addPersistenceArg("persistentVarsStore", createpersistentVarsStore());
             
         try {
             Class workflowStoreClass = ClassLoaderHelper.loadClass(classname, getClass());
@@ -465,25 +465,25 @@ public class DefaultOSWfConfiguration implements OSWfConfiguration, Serializable
         return workflowStore;
     }
 
-    protected PeristentVarsStore createTypedMapStore() throws WorkflowStoreException {
+    protected PeristentVarsStore createpersistentVarsStore() throws WorkflowStoreException {
         
-        PeristentVarsStore typedMapStore = null;
+        PeristentVarsStore persistentVarsStore = null;
         String classname = persistentVarsStoreClassname;
         
-        if((classname != null) && (getPersistenceArgs().containsKey("typedMapStore") == false) ) {
+        if((classname != null) && (getPersistenceArgs().containsKey("persistentVarsStore") == false) ) {
 
             try {
-                Class typedMapStoreClass = ClassLoaderHelper.loadClass(classname, getClass());
-                Constructor<PeristentVarsStore> constructor = typedMapStoreClass.getConstructor(new Class[]{Map.class, Map.class});
-                typedMapStore = constructor.newInstance(persistentVarsStoreParameters, getPersistenceArgs());
+                Class persistentVarsStoreClass = ClassLoaderHelper.loadClass(classname, getClass());
+                Constructor<PeristentVarsStore> constructor = persistentVarsStoreClass.getConstructor(new Class[]{Map.class, Map.class});
+                persistentVarsStore = constructor.newInstance(persistentVarsStoreParameters, getPersistenceArgs());
             } catch (Exception exception) {
                 throw new WorkflowStoreException("Error creating PeristentVarsStore: " + classname, exception);
             }
             
-        } else if(getPersistenceArgs().containsKey("typedMapStore") == false)
+        } else if(getPersistenceArgs().containsKey("persistentVarsStore") == false)
             throw new WorkflowStoreException("PeristentVarsStore not defined");
             
-        return typedMapStore;
+        return persistentVarsStore;
     }
 
 

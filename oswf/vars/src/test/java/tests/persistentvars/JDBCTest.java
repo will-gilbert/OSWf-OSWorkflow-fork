@@ -1,4 +1,4 @@
-package tests.typedmap;
+package tests.persistentvars;
 
 import org.informagen.oswf.PersistentVars;
 import org.informagen.oswf.Type;
@@ -40,7 +40,7 @@ import static org.junit.Assert.fail;
 public class JDBCTest extends AbstractTestClass  {
 
 
-    static JDBCPersistentVars jdbcTypedMap;
+    static JDBCPersistentVars jdbcPersistentVars;
 
     @BeforeClass
     public static void setup() throws Exception {
@@ -72,7 +72,7 @@ public class JDBCTest extends AbstractTestClass  {
             
         args.put("datasource", dataSource);
 
-        jdbcTypedMap = new JDBCPersistentVars(config, args);
+        jdbcPersistentVars = new JDBCPersistentVars(config, args);
         
     }
 
@@ -83,9 +83,9 @@ public class JDBCTest extends AbstractTestClass  {
 
     @Before
     public void before() throws Exception {
-        persistentVars = jdbcTypedMap;
+        persistentVars = jdbcPersistentVars;
 
-        Connection connection = jdbcTypedMap.getConnection();
+        Connection connection = jdbcPersistentVars.getConnection();
         Statement statement = connection.createStatement();
         statement.execute(new StringBuilder()
             .append("CREATE TABLE OS_PROPERTYENTRY (")
@@ -106,7 +106,7 @@ public class JDBCTest extends AbstractTestClass  {
 
      @After
     public void after() throws Exception {
-        Connection connection = jdbcTypedMap.getConnection();
+        Connection connection = jdbcPersistentVars.getConnection();
         Statement statement = connection.createStatement();
         statement.execute("DROP TABLE OS_PROPERTYENTRY");
     }

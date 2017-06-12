@@ -50,16 +50,16 @@ public class MemoryWorkflowStore extends AbstractWorkflowStore  {
     // Instance Variables =====================================================================
 
     private static Map<Long,ProcessInstance> piidCache = new HashMap<Long,ProcessInstance>();
-    private static Map<Long,List<Step>>    currentStepsCache = new HashMap<Long,List<Step>>();
-    private static Map<Long,List<Step>>    historyStepsCache = new HashMap<Long,List<Step>>();
-    private static Map<Long,PersistentVars>      propertySetCache = new HashMap<Long,PersistentVars>();
+    private static Map<Long,List<Step>>      currentStepsCache = new HashMap<Long,List<Step>>();
+    private static Map<Long,List<Step>>      historyStepsCache = new HashMap<Long,List<Step>>();
+    private static Map<Long,PersistentVars>  propertySetCache = new HashMap<Long,PersistentVars>();
 
     private static long nextPIID = 1;
     private static long nextStepId = 1;
 
 
     public MemoryWorkflowStore() {
-        setTypedMapStore(new MemoryPeristentVarsStore());
+        setPersistentVarsStore(new MemoryPeristentVarsStore());
     }
 
     public MemoryWorkflowStore(Map<String,String> config, Map<String,Object> args) {
@@ -68,7 +68,7 @@ public class MemoryWorkflowStore extends AbstractWorkflowStore  {
 
     // WorkflowStore methods ==================================================================
 
-    public void setTypedMapStore(PeristentVarsStore typedMapStore) {
+    public void setPersistentVarsStore(PeristentVarsStore peristentVarsStore) {
         //throw new UnsupportedOperationException("CollectionStore uses MemoryPeristentVarsStore and cannot be set");
     }
 
@@ -90,7 +90,7 @@ public class MemoryWorkflowStore extends AbstractWorkflowStore  {
         piidCache.put(piid, pi);
         currentStepsCache.put(piid, new ArrayList());
         historyStepsCache.put(piid, new ArrayList());
-        //propertySetCache.put(piid, new MemoryTypedMap());
+        //propertySetCache.put(piid, new MemoryPersistentVars());
 
         return pi;
     }

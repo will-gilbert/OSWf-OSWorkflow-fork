@@ -44,7 +44,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 
-public class HibernateTypedMapTest implements usage.LeaveRequest {
+public class HibernatePersistentVarsTest implements usage.LeaveRequest {
 
     public static final String RDBMS_CONFIGURATION = System.getProperty("rdbms-configuration");
 
@@ -53,12 +53,12 @@ public class HibernateTypedMapTest implements usage.LeaveRequest {
     
     @Before
     @SuppressWarnings("unchecked")
-    public void createTypedMap() throws Exception {
+    public void createPersistentVars() throws Exception {
         
         // Create a workflow process instance with Hibernate backing
         //  the workflow and persistent stores
 
-        OSWfEngine wfEngine = new DefaultOSWfEngine("Test TypedMapBase");
+        OSWfEngine wfEngine = new DefaultOSWfEngine("Test PersistentVars");
         sessionFactory = createSessionFactory();
 
         wfEngine.setConfiguration( new DefaultOSWfConfiguration()
@@ -82,7 +82,7 @@ public class HibernateTypedMapTest implements usage.LeaveRequest {
     @Test
     public void convertToBoolean() {
     
-        loadTypedMap();
+        loadPersistentVars();
  
         assertTrue(persistentVars.getBoolean("int"));
         assertFalse(persistentVars.getBoolean("int-zero"));
@@ -109,7 +109,7 @@ public class HibernateTypedMapTest implements usage.LeaveRequest {
     @Test
     public void convertToString() {
     
-        loadTypedMap();
+        loadPersistentVars();
         
         assertEquals("true", persistentVars.getString("boolean-true"));
         assertEquals("false", persistentVars.getString("boolean-false"));
@@ -138,7 +138,7 @@ public class HibernateTypedMapTest implements usage.LeaveRequest {
     @Test
     public void convertToText() {
     
-        loadTypedMap();
+        loadPersistentVars();
 
         assertEquals("true", persistentVars.getText("boolean-true"));
         assertEquals("false", persistentVars.getText("boolean-false"));
@@ -176,7 +176,7 @@ public class HibernateTypedMapTest implements usage.LeaveRequest {
     @Test
     public void convertToInt() {
     
-        loadTypedMap();
+        loadPersistentVars();
 
         assertEquals(1, persistentVars.getInt("boolean-true"));
         assertEquals(0, persistentVars.getInt("boolean-false"));
@@ -213,7 +213,7 @@ public class HibernateTypedMapTest implements usage.LeaveRequest {
     @Test
     public void convertToDouble() {
     
-        loadTypedMap();
+        loadPersistentVars();
 
         assertEquals(1.0, persistentVars.getDouble("boolean-true"), 0.0001);
         assertEquals(0.0, persistentVars.getDouble("boolean-false"), 0.0001);
@@ -250,7 +250,7 @@ public class HibernateTypedMapTest implements usage.LeaveRequest {
     @Test
     public void convertToLong() {
     
-        loadTypedMap();
+        loadPersistentVars();
 
         assertEquals(1L, persistentVars.getLong("boolean-true"));
         assertEquals(0L, persistentVars.getLong("boolean-false"));
@@ -377,16 +377,7 @@ public class HibernateTypedMapTest implements usage.LeaveRequest {
         createXML();  
 
         // Did we really get back a Document object
-        assertTrue(persistentVars.getXML("xml") instanceof Document);
-
-        Document document = persistentVars.getXML("xml");
-        
-        assertEquals(2, XMLUtils.xpathList(document, "/list/item").getLength());
-        assertEquals("Books", XMLUtils.xpath(document, "/list/item[1]/text()").getNodeValue());
-        assertEquals("Supplies", XMLUtils.xpath(document, "/list/item[2]/text()").getNodeValue());
-        assertEquals("100", XMLUtils.xpath(document, "/list/item[1]/@cost").getNodeValue());
-        assertEquals("200", XMLUtils.xpath(document, "/list/item[2]/@cost").getNodeValue());
-        
+        assertTrue(persistentVars.getXML("xml") instanceof Document);        
         assertNull(persistentVars.getXML("non.existent.key"));
     }
 
@@ -432,7 +423,7 @@ public class HibernateTypedMapTest implements usage.LeaveRequest {
 
     // Protected, used by subclasses ===========================================================
 
-    protected void loadTypedMap() {
+    protected void loadPersistentVars() {
         createBooleans();
         createInts();
         createLongs();

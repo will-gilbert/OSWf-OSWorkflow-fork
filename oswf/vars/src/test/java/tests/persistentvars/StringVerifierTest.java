@@ -1,4 +1,4 @@
-package tests.typedmap;
+package tests.persistentvars;
 
 import org.informagen.oswf.verifiers.StringVerifier;
 import org.informagen.oswf.verifiers.VerifyException;

@@ -26,7 +26,7 @@ public interface WorkflowStore {
     /**
      *  DOCUMENT THIS
      */
-    void setTypedMapStore(PeristentVarsStore persistentVarsStore);
+    void setPersistentVarsStore(PeristentVarsStore persistentVarsStore);
 
     /**
      *  DOCUMENT THIS

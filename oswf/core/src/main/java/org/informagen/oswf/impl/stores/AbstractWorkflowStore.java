@@ -39,28 +39,28 @@ public abstract class AbstractWorkflowStore implements WorkflowStore {
     private static final Marker fatal = MarkerFactory.getMarker("FATAL");
     private static final Logger logger = LoggerFactory.getLogger(AbstractWorkflowStore.class);
                                                                                                
-    private PeristentVarsStore typedMapStore;
+    private PeristentVarsStore persistentVarsStore;
 
     // AbstractWorkflowStore methods /////////////////////////////////////////////////
 
     protected AbstractWorkflowStore() {}
 
     public AbstractWorkflowStore(Map<String,String> config, Map<String,Object> args) {
-        setTypedMapStore((PeristentVarsStore)args.get("typedMapStore"));
+        setPersistentVarsStore((PeristentVarsStore)args.get("persistentVarsStore"));
     }
 
-    public void setTypedMapStore(PeristentVarsStore typedMapStore) {
-        this.typedMapStore = typedMapStore;
+    public void setPersistentVarsStore(PeristentVarsStore persistentVarsStore) {
+        this.persistentVarsStore = persistentVarsStore;
     }
 
     public PeristentVarsStore getPersistentVarsStore() {
 
-        if(typedMapStore == null) {
-            typedMapStore = new MemoryPeristentVarsStore();
+        if(persistentVarsStore == null) {
+            persistentVarsStore = new MemoryPeristentVarsStore();
             logger.warn("PeristentVarsStore not defined, using MemoryPropertySetStore");
         }
 
-        return typedMapStore;
+        return persistentVarsStore;
     }
 
     public void setEntryState(final long piid, final ProcessInstanceState state) throws WorkflowStoreException {

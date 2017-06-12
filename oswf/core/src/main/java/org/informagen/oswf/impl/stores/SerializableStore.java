@@ -61,7 +61,7 @@ public class SerializableStore extends MemoryWorkflowStore {
         PersistentVars persistentVars = (PersistentVars) SerializableCache.getInstance().propertySetCache.get(new Long(entryId));
 
         if (persistentVars == null) {
-            persistentVars = PersistentVarsFactory.getInstance().createTypedMap("serializable", null);
+            persistentVars = PersistentVarsFactory.getInstance().createPersistentVars("serializable", null);
             SerializableCache.getInstance().propertySetCache.put(new Long(entryId), persistentVars);
         }
 

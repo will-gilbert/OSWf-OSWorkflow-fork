@@ -1,8 +1,5 @@
-package tests.typedmap;
+package tests.persistentvars;
 
-
-// This package - Super class tests
-import tests.typedmap.AbstractTestClass;
 
 import org.informagen.oswf.PersistentVars;
 import org.informagen.oswf.Type;

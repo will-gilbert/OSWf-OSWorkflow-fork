@@ -1,6 +1,6 @@
 
 include 'core'
-include 'typedmap'
+include 'vars'
 include 'usage'
 include 'store'
 include 'workflows'

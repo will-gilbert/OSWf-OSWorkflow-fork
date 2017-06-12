@@ -1,5 +1,5 @@
 
-package tests.typedmap;
+package tests.persistentvars;
 
 import org.informagen.oswf.verifiers.NumberVerifier;
 import org.informagen.oswf.verifiers.VerifyException;
