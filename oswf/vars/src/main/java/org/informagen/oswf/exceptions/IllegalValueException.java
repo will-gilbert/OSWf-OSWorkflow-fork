@@ -5,7 +5,7 @@ import org.informagen.oswf.exceptions.PersistentVarsException;
 /**
  * Thrown if a value is set which is not allowed.
  *
- * <p><i>That is,</i> non-serializable Object is passed to SerializableTypedMap,
+ * <p><i>That is,</i> non-serializable Object is passed to SerializablePersistentVars,
  *  or field is persisted that cannot be stored in database.</p>
  *
  */

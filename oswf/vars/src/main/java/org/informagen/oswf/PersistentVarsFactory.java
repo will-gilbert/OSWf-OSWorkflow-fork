@@ -20,7 +20,7 @@ import java.lang.reflect.InvocationTargetException;
 
 
 /**
- * The PersistentVarsFactory is a factory for all types of TypedMaps registered.
+ * The PersistentVarsFactory is a factory for all types of PersistentVars registered.
  *
  */
 
@@ -42,23 +42,17 @@ public class PersistentVarsFactory {
         
         if(instance == null) 
             instance = new PersistentVarsFactory()
-                // .addNamedTypedMap("aggregate", "org.informagen.oswf.AggregateTypedMap")
-                // .addNamedTypedMap("proxy", "org.informagen.oswf.ProxyTypedMap")
-                // .addNamedTypedMap("bean", "org.informagen.oswf.BeanTypedMap")
-                // .addNamedTypedMap("map", "org.informagen.oswf.MapTypedMap")
-                .addNamedTypedMap("memory", "org.informagen.oswf.MemoryPersistentVars")
-                // .addNamedTypedMap("serializable", "org.informagen.oswf.SerializableTypedMap")
-                // .addNamedTypedMap("xml", "org.informagen.oswf.XMLTypedMap")
+                .addNamedPersistentVars("memory", "org.informagen.oswf.MemoryPersistentVars")
             ;            
                    
         return instance;
     }
 
-    public PersistentVarsFactory addNamedTypedMap(String propertySetName, String classname) {
-        return addNamedTypedMap(propertySetName, classname, Collections.EMPTY_MAP);
+    public PersistentVarsFactory addNamedPersistentVars(String propertySetName, String classname) {
+        return addNamedPersistentVars(propertySetName, classname, Collections.EMPTY_MAP);
     }
 
-    public PersistentVarsFactory addNamedTypedMap(String propertySetName, String classname, Map<String,String> parameters) {
+    public PersistentVarsFactory addNamedPersistentVars(String propertySetName, String classname, Map<String,String> parameters) {
         this.classNames.put(propertySetName, classname);
         this.parameters.put(propertySetName,  parameters);
         return this;
@@ -72,8 +66,8 @@ public class PersistentVarsFactory {
         return classNames.get(propertySetName);
     }
 
-    public PersistentVars createTypedMap(String propertySetName) throws PersistentVarsException {
-        return createTypedMap(propertySetName, Collections.EMPTY_MAP);
+    public PersistentVars createPersistentVars(String propertySetName) throws PersistentVarsException {
+        return createPersistentVars(propertySetName, Collections.EMPTY_MAP);
     }
 
     /**
@@ -86,12 +80,12 @@ public class PersistentVarsFactory {
      *     it requires and supports.
      */
 
-    public PersistentVars createTypedMap(String propertySetName, Map<String,Object> args) throws PersistentVarsException {
+    public PersistentVars createPersistentVars(String propertySetName, Map<String,Object> args) throws PersistentVarsException {
         
-        PersistentVars ps = createTypedMap(propertySetName, args, PersistentVarsFactory.class.getClassLoader());
+        PersistentVars ps = createPersistentVars(propertySetName, args, PersistentVarsFactory.class.getClassLoader());
 
         if (ps == null) 
-            ps = createTypedMap(propertySetName, args, Thread.currentThread().getContextClassLoader());
+            ps = createPersistentVars(propertySetName, args, Thread.currentThread().getContextClassLoader());
 
         return ps;
     }
@@ -100,7 +94,7 @@ public class PersistentVarsFactory {
      */
 
      @SuppressWarnings("unchecked")
-     public PersistentVars createTypedMap(String propertySetName, Map<String,Object> args, ClassLoader classLoader) throws PersistentVarsException {
+     public PersistentVars createPersistentVars(String propertySetName, Map<String,Object> args, ClassLoader classLoader) throws PersistentVarsException {
 
         String classname = getClassName(propertySetName);
         

@@ -1,4 +1,4 @@
-package tests.typedmap;
+package tests.persistentvars;
 
 
 // OSWf - Persistent Variables
@@ -271,16 +271,7 @@ public abstract class AbstractTestClass {
         }
 
         // Did we really get back a Document object
-        assertTrue(persistentVars.getXML("xml") instanceof Document);
-
-        Document document = persistentVars.getXML("xml");
-    
-        assertEquals(2, XMLUtils.xpathList(document, "/list/item").getLength());
-        assertEquals("Books", XMLUtils.xpath(document, "/list/item[1]/text()").getNodeValue());
-        assertEquals("Supplies", XMLUtils.xpath(document, "/list/item[2]/text()").getNodeValue());
-        assertEquals("100", XMLUtils.xpath(document, "/list/item[1]/@cost").getNodeValue());
-        assertEquals("200", XMLUtils.xpath(document, "/list/item[2]/@cost").getNodeValue());
-    
+        assertTrue(persistentVars.getXML("xml") instanceof Document);    
         assertNull(persistentVars.getXML("non.existent.key"));
 
         if (persistentVars.supportsType(Type.XML)) 

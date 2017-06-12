@@ -172,7 +172,7 @@ public class JDBCWorkflowStore extends AbstractWorkflowStore implements Workflow
         HashMap args = new HashMap(1);
         args.put("globalKey", "oswf_" + piid);
 
-        return PersistentVarsFactory.getInstance().createTypedMap("jdbc", args);
+        return PersistentVarsFactory.getInstance().createPersistentVars("jdbc", args);
     }
 
     ////////////METHOD #2 OF 3 //////////////////

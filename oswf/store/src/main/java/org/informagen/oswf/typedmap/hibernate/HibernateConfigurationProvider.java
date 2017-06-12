@@ -23,7 +23,7 @@ public class HibernateConfigurationProvider {
     protected static Logger logger = LoggerFactory.getLogger(HibernateConfigurationProvider.class);
 
     protected Configuration configuration;
-    protected HibernatePersistentVarsDAO typedMapDAO = null;
+    protected HibernatePersistentVarsDAO persistentVarsDAO = null;
     protected SessionFactory sessionFactory = null;
 
     // C O N S T R U C T O R S  ---------------------------------------------------------------
@@ -47,10 +47,10 @@ public class HibernateConfigurationProvider {
 
     public HibernatePersistentVarsDAO getPersistentVarsDAO() {
     
-        if (typedMapDAO == null) 
-            typedMapDAO = new HibernatePersistentVarsDAO(sessionFactory);
+        if (persistentVarsDAO == null) 
+            persistentVarsDAO = new HibernatePersistentVarsDAO(sessionFactory);
 
-        return typedMapDAO;
+        return persistentVarsDAO;
     }
 
     public void setupConfiguration(Map<String,String> configurationProperties) {

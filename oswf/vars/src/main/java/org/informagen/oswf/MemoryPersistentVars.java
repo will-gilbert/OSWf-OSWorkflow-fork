@@ -22,16 +22,11 @@ import java.util.Properties;
 
 
 /**
- * The MemoryTypedMap is a PropertySet implementation that
+ * The MemoryPersistentVars is a PersistentVars implementation that
  *    will store any primitive or object using an internal ValueEntity
  *    class which preserve the Type of the object. 
  *
- * To use a supplied Map see MapTypedMap.
- *
- * <p>An alternative to MemoryTypedMap is SerializableTypedMap
- *     which can be Serialized to/from a stream.</p>
- *
- *
+ * *
  */
 
 public class MemoryPersistentVars extends AbstractPersistentVars {

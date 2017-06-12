@@ -81,7 +81,7 @@ public class HibernatePersistentVarsStore implements PeristentVarsStore  {
 
         PersistentVars propertySet = null;
         if (propertySetName != null)
-            propertySet = PersistentVarsFactory.getInstance().createTypedMap(propertySetName, args);
+            propertySet = PersistentVarsFactory.getInstance().createPersistentVars(propertySetName, args);
         else {
             propertySet = new HibernatePersistentVars(null, args);
         }

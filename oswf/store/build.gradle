@@ -78,7 +78,7 @@ configurations.all {
 dependencies {
 
     compile project(':core')
-    compile project(':typedmap')
+    compile project(':vars')
     compile project(':usage')
     compile project(':workflows')
 

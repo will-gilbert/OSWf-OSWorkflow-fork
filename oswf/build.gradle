@@ -5,7 +5,7 @@ Modules:
 
      core - 
      store - 
-     typedmap - 
+     vars - 
      simulator - 
   
 ===============================================================================================
@@ -13,7 +13,7 @@ Modules:
 
 gradle :core:clean :core:test
 gradle :store:clean :store:test
-gradle :typedmap:clean :typedmap:test
+gradle :vars:clean :vars:test
 gradle :simulator:clean :simulator:jettyRun
 
 
