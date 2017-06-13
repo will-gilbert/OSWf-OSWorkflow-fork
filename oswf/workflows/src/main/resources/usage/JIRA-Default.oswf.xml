@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE workflow PUBLIC "-//OpenSymphony Group//DTD OSWorkflow 2.8//EN" "http://www.opensymphony.com/osworkflow/workflow_2_8.dtd">
+
+<workflow>
+
+
+  <!-- I N I T I A L   A C T I O N S  ===================================================== -->
+
+  <initial-actions>
+    <action id="1" name="Create Issue">
+        
+      <meta name="opsbar-sequence">0</meta>
+      <meta name="jira.i18n.title">common.forms.create</meta>
+      
+      <validators>
+        <validator name="" type="class">
+          <arg name="class.name">com.atlassian.jira.workflow.validator.PermissionValidator</arg>
+          <arg name="permission">Create Issue</arg>
+        </validator>
+      </validators>
+      
+      <results>
+        <unconditional-result old-status="Finished" status="Open" step="1">
+          <post-functions>
+            <function type="class">
+              <arg name="class.name">com.atlassian.jira.workflow.function.issue.IssueCreateFunction</arg>
+            </function>
+            <function type="class">
+              <arg name="class.name">com.atlassian.jira.workflow.function.event.FireIssueEventFunction</arg>
+              <arg name="eventTypeId">1</arg>
+            </function>
+          </post-functions>
+        </unconditional-result>
+      </results>
+      
+    </action>
+  </initial-actions>
+
+  <!-- C O M M O N   A C T I O N S  ======================================================= -->
+
+  <common-actions>
+
+    <action id="2" name="Close Issue" view="resolveissue">
+
+      <meta name="jira.i18n.submit">closeissue.close</meta>
+      <meta name="opsbar-sequence">60</meta>
+      <meta name="jira.i18n.description">closeissue.desc</meta>
+      <meta name="jira.i18n.title">closeissue.title</meta>
+
+      <restrict-to>
+        <conditions type="AND">
+          <condition type="class">
+            <arg name="class.name">com.atlassian.jira.workflow.condition.PermissionCondition</arg>
+            <arg name="permission">Resolve Issue</arg>
+          </condition>
+          <condition type="class">
+            <arg name="class.name">com.atlassian.jira.workflow.condition.PermissionCondition</arg>
+            <arg name="permission">Close Issue</arg>
+          </condition>
+        </conditions>
+      </restrict-to>
+
+      <results>
+        <unconditional-result old-status="Finished" status="Closed" step="6">
+          <post-functions>
+            <function type="class">
+              <arg name="class.name">com.atlassian.jira.workflow.function.issue.UpdateIssueStatusFunction</arg>
+            </function>
+            <function type="class">
+              <arg name="class.name">com.atlassian.jira.workflow.function.misc.CreateCommentFunction</arg>
+            </function>
+            <function type="class">
+              <arg name="class.name">com.atlassian.jira.workflow.function.issue.GenerateChangeHistoryFunction</arg>
+            </function>
+            <function type="class">
+              <arg name="class.name">com.atlassian.jira.workflow.function.issue.IssueReindexFunction</arg>
+            </function>
+            <function type="class">
+              <arg name="class.name">com.atlassian.jira.workflow.function.event.FireIssueEventFunction</arg>
+              <arg name="eventTypeId">5</arg>
+            </function>
+          </post-functions>
+        </unconditional-result>
+      </results>
+
+    </action>
+
+    <action id="3" name="Reopen Issue" view="commentassign">
+        
+      <meta name="jira.i18n.submit">issue.operations.reopen.issue</meta>
+      <meta name="opsbar-sequence">80</meta>
+      <meta name="jira.i18n.description">issue.operations.reopen.description</meta>
+      <meta name="jira.i18n.title">issue.operations.reopen.issue</meta>
+
+      <restrict-to>
+        <conditions>
+          <condition type="class">
+            <arg name="class.name">com.atlassian.jira.workflow.condition.PermissionCondition</arg>
+            <arg name="permission">Resolve Issue</arg>
+          </condition>
+        </conditions>
+      </restrict-to>
+
+      <results>
+
+        <unconditional-result old-status="Finished" status="Reopened" step="5">
+          <post-functions>
+              
+            <function type="class">
+              <arg name="field.value"></arg>
+              <arg name="class.name">com.atlassian.jira.workflow.function.issue.UpdateIssueFieldFunction</arg>
+              <arg name="field.name">resolution</arg>
+            </function>
+
+            <function type="class">
+              <arg name="class.name">com.atlassian.jira.workflow.function.issue.UpdateIssueStatusFunction</arg>
+            </function>
+
+            <function type="class">
+              <arg name="class.name">com.atlassian.jira.workflow.function.misc.CreateCommentFunction</arg>
+            </function>
+
+            <function type="class">
+              <arg name="class.name">com.atlassian.jira.workflow.function.issue.GenerateChangeHistoryFunction</arg>
+            </function>
+
+            <function type="class">
+              <arg name="class.name">com.atlassian.jira.workflow.function.issue.IssueReindexFunction</arg>
+            </function>
+
+            <function type="class">
+              <arg name="class.name">com.atlassian.jira.workflow.function.event.FireIssueEventFunction</arg>
+              <arg name="eventTypeId">7</arg>
+            </function>
+
+          </post-functions>
+        </unconditional-result>
+      </results>
+    </action>
+
+    <action id="4" name="Start Progress">
+
+      <meta name="opsbar-sequence">20</meta>
+      <meta name="jira.i18n.title">startprogress.title</meta>
+
+      <restrict-to>
+        <conditions>
+          <condition type="class">
+            <arg name="class.name">com.atlassian.jira.workflow.condition.AllowOnlyAssignee</arg>
+          </condition>
+        </conditions>
+      </restrict-to>
+
+      <results>
+        <unconditional-result old-status="Finished" status="Underway" step="3">
+          <post-functions>
+
+            <function type="class">
+              <arg name="field.value"></arg>
+              <arg name="class.name">com.atlassian.jira.workflow.function.issue.UpdateIssueFieldFunction</arg>
+              <arg name="field.name">resolution</arg>
+            </function>
+
+            <function type="class">
+              <arg name="class.name">com.atlassian.jira.workflow.function.issue.UpdateIssueStatusFunction</arg>
+            </function>
+
+            <function type="class">
+              <arg name="class.name">com.atlassian.jira.workflow.function.misc.CreateCommentFunction</arg>
+            </function>
+
+            <function type="class">
+              <arg name="class.name">com.atlassian.jira.workflow.function.issue.GenerateChangeHistoryFunction</arg>
+            </function>
+
+            <function type="class">
+              <arg name="class.name">com.atlassian.jira.workflow.function.issue.IssueReindexFunction</arg>
+            </function>
+
+            <function type="class">
+              <arg name="class.name">com.atlassian.jira.workflow.function.event.FireIssueEventFunction</arg>
+              <arg name="eventTypeId">11</arg>
+            </function>
+
+          </post-functions>
+        </unconditional-result>
+
+      </results>
+    </action>
+
+    <action id="5" name="Resolve Issue" view="resolveissue">
+
+      <meta name="jira.i18n.submit">resolveissue.resolve</meta>
+      <meta name="opsbar-sequence">40</meta>
+      <meta name="jira.i18n.description">resolveissue.desc.line1</meta>
+      <meta name="jira.i18n.title">resolveissue.title</meta>
+
+      <restrict-to>
+        <conditions>
+          <condition type="class">
+            <arg name="class.name">com.atlassian.jira.workflow.condition.PermissionCondition</arg>
+            <arg name="permission">Resolve Issue</arg>
+          </condition>
+        </conditions>
+      </restrict-to>
+
+      <results>
+        <unconditional-result old-status="Finished" status="Resolved" step="4">
+
+          <post-functions>
+            <function type="class">
+              <arg name="class.name">com.atlassian.jira.workflow.function.issue.UpdateIssueStatusFunction</arg>
+            </function>
+
+            <function type="class">
+              <arg name="class.name">com.atlassian.jira.workflow.function.misc.CreateCommentFunction</arg>
+            </function>
+
+            <function type="class">
+              <arg name="class.name">com.atlassian.jira.workflow.function.issue.GenerateChangeHistoryFunction</arg>
+            </function>
+
+            <function type="class">
+              <arg name="class.name">com.atlassian.jira.workflow.function.issue.IssueReindexFunction</arg>
+            </function>
+
+            <function type="class">
+              <arg name="class.name">com.atlassian.jira.workflow.function.event.FireIssueEventFunction</arg>
+              <arg name="eventTypeId">4</arg>
+            </function>
+
+          </post-functions>
+        </unconditional-result>
+      </results>
+    </action>
+  </common-actions>
+
+
+  <!-- S T E P S  ========================================================================= -->
+
+  <steps>
+      
+    <step id="1" name="Open">
+      <meta name="jira.status.id">1</meta>
+      <actions>
+        <common-action id="4" />
+        <common-action id="5" />
+        <common-action id="2" />
+      </actions>
+    </step>
+
+    <step id="3" name="In Progress">
+
+      <meta name="jira.status.id">3</meta>
+
+      <actions>
+          
+        <common-action id="5" />  <!-- Resolve Issue -->
+        <common-action id="2" />  <!-- Close Issue -->
+
+        <action id="301" name="Stop Progress">
+
+          <meta name="opsbar-sequence">20</meta>
+          <meta name="jira.i18n.title">stopprogress.title</meta>
+
+          <restrict-to>
+            <conditions>
+              <condition type="class">
+                <arg name="class.name">com.atlassian.jira.workflow.condition.AllowOnlyAssignee</arg>
+              </condition>
+            </conditions>
+          </restrict-to>
+
+          <results>
+            <unconditional-result old-status="Finished" status="Assigned" step="1">
+
+              <post-functions>
+                <function type="class">
+                  <arg name="field.value"></arg>
+                  <arg name="class.name">com.atlassian.jira.workflow.function.issue.UpdateIssueFieldFunction</arg>
+                  <arg name="field.name">resolution</arg>
+                </function>
+
+                <function type="class">
+                  <arg name="class.name">com.atlassian.jira.workflow.function.issue.UpdateIssueStatusFunction</arg>
+                </function>
+
+                <function type="class">
+                  <arg name="class.name">com.atlassian.jira.workflow.function.misc.CreateCommentFunction</arg>
+                </function>
+
+                <function type="class">
+                  <arg name="class.name">com.atlassian.jira.workflow.function.issue.GenerateChangeHistoryFunction</arg>
+                </function>
+
+                <function type="class">
+                  <arg name="class.name">com.atlassian.jira.workflow.function.issue.IssueReindexFunction</arg>
+                </function>
+
+                <function type="class">
+                  <arg name="class.name">com.atlassian.jira.workflow.function.event.FireIssueEventFunction</arg>
+                  <arg name="eventTypeId">12</arg>
+                </function>
+
+              </post-functions>
+            </unconditional-result>
+          </results>
+        </action>
+      </actions>
+
+    </step>
+
+    <step id="4" name="Resolved">
+
+      <meta name="jira.status.id">5</meta>
+
+      <actions>
+          
+        <common-action id="3" />  <!-- Reopen Issue -->
+
+        <action id="701" name="Close Issue" view="commentassign">
+
+          <meta name="jira.i18n.submit">closeissue.close</meta>
+          <meta name="opsbar-sequence">60</meta>
+          <meta name="jira.i18n.description">closeissue.desc</meta>
+          <meta name="jira.description">Closing an issue indicates there is no more work to be done on it, and it has been verified as complete.</meta>
+          <meta name="jira.i18n.title">closeissue.title</meta>
+
+          <restrict-to>
+            <conditions>
+              <condition type="class">
+                <arg name="class.name">com.atlassian.jira.workflow.condition.PermissionCondition</arg>
+                <arg name="permission">Close Issue</arg>
+              </condition>
+            </conditions>
+          </restrict-to>
+
+          <results>
+            <unconditional-result old-status="Finished" status="Closed" step="6">
+
+              <post-functions>
+                <function type="class">
+                  <arg name="class.name">com.atlassian.jira.workflow.function.issue.UpdateIssueStatusFunction</arg>
+                </function>
+
+                <function type="class">
+                  <arg name="class.name">com.atlassian.jira.workflow.function.misc.CreateCommentFunction</arg>
+                </function>
+
+                <function type="class">
+                  <arg name="class.name">com.atlassian.jira.workflow.function.issue.GenerateChangeHistoryFunction</arg>
+                </function>
+
+                <function type="class">
+                  <arg name="class.name">com.atlassian.jira.workflow.function.issue.IssueReindexFunction</arg>
+                </function>
+
+                <function type="class">
+                  <arg name="class.name">com.atlassian.jira.workflow.function.event.FireIssueEventFunction</arg>
+                  <arg name="eventTypeId">5</arg>
+                </function>
+
+              </post-functions>
+            </unconditional-result>
+          </results>
+        </action>
+      </actions>
+    </step>
+
+    <step id="5" name="Reopened">
+
+      <meta name="jira.status.id">4</meta>
+
+      <actions>
+          <common-action id="5" /> <!-- Resolve Issue -->
+          <common-action id="2" /> <!-- Close Issue -->
+          <common-action id="4" /> <!-- Start Progress -->
+      </actions>
+    </step>
+
+
+    <step id="6" name="Closed">
+
+      <meta name="jira.status.id">6</meta>
+      <meta name="jira.issue.editable">false</meta>
+
+      <actions>
+          <common-action id="3" />  <!-- Reopen Issue -->
+      </actions>
+    </step>
+
+  </steps>
+</workflow>
+
