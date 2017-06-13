@@ -17,16 +17,16 @@
         <action id="50" name="Start Workflow" auto="true">
 
 					<pre-functions>
-						<function type="beanshell">
+						<function type="groovy">
 							<arg name="script"><![CDATA[
 
 							  // Copy some strings to the transient 
                 //   variables ArrayList, 'list'
 
-                List list = transientVars.get("list");
-                list.add("anything");
-                list.add("foo");
-                list.add("bar");
+                List list = transientVars.get('list')
+                list << 'anything'
+                list << 'foo'
+                list << 'bar'
 
  							]]></arg>
 						</function>
