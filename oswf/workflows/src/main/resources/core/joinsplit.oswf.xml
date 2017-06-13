@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-
-<!DOCTYPE workflow SYSTEM 'OSWf-3.0.dtd'>
+<!DOCTYPE workflow PUBLIC "-//Open Source Workflow//DTD OSWf 3.0//EN" "http://oswf.sourceforge.net/OSWf-3.0.dtd">
 
 <workflow>
   <initial-actions>

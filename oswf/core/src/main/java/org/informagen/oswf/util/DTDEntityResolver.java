@@ -19,7 +19,7 @@ public class DTDEntityResolver implements EntityResolver {
 
     public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
  
-        if (systemId == null || systemId.startsWith("http")) 
+        if (systemId == null) 
             return null;
 
         try {
