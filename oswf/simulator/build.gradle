@@ -157,7 +157,6 @@ dependencies {
     compile project(':store')
     compile project(':workflows')
 
-    def hibernate =  '4.3.11.Final' //'3.3.2.GA' // '5.2.10.Final' doesnot run
 
 
     compile ([
@@ -183,7 +182,7 @@ dependencies {
         "org.hibernate:hibernate-core:$hibernate",
 
         // Simple Logging Facade for Java    
-        'org.slf4j:slf4j-api:1.6.4',
+        'org.slf4j:slf4j-api:$slf4j',
         
         // J2EE Servlet
         "javax.servlet:servlet-api:2.4",

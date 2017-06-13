@@ -64,7 +64,7 @@ public class StubTypeResolverTest extends OSWfTestCase {
 
     private static final Logger testlogger = LoggerFactory.getLogger(StubTypeResolverTest.class);
 
-    private static final String WORKFLOW_NAME = "JIRA-Default";  // resources/usage/JIRA-Default.oswf.xml"
+    private static final String WORKFLOW_NAME = "JIRA-Default";  // workflows/resources/core/JIRA-Default.oswf.xml"
 
     static OSWfConfiguration configuration;    
 
