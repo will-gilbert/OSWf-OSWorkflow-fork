@@ -1,4 +1,4 @@
-package groovy.tests
+package tests
 
 import org.informagen.oswf.OSWfEngine
 import org.informagen.oswf.impl.DefaultOSWfEngine
@@ -26,7 +26,7 @@ import static org.junit.Assert.fail
 /**
  * DOCUMENT ME!
  */
-public class EmbeddedGroovScriptTest {
+public class EmbeddedBeanShellTest {
 
     //  I N S T A N C E   F I E L D S  --------------------------------------------------------
 
@@ -51,7 +51,7 @@ public class EmbeddedGroovScriptTest {
     @Test
     public void xmlCommentTest()  {
 
-        def url = getClass().getResource("/core/groovyscript/Embedded-Scripts.oswf.xml")
+        def url = getClass().getResource("/core/beanshell/Embedded-Scripts.oswf.xml")
         def piid = wfEngine.initialize(url.toString(), 1, ["test" : this])
 
         assert 2 == counter
@@ -65,7 +65,7 @@ public class EmbeddedGroovScriptTest {
     @Test
     public void cdataEnclosedTest() {
 
-        def url = getClass().getResource("/core/groovyscript/Embedded-Scripts.oswf.xml")
+        def url = getClass().getResource("/core/beanshell/Embedded-Scripts.oswf.xml")
         def piid = wfEngine.initialize(url.toString(), 2, ["test" : this])
 
         assert 2 == counter
@@ -79,7 +79,7 @@ public class EmbeddedGroovScriptTest {
     @Test
     public void prePostScriptTest() throws Exception {
 
-        def url = getClass().getResource("/core/groovyscript/Embedded-Scripts.oswf.xml")
+        def url = getClass().getResource("/core/beanshell/Embedded-Scripts.oswf.xml")
         def piid = wfEngine.initialize(url.toString(), 3, ["test" : this])
         
         assert  2 == counter
@@ -97,7 +97,7 @@ public class EmbeddedGroovScriptTest {
      
     @Test
     public void variableMotify() throws Exception {
-        def url = getClass().getResource("/core/groovyscript/Embedded-Scripts.oswf.xml")
+        def url = getClass().getResource("/core/beanshell/Embedded-Scripts.oswf.xml")
         def piid = wfEngine.initialize(url.toString(), 4)
     }
 
