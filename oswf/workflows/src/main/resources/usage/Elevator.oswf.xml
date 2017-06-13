@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE workflow PUBLIC "-//Open Source Workflow//DTD OSWf 3.0//EN" "http://oswf.sourceforge.net/OSWf-3.0.dtd">
+
+<workflow>
+
+
+	<initial-actions>
+		<action id='1' name='Call Elevator from First Floor'>
+			<results>
+				<default-result step='100'/>
+			</results>
+		</action>
+		<action id='2' name='Call Elevator from Second Floor'>
+			<results>
+				<default-result step='200'/>
+			</results>
+		</action>
+		<action id='3' name='Call Elevator from Third Floor'>
+			<results>
+				<default-result step='300'/>
+			</results>
+		</action>
+	</initial-actions>
+
+	<common-actions>
+
+		<action id='100' name='Go to First Floor'>
+			<results>
+				<default-result step='100' />
+			</results>
+		</action>
+
+		<action id='200' name='Go to Second Floor'>
+			<results>
+				<default-result step='200' />
+			</results>
+		</action>
+
+		<action id='300' name='Go to Third Floor'>
+			<results>
+				<default-result step='300' />
+			</results>
+		</action>
+
+		<action id='999' name='Exit Elevator' finish='true' >
+			<results>
+				<default-result/>
+			</results>
+		</action>
+		
+	</common-actions>
+
+
+	<steps>
+
+		<step id='100' name='At First Floor'>
+			<actions>
+			    <common-action id='200' />
+				<common-action id='300' />
+				<common-action id='999' />
+			</actions>
+		</step>
+
+		<step id='200' name='At Second Floor'>
+			<actions>
+				<common-action id='100' />
+				<common-action id='300' />
+				<common-action id='999' />
+			</actions>
+		</step>
+
+		<step id='300' name='At Third Floor'>
+			<actions>
+			    <common-action id='100' />
+				<common-action id='200' />
+				<common-action id='999' />
+			</actions>
+		</step>
+
+
+	</steps>
+
+</workflow>

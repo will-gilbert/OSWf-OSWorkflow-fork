@@ -36,6 +36,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import javax.xml.xpath.*;
+
 import javax.xml.transform.TransformerException;
 
 
@@ -92,6 +94,46 @@ public class XMLUtils {
      */
     public final static Document parse(String xml) throws ParserConfigurationException, IOException, SAXException {
         return parse(new InputSource(new StringReader(xml)));
+    }
+
+    /**
+     * Return single Node from base Node using X-Path expression.
+     */
+    public final static Node xpath(Node base, String xpathAsString)  {
+
+        try {
+            Node node = null;
+
+            XPathFactory factory = XPathFactory.newInstance();
+            XPath xpath = factory.newXPath();
+            XPathExpression expr = xpath.compile(xpathAsString);
+
+            Object result = expr.evaluate(base, XPathConstants.NODE);
+            node = (Node) result;
+            return node;
+
+        } catch (Throwable tw) {
+            tw.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * Return multiple Nodes from base Node using X-Path expression.
+     */
+    public final static NodeList xpathList(Node base, String xpathAsString)  {
+        try {
+            
+            XPathFactory factory = XPathFactory.newInstance();
+            XPath xpath = factory.newXPath();
+            XPathExpression expr = xpath.compile(xpathAsString);
+
+            Object result = expr.evaluate(base, XPathConstants.NODESET);
+            return (NodeList) result;
+        } catch (Throwable tw) {
+            tw.printStackTrace();
+            return null;
+        }
     }
 
 

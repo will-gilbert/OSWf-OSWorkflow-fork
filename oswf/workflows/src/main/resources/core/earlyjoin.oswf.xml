@@ -1,35 +1,23 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-
-<!DOCTYPE workflow SYSTEM 'OSWf-3.0.dtd'>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE workflow PUBLIC "-//Open Source Workflow//DTD OSWf 3.0//EN" "http://oswf.sourceforge.net/OSWf-3.0.dtd">
 
 <workflow>
   <initial-actions>
     <action id="100" name="Initiate">
       <pre-functions>
         <function type="class">
-          <arg name="classname">org.informagen.oswf.functions.SetActor</arg>
+          <arg name="class.name">net.sf.oswf.functions.SetActor</arg>
         </function>
       </pre-functions>
       <results>
-        <default-result status="Underway" step="1" owner="${actor}"/>
+        <default-result status="Underway" split="1" owner="${actor}"/>
       </results>
     </action>
   </initial-actions>
-
   <steps>
-    <step id="1" name="Mail Documents">
+    <step id="1" name="Receive Completed Documents">
       <actions>
-        <action id="1" name="Documents Mailed">
-          <results>
-            <default-result split="1"/>
-          </results>
-        </action>
-      </actions>
-    </step>
-
-    <step id="2" name="Receive Completed Documents">
-      <actions>
-        <action id="2" name="Completed Documents Received">
+        <action id="1" name="Completed Documents Received">
           <restrict-to>
             <conditions>
               <condition type='alias' name='hasStatusOf'>
@@ -44,14 +32,14 @@
         </action>
       </actions>
     </step>
-    <step id="3" name="Receive Letter">
+    <step id="2" name="Receive Letter">
       <actions>
-        <action id="3" name="Letter Received">
+        <action id="2" name="Letter Received">
           <restrict-to>
             <conditions>
               <condition type='alias' name='hasStatusOf'>
                 <arg name="status">Underway</arg>
-                <arg name="stepId">3</arg>
+                <arg name="stepId">2</arg>
               </condition>
             </conditions>
           </restrict-to>
@@ -61,32 +49,15 @@
         </action>
       </actions>
     </step>
-    <step id="4" name="Receive Wire">
-      <actions>
-        <action id="4" name="Wire Received">
-          <restrict-to>
-            <conditions>
-              <condition type='alias' name='hasStatusOf'>
-                <arg name="status">Underway</arg>
-                <arg name="stepId">4</arg>
-              </condition>
-            </conditions>
-          </restrict-to>
-          <results>
-            <default-result status="Underway" join="1" owner="${mostRecentOwner}"/>
-          </results>
-        </action>
-      </actions>
+
+    <step id="3" name="Finished">
     </step>
 
-    <step id="5" name="Finished">
-
-    </step>
   </steps>
   <splits>
     <split id="1">
+      <default-result status="Underway" step="1"/>
       <default-result status="Underway" step="2"/>
-      <default-result status="Underway" step="3"/>
     </split>
   </splits>
   <joins>
@@ -95,12 +66,15 @@
       <conditions>
         <condition type="beanshell">
           <arg name="script"><![CDATA[
-"Finished".equals(jn.get(2).getStatus())
-                    && "Finished".equals(jn.get(3).getStatus())
+              // Not yet ready for eveluation
+              if(jn.get(1) == null || jn.get(2) == null)
+                    return false;
+              
+              "Finished".equals(jn.get(1).getStatus()) && "Finished".equals(jn.get(2).getStatus())
           ]]></arg>
         </condition>
       </conditions>
-      <default-result status="Underway" owner="test" step="6"/>
+      <default-result status="Underway" owner="test" step="3"/>
     </join>
   </joins>
 </workflow>

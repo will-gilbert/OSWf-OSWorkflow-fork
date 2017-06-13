@@ -1,20 +1,15 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE workflow SYSTEM 'OSWf-3.0.dtd'>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE workflow PUBLIC "-//Open Source Workflow//DTD OSWf 3.0//EN" "http://oswf.sourceforge.net/OSWf-3.0.dtd">
 <workflow>
  
-    <meta name='Jira Ticket'><![CDATA[
-        
-        http://jira.opensymphony.com/browse/WF-373
-        
-        Join transition fails if the steps non-repeated
-        step is called first.
-        
+    <meta name='description'><![CDATA[
+                
     ]]>    
     </meta>    
 
 
   <initial-actions>
-    <action id="1" name="Start WF-373">
+    <action id="1" name="Start Workflow">
       <results>
         <default-result step="1"/>
       </results>
@@ -26,6 +21,14 @@
     <step id="1" name="Entry Step">
       <actions>
         <action id="2" name="Split into A/B">
+        
+          <pre-functions>
+            <function type='alias' name='clearStep'>
+              <arg name="stepId">2,3</arg>
+                <arg name="status">P O O F !</arg>
+            </function>
+          </pre-functions>
+            
           <results>
             <default-result split="1"/>
           </results>
@@ -39,12 +42,19 @@
       <actions>
         <action id="3" name="Repeat">
           <results>
-            <default-result exit-status="Rejected" status="Repeat" step="1"/>
+            <default-result exit-status="Rejected" status="Repeat" step="1">
+            <pre-functions>
+              <function type='alias' name='clearStep'>
+                <arg name="stepId">1</arg>
+                <arg name="status">R E M O V E D</arg>
+              </function>
+            </pre-functions>
+          </default-result>
           </results>
         </action>
-        <action id="4" name="Finish">
+        <action id="4" name="Approve">
           <results>
-            <default-result join="1"/>
+            <default-result exit-status="Approved" join="1"/>
           </results>
         </action>
       </actions>
@@ -55,12 +65,19 @@
       <actions>
         <action id="5" name="Repeat">
           <results>
-            <default-result exit-status="Rejected" status="Repeat" step="1"/>
+            <default-result exit-status="Rejected" status="Repeat" step="1">
+            <pre-functions>
+              <function type='alias' name='clearStep'>
+                <arg name="stepId">1</arg>
+                <arg name="status">R E M O V E D</arg>
+              </function>
+            </pre-functions>
+          </default-result>
           </results>
         </action>
-        <action id="6" name="Finish">
+        <action id="6" name="Approve">
           <results>
-            <default-result join="1"/>
+            <default-result exit-status="Approved" join="1"/>
           </results>
         </action>
       </actions>
@@ -72,6 +89,7 @@
 
   <splits>
     <split id="1">
+        
       <default-result status="Enter A" step="2"/>
       <default-result status="Enter B" step="3"/>
     </split>
@@ -80,7 +98,7 @@
   <joins>
     <join id="1">
         
-      <!-- Multiple Conditions; type is required -->
+      <!-- Multiple Conditions; type defaults to 'AND' -->
       
       <conditions>
           

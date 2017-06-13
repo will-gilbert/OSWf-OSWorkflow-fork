@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE workflow SYSTEM 'OSWf-3.0.dtd'>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE workflow PUBLIC "-//Open Source Workflow//DTD OSWf 3.0//EN" "http://oswf.sourceforge.net/OSWf-3.0.dtd">
 
 <workflow>
   <initial-actions>
@@ -47,59 +47,38 @@
         </action>
       </actions>
     </step>
-
     <step id="4" name="End">
       <actions>
         <action id="7" name="Finish" finish="true">
           <results>
-            <default-result />
+            <default-result status="Game Over" step="4"/>
           </results>
         </action>
       </actions>
     </step>
   </steps>
-
-  
   <splits>
     <split id="1">
       <default-result status="Queued" step="2"/>
       <default-result status="Queued" step="3"/>
     </split>
   </splits>
-
-
   <joins>
-
     <join id="1">
-
       <!-- Multiple conditions; type is required -->
-      <conditions>
+      <conditions type="AND">
         <condition type="beanshell">
           <arg name="script">
-
-              if(jn.get(2) == null)
-                return false;
-              
             "Finished".equals(jn.get(2).getStatus())
-
           </arg>
         </condition>
-
         <condition type="beanshell">
           <arg name="script">
-
-              if(jn.get(3) == null)
-                return false;
             "Finished".equals(jn.get(3).getStatus())
-
           </arg>
         </condition>
-
       </conditions>
-
       <default-result status="Queued" step="4"/>
-
     </join>
-
   </joins>
 </workflow> 
