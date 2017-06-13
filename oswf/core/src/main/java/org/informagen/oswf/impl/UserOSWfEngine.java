@@ -44,6 +44,7 @@ public class UserOSWfEngine extends DefaultOSWfEngine {
     protected void populateTransientMap(ProcessInstance processInstance, Map<String,Object> transientVars, List<RegisterDescriptor> registers, Integer actionId, Collection<Step> currentSteps, PersistentVars persistentVars) throws WorkflowException {
         super.populateTransientMap(processInstance, transientVars, registers, actionId, currentSteps, persistentVars);
         transientVars.put("actor", user.getName());
+        transientVars.put("user", user);
     }
 
 }

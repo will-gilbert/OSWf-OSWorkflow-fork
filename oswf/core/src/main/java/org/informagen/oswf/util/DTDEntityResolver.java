@@ -12,18 +12,14 @@ import java.net.URL;
 
 
 /**
- * @author Hani Suleiman (hani@formicary.net)
- * Date: Sep 14, 2003
- * Time: 4:25:40 PM
  */
 public class DTDEntityResolver implements EntityResolver {
-
 
     // M E T H O D S  -------------------------------------------------------------------------
 
     public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
  
-        if (systemId == null) 
+        if (systemId == null || systemId.startsWith("http")) 
             return null;
 
         try {
@@ -34,7 +30,6 @@ public class DTDEntityResolver implements EntityResolver {
                 filename = filename.substring(filename.lastIndexOf('/') + 1);
 
             if (systemId.endsWith(".dtd")) {
-                
                 InputStream is = getClass().getResourceAsStream("/" + filename);
                                 
                 if (is == null)
