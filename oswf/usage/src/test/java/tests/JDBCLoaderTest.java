@@ -57,7 +57,7 @@ import static org.junit.Assert.fail;
  *
  */
  
-@Ignore 
+
 public class JDBCLoaderTest extends OSWfTestCase {
 
     private static final Logger testlogger = LoggerFactory.getLogger(JDBCLoaderTest.class);
