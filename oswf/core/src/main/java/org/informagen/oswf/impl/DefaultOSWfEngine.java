@@ -83,7 +83,7 @@ import java.util.Properties;
 
 /**********************************************************************************************
  *
- * Abstract workflow instance that serves as the base for specific implementations.
+ * Default workflow instance that serves as the base for specific implementations.
  *
  * @author <a href="mailto:plightbo@hotmail.com">Pat Lightbody</a>
  * @author Hani Suleiman
@@ -150,17 +150,17 @@ public class DefaultOSWfEngine implements OSWfEngine {
             public void setState(ProcessInstanceState state) {}
         };
 
-        // Since no state change happens here, use a memory PropertySet and create
-        //  an empty set of 'transientVars'
+        // Since no state change happens here, use a memory store and create
+        //   an empty set of 'transientVars'
 
         Map<String, Object> transientVars = new HashMap<String, Object>();
         
-        // Add any input variables in case the PD uses them during initialization
+        // Add any input variables in case the process description uses them during initialization
         if (inputs != null) 
             transientVars.putAll(inputs);
 
         // 'populateTransientMap' will :
-        //  - add OSWF variables to transientVars
+        //  - add OSWf variables to transientVars
         //  - add CurrentSteps to transientVars
         //  - add Register variable names and values to transientVars
         // Catch and log exceptions as errors and return false
@@ -170,21 +170,20 @@ public class DefaultOSWfEngine implements OSWfEngine {
             PersistentVars persistentVars = new MemoryPersistentVars();
             populateTransientMap(mockEntry, transientVars, EMPTY_LIST, new Integer(initialAction), EMPTY_LIST, persistentVars);
             canInitialize = canInitialize(workflowName, initialAction, transientVars, persistentVars);
-        } catch (InvalidActionException e) {
-            logger.error(e.getMessage());
-        } catch (WorkflowException e) {
-            logger.error("Error checking canInitialize", e);
+        } catch (InvalidActionException invalidActionException) {
+            logger.error(invalidActionException.getMessage());
+        } catch (WorkflowException workflowException) {
+            logger.error("Error checking canInitialize", workflowException);
         }
         
         return canInitialize;
     }
 
 
-    // initialize /////////////////////////////////////////////////////////////////////////////
-    //
-    // Create the ProcessInstance (Process Instance) and execute the initial action to move 
-    //  into a Step (state) and return the ProcessInstance ID; There are no inputs.
-     
+    /** 
+    ** Create the ProcessInstance (Process Instance) and execute the initial action to move 
+    **  into a Step (state) and return the ProcessInstance ID; There are no inputs.
+    */ 
 
     public long initialize(String workflowName, int initialAction) throws InvalidActionException, 
                                                                           InvalidInputException, 
@@ -193,11 +192,12 @@ public class DefaultOSWfEngine implements OSWfEngine {
 
      }
 
-    // initialize /////////////////////////////////////////////////////////////////////////////
-    //
-    // Create the ProcessInstance (Process Instance) and execute the initial action to move 
-    //  into a Step (state) and return the ProcessInstance ID 
-    //  a.k.a. a Process Instance ID, piid
+    /**
+    **
+    ** Create the ProcessInstance (Process Instance) and execute the initial action to move 
+    **  into a Step (state) and return the ProcessInstance ID 
+    **  a.k.a. a Process Instance ID, piid
+    */
     
     public long initialize(String workflowName, int initialAction, Map<String,Object> inputs) throws InvalidActionException, 
                                                                                                      InvalidInputException, 
@@ -208,20 +208,21 @@ public class DefaultOSWfEngine implements OSWfEngine {
         WorkflowDescriptor pd = getOSWfConfiguration().getWorkflow(workflowName);
         WorkflowStore store = getPersistence();
         ProcessInstance pi = store.createEntry(workflowName);
-        Long piid = pi.getProcessInstanceId();
+        long piid = pi.getProcessInstanceId();
 
-        // Get PropertySet from the Workflow (persistence) store
+        // Get persistent variables from the persistence store; Create transient variables
         PersistentVars persistentVars = store.getPersistentVars(piid);
         Map<String,Object> transientVars = new HashMap<String,Object>();
 
+        // Copy all of the inputs into the transient variables
         if (inputs != null) {
             transientVars.putAll(inputs);
         }
         
-        // Add OSWorkflow variables, CurrentSteps and Registers
+        // Add OSWf variables, CurrentSteps and Registers
         populateTransientMap(pi, transientVars, pd.getRegisters(), new Integer(initialAction), EMPTY_LIST, persistentVars);
         
-        // Attempt Process Instance initialization
+        // Attempt initialize the Process Instance
         if (canInitialize(workflowName, initialAction, transientVars, persistentVars) == false) {
             context.setRollbackOnly();
             throw new InvalidActionException("You are restricted from initializing this workflow");
@@ -231,7 +232,7 @@ public class DefaultOSWfEngine implements OSWfEngine {
         ActionDescriptor action = pd.getInitialAction(initialAction);
         
         // Fire the 'initial-action' transition, catch exceptions
-        // NB: Does not create a History Step
+        // NB: Initial actions do not create a History Step
         try {
             fireTransition(pi, EMPTY_LIST, store, pd, action, transientVars, inputs, persistentVars);
         } catch (WorkflowException workflowException) {
@@ -243,14 +244,21 @@ public class DefaultOSWfEngine implements OSWfEngine {
         return piid;
     }
 
-    // doAction ///////////////////////////////////////////////////////////////////////////////
-    //
-    // Fires a process transition, this method can be chained becuase it returns itself
-    //
+    /**
+    **
+    ** Fires a process transition, this method can be chained becuase it returns itself
+    **
+    */
     
     public OSWfEngine doAction(long piid, int actionId) throws WorkflowException {
         return doAction(piid, actionId, EMPTY_MAP);
     }
+
+    /**
+    **
+    ** Fires a process transition, this method can be chained becuase it returns itself
+    **
+    */
     
     public OSWfEngine doAction(long piid, int actionId, Map<String,Object> inputs) throws WorkflowException {
 
@@ -260,10 +268,9 @@ public class DefaultOSWfEngine implements OSWfEngine {
         // Can only work with active processes
         if (pi.getState() != ProcessInstanceState.ACTIVE)
             throw new InvalidActionException("Process Instance is not ACTIVATED; Action " + actionId + " is invalid");
-            // return this;
         
-        // Get Process Description, Current Steps and Property Set; Create a
-        //  transientVars Map and add input  and OSWorkflow variables
+        // Get Process Description, Current Steps and Persistent Variables; Create a
+        //  transientVars Map and add input and OSWf variables
 
         WorkflowDescriptor wf = getOSWfConfiguration().getWorkflow(pi.getWorkflowName());
         List<Step> currentSteps = store.findCurrentSteps(piid);
@@ -1251,7 +1258,7 @@ public class DefaultOSWfEngine implements OSWfEngine {
     /**
      * Provide additional variables by adding them to the 'transientVars' Map
      *
-     *  - Add OSWorkflow variable to transientVars
+     *  - Add OSWf variable to transientVars
      *  - Add CurrentSteps to transientVars
      *  - Add Register variable name and value to transientVars
      */

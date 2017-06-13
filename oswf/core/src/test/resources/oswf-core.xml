@@ -5,7 +5,7 @@
         <workflow name="Validator"           type="resource" location="core/validator.oswf.xml"/>
         <workflow name="TypeResolver Test"   type="resource" location="core/type-resolver.oswf.xml"/>
         <workflow name="Holiday as resource" type="resource" location="core/holiday.oswf.xml"/>
-        <workflow name="Holiday as URL"      type="url"      location="http://oswf.sourceforge.net/tutorial/workflows/holiday.oswf.xml"/>
+        <workflow name="Holiday as URL"      type="url"      location="http://informagen.org/OSWf/tutorial/workflows/holiday.oswf.xml"/>
         <workflow name="Holiday as file"     type="file"     location="src/test/resources/core/holiday.oswf.xml"/>
 	</loader>
 

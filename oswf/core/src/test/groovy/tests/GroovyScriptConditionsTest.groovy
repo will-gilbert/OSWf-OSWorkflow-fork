@@ -1,4 +1,4 @@
-package groovy.tests
+package tests
 
 import org.informagen.oswf.OSWfEngine
 import org.informagen.oswf.ProcessInstanceState

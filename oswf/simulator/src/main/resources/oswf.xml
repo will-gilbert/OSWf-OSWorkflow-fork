@@ -15,31 +15,32 @@
         <workflow name="Ab Pipeline"         type="resource" location="usage/AntigenDesign.oswf.xml"/>
 
         <!-- From Integration unit testing -->
-        <workflow name="ATM"                 type="resource" location="usage/ATM.oswf.xml"/>
-        <workflow name="Default Jira"        type="resource" location="core/JIRA-Default.oswf.xml"/>
-        <workflow name="Elevator"            type="resource" location="usage/Elevator.oswf.xml"/>
-        <workflow name="Holiday"             type="resource" location="usage/holiday.oswf.xml"/>
-        <workflow name="IC-Jira"             type="resource" location="usage/IC-Jira.oswf.xml"/>
-        <workflow name="LeaveRequest"        type="resource" location="usage/LeaveRequest.oswf.xml"/>
-        <workflow name="LeaveRequest Alt"    type="resource" location="usage/LeaveRequest-alt.oswf.xml"/>
-        <workflow name="LogRegister"         type="resource" location="usage/logregister.oswf.xml"/>
-        <workflow name="Join-Nodes"          type="resource" location="core/joinnodes.oswf.xml"/>
+        <workflow name="ATM"                  type="resource" location="usage/ATM.oswf.xml"/>
+        <workflow name="Default Jira"         type="resource" location="core/JIRA-Default.oswf.xml"/>
+        <workflow name="Elevator"             type="resource" location="usage/Elevator.oswf.xml"/>
+        <workflow name="Holiday"              type="resource" location="usage/holiday.oswf.xml"/>
+        <workflow name="IC-Jira"              type="resource" location="usage/IC-Jira.oswf.xml"/>
+        <workflow name="LeaveRequest"         type="resource" location="usage/LeaveRequest.oswf.xml"/>
+        <workflow name="LeaveRequest Alt"     type="resource" location="usage/LeaveRequest-alt.oswf.xml"/>
+        <workflow name="LogRegister"          type="resource" location="usage/logregister.oswf.xml"/>
+        <workflow name="Join-Nodes"           type="resource" location="core/joinnodes.oswf.xml"/>
 
         <!-- From Core unit testing -->
-        <workflow name="Auto-split"          type="resource" location="core/auto-split.oswf.xml"/> 
-        <workflow name="Early-Split"         type="resource" location="core/earlysplit.oswf.xml"/>
-        <workflow name="Early-Join"          type="resource" location="core/earlyjoin.oswf.xml"/>
-        <workflow name="Join-Order"          type="resource" location="core/joinorder.oswf.xml"/>
-        <workflow name="Join-Split"          type="resource" location="core/joinsplit.oswf.xml"/>
-        <workflow name="Re-enter Split"      type="resource" location="core/reenter-split.oswf.xml"/>
-        <workflow name="Step-Post"           type="resource" location="core/step-post.oswf.xml"/>
-        <workflow name="Step-Pre"            type="resource" location="core/step-pre.oswf.xml"/>
-        <workflow name="WF-315"              type="resource" location="core/WF-315.oswf.xml"/>
-        <workflow name="WF-373"              type="resource" location="core/WF-373.oswf.xml"/>
+        <workflow name="Auto-split"           type="resource" location="core/auto-split.oswf.xml"/> 
+        <workflow name="Boolean Conditions"   type="resource" location="core/groovyscript/boolean-conditions.oswf.xml"/> 
+        <workflow name="Early-Split"          type="resource" location="core/earlysplit.oswf.xml"/>
+        <workflow name="Early-Join"           type="resource" location="core/earlyjoin.oswf.xml"/>
+        <workflow name="Join-Order"           type="resource" location="core/joinorder.oswf.xml"/>
+        <workflow name="Join-Split"           type="resource" location="core/joinsplit.oswf.xml"/>
+        <workflow name="Re-enter Split"       type="resource" location="core/reenter-split.oswf.xml"/>
+        <workflow name="Step-Post"            type="resource" location="core/step-post.oswf.xml"/>
+        <workflow name="Step-Pre"             type="resource" location="core/step-pre.oswf.xml"/>
+        <workflow name="WF-315"               type="resource" location="core/WF-315.oswf.xml"/>
+        <workflow name="WF-373"               type="resource" location="core/WF-373.oswf.xml"/>
 
         <!-- Will require Security Manger setup -->
-        <workflow name="Action Restictions"  type="resource" location="usage/ActionRestrictions.oswf.xml"/>
-        <workflow name="Step Ownership"      type="resource" location="usage/StepOwnership.oswf.xml"/>
+        <workflow name="Action Restictions"   type="resource" location="usage/ActionRestrictions.oswf.xml"/>
+        <workflow name="Step Ownership"       type="resource" location="usage/StepOwnership.oswf.xml"/>
 
 	</loader>
 
