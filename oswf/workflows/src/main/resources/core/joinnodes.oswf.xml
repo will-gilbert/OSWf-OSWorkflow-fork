@@ -5,9 +5,8 @@
     
     <description><![CDATA[
      
-       This test is designed to look at the order in which a Join is entered. There
-         should be no difference in when the Join proceeds to its 'default-result'
-         or exiting Step.
+       This test is designed to look at the order in which a Join is entered. Exiting
+       from the join is controlled by a pair of AND conditions.
      
        Step 100 action 101 - 'Employee request' into split 10000
        Split 10000 into Steps 200 & 300
@@ -21,7 +20,7 @@
        To turn on Logging edit the resource file 'log4j.properties'
           and set the following entry to the DEBUG level
        
-           log4j.logger.workflow.joinnodes      DEBUG
+        log4j.logger.workflow.joinnodes      DEBUG
            
     ]]></description>    
 
@@ -65,8 +64,8 @@
 				<action id="201" name="LM Approve" >
 
 		            <pre-functions>
-		                <function type="beanshell">
-		                   <arg name="script">persistentVars.setBoolean("Manager Result", true);</arg>
+		                <function type="groovy">
+		                   <arg name="script">persistentVars.setBoolean 'Manager Result', true</arg>
 		                </function>
 		            </pre-functions>
 		            
@@ -76,8 +75,8 @@
 				</action>
 				<action id="202" name="LM Deny" >
 		            <pre-functions>
-		                <function type="beanshell">
-		                   <arg name="script">persistentVars.setBoolean("Manager Result", false);</arg>
+		                <function type="groovy">
+		                   <arg name="script">persistentVars.setBoolean 'Manager Result', false</arg>
 		                </function>
 		            </pre-functions>
 
@@ -96,8 +95,8 @@
 				<action id="301" name="HR Approve" >
 				    
 		            <pre-functions>
-		                <function type="beanshell">
-		                   <arg name="script">persistentVars.setBoolean("HR Result", true);</arg>
+		                <function type="groovy">
+		                   <arg name="script">persistentVars.setBoolean 'HR Result', true</arg>
 		                </function>
 		            </pre-functions>
 
@@ -108,8 +107,8 @@
 				<action id="302" name="HR Deny" >
 
 		            <pre-functions>
-		                <function type="beanshell">
-		                   <arg name="script">persistentVars.setBoolean("HR Result", false);</arg>
+		                <function type="groovy">
+		                   <arg name="script">persistentVars.setBoolean 'HR Result', false</arg>
 		                </function>
 		            </pre-functions>
 
@@ -158,31 +157,35 @@
                 
                 <!-- Testing for Step 300 before Step 200 intentional; no effect on unit test -->
 
-				<condition type="beanshell">
+				<condition type='groovy'>
 					<arg name="script"><![CDATA[
-					    logger = transientVars.get("logger");
-					    
-					    if(jn.get(300) == null) {
-					       logger.debug("Step 300 (HR) not yet reached");
-                            return false;
+
+						def logger = transientVars.get("logger");
+                        def hr = jn.get(300)
+                                           
+                        if(hr) {
+						  logger.debug "Join Condition HR Finished: ${hr.status == 'Finished'}"
+	                       return hr.status == 'Finished'
                         }
+                        
+                        logger.debug 'Step 300 (HR) not yet reached'
+                        return false;
                             
-                       logger.debug("Join Condition HR Finished: " + jn.get(300).getStatus().equals("Finished"));
-                       return jn.get(300).getStatus().equals("Finished");
-					]]></arg>
+   					]]></arg>
 				</condition>
 				
-				<condition type="beanshell">
+				<condition type='groovy'>
 					<arg name="script"><![CDATA[
-					    logger = transientVars.get("logger");
+                        def logger = transientVars.get('logger');
+                        def manager = jn.get(200)
 
-					    if(jn.get(200) == null) {
-					       logger.debug("Step 200 (Manager) not yet reached");
-                            return false;
+					    if(manager) {
+                            logger.debug "Join Condition Manager Finished: ${manager.status == 'Finished'}"
+                            return manager.status == 'Finished'
                         }
                             
-                        logger.debug("Join Condition Manager Finished: " + jn.get(200).getStatus().equals("Finished"));
-                        return jn.get(200).getStatus().equals("Finished");
+                        logger.debug 'Step 200 (Manager) not yet reached'
+                        return false
                         
 					]]></arg>
 				</condition>
@@ -193,13 +196,16 @@
 			
 			<default-result exit-status="JoinFinished" status="Underway" step="400">
 				<pre-functions>
-					<function type='beanshell'> <arg name='script'><![CDATA[
-				    logger = transientVars.get("logger");
-				    result = persistentVars.getBoolean("HR Result") &&
-				             persistentVars.getBoolean("Manager Result");
+					<function type='groovy'> <arg name='script'><![CDATA[
+                        
+				    def logger = transientVars.get('logger');
+
+				    def result = persistentVars.getBoolean('HR Result') &&
+				                 persistentVars.getBoolean('Manager Result');
 				    
-                    logger.debug("Join 10000 finished - setting result to " + result);
-         	        persistentVars.setBoolean("Request Approved", result);
+                    logger.debug "Join 10000 finished - setting result to $result"
+         	        persistentVars.setBoolean('Request Approved', result);
+
 				]]></arg> </function>
 				</pre-functions>
 			</default-result>
