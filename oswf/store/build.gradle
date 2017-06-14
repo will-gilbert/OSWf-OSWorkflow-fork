@@ -91,6 +91,9 @@ dependencies {
     ])
     
     runtime ([
+
+        // C3P0 - Connection Pooling  
+        "c3p0:c3p0:$c3p0",
         
         // BeanShell
         "bsh:bsh:$bsh"
