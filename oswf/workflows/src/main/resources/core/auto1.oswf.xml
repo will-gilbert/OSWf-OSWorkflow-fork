@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE workflow PUBLIC "-//Open Source Workflow//DTD OSWf 3.0//EN" "http://informagen.org/OSWf/OSWf-3.0.dtd">
 <workflow>
+
   <initial-actions>
     <action id="100" name="Start Workflow">
       <pre-functions>
@@ -11,9 +12,11 @@
       </results>
     </action>
   </initial-actions>
+
   <steps>
     <step id="1" name="First Step">
       <actions>
+ 
         <action id="1" name="The first action">
           <restrict-to>
             <conditions>
@@ -26,6 +29,7 @@
             <default-result status="Queued" step="2"/>
           </results>
         </action>
+ 
         <action id="2" name="The second action" auto="true">
           <restrict-to>
             <conditions>
@@ -38,9 +42,12 @@
             <default-result status="Queued" step="2"/>
           </results>
         </action>
+ 
       </actions>
     </step>
+
     <step id="2" name="First Step">
+ 
       <actions>
         <action id="3" name="The third action">
           <restrict-to>

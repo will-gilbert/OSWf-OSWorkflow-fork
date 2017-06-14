@@ -2,31 +2,41 @@
 <!DOCTYPE workflow PUBLIC "-//Open Source Workflow//DTD OSWf 3.0//EN" "http://informagen.org/OSWf/OSWf-3.0.dtd">
 
 <workflow>
+
+    <description><![CDATA[
+    
+        This workflow has duplicate common-actions ids    
+        
+    ]]>    
+    </description>    
+
 	<initial-actions>
 		<action id="1" name="Start Workflow">
 			<results>
-				<default-result status="Underway" step="1" owner="${actor}" />
+				<default-result step="1" />
 			</results>
 		</action>
 	</initial-actions>
 
 	<common-actions>
+
 		<action id="100" name="Restart Workflow">
 			<results>
-				<default-result step="1"  exit-status="Restarted" status="Underway" owner="bob" />
+				<default-result step="1"  exit-status="Restarted"  />
 			</results>
 		</action>
-		<action id="101" name="Hose Workflow">
+
+		<action id="100" name="Hose Workflow">
 			<results>
-				<default-result step="-1"  exit-status="Hosed" status="Corrupt" owner="evil bob" />
+				<default-result step="-1"  exit-status="Hosed" />
 			</results>
 		</action>
+
 	</common-actions>
 		
 	<steps>
 		<step id="1" name="First Draft">
 			<actions>
-				<!-- these should reference the common-actions above! -->
 				<common-action id="100" />
 				<action id="101" name="Finish First Draft">
 					<results>

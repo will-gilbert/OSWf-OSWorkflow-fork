@@ -3,32 +3,31 @@
 
 
 <workflow>
-  <!-- test for WF-192 -->
+
   <initial-actions>
     <action id="1" name="Start Workflow">
       <results>
-        <default-result  exit-status="Done" step="2" status="Expecting Suggestion" owner="${actor}"/>
+        <default-result step="2" />
       </results>
     </action>
   </initial-actions>
 
   <steps>
-    <step id="2" name="Disagreement">
+    <step id="2" name="Step 2">
       <actions>
-        <action id="3" name="Propose Restaurant">
+        <action id="3" name="Propose">
           <results>
-            <default-result  exit-status="Restaurant Proposed" step="3" status="Underway" />
+            <default-result step="3"  />
           </results>
         </action>
       </actions>
     </step>
 
-    <step id="3" name="Evaluation">
+    <step id="3" name="Step 3">
       <actions>
-        <action id="3" name="Reject Proposal">
+        <action id="3" name="Reject">
           <results>
-            <default-result  exit-status="Proposal Rejected" step="2" status="Expecting Suggestion">
-            </default-result>
+            <default-result step="2" />
           </results>
         </action>
       </actions>

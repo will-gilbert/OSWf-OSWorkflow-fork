@@ -28,15 +28,15 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 
-public class ValidDescriptorTest {
+class ValidDescriptorTest {
     
     
     // C O N S T R U C T O R S  ---------------------------------------------------------------
     private OSWfEngine wfEngine;
 
     @Before
-    public void setup() throws Exception {
-        wfEngine = new DefaultOSWfEngine("testuser");
+    void setup() throws Exception {
+        wfEngine = new DefaultOSWfEngine();
     }
 
     // M E T H O D S  -------------------------------------------------------------------------
@@ -49,33 +49,34 @@ public class ValidDescriptorTest {
      */
 
     @Test
-    public void checkResultInitialActionUnconditionalResult() throws Exception {
+    void checkResultInitialActionUnconditionalResult() throws Exception {
         
         try {
-            URL url = getClass().getResource("/core/invalid/default-result.oswf.xml");
+
+            URL url = getClass().getResource("/invalid/default-result.oswf.xml");
             WorkflowDescriptor descriptor = new URLLoader().getWorkflow(url.toString());
             descriptor.validate();
 
-            fail("descriptor loaded successfully, even though default-result element is incorrect");
-        } catch (WorkflowLoaderException e) {
-            //the default-result is missing in descriptor, which is what we are testing here
-            assertTrue(true);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            fail("Descriptor failed to load as expected, but a " + ex.getClass() + " exception was caught instead of WorkflowLoaderException");
+            fail("Descriptor loaded successfully, even though default-result element has missing step");
+
+        } catch (WorkflowLoaderException workflowLoaderException) {
+            assert  workflowLoaderException.message.contains('Error loading workflow: Result  is not a split or join, and has no next step')
+        } catch (Exception exception) {
+            fail("Descriptor failed to load as expected, but a ${exception.getClass()} exception was caught instead of WorkflowLoaderException");
         }
     }
 
-    @Test
-    public void commonActionDuplicateID() throws Exception {
+    @Ignore
+    void commonActionDuplicateID() throws Exception {
+
         try {
-            URL url = getClass().getResource("/core/invalid/common-actions-dupid.oswf.xml");
+            URL url = getClass().getResource("/invalid/common-actions-dupid.oswf.xml");
             WorkflowDescriptor descriptor = new URLLoader().getWorkflow(url.toString());
             descriptor.validate();
             
             fail("Invalid common-actions not detected correctly");
-        } catch (WorkflowLoaderException e) {
-            assertTrue(true);
+        } catch (WorkflowLoaderException workflowLoaderException) {
+            println workflowLoaderException
         }
     }
 
@@ -84,52 +85,52 @@ public class ValidDescriptorTest {
      *
      * @throws Exception If error while executing testing
      */
-    @Test
-    public void commonActions() throws Exception {
+
+    @Ignore
+    void commonActions() throws Exception {
 
         try {
             URL url = getClass().getResource("/core/common-actions.oswf.xml");
             long piid = wfEngine.initialize(url.toString(), 50);
         } catch (Exception e) {
-            e.printStackTrace();
             fail("Descriptor did not recognized common-actions!");
         }
 
         try {
-            WorkflowDescriptor descriptor = new URLLoader().getWorkflow(getClass().getResource("/core/invalid/common-actions-bad.oswf.xml").toString());
+            WorkflowDescriptor descriptor = new URLLoader().getWorkflow(getClass().getResource("/invalid/common-actions-bad.oswf.xml").toString());
             descriptor.validate();
             fail("Invalid common-actions not detected correctly");
-        } catch (WorkflowLoaderException e) {
-            assertTrue(true);
+        } catch (WorkflowLoaderException workflowLoaderException) {
+            println workflowLoaderException.message
         }
     }
 
     /**
      * Test whether a duplicate action is correctly marked as invalid
      *
-     * @see <a href="http://jira.opensymphony.com/secure/ViewIssue.jspa?key=WF-192">Jira issue WF-192</a>
      * @throws Exception If error while executing testing
      */
 
     @Test
-    public void duplicateActionID() throws Exception {
+    void duplicateActionID() throws Exception {
+
         try {
-            WorkflowDescriptor descriptor = new URLLoader().getWorkflow(getClass().getResource("/core/invalid/duplicate-action.oswf.xml").toString());
+
+            WorkflowDescriptor descriptor = new URLLoader().getWorkflow(getClass().getResource("/invalid/duplicate-action.oswf.xml").toString());
             descriptor.validate();
             fail("descriptor loaded successfully, even though duplicate action exists");
-        } catch (WorkflowLoaderException e) {
-            //the descriptor is invalid, which is correct
-            assertTrue(true);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            fail("descriptor failed to load as expected, but a " + ex.getClass() + " exception was caught instead of WorkflowLoaderException");
+
+        } catch (WorkflowLoaderException workflowLoaderException) {
+            assert workflowLoaderException.message.contains('Duplicate occurance of action ID \'3\' found in step 3')
+        } catch (Exception exception) {
+            fail("descriptor failed to load as expected, but a ${exception.getClass()} exception was caught instead of WorkflowLoaderException");
         }
     }
 
     @Test
-    public void finish() throws Exception {
+    void finish() throws Exception {
         
-        OSWfEngine wfEngine = new DefaultOSWfEngine("testuser");
+        OSWfEngine wfEngine = new DefaultOSWfEngine();
 
         try {
             
@@ -138,9 +139,8 @@ public class ValidDescriptorTest {
             
             wfEngine.doAction(piid, 1);
             
-        } catch (Exception e) {
-            fail("finish attribute workflow should be valid, instead it failed with: " + e);
-            return;
+        } catch (Exception exception) {
+            fail("Finish attribute workflow should be valid, instead it failed with: ${exception}");
         }
     }
 
@@ -148,22 +148,21 @@ public class ValidDescriptorTest {
      * Test validator
      */
     @Test
-    public void validator() throws Exception {
+    void validator() throws Exception {
         
         OSWfEngine wfEngine = new DefaultOSWfEngine("testuser");
 
         try {
             
-            URL url = getClass().getResource("/core/validator.oswf.xml");
+            URL url = getClass().getResource("/invalid/validator.oswf.xml");
             long piid = wfEngine.initialize(url.toString(), 1);
             
             fail("Did not get expected InvalidInputException");
-        } catch (InvalidInputException e) {
-            //the descriptor is invalid, which is correct
-            assertTrue(true);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            fail("descriptor failed to load as expected, but a " + ex.getClass() + " exception was caught instead of WorkflowLoaderException");
+
+        } catch (InvalidInputException invalidInputException) {
+            assert invalidInputException.message == 'Missing arg input1'
+        } catch (Exception exception) {
+            fail("descriptor failed to load as expected, but a ${exception.getClass()} exception was caught instead of WorkflowLoaderException");
         }
 
     }

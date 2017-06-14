@@ -3,52 +3,56 @@
 
 <workflow>
 	<initial-actions>
-		<action id="50" name="Start Workflow">
+		<action id='50' name='Start Workflow'>
 			<results>
-				<default-result status="Underway" step="1" owner="${actor}" />
+				<default-result status='Underway' step='1' />
 			</results>
 		</action>
 	</initial-actions>
 
 	<global-actions>
-		<action id="100" name="Restart Workflow">
+
+		<action id='100' name='Restart Workflow'>
 			<results>
-				<default-result step="1"  exit-status="Restarted" status="Underway" owner="bob" />
+				<default-result step='1' exit-status='Restarted' />
 			</results>
 		</action>
-		<action id="101" name="Hose Workflow">
+
+		<action id='101' name='Conditional Restart'>
 			<results>
-        <conditional-result step="-1" owner="evil bob" status="Underway">
+
+        <!-- check if the current step status -->
+        <conditional-result step='1' exit-status='Restarted'>
           <conditions>
             <condition type='alias' name='hasStatusOf'>
-              <!-- check if the current step is underway or not -->
-              <arg name="stepId">-1</arg>
-              <arg name="status">Underway</arg>
+              <arg name='status'>In Step 2</arg>
             </condition>
           </conditions>
         </conditional-result>
-				<default-result step="-1"  exit-status="Hosed" status="Corrupt" owner="evil bob" />
+
+				<default-result step='2' exit-status='Looped Back'  />
+
 			</results>
 		</action>
 	</global-actions>
 
 	<steps>
-		<step id="1" name="First Draft">
+		<step id='1' name='Step 1'>
 			<actions>
-				<action id="1" name="Finish First Draft">
+				<action id='1' name='Go to Step 2'>
 					<results>
-						<default-result status="Underway" step="2" />
+						<default-result status='In Step 2' step='2' />
 					</results>
 				</action>
 
 			</actions>
 		</step>
 
-		<step id="2" name="Second Draft">
+		<step id='2' name='Step 2'>
 			<actions>
-				<action id="2" name="Finish Second Draft">
+				<action id='2' name='Loop back to Step 2'>
 					<results>
-						<default-result status="Finished" step="2" />
+						<default-result step='2' />
 					</results>
 				</action>
 			</actions>

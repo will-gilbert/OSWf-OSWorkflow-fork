@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE workflow PUBLIC "-//Open Source Workflow//DTD OSWf 3.0//EN" "http://informagen.org/OSWf/OSWf-3.0.dtd">
+
+<workflow>
+
+  <description><![CDATA[
+      This workflow has an undefined common-action in step 1    
+  ]]>
+  </description>    
+
+  <initial-actions>
+    <action id="1" name="Start Workflow">
+      <results>
+        <default-result step="1" />
+      </results>
+    </action>
+  </initial-actions>
+
+  <common-actions>
+
+      <action id="1000" name="Restart Workflow">
+          <results>
+              <default-result step="1"  exit-status="Restarted" status="Underway" />
+          </results>
+      </action>
+
+  </common-actions>
+
+
+      
+  <steps>
+    <step id="100" name="First Draft">
+      <actions>
+          
+        <common-action id="1000" />                              
+        <common-action id="999" /> <!-- undefined common-action! -->
+                          
+        <action id="101" name="Finish First Draft">
+          <results>
+            <default-result status="Finished" step="1" />
+          </results>
+        </action>
+
+      </actions>
+    </step>
+  </steps>
+</workflow>

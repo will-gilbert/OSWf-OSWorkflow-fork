@@ -50,10 +50,11 @@ public class HasStatusOf implements Condition {
         WorkflowStore store = (WorkflowStore) transientVars.get("store");
         List<Step> currentSteps = store.findCurrentSteps(pi.getProcessInstanceId());
 
-        // Example the current steps; Otherwise only check the specified step
+        // Check the current step(s); Otherwise only check the specified step
         
         if (stepId == null) {
-            
+
+            // There may be multiple current steps for a process ID; Check them all            
             for ( Step step :  currentSteps ) 
                 if (status.equals(step.getStatus())) 
                     return true;
