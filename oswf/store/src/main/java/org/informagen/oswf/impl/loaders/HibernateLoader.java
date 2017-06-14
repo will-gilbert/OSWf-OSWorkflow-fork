@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 // Hibernate 3.2.x
 import org.hibernate.SessionFactory;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.hibernate.HibernateException;
 
 // Hibernate - Criteria
@@ -64,12 +65,14 @@ public class HibernateLoader extends JDBCLoader {
  
         String processDefinition = null;
         Session session = null;
+        Transaction transaction = null;
 
         if(sessionFactory == null)
             throw new WorkflowLoaderException("'sessionFactory' has not been defined for HibernateLoader");
 
         try {
             session = sessionFactory.openSession();
+            transaction = session.beginTransaction();
             
             Criteria criteria = session.createCriteria(HibernateProcessDescription.class);
             criteria.add(Restrictions.eq("workflowName", workflowLocation.location));
@@ -79,9 +82,15 @@ public class HibernateLoader extends JDBCLoader {
             if(hpd != null)
                 processDefinition = hpd.getContent();
 
+            transaction.commit();
+
         } catch(HibernateException hibernateException) {
             throw new WorkflowLoaderException(hibernateException);
         } finally {
+
+            if (transaction != null && transaction.isActive())
+                 transaction.rollback();
+
             if (session != null) 
                 session.close();
         }
