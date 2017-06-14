@@ -17,7 +17,7 @@
         <property name="hibernate.hbm2ddl.auto">create-drop</property>
 
         <property name="hibernate.connection.autocommit">true</property>
-        <property name="hibernate.connection.pool_size">1</property>
+        <property name="hibernate.connection.pool_size">5</property>
 
         <property name="format_sql">false</property>
         <property name="show_sql">false</property>
