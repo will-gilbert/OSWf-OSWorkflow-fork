@@ -20,7 +20,7 @@ Site specific variables such as the upload repository can be specified in a a fi
 
 ================================================================================================= */
 
-apply plugin: 'java'            // Used to compile and create JAR artifacts
+apply plugin: 'groovy'            // Used to compile and create JAR artifacts
 apply plugin: 'maven-publish'   // Used to install in the local MAVEN repository
 
 // C O N F I G U R A T I O N ==================================================================
@@ -49,6 +49,9 @@ dependencies {
     runtime ([ ])
     
     testCompile([
+
+        "org.codehaus.groovy:groovy:$groovy",
+
         // JUnit 4 - Used by 'OSWfTestCase' and 'OSWfAssertions'
         "junit:junit:$junit",
         
@@ -66,6 +69,14 @@ dependencies {
         "com.h2database:h2:$h2"
     ])
 
+}
+
+sourceSets {
+
+    test { 
+        java { srcDirs = [] }
+        groovy { srcDirs = ['src/test/groovy'] }
+    }
 }
 
 publishing {
