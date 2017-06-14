@@ -10,13 +10,16 @@ import org.informagen.oswf.exceptions.PersistentVarsException;
 
 // Hibernate
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.SessionFactory;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.HibernateException;
+
+import javax.transaction.UserTransaction;
+
 
 // Java - Collections
 import java.util.Collection;
@@ -86,15 +89,21 @@ public class HibernatePersistentVarsDAO  {
             throw new PersistentVarsException("Could not find keys for 'null' piid");
 
         Session session = null;
+        Transaction transaction = null;
         Collection<String> list = null;
         
         try {
             session = sessionFactory.openSession();
+            transaction = session.beginTransaction();
             list = getKeysImpl(session, piid, prefix, type);
+            transaction.commit();
         } catch (HibernateException hibernateException) {
             throw new PersistentVarsException("HibernatePropertySet.getKeys: " + hibernateException.getMessage());
         } finally {
-            if (session != null) 
+            if (transaction != null && transaction.isActive())
+                 transaction.rollback();
+
+            if (session != null)
                 session.close();
         } 
 
@@ -110,16 +119,27 @@ public class HibernatePersistentVarsDAO  {
             throw new PersistentVarsException("Could not find property for 'null' key");
         
         Session session = null;
+        Transaction transaction = null;
         HibernatePersistentVarsItem item = null;
 
         try {
+
             session = sessionFactory.openSession();
+            transaction = session.beginTransaction();
+
             item = getItem(session, piid, key);
             session.flush();
+
+            transaction.commit();
+
+
         } catch (HibernateException hibernateException) {
             throw new PersistentVarsException("Could not find key '" + key + "': " + hibernateException.getMessage());
         } finally {
-            if (session != null) 
+            if (transaction != null && transaction.isActive())
+                 transaction.rollback();
+
+            if (session != null)
                 session.close();
         }
 

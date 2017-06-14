@@ -115,7 +115,7 @@ ext.hibernateProperties = [
     'hibernate.connection.autocommit'  : findProperty(hibernateDatabase + '.connection.autocommit') ?: 'false',
     'hibernate.connection.username'    : findProperty(hibernateDatabase + '.connection.username') ?: 'sa',
     'hibernate.connection.password'    : findProperty(hibernateDatabase + '.connection.password') ?: '',
-    'hibernate.connection.pool_size'   : findProperty(hibernateDatabase + '.connection.pool_size') ?: '1'
+    'hibernate.connection.pool_size'   : findProperty(hibernateDatabase + '.connection.pool_size') ?: '5'
 ]
 
 

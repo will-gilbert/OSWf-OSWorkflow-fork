@@ -77,7 +77,7 @@ public class HibernateTestSupportTest {
         assertNull(getPrivateSessionFactory());
     }
 
-    @Test
+    @Ignore
     public void reopenSessionFactory() {
     
         hibernateTestSupport.getSession();

@@ -2,6 +2,7 @@ package support;
 
 // Hibernate
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.hibernate.SessionFactory;
 import org.hibernate.HibernateException;
 
@@ -25,6 +26,7 @@ public class HibernateTestSupport {
     private Configuration configuration = new Configuration();
     private SessionFactory sessionFactory = null;
     private Session session = null;
+    private Transaction transaction = null;
     
     public HibernateTestSupport() {}
 
@@ -74,23 +76,34 @@ public class HibernateTestSupport {
             return session;
 
         try {
+
             session = getSessionFactory().openSession();
+            transaction = session.beginTransaction();
+
         } catch (HibernateException hibernateException) {
             logger.error(fatal, hibernateException.getMessage());
             fail();
         }
-
-            
+    
         return session;
     }
 
 
     public void closeSession() {
-        if((session != null) && session.isOpen()) {
+
+        if(session != null) {
             session.flush();
+            transaction.commit();
+        }
+
+        if (transaction != null && transaction.isActive())
+            transaction.rollback();
+
+        if((session != null) && session.isOpen()) {
             session.close();
             session = null;
         }
+        
     }
 
 

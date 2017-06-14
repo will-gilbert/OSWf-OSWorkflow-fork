@@ -53,7 +53,7 @@ import static org.junit.Assert.fail;
  
 public class HibernateLoaderTest extends OSWfHibernateTestCase {
 
-    public static final String RDBMS_CONFIGURATION = "H2.hibernate.xml"; //System.getProperty("rdbms-configuration");
+    public static final String RDBMS_CONFIGURATION = System.getProperty("rdbms-configuration");
 
     private static String holiday;
 
@@ -87,12 +87,6 @@ public class HibernateLoaderTest extends OSWfHibernateTestCase {
         createConfiguration();
     }
 
-    @After
-    public void teardown() {
-        closeSession();
-        closeSessionFactory();
-    }
-
     void loadDatabase() throws Exception {
             
         Session session = null;
@@ -103,8 +97,7 @@ public class HibernateLoaderTest extends OSWfHibernateTestCase {
             pd.setContent(holiday);
             session.save(pd);
         } finally {
-            if(session != null)
-                session.close();
+            closeSession();
         }  
 	}
         
@@ -129,8 +122,7 @@ public class HibernateLoaderTest extends OSWfHibernateTestCase {
             assertTrue(list.size() == 1);
 
         } finally {
-            if(session != null)
-                session.close();
+            closeSession();
         }  
         
     }
