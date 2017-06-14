@@ -24,8 +24,8 @@ import org.informagen.oswf.impl.stores.AbstractWorkflowStore;
 // Hibernate
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.SessionFactory;
 
 // Hibernate - Criteria
 import org.hibernate.Criteria;
@@ -103,18 +103,22 @@ public class HibernateStore extends AbstractWorkflowStore {
     public void setEntryState(final long entryId, final ProcessInstanceState state) throws WorkflowStoreException {
 
         Session session = null;
+
         try {
             session = sessionFactory.openSession();
             ProcessInstance entry = loadEntry(session, entryId);
   
+            // 'save' method will provide transactions
             if(entry != null) {
                 entry.setState(state);
                 save(session, entry);
             }
 
+
         } catch (HibernateException hibernateException) {
             throw new WorkflowStoreException(hibernateException);
         } finally {
+
             if (session != null)
                 session.close();
         }
@@ -152,7 +156,6 @@ public class HibernateStore extends AbstractWorkflowStore {
             }
 
             step.setPreviousSteps(previousSteps);
-
             entry.addCurrentStep(step);
 
             // We need to save here because we soon will need the stepId 
@@ -163,6 +166,7 @@ public class HibernateStore extends AbstractWorkflowStore {
         } catch (HibernateException hibernateException) {
             throw new WorkflowStoreException(hibernateException);
         } finally {
+
             if (session != null)
                 session.close();
         }
@@ -183,12 +187,12 @@ public class HibernateStore extends AbstractWorkflowStore {
             workflowEntry.setState(ProcessInstanceState.INITIATED);
             workflowEntry.setWorkflowName(workflowName);
             
-            // Transaction supplied by DAO
             save(session, workflowEntry);
             
         } catch (HibernateException hibernateException) {
             throw new WorkflowStoreException(hibernateException);
         } finally {
+ 
             if (session != null)
                 session.close();
         }
@@ -200,14 +204,24 @@ public class HibernateStore extends AbstractWorkflowStore {
     public List<Step> findCurrentSteps(final long entryId) throws WorkflowStoreException {
 
         Session session = null;
+        Transaction transaction = null;
         List<Step> steps = null;
 
         try {
             session = sessionFactory.openSession();
+            transaction = session.beginTransaction();
+
             steps = loadEntry(session, entryId).getCurrentSteps();
+
+            transaction.commit();
+
          } catch (HibernateException hibernateException) {
             throw new WorkflowStoreException(hibernateException);
         } finally {
+
+            if (transaction != null && transaction.isActive())
+                 transaction.rollback();
+
             if (session != null)
                 session.close();
         }
@@ -218,14 +232,24 @@ public class HibernateStore extends AbstractWorkflowStore {
     public ProcessInstance findProcessInstance(long entryId) throws WorkflowStoreException {
  
         Session session = null;
+        Transaction transaction = null;
         ProcessInstance workflowEntry = null;
         
         try {
             session = sessionFactory.openSession();
+            transaction = session.beginTransaction();
+
             workflowEntry = loadEntry(session, entryId);
+
+            transaction.commit();
+
         } catch (HibernateException hibernateException) {
             throw new WorkflowStoreException(hibernateException);
         } finally {
+
+            if (transaction != null && transaction.isActive())
+                 transaction.rollback();
+
             if (session != null)
                 session.close();
         }
@@ -236,14 +260,24 @@ public class HibernateStore extends AbstractWorkflowStore {
     public List<Step> findHistorySteps(final long entryId) throws WorkflowStoreException {
 
         Session session = null;
+        Transaction transaction = null;
         List<Step> steps = null;
 
         try {
             session = sessionFactory.openSession();
+            transaction = session.beginTransaction();
+
             steps = loadEntry(session, entryId).getHistorySteps();
+
+            transaction.commit();
+
          } catch (HibernateException hibernateException) {
             throw new WorkflowStoreException(hibernateException);
         } finally {
+
+            if (transaction != null && transaction.isActive())
+                 transaction.rollback();
+            
             if (session != null)
                 session.close();
         }
@@ -284,6 +318,7 @@ public class HibernateStore extends AbstractWorkflowStore {
         } catch(HibernateException hibernateException) {
             throw new WorkflowStoreException(hibernateException);
         } finally {
+
             if (session != null)
                 session.close();
         }
@@ -301,6 +336,7 @@ public class HibernateStore extends AbstractWorkflowStore {
         
         // The next line forces the ORM to load the properties into the object; This should not be lazy loading
         //  but seems to be occuring; Access any property loads them all.  Work-around?
+
         workflowEntry.getState();
         return workflowEntry;
     }

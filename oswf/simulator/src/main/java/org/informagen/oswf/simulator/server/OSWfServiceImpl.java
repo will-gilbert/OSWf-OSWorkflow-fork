@@ -326,7 +326,7 @@ public class OSWfServiceImpl implements OSWfService {
                 list.add(stepActions);
             }
         } catch (Exception exception) {
-            throw new ServiceException(exception);
+            throw new ServiceException(exception.getMessage());
         }
 
         Collections.sort(list);

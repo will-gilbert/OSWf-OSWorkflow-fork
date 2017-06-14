@@ -95,8 +95,11 @@ public class HibernatePersistentVarsDAO  {
         try {
             session = sessionFactory.openSession();
             transaction = session.beginTransaction();
+
             list = getKeysImpl(session, piid, prefix, type);
+
             transaction.commit();
+
         } catch (HibernateException hibernateException) {
             throw new PersistentVarsException("HibernatePropertySet.getKeys: " + hibernateException.getMessage());
         } finally {
@@ -132,7 +135,6 @@ public class HibernatePersistentVarsDAO  {
 
             transaction.commit();
 
-
         } catch (HibernateException hibernateException) {
             throw new PersistentVarsException("Could not find key '" + key + "': " + hibernateException.getMessage());
         } finally {
@@ -163,8 +165,11 @@ public class HibernatePersistentVarsDAO  {
         try {
             session = this.sessionFactory.openSession();
             transaction = session.beginTransaction();
+
             session.save(item);
+
             transaction.commit();
+
         } catch (HibernateException hibernateException) {
             throw new PersistentVarsException("Could not save key '" + key + "': " + hibernateException.getMessage());
         } finally {
@@ -195,8 +200,10 @@ public class HibernatePersistentVarsDAO  {
         try {
             session = this.sessionFactory.openSession();
             transaction = session.beginTransaction();
+
             session.delete(getItem(session, piid, key));
             session.flush();
+
             transaction.commit();
         } catch (HibernateException hibernateException) {
             throw new PersistentVarsException("Could not remove key '" + key + "': " + hibernateException.getMessage());
@@ -228,6 +235,7 @@ public class HibernatePersistentVarsDAO  {
                 session.delete(getItem(session, piid, key));
 
             transaction.commit();
+            
         } catch( HibernateException hibernateException ) {
             throw new PersistentVarsException("Could not remove all keys: " + hibernateException.getMessage());
         } finally {

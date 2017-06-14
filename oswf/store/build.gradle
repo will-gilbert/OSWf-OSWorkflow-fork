@@ -93,7 +93,7 @@ dependencies {
     runtime ([
 
         // C3P0 - Connection Pooling  
-        "c3p0:c3p0:$c3p0",
+        "org.hibernate:hibernate-c3p0:$hibernate",
         
         // BeanShell
         "bsh:bsh:$bsh"
