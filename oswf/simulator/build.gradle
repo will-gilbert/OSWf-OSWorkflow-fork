@@ -115,7 +115,7 @@ ext.hibernateProperties = [
     'hibernate.connection.autocommit'  : findProperty(hibernateDatabase + '.connection.autocommit') ?: 'false',
     'hibernate.connection.username'    : findProperty(hibernateDatabase + '.connection.username') ?: 'sa',
     'hibernate.connection.password'    : findProperty(hibernateDatabase + '.connection.password') ?: '',
-    'hibernate.connection.pool_size'   : findProperty(hibernateDatabase + '.connection.pool_size') ?: '5'
+    'hibernate.connection.pool_size'   : findProperty(hibernateDatabase + '.connection.pool_size') ?: '2'
 ]
 
 
@@ -160,12 +160,7 @@ dependencies {
 
 
     compile ([
-        
-        // OSWf - Core; OpenSymphony Quartz 
-        "opensymphony:quartz:1.6.0",
-
-        // OSWf Store & PropertySet extensions
-        
+                
         // Google GWT
         "com.google.gwt:gwt-user:$gwtVersion",
         "com.google.gwt:gwt-servlet:$gwtVersion",
@@ -202,10 +197,10 @@ dependencies {
         "log4j:log4j:1.2.16",
 
         // C3P0 - Connection Pooling  
-        "c3p0:c3p0:0.9.1",
+        "c3p0:c3p0:$c3p0",
 
         // Various database drivers; Add or remove accordingly
-        "mysql:mysql-connector-java:5.1.25",
+        "mysql:mysql-connector-java:$mysql",
         "com.h2database:h2:$h2"
         
     ])
