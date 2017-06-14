@@ -59,7 +59,6 @@ dependencies {
 
     compile ([
 
-
         // GroovyScript - used by Workflow Processes for step/action scripts
         "org.codehaus.groovy:groovy:$groovy",
 
@@ -106,7 +105,7 @@ sourceSets {
 
     test { 
         java { srcDirs = [] }
-        groovy { srcDirs = ['src/test/java', 'src/test/groovy'] }
+        groovy { srcDirs = ['src/test/groovy'] }
     }
 }
 

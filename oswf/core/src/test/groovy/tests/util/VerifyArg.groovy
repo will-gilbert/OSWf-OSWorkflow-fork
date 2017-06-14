@@ -14,9 +14,10 @@ public class VerifyArg implements FunctionProvider {
     // M E T H O D S  -------------------------------------------------------------------------
 
     public void execute(Map<String,Object> transientVars, Map<String,String> args, PersistentVars persistentVars) throws WorkflowException {
-        Object expected = args.get("expected");
-        Object actual = args.get("actual");
+    
+        def expected = args.get('expected')
+        def actual = args.get('actual')
         
-        TestCase.assertEquals(expected, actual);
+        assert expected == actual
     }
 }
