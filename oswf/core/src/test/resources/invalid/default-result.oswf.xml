@@ -4,21 +4,20 @@
 
 <workflow>
     
-    <meta name='Jira Ticket'><![CDATA[
+    <description><![CDATA[
     
         This workflow is missing a 'default-result' element as part 
-        of the 'results' in the initial-actions and should throw 
-        an 'InvalidWorkflowDescriptorException' when loaded.    
+          of the 'results' in the initial-actions and should throw 
+          an 'InvalidWorkflowDescriptorException' when loaded.    
         
     ]]>    
-    </meta>    
+    </description>    
                 
 
 	<initial-actions>
 		<action id="1" name="Start Workflow">
 			<results>
-				<!-- <default-result status="Pending" step="1" owner="${actor}"/> -->
-				<default-result status="Underway"/>
+				<default-result status="Underway"/>  <!-- S/B <default-result step="1" /> -->
 			</results>
 		</action>
 	</initial-actions>
