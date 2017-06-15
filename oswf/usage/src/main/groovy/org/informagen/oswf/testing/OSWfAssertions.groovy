@@ -13,6 +13,7 @@ import org.informagen.oswf.PersistentVars
 
 // Java Collections
 import java.util.Collection
+import java.util.Map
 import java.util.List
 import static java.util.Collections.EMPTY_MAP
 
@@ -44,11 +45,15 @@ class OSWfAssertions  {
 
     }
 
+    static void assertCounts(OSWfEngine wfEngine, long piid, Map<String,Integer> counts) {
+        assertCounts(wfEngine, piid, counts['historySteps'], counts['currentSteps'], counts['actions'])
+    }
+
     /**
      *  Assert the current states of a process instance.
      *  history step count
      *  current step count
-     *  action count not tested for authorization
+     *  action counts (Not tested for authorization)
      *
      */
     

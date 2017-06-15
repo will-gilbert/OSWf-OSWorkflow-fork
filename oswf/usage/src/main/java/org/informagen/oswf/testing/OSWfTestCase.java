@@ -86,18 +86,18 @@ public abstract class OSWfTestCase  {
     protected long createProcessInstance(OSWfEngine wfEngine, String workflowFilename, int initialAction, 
                                                 Map<String,Object> instanceVariables){
         
-        long processInstanceId = 0L;
+        long piid = 0L;
 
         try {
             assertTrue("Can't initialize this workflow", wfEngine.canInitialize(workflowFilename, initialAction));
-            processInstanceId = wfEngine.initialize(workflowFilename, initialAction, instanceVariables);
+            piid = wfEngine.initialize(workflowFilename, initialAction, instanceVariables);
         } catch (InvalidInputException invalidInputException) {
             fail("createProcessInstance InvalidInputException: " + invalidInputException.getMessage());
         } catch (WorkflowException workflowException) {
             fail("OSWorkflowTestCase.createProcessInstance WorkflowException: " + workflowException.getMessage());
         }
         
-        return processInstanceId;
+        return piid;
     }
 
     protected void chooseAction(OSWfEngine wfEngine,long piid, int actionId) throws Exception {

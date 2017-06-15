@@ -41,11 +41,11 @@
 			<actions>
 				<action id="201" name="Manager approves" >
 		    
-		            <pre-functions>
-		                <function type="beanshell">
-		                   <arg name="script">persistentVars.setString("Manager Result", "approved");</arg>
-		                </function>
-		            </pre-functions>
+          <pre-functions>
+            <function type="groovy">
+                <arg name="script">persistentVars.setString("Manager Result", "approved");</arg>
+            </function>
+          </pre-functions>
 		
 					<results>
 						<default-result join="10000" />
@@ -53,11 +53,11 @@
 				</action>
 				<action id="202" name="Manager denies" >
 		    
-		            <pre-functions>
-		                <function type="beanshell">
-		                   <arg name="script">persistentVars.setString("Manager Result", "denied");</arg>
-		                </function>
-		            </pre-functions>
+          <pre-functions>
+            <function type="groovy">
+                <arg name="script">persistentVars.setString("Manager Result", "denied");</arg>
+            </function>
+          </pre-functions>
 		
 					<results>
 						<default-result join="10000"/>
@@ -73,11 +73,11 @@
 			<actions>
 				<action id="301" name="HR approves" >
 		    
-		            <pre-functions>
-		                <function type="beanshell">
-		                   <arg name="script">persistentVars.setString("HR Result", "approved");</arg>
-		                </function>
-		            </pre-functions>
+          <pre-functions>
+            <function type="groovy">
+                <arg name="script">persistentVars.setString("HR Result", "approved");</arg>
+            </function>
+          </pre-functions>
 		
 					<results>
 						<default-result join="10000"/>
@@ -85,16 +85,16 @@
 				</action>
 
 				<action id="302" name="HR denies" >
-		    
-		            <pre-functions>
-		                <function type="beanshell">
-		                   <arg name="script">persistentVars.setString("HR Result", "denied");</arg>
-		                </function>
-		            </pre-functions>
-		
-					<results>
-						<default-result join="10000"/>
-					</results>
+    
+          <pre-functions>
+            <function type="groovy">
+                <arg name="script">persistentVars.setString("HR Result", "denied");</arg>
+            </function>
+          </pre-functions>
+
+          <results><default-result join="10000"/></results>
+
+
 				</action>
 			</actions>
 		</step>
@@ -104,12 +104,12 @@
 		<step id="400" name="Notify Employee">
 
 			<actions>
-				<action id="401" name="send e-mail"  finish="true" >
-		            <pre-functions>
-		                <function type="beanshell">
-		                   <arg name="script">persistentVars.setDate("E-Mail Sent", new Date());</arg>
-		                </function>
-		            </pre-functions>
+				<action id="401" name="send e-mail" finish="true" >
+          <pre-functions>
+              <function type="groovy">
+                 <arg name="script">persistentVars.setDate("E-Mail Sent", new Date());</arg>
+              </function>
+          </pre-functions>
 					<results>
 						<default-result step="-1"/>
 					</results>
@@ -127,62 +127,48 @@
     
 	<splits>
 		<split id="10000">
-			<default-result step="200"/>
-			<default-result step="300"/>
+			<default-result status='Pending' step="200"/>
+			<default-result status='Pending' step="300"/>
 		</split>
 	</splits>
 
 
     <!-- Joins ============================================================================ -->
 
-    <!-- The line manager and HR manager's decisions are combined here ============= -->
 	<joins>
-	    
-	    <!-- The 'AND/OR' join -->
-	    
+	    	    
 		<join id="10000">
 			<conditions>
-				<condition type="beanshell">
+				<condition type="groovy">
 					<arg name="script"><![CDATA[
-//==============================================================================================						
+            //==============================================================================================						
 
-    String managerResult = persistentVars.getString("Manager Result");
-    String hrResult = persistentVars.getString("HR Result");
-    					    
-    //========================================================
-    // Behave like an OR join if either the Manager or the
-    //  HR Director denied the request.
-    
-    if( managerResult != null && managerResult.equals("denied") ) {
-        persistentVars.setString("Employee Request", "denied");
-        return true;
-    } 
+                def managerResult = persistentVars.getString("Manager Result")
+                def hrResult = persistentVars.getString("HR Result")
+                					    
+                //========================================================
+                // Either the Manager or the HR Director can deny the 
+                //   request. Both need to approve for an approval.
+                
+                if ( managerResult == 'denied' ) {
+                    persistentVars.setString('Employee Request', 'denied')
+                    return true
+                } 
 
-    if( hrResult != null && hrResult.equals("denied") ) {
-        persistentVars.setString("Employee Request", "denied");
-        return true;
-    }
-    
-    //========================================================
-    // Behave like an AND join and wait for both decisions.
-
-    // Ensure that both properties have been defined i.e. both steps
-    //   have arrived at the join
-
-    if(managerResult == null || hrResult == null)
-        return false;
-    
-    // If we arrive here both arrived and neither have 'denied'; But
-    //   we check explicitly for both approved
-    
-    if(managerResult.equals("approved") &&  hrResult.equals("approved"))
-      persistentVars.setString("Employee Request", "approved");
-    
-    // We return 'true' here to allow the workflow to proceed; this
-    //  return value is not related to our 'Day off' decisions
-      
-    return true;
-//==============================================================================================                        
+                if ( hrResult == 'denied' ) {
+                    persistentVars.setString('Employee Request', 'denied')
+                    return true
+                }
+                                              
+                if ( managerResult == 'approved' &&  hrResult == 'approved' ) {
+                   persistentVars.setString("Employee Request", "approved")
+                   return true
+                }
+                
+                // Still waiting on the a step
+                return !jn.any{ it.status == 'Pending' }
+                
+            //==============================================================================================                        
 					]]></arg>
 				</condition>
 			</conditions>
