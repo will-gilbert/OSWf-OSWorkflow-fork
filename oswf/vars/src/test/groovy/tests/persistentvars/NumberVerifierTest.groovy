@@ -55,7 +55,7 @@ class NumberVerifierTest {
 
     @Test
     void verifyNumberWithDifferentTypes() {
-        assertEquals(Integer.class, verifier.getType())
+        assert Integer.class == verifier.getType()
 
         try {
             verifier.verify(new Long(100000))

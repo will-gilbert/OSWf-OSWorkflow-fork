@@ -16,6 +16,7 @@ public interface Constants  {
     
     // Actions - Employee
     final static int REQUEST_HOLIDAYS               = 101;
+    final static int REQUEST_CANCEL                 = 102;
     final static int REQUEST_LEAVE                  = REQUEST_HOLIDAYS;
     
     // Actions = Manager
