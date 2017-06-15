@@ -47,7 +47,7 @@ import static org.junit.Assert.fail;
  */
 
 
-public class LeaveRequestAltTest extends OSWfHibernateTestCase implements LeaveRequest {
+public class LeaveRequestAltTest extends OSWfHibernateTestCase implements Constants {
 
     public static final String RDBMS_CONFIGURATION = System.getProperty("rdbms-configuration");
 

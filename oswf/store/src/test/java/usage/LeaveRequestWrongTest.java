@@ -49,7 +49,7 @@ import static org.junit.Assert.fail;
  */
 
 
-public class LeaveRequestWrongTest extends OSWfHibernateTestCase implements LeaveRequest {
+public class LeaveRequestWrongTest extends OSWfHibernateTestCase implements Constants {
 
     public static final String RDBMS_CONFIGURATION = System.getProperty("rdbms-configuration");
 
