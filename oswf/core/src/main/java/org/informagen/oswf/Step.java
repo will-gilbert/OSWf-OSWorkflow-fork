@@ -75,9 +75,10 @@ public interface Step {
 
 
     /**
-     * Returns the unique ID of the previous step, or 0 if this is the first step
+     * Returns the unique ID of the previous step, or 0 if this is the first step.
+     * Only ever greater than one for a step after a join.
      */
-    public long[] getPreviousStepIds();
+    public long[] getPreviousIds();
 
     
 

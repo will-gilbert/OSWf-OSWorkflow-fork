@@ -65,21 +65,21 @@ public abstract class HibernateStep extends DefaultStep {
     }
 
 
-    public long[] getPreviousStepIds() {
+    public long[] getPreviousIds() {
         
         if (previousSteps == null) {
             return new long[0];
         }
 
-        long[] previousStepIds = new long[previousSteps.size()];
+        long[] previousIds = new long[previousSteps.size()];
         int i = 0;
 
         for(Step step :  previousSteps) {
-            previousStepIds[i] = step.getId();
+            previousIds[i] = step.getId();
             i++;
         }
 
-        return previousStepIds;
+        return previousIds;
     }
 
 

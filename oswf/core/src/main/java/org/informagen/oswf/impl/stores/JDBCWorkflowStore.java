@@ -516,7 +516,7 @@ public class JDBCWorkflowStore extends AbstractWorkflowStore implements Workflow
             stmt.setString(9, step.getActor());
             stmt.executeUpdate();
 
-            long[] previousIds = step.getPreviousStepIds();
+            long[] previousIds = step.getPreviousIds();
 
             if ((previousIds != null) && (previousIds.length > 0)) {
                 sql = "INSERT INTO " + historyPrevTable + " (" + stepId + ", " + stepPreviousId + ") VALUES (?, ?)";

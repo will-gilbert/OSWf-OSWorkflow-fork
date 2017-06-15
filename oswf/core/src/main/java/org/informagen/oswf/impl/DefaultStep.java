@@ -30,14 +30,14 @@ public class DefaultStep implements Step, Serializable {
     protected Date finishDate;
 
     // Are these descriptor step ids or process instance step ids? I think pi Step Ids
-    protected long[] previousStepIds;
+    protected long[] previousIds;
     
 
     // C O N S T R U C T O R S  ---------------------------------------------------------------
 
     public DefaultStep() {}
 
-    public DefaultStep(Long id, Long processInstanceId, int stepId, int actionId, String owner, Date startDate, Date dueDate, Date finishDate, String status, long[] previousStepIds, String actor) {
+    public DefaultStep(Long id, Long processInstanceId, int stepId, int actionId, String owner, Date startDate, Date dueDate, Date finishDate, String status, long[] previousIds, String actor) {
         this.id = id;
         this.processInstanceId = processInstanceId;
         this.stepId = stepId;
@@ -47,7 +47,7 @@ public class DefaultStep implements Step, Serializable {
         this.finishDate = finishDate;
         this.dueDate = dueDate;
         this.status = status;
-        this.previousStepIds = previousStepIds;
+        this.previousIds = previousIds;
         this.actor = actor;
     }
 
@@ -147,12 +147,12 @@ public class DefaultStep implements Step, Serializable {
     }
 
     // This is a non-presisted data used
-    public void setPreviousStepIds(long[] previousStepIds) {
-        this.previousStepIds = previousStepIds;
+    public void setPreviousIds(long[] previousIds) {
+        this.previousIds = previousIds;
     }
 
-    public long[] getPreviousStepIds() {
-        return previousStepIds;
+    public long[] getPreviousIds() {
+        return previousIds;
     }
  
     // Used to create sets of process instance steps; current and history

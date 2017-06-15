@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE workflow PUBLIC "-//Open Source Workflow//DTD OSWf 3.0//EN" "http://oswf.sourceforge.net/OSWf-3.0.dtd">
+
+  <workflow>
+
+    <initial-actions>
+      <action id="1" name="start">
+        <results>
+          <default-result step="10"/>
+        </results>
+      </action>
+    </initial-actions>
+
+    <steps>
+
+      <step id="10" name="A">
+        <actions>
+          <action id="10" name="To Split">
+            <results>
+              <default-result split="1"/>
+            </results>
+          </action>
+        </actions>
+      </step>
+
+      <step id="20" name="B">
+        <actions>
+          <action id="20" name="Step B Joins">
+            <results>
+              <default-result join="1"/>
+            </results>
+          </action>
+        </actions>
+      </step>
+
+      <step id="30" name="C">
+        <actions>
+          <action id="30" name="Step C Joins">
+            <results>
+              <default-result join="1"/>
+            </results>
+          </action>
+        </actions>
+      </step>
+
+      <step id="40" name="D">
+        <actions>
+          <action id="40" name="Finish">
+            <results>
+              <default-result step='0' />
+            </results>
+          </action>
+        </actions>
+      </step>
+
+    </steps>
+
+    <splits>
+      <split id="1">
+        <default-result step="20"/>
+        <default-result step="30"/>
+      </split>
+    </splits>
+
+    <joins>
+      <join id="1">
+
+        <conditions>
+          <condition type="groovy">
+            <arg name="script">jn.get(20)?.status == 'Finished'</arg>
+          </condition> 
+        
+          <condition type="groovy">
+            <arg name="script">jn.get(30)?.status == 'Finished'</arg>
+          </condition> 
+        </conditions>
+
+        <default-result step="40"/>
+      </join>
+    </joins>
+
+  </workflow>

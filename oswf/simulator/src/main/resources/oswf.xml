@@ -35,7 +35,7 @@
         <workflow name="Re-enter Split"       type="resource" location="core/reenter-split.oswf.xml"/>
         <workflow name="Step-Post"            type="resource" location="core/step-post.oswf.xml"/>
         <workflow name="Step-Pre"             type="resource" location="core/step-pre.oswf.xml"/>
-        <workflow name="WF-315"               type="resource" location="core/WF-315.oswf.xml"/>
+        <workflow name="Previous Ids"         type="resource" location="core/PreviousId.oswf.xml"/>
         <workflow name="WF-373"               type="resource" location="core/WF-373.oswf.xml"/>
 
         <!-- Will require Security Manger setup -->
