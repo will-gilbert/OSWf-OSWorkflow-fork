@@ -2,6 +2,9 @@ package usage;
 
 
 public interface Constants  {
+
+    final static String SIMPLE = "Holiday";
+    final static String COMPLEX = "LeaveRequest";
     
     final static int INITIAL_ACTION    =   1;
     final static int CONTRACTOR_ACTION =   2;

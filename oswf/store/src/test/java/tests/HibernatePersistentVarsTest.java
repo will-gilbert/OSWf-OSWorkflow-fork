@@ -44,7 +44,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 
-public class HibernatePersistentVarsTest implements usage.LeaveRequest {
+public class HibernatePersistentVarsTest implements usage.Constants {
 
     public static final String RDBMS_CONFIGURATION = System.getProperty("rdbms-configuration");
 

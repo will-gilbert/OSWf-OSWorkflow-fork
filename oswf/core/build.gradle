@@ -124,7 +124,7 @@ task graphviz(dependsOn: ['jar'], type:JavaExec) {
 
     // args[0] : -P  workflow="path.../name"
     def workflow = findProperty("workflow") ?: 'usage/example'
-    def inputFile = new File("src/test/resources/${workflow}.oswf.xml")
+    def inputFile = new File("../workflows/src/main/resources/${workflow}.oswf.xml")
     def outputFile = new File("${inputFile.getName()}.dot")
 
     args = [inputFile]

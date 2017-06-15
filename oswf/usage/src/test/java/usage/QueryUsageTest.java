@@ -74,7 +74,7 @@ import static org.junit.Assert.fail;
  */
  
  
-public class QueryUsageTest extends OSWfTestCase implements LeaveRequest {
+public class QueryUsageTest extends OSWfTestCase implements Constants {
 
     // Class fields ///////////////////////////////////////////////////////////
 
