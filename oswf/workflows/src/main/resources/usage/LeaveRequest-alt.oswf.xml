@@ -141,7 +141,7 @@
 			<conditions>
 				<condition type="groovy">
 					<arg name="script"><![CDATA[
-            //==============================================================================================						
+            //=============================================================================						
 
                 def managerResult = persistentVars.getString("Manager Result")
                 def hrResult = persistentVars.getString("HR Result")
@@ -168,7 +168,7 @@
                 // Still waiting on the a step
                 return !jn.any{ it.status == 'Pending' }
                 
-            //==============================================================================================                        
+            //=============================================================================                        
 					]]></arg>
 				</condition>
 			</conditions>
