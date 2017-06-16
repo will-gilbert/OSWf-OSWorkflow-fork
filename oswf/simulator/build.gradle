@@ -43,10 +43,22 @@ DELETE FROM processinstance;
 import org.apache.tools.ant.filters.ReplaceTokens
 
 apply plugin: 'java'
+//apply plugin: 'org.akhikhl.gretty'
 apply plugin: 'jetty'
 apply plugin: 'war'
 
-defaultTasks 'devMode'
+
+buildscript {
+  repositories {
+    mavenLocal()
+    jcenter()
+    maven { url 'http://oss.jfrog.org/artifactory/oss-snapshot-local' }
+  }
+
+  dependencies {
+    classpath "org.akhikhl.gretty:gretty:$gretty"
+  }
+}
 
 
 // C O N F I G U R A T I O N ------------------------------------------------------------------
@@ -322,8 +334,9 @@ task cleanDevMode(type:Delete) {
 }
 
 
-// J E T T Y   C O N F I G U R A T I O N ======================================================
+// W E B   C O N T A I N E R   C O N F I G U R A T I O N ======================================
 
+// Hide when running Gradle 4.0
 
 jettyRun { dependsOn 'compileGWT' }
 jettyRun.httpPort = 9090           // Avoid potential conflicts with 8080
@@ -333,6 +346,7 @@ jettyRun.doFirst {
     println "| Jetty running, open a browser and enter the URL->   http://localhost:${jettyRun.httpPort}/${project.name}/"
     println '|'
 }
+
 
 
 // P L U G I N   C O N F I G U R A T I O N ====================================================
