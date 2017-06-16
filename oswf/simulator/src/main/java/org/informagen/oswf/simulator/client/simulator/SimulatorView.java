@@ -118,8 +118,8 @@ public class SimulatorView implements SimulatorPresenter.View {
 
     public Long getSelectedProcessInstance() {
                 
-        if(processInstancesGrid.getSelection().length == 1) {
-            ListGridRecord record = processInstancesGrid.getSelection()[0];
+        if(processInstancesGrid.getSelectedRecords().length == 1) {
+            ListGridRecord record = processInstancesGrid.getSelectedRecords()[0];
             currentPIID = record.getAttributeAsLong("piid");
             return currentPIID;
         } else

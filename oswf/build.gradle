@@ -51,7 +51,7 @@ subprojects {
     targetCompatibility = sourceCompatibility
     compileJava.options.compilerArgs = [
         // '-Xlint:unchecked', 
-        // '-Xlint:deprecation'
+        '-Xlint:deprecation'
     ]
 
     tasks.withType(Test) {

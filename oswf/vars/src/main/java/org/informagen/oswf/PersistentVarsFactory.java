@@ -49,7 +49,7 @@ public class PersistentVarsFactory {
     }
 
     public PersistentVarsFactory addNamedPersistentVars(String propertySetName, String classname) {
-        return addNamedPersistentVars(propertySetName, classname, Collections.EMPTY_MAP);
+        return addNamedPersistentVars(propertySetName, classname, (Map<String,String>)Collections.EMPTY_MAP);
     }
 
     public PersistentVarsFactory addNamedPersistentVars(String propertySetName, String classname, Map<String,String> parameters) {

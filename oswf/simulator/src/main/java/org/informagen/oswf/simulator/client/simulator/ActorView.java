@@ -8,8 +8,11 @@ import org.informagen.oswf.simulator.client.simulator.ActorPresenter;
 // GWT - Core, Widgets, Command
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.user.client.Command;
-import com.google.gwt.user.client.DeferredCommand;
+// import com.google.gwt.user.client.Command;
+// import com.google.gwt.user.client.DeferredCommand;
+
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 
 // SmartGWT - Widgets, Layout
 import com.smartgwt.client.widgets.IButton;
@@ -32,6 +35,7 @@ import com.smartgwt.client.types.Alignment;
 
 // Google Inject
 import com.google.inject.Inject;
+
 
 public class ActorView implements ActorPresenter.View {
 
@@ -145,13 +149,23 @@ public class ActorView implements ActorPresenter.View {
 
 
     void focusInputField(final FormItem focusItem) {
-        
-        DeferredCommand.addCommand(new Command() {
+
+        Scheduler.get().scheduleDeferred( new Scheduler.ScheduledCommand() {
+
+            @Override
             public void execute() {
                 // Reset the search field for next time
                 focusItem.focusInItem();
             }
+
         });
+        
+        // DeferredCommand.addCommand(new Command() {
+        //     public void execute() {
+        //         // Reset the search field for next time
+        //         focusItem.focusInItem();
+        //     }
+        // });
         
     }
  

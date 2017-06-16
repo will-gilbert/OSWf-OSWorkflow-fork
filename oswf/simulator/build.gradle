@@ -279,13 +279,6 @@ task devMode(dependsOn: ['compileJava', 'copyWebAppResources', 'copyLibraries'],
 }
 
 
-jettyRun.doFirst {
-    println '=================================================================================='
-    println '|'
-    println "| Jetty running, open a browser and enter the URL->   http://localhost:${jettyRun.httpPort}/${project.name}/"
-    println '|'
-}
-
 
 // U T I L I T Y   T A S K S  =================================================================
 
@@ -329,13 +322,17 @@ task cleanDevMode(type:Delete) {
 }
 
 
-// G R A D L E   C O N F I G U R A T I O N ====================================================
+// J E T T Y   C O N F I G U R A T I O N ======================================================
 
-// WAR and Jetty builds; requires results of 'compileGWT' task rather than 'src/main/webapp'
-webAppDirName = "${gwtDevModeDir}"
 
-// Jetty Configuration
+jettyRun { dependsOn 'compileGWT' }
 jettyRun.httpPort = 9090           // Avoid potential conflicts with 8080
+jettyRun.doFirst {
+    println '=================================================================================='
+    println '|'
+    println "| Jetty running, open a browser and enter the URL->   http://localhost:${jettyRun.httpPort}/${project.name}/"
+    println '|'
+}
 
 
 // P L U G I N   C O N F I G U R A T I O N ====================================================
@@ -344,12 +341,11 @@ jettyRun.httpPort = 9090           // Avoid potential conflicts with 8080
 //   to the 'war' and 'jettyRun' task configuration we don't have to remember to do this
 //   on the command line.  Same idea with the 'clean' task to clean up the 'devMode' directory
 
+// WAR and Jetty builds; requires results of 'compileGWT' task rather than 'src/main/webapp'
+
+webAppDirName = "${gwtDevModeDir}"
 war {dependsOn 'compileGWT'}
-
-jettyRun { dependsOn 'compileGWT' }
-
 clean { dependsOn 'cleanDevMode'}
-
 
 // Custom build our WAR in order to remove GWT compiler and unused SmartGWT resources and skins
 
@@ -390,33 +386,5 @@ processResources {
 }
 
 
-// U N I T   T E S T I N G --------------------------------------------------------------------
-
-test {
-    
-   forkEvery = 5
-   maxParallelForks = 5
-
-   // Display the test results as HTML if any test fails; 'ignoreFailure'
-   //   must ge set to false in order for the 'doLast' to be executed 
-   ignoreFailures = true
-   def showReport = false
-   afterTest { descr, result -> 
-        if (result.resultType.toString() =='FAILURE') 
-            showReport = true
-   }
-   
-   // Display the report in the users favorite browser
-   //     'defaultBrowser' can definded in ~/.gradle/gradle.properties file
-   def defaultBrowser = findProperty('defaultBrowser') ?:'safari'
-   
-   // NB: 'open' is available on MacOSX; Modify or remove for other OSes
-   doLast {
-        if(showReport)
-            exec {commandLine "/usr/bin/open", "-a", defaultBrowser, 
-                  "$testReportDir/index.html"}
-   }
-   
-}
 
 
