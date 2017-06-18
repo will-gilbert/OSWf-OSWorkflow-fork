@@ -53,8 +53,8 @@ public class WorkflowsView implements WorkflowsPresenter.View {
     
     public String getSelectedWorkflow() {
         
-        if(listGrid.getSelection().length == 1) {
-            ListGridRecord record = listGrid.getSelection()[0];
+        if(listGrid.getSelectedRecords().length == 1) {
+            ListGridRecord record = listGrid.getSelectedRecords()[0];
             return record.getAttributeAsString("name");
         } else
             return null;

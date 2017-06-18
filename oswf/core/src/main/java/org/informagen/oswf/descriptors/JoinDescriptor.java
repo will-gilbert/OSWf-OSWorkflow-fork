@@ -26,7 +26,7 @@ import java.util.List;
 
 public class JoinDescriptor extends AbstractDescriptor implements Validatable {
 
-    protected final List<ConditionsDescriptor> conditions = new ArrayList();
+    protected final List<ConditionsDescriptor> conditions = new ArrayList<>();
     protected final ResultDescriptor result;
 
     // C O N S T R U C T O R  -----------------------------------------------------------------

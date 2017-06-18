@@ -5,8 +5,6 @@ import org.informagen.oswf.simulator.client.application.HeaderPresenter;
 
 // GWT
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.user.client.Command;
-import com.google.gwt.user.client.DeferredCommand;
 
 // SmartGWT - Widgets
 import com.smartgwt.client.widgets.ImgButton;

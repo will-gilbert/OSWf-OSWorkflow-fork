@@ -33,17 +33,17 @@ public class WorkflowDescriptor extends AbstractDescriptor implements Validatabl
     public static final String DOCTYPE_DECL = "<!DOCTYPE workflow SYSTEM 'OSWf-3.0.dtd'>";
 
     // Instance variables
-    protected final Map<String,String> metaAttributes = new HashMap<String,String>();
     protected ConditionsDescriptor globalConditions = null;
-    protected final List<ActionDescriptor> commonActionsList = new ArrayList<ActionDescriptor>();
-    protected final List<ActionDescriptor> globalActions = new ArrayList<ActionDescriptor>();
-    protected final List<ActionDescriptor> initialActions = new ArrayList<ActionDescriptor>();
+    protected final Map<String,String> metaAttributes = new HashMap<>();
+    protected final List<ActionDescriptor> commonActionsList = new ArrayList<>();
+    protected final List<ActionDescriptor> globalActions = new ArrayList<>();
+    protected final List<ActionDescriptor> initialActions = new ArrayList<>();
     protected final List<JoinDescriptor> joins = new ArrayList<JoinDescriptor>();
-    protected final List<RegisterDescriptor> registers = new ArrayList<RegisterDescriptor>();
-    protected final List<SplitDescriptor> splits = new ArrayList<SplitDescriptor>();
-    protected final List<StepDescriptor> steps = new ArrayList<StepDescriptor>();
-    protected final Map<Integer,ActionDescriptor> commonActions = new HashMap<Integer,ActionDescriptor>();
-    protected final Map<Integer,FunctionDescriptor> triggerFunctions = new HashMap<Integer,FunctionDescriptor>();
+    protected final List<RegisterDescriptor> registers = new ArrayList<>();
+    protected final List<SplitDescriptor> splits = new ArrayList<>();
+    protected final List<StepDescriptor> steps = new ArrayList<>();
+    protected final Map<Integer,ActionDescriptor> commonActions = new HashMap<>();
+    protected final Map<Integer,FunctionDescriptor> triggerFunctions = new HashMap<>();
 
     protected String workflowName = null;
     protected String version = null;
@@ -419,18 +419,23 @@ public class WorkflowDescriptor extends AbstractDescriptor implements Validatabl
         //validateDTD();
     }
 
-    // Refactored this out from the three addAction methods above; Yeah but now its function is obfuscated
 
-    private void addAction(Object actionsCollectionOrMap, ActionDescriptor descriptor) {
+    private void addAction(List<ActionDescriptor> actionsList, ActionDescriptor descriptor) {
+
         if (getAction(descriptor.getId()) != null) {
             throw new IllegalArgumentException("action with id " + descriptor.getId() + " already exists for this step.");
         }
 
-        if (actionsCollectionOrMap instanceof Map) {
-            ((Map) actionsCollectionOrMap).put(new Integer(descriptor.getId()), descriptor);
-        } else {
-            ((Collection) actionsCollectionOrMap).add(descriptor);
+        actionsList.add(descriptor);
+    }
+
+    private void addAction(Map<Integer,ActionDescriptor> actionsMap, ActionDescriptor descriptor) {
+
+        if (getAction(descriptor.getId()) != null) {
+            throw new IllegalArgumentException("action with id " + descriptor.getId() + " already exists for this step.");
         }
+
+        actionsMap.put(new Integer(descriptor.getId()), descriptor);
     }
     
 }

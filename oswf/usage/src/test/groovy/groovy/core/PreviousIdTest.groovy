@@ -38,12 +38,14 @@ class PreviousIdTest {
 
         def currentSteps = workflow.getCurrentSteps(piid)
 
+        // At the first step with no previous ids
         assert currentSteps.size() == 1
         assert currentSteps.any{it.stepId == STEP_A}
         assert currentSteps.find{it.stepId == STEP_A}.previousIds.length == 0
 
         workflow.doAction(piid, TO_SPLIT)
 
+        // Here we have step both with one previous step
         assert 2 == currentSteps.size()
         assert currentSteps.any{it.stepId == STEP_B}
         assert currentSteps.find{it.stepId == STEP_B}.previousIds.length == 1
@@ -56,6 +58,7 @@ class PreviousIdTest {
         assert currentSteps.any{it.stepId == STEP_C}
         assert currentSteps.find{it.stepId == STEP_C}.previousIds.length == 1
 
+        // This step is after a join has 2 previous ids
         workflow.doAction(piid, STEP_C_JOIN)
         assert 1 == currentSteps.size()
         assert currentSteps.any{it.stepId == STEP_D}
