@@ -5,6 +5,7 @@ Modules:
 
      core - 
      store - 
+     usage - 
      vars - 
      simulator -
      workflows - 
@@ -61,7 +62,7 @@ subprojects {
         afterSuite { desc, result ->
             if (desc.parent == null) {
                 // Green background for complete success, red for any failures
-                print((result.resultType.toString() == 'SUCCESS') ? '\033[1;37m\033[1;42m' : '\033[1;37m\033[1;41m')
+                print((result.resultType.toString() == 'SUCCESS' && result.testCount>0 ) ? '\033[1;37m\033[1;42m' : '\033[1;37m\033[1;41m')
                 print "Results: ${result.resultType} "
                 print "(${result.testCount} tests, "
                 print "${result.successfulTestCount} successes, "

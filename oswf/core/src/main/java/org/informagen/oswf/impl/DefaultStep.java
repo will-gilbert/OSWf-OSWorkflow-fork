@@ -159,8 +159,27 @@ public class DefaultStep implements Step, Serializable {
     public int hashCode() {
         return (id != null) ? id.hashCode() : 0;
     }
-    
 
+/*  
+    public boolean equals(Object o) {
+
+        if (o == null) {
+            return false;
+        }
+
+        if (!Step.class.isAssignableFrom(o.getClass())) {
+            return false;
+        }
+
+        final Step other = (Step) o;
+        if ((this.id == null) ? (other.getId() != null) : !this.id.equals(other.getId())) {
+            return false;
+        }
+
+        return true;        
+
+    }  
+*/
     public String toString() {
         return new StringBuffer()
             .append("id=").append(getId()).append(", ")
@@ -168,8 +187,8 @@ public class DefaultStep implements Step, Serializable {
             // .append("workflow=").append(pi.getWorkflowName()).append(", ")
             // .append("state=").append(pi.getState().getName()).append(", ")
             .append("stepId=").append(getStepId()).append(", ")
-            .append("actionId=").append(getActionId()).append(", ")
             .append("status=").append(getStatus()).append(", ")
+            .append("actionId=").append(getActionId()).append(", ")
             .append("owner=").append(getOwner()).append(", ")
             .append("actor=").append(getActor())
         .toString();

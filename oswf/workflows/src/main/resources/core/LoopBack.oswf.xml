@@ -1,0 +1,114 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE workflow PUBLIC '-//Open Source Workflow//DTD OSWf 3.0//EN' 'http://oswf.sourceforge.net/OSWf-3.0.dtd'>
+
+<workflow>
+ 
+    <description><![CDATA[
+                
+      This 'very odd' workflow illustrates how to loop back to a previous
+      step and re-enter a split.  What happens to steps which are 
+      waiting at the join get duplicated. Yet they are seperate instance
+      of the same current step.
+
+      This does make sense but a concrete use case would be useful.
+    ]]>    
+    </description>    
+
+
+  <initial-actions>
+    <action id='1' name='Start Workflow'>
+      <results>
+        <default-result step='1'/>
+      </results>
+    </action>
+  </initial-actions>
+
+
+  <steps>
+    <step id='1' name='Start'>
+      <actions>
+        <action id='2' name='Split into A/B'>
+          <results>
+            <default-result split='1'/>
+          </results>
+        </action>
+      </actions>
+    </step>
+
+
+
+    <step id='2' name='A'>
+      <actions>
+        <action id='3' name='Repeat'>
+          <results>
+            <default-result exit-status='Back to Start' status='Repeat' step='1'/>
+          </results>
+        </action>
+        <action id='4' name='Finish'>
+          <results>
+            <default-result join='1'/>
+          </results>
+        </action>
+      </actions>
+    </step>
+
+
+    <step id='3' name='B'>
+      <actions>
+        <action id='5' name='Repeat'>
+          <results>
+            <default-result exit-status='Back to Start' status='Repeat' step='1'/>
+          </results>
+        </action>
+        <action id='6' name='Finish'>
+          <results>
+            <default-result join='1'/>
+          </results>
+        </action>
+      </actions>
+    </step>
+    
+    <step id='4' name='End' >
+      <actions>
+        <action id='7' name='Complete'>
+          <results>
+            <default-result step='5'/>
+          </results>
+        </action>
+      </actions>
+    </step>
+
+     <!-- Steps without action will automatically become history steps and complete the workflow -->
+    <step id='5' name='Complete' />
+    
+  </steps>
+
+  <splits>
+    <split id='1'>
+      <default-result exit-status='To Step A' step='2'/>
+      <default-result exit-status='To Step B' step='3'/>
+    </split>
+  </splits>
+
+  <joins>
+    <join id='1'>
+
+      <conditions>
+          
+        <condition type='groovy'>
+          <arg name='script'>jn.get(2)?.status == 'Finished'</arg>
+        </condition> 
+        
+        <condition type='groovy'>
+          <arg name='script'>jn.get(3)?.status == 'Finished'</arg>
+        </condition> 
+        
+      </conditions>
+      <default-result status='Finish' step='4'/>
+
+    </join>
+  </joins>
+  
+  
+  
+</workflow>

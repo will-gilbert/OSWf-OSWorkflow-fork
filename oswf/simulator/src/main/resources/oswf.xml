@@ -36,7 +36,7 @@
         <workflow name="Step-Post"            type="resource" location="core/step-post.oswf.xml"/>
         <workflow name="Step-Pre"             type="resource" location="core/step-pre.oswf.xml"/>
         <workflow name="Previous Ids"         type="resource" location="core/PreviousId.oswf.xml"/>
-        <workflow name="WF-373"               type="resource" location="core/WF-373.oswf.xml"/>
+        <workflow name="Loop back"            type="resource" location="core/LoopBack.oswf.xml"/>
 
         <!-- Will require Security Manger setup -->
         <workflow name="Action Restictions"   type="resource" location="usage/ActionRestrictions.oswf.xml"/>
