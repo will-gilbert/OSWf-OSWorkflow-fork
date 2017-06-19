@@ -132,7 +132,7 @@
 	<joins>
 		<join id="10000">
 			<conditions>
-				<condition type="beanshell">
+				<condition type="groovy">
 					<arg name="script"><![CDATA[
 
 					    logger = transientVars.get("slf4jLogger");
@@ -143,17 +143,17 @@
                         logger.debug("LM Step: " + jn.get(200));
                         logger.debug("HR Step: " + jn.get(300));
                         
-                        logger.debug("Step 200 LM status: " + jn.get(200).getStatus());
-                        logger.debug("Step 300 HR status: " + jn.get(300).getStatus());
+                        logger.debug("Step 200 LM status: " + jn.get(200)?.getStatus());
+                        logger.debug("Step 300 HR status: " + jn.get(300)?.getStatus());
                                                 
-                        if(jn.get(200).getStatus().equals("Approved") && 
-                           jn.get(300).getStatus().equals("Approved")) {
+                        if(jn.get(200)?.getStatus() == ("Approved") && 
+                           jn.get(300)?.getStatus() == ("Approved")) {
                             persistentVars.setString("result", "approved");
                         }
                         
                         // Final result
-                        !("Underway".equals(jn.get(200).getStatus())) && 
-                        !("Underway".equals(jn.get(300).getStatus()));
+                        !("Underway" == (jn.get(200)?.getStatus())) && 
+                        !("Underway" == (jn.get(300)?.getStatus()));
                         
 					]]></arg>
 				</condition>

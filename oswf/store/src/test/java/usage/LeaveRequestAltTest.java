@@ -292,7 +292,7 @@ public class LeaveRequestAltTest extends OSWfHibernateTestCase implements Consta
 
         assertProperty(wfEngine, bobId, "result", null);
         wfEngine.doAction(bobId, HUMAN_RESOURCES_DENIES);
-        assertCounts(wfEngine, bobId, 3, 1, 1);
+        assertCounts(wfEngine, bobId, 2, 2, 3);
 
         assertProperty(wfEngine, bobId, "result", null);
         wfEngine.doAction(bobId, NOTIFY_EMPLOYEE);

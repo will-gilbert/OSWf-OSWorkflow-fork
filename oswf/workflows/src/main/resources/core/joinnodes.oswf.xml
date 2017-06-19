@@ -164,7 +164,7 @@
                         def hr = jn.get(300)
                                            
                         if(hr) {
-						  logger.debug "Join Condition HR Finished: ${hr.status == 'Finished'}"
+						  logger.debug "Join Condition HR: $hr.status"
 	                       return hr.status == 'Finished'
                         }
                         
@@ -177,11 +177,11 @@
 				<condition type='groovy'>
 					<arg name="script"><![CDATA[
                         def logger = transientVars.get('logger');
-                        def manager = jn.get(200)
+                        def mg = jn.get(200)
 
-					    if(manager) {
-                            logger.debug "Join Condition Manager Finished: ${manager.status == 'Finished'}"
-                            return manager.status == 'Finished'
+					    if(mg) {
+                            logger.debug "Join Condition MG: $mg.status"
+                            return mg.status == 'Finished'
                         }
                             
                         logger.debug 'Step 200 (Manager) not yet reached'
