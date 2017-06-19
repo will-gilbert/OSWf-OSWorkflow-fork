@@ -100,52 +100,6 @@ public class StepsTest {
 
     }
 
-    @Ignore
-    public void reenterSplitWitoutClear() throws Exception {
-        
-        def url = getClass().getResource("/core/ReenterSplitWitoutClear.oswf.xml")
-        def piid = wfEngine.initialize(url.toString(), 1)
-        
-        // Run the workflow to the end
-        wfEngine.with {
-            doAction piid, 2   // Finish First Part; Split Steps 2 & 3
-            doAction piid, 3   // Step 2, back to Step 1
-            doAction piid, 2   // Finished First Part; Split; 3 current steps: 2, 3, 3
-            doAction piid, 4   // Finish Step 2
-            doAction piid, 6   // Finish Step 3, one of the steps
-            doAction piid, 6   // Finish Step 3, the other step
-        }
-
-        assert 0 == wfEngine.getCurrentSteps(piid).size()
-        assert 6 == wfEngine.getHistorySteps(piid).size()
-
-        // The final state for this process instance
-        assert 'COMPLETED' == wfEngine.getProcessInstanceState(piid).name()
-        
-    }
-
-    @Ignore
-    public void reenterSplitWithClear() throws Exception {
-        
-        def url = getClass().getResource("/core/ReenterSplitWithClear.oswf.xml")
-        def piid = wfEngine.initialize(url.toString(), 1)
-        
-        // Run the workflow to the end
-        wfEngine.with {
-            doAction piid, 2   // Entry Step; Split to Steps 2 & 3
-            doAction piid, 3   // Step 2, repeat back to Step 1
-            doAction piid, 2   // Split again; Only 2 current steps: 2, 3
-            doAction piid, 4   // Finish Step 2
-            doAction piid, 6   // Finish Step 3, one of the steps
-        }
-
-        assert 0 == wfEngine.getCurrentSteps(piid).size()
-        assert 6 == wfEngine.getHistorySteps(piid).size()
-
-        // The final state for this process instance
-        assert 'COMPLETED' == wfEngine.getProcessInstanceState(piid).name() 
-    }
-
     /** 
     ** This workflow will set a persistent variable 'prekey' to 'prevalue'.
     **
