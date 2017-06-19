@@ -452,9 +452,9 @@
       <conditions>
         <condition type="beanshell" name="bsh.condition">
           <arg name="script"><![CDATA[
-              if(jn.get(6) == null || jn.get(8) == null)
+              if(joinSteps.get(6) == null || joinSteps.get(8) == null)
                 return false;
-	          "Finished".equals(jn.get(6).getStatus()) && "Finished".equals(jn.get(8).getStatus())
+	          "Finished".equals(joinSteps.get(6).getStatus()) && "Finished".equals(joinSteps.get(8).getStatus())
           ]]></arg>
         </condition>
       </conditions>

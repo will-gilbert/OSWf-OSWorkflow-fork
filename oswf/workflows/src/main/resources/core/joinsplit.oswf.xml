@@ -94,8 +94,8 @@
       <conditions>
         <condition type="beanshell">
           <arg name="script"><![CDATA[
-"Finished".equals(jn.get(2).getStatus())
-                    && "Finished".equals(jn.get(3).getStatus())
+"Finished".equals(joinSteps.get(2).getStatus())
+                    && "Finished".equals(joinSteps.get(3).getStatus())
           ]]></arg>
         </condition>
       </conditions>

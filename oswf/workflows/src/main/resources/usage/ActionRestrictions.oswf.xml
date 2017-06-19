@@ -187,8 +187,8 @@
 
               // Get both incoming step statuses; 'null' if the step has not yet arrived.
 
-              def supervisor = jn.get(200)?.getStatus()
-              def hr = jn.get(300)?.getStatus()
+              def supervisor = joinSteps.get(200)?.getStatus()
+              def hr = joinSteps.get(300)?.getStatus()
 
               // Ensure that all pathways from the split have arrived at the join
               //   before we can start evaluating any statuses

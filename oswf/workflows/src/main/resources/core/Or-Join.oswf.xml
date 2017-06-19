@@ -59,7 +59,7 @@
       <conditions>
         <condition type="beanshell">
           <arg name="script"><![CDATA[
-              "Finished".equals(jn.get(1).getStatus()) || "Finished".equals(jn.get(2).getStatus())
+              "Finished".equals(joinSteps.get(1).getStatus()) || "Finished".equals(joinSteps.get(2).getStatus())
           ]]></arg>
         </condition>
       </conditions>

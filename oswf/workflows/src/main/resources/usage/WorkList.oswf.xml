@@ -210,8 +210,8 @@
           
               // Get both incoming step statuses; 'null' if the step has not yet arrived.
 
-              def step200 = jn.get(200)?.getStatus()
-              def step300 = jn.get(300)?.getStatus()
+              def step200 = joinSteps.get(200)?.getStatus()
+              def step300 = joinSteps.get(300)?.getStatus()
 
               // Ensure that both pathways from the split have arrived at the join
               //   before we can start evaluating any statuses

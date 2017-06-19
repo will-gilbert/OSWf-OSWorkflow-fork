@@ -119,8 +119,8 @@
 					    
                         // Keep join in wait state until both Manager and HR act
                         
-                        !("Underway".equals(jn.get(200).getStatus())) && 
-                        !("Underway".equals(jn.get(300).getStatus()));
+                        !("Underway".equals(joinSteps.get(200).getStatus())) && 
+                        !("Underway".equals(joinSteps.get(300).getStatus()));
                         
 					]]></arg>
 				</condition>

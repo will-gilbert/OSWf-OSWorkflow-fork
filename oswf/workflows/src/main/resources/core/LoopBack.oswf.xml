@@ -98,7 +98,7 @@
         <condition type='groovy'>
           <arg name='script'><![CDATA[ 
 
-            def hasPendingSteps = jn.getAll(2).any{ 
+            def hasPendingSteps = joinSteps.getAll(2).any{ 
               it.status == 'Pending' 
             }
 
@@ -110,7 +110,7 @@
         <condition type='groovy'>
           <arg name='script'><![CDATA[ 
 
-            def hasPendingSteps = jn.getAll(3).any{
+            def hasPendingSteps = joinSteps.getAll(3).any{
               it.status == 'Pending' 
             }
             
