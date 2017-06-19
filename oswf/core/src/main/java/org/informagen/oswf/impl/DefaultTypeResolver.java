@@ -59,7 +59,6 @@ public class DefaultTypeResolver implements TypeResolver {
         functions.put("fireTrigger",     "org.informagen.oswf.functions.FireTrigger");
         functions.put("mostRecentOwner", "org.informagen.oswf.functions.MostRecentOwner");
         functions.put("timer",           "org.informagen.oswf.functions.TimerTask");
-        functions.put("clearStep",       "org.informagen.oswf.functions.ClearStep");
         functions.put("setString",       "org.informagen.oswf.functions.SetStringProperty");
         functions.put("getString",       "org.informagen.oswf.functions.GetStringProperty");
         functions.put("now",             "org.informagen.oswf.functions.SetDateProperty");
