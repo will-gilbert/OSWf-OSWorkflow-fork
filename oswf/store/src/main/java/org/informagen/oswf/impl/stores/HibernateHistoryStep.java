@@ -17,5 +17,10 @@ public class HibernateHistoryStep extends HibernateStep {
 
     public HibernateHistoryStep(HibernateStep step) {
         super(step);
+
+        // HistoryStep has the same id as it did when it was a CurrentStep; 
+        //  See 'HibernateHistoryStep.hbm.xml' for id mapping
+        
+        setId(step.getId());
     }
 }

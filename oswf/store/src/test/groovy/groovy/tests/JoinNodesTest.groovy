@@ -121,25 +121,25 @@ public class JoinNodesTest extends OSWfHibernateTestCase {
     
     // For 'store' the history steps are not being added to JoinSteps in DefaultOSWfEngine.java:1467
 
-    @Ignore
+    @Test
     public void route_HR_Approve__LM_Approve()  {
         logger.debug("HR Approve, LM Approve");
         checkRoute([EMPLOYEE_REQUEST, HR_APPROVES, MANAGER_APPROVES, NOTIFY_EMPLOYEE], true, true, true)
     }
     
-    @Ignore
+    @Test
     public void route_HR_Deny__LM_Deny()  {
         logger.debug("HR Deny, LM Deny");
         checkRoute([EMPLOYEE_REQUEST, HR_DENIES, MANAGER_DENIES, NOTIFY_EMPLOYEE], false, false, false)
     }
     
-    @Ignore
+    @Test
     public void route_HR_Approve__LM_Deny()  {
         logger.debug("HR Approve, LM Deny");
         checkRoute([EMPLOYEE_REQUEST, HR_APPROVES, MANAGER_DENIES, NOTIFY_EMPLOYEE], false, true, false)
     }
     
-    @Ignore
+    @Test
     public void route_HR_Deny__LM_Approve()  {
         logger.debug("HR Deny, LM Approve");
         checkRoute([EMPLOYEE_REQUEST, HR_DENIES, MANAGER_APPROVES, NOTIFY_EMPLOYEE], true, false, false)

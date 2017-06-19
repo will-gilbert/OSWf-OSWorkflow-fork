@@ -7,10 +7,7 @@
 
     <class name="HibernateHistoryStep" table="historystep">
 
-        <id name="id" unsaved-value="-1">
-            <generator class="native"/>
-        </id>
-
+        <id       name="id"         column="id"/>
         <property name="actionId"   column="action"/>
         <property name="actor"      column="actor"/>
         <property name="finishDate" column="finishdate"/>

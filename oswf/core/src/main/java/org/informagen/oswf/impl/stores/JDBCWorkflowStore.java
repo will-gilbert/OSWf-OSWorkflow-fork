@@ -553,6 +553,7 @@ public class JDBCWorkflowStore extends AbstractWorkflowStore implements Workflow
             stmt = conn.prepareStatement(sql);
             stmt.setLong(1, step.getId());
             stmt.executeUpdate();
+
         } catch (SQLException e) {
             throw new WorkflowStoreException("Unable to move current step to history step for #" + step.getProcessInstanceId(), e);
         } finally {

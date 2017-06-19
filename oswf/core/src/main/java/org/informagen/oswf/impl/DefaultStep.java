@@ -16,7 +16,7 @@ public class DefaultStep implements Step, Serializable {
 
     // I N S T A N C E   F I E L D S  ---------------------------------------------------------
     
-    protected Long id = null; //-1L;  // Changed to null; 4-MAR-2013, waiting for side effects?
+    protected Long id = null;
     protected Long processInstanceId;
     protected int stepId;
     protected int actionId;

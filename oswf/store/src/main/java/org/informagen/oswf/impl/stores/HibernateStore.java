@@ -299,7 +299,7 @@ public class HibernateStore extends AbstractWorkflowStore {
             update(session, step);
 
             HibernateStep currentStep = (HibernateStep)step;
-            HibernateStep historyStep = new HibernateHistoryStep(currentStep);  
+            HibernateStep historyStep = new HibernateHistoryStep(currentStep);
             HibernateProcessInstance entry = currentStep.getEntry();
 
             entry.removeCurrentStep(currentStep);
@@ -309,7 +309,7 @@ public class HibernateStore extends AbstractWorkflowStore {
             delete(session, currentStep);
             save(session, historyStep);
             update(session, entry);
-        
+       
             if(logger.isDebugEnabled()) {
                 logger.debug(historyStep.toString());
                 logger.debug(entry.toString());
