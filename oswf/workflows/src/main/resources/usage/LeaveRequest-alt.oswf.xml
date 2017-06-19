@@ -165,9 +165,11 @@
                    return true
                 }
                 
-                // Still waiting on the a step
-                return !jn.any{ it.status == 'Pending' }
-                
+                // Still waiting on the a 'Pending' step
+                return !(
+                         joinSteps.getAll(200).any{ it.status == 'Pending' } ||
+                         joinSteps.getAll(300).any{ it.status == 'Pending' }
+                        )
             //=============================================================================                        
 					]]></arg>
 				</condition>

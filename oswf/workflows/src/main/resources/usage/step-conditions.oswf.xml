@@ -194,14 +194,14 @@
 					
                         persistentVars.setString("result", "denied");
                         
-                        if(jn.get(200).getStatus().endsWith("approved") && 
-                           jn.get(300).getStatus().endsWith("approved")) {
+                        if(joinSteps.get(200).getStatus().endsWith("approved") && 
+                           joinSteps.get(300).getStatus().endsWith("approved")) {
                             persistentVars.setString("result", "approved");
                         }
                         
                         // Final result
-                        !("Underway".equals(jn.get(200).getStatus())) && 
-                        !("Underway".equals(jn.get(300).getStatus()));
+                        !("Underway".equals(joinSteps.get(200).getStatus())) && 
+                        !("Underway".equals(joinSteps.get(300).getStatus()));
                         
 					]]></arg>
 				</condition>

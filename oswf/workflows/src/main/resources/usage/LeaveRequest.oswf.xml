@@ -140,20 +140,20 @@
                         persistentVars.setString("result", "denied");
                         
                         logger.debug("================");
-                        logger.debug("LM Step: " + jn.get(200));
-                        logger.debug("HR Step: " + jn.get(300));
+                        logger.debug("LM Step: " + joinSteps.get(200));
+                        logger.debug("HR Step: " + joinSteps.get(300));
                         
-                        logger.debug("Step 200 LM status: " + jn.get(200)?.getStatus());
-                        logger.debug("Step 300 HR status: " + jn.get(300)?.getStatus());
+                        logger.debug("Step 200 LM status: " + joinSteps.get(200)?.getStatus());
+                        logger.debug("Step 300 HR status: " + joinSteps.get(300)?.getStatus());
                                                 
-                        if(jn.get(200)?.getStatus() == ("Approved") && 
-                           jn.get(300)?.getStatus() == ("Approved")) {
+                        if(joinSteps.get(200)?.getStatus() == ("Approved") && 
+                           joinSteps.get(300)?.getStatus() == ("Approved")) {
                             persistentVars.setString("result", "approved");
                         }
                         
                         // Final result
-                        !("Underway" == (jn.get(200)?.getStatus())) && 
-                        !("Underway" == (jn.get(300)?.getStatus()));
+                        !("Underway" == (joinSteps.get(200)?.getStatus())) && 
+                        !("Underway" == (joinSteps.get(300)?.getStatus()));
                         
 					]]></arg>
 				</condition>

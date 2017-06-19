@@ -67,10 +67,10 @@
         <condition type="beanshell">
           <arg name="script"><![CDATA[
               // Not yet ready for eveluation
-              if(jn.get(1) == null || jn.get(2) == null)
+              if(joinSteps.get(1) == null || joinSteps.get(2) == null)
                     return false;
               
-              "Finished".equals(jn.get(1).getStatus()) && "Finished".equals(jn.get(2).getStatus())
+              "Finished".equals(joinSteps.get(1).getStatus()) && "Finished".equals(joinSteps.get(2).getStatus())
           ]]></arg>
         </condition>
       </conditions>

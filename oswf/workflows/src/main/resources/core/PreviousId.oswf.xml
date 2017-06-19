@@ -67,11 +67,11 @@
 
         <conditions>
           <condition type="groovy">
-            <arg name="script">jn.get(20)?.status == 'Finished'</arg>
+            <arg name="script">joinSteps.get(20)?.status == 'Finished'</arg>
           </condition> 
         
           <condition type="groovy">
-            <arg name="script">jn.get(30)?.status == 'Finished'</arg>
+            <arg name="script">joinSteps.get(30)?.status == 'Finished'</arg>
           </condition> 
         </conditions>
 
