@@ -22,32 +22,17 @@ import org.junit.Test
  *
  * This test shows the behavior of a process instance which can branch back
  *   to an earlier step in the workflow.  The interesting twist is that it
- *   has looped back from a split and re-enters that split. This has the effort
- *   of create additional current steps for the other steps already in the
+ *   has looped back after a split and re-enters that split. This has the effect
+ *   of creating additional current steps for the other step pending in the
  *   the split.
  *
  * The workflow behaves as it should, each waiting step must have its 'Finish'
- *   action applied, only when the other step(s) finish is the process allowed
- *   to proceed. If a set of step all finish be any of the other steps, then
- *   an 'End' step are created for each step which finishes.  This seem correct.
+ *   action applied, only when the both steps finish is the process allowed
+ *   to proceed through the join. No matter how much work is created for A and
+ *   B, there will only be one 'End' step create after all A and B work is finished.
  *
- * The unpredicted behavior was when they alternately finish, then only one
- *   'End' step is created. The joining logic needs to be re-evaluated.
- *
- * So, which is correct, one 'End' step or many? My current thinking is that
- *   work represented by the A and B steps although recreated multiple time
- *   represents reality. However, the work represented by the 'End' step should
- *   only occur once. And then after all A and B steps have completed.  We might
- *   be able to acomplish this with a Groovy like 
- *
- *                   "jn.all(2).any {
- *                      it.status == 'Finished'
- *                    }
- *
- *  Re: DefaultOSWfEngine.java:1466-1558
- *
- * This will require the 'jn' class the be modified to add 'all', 'any', 'none'
- *   methods.
+ * This will requires the 'JoinSteps' class to be modified to behave like a Set and
+ *   add the method, "getAll(int stepId)"
  *
  * What is needed is a real world use case which can be used to better explain 
  *   this behavior.
@@ -119,12 +104,11 @@ class LoopBackTest {
         doAction A_REPEATS   ; assert currentSteps() == [1,0,1,0]
         doAction ENTER_SPLIT ; assert currentSteps() == [0,1,2,0]
         doAction A_FINISHES  ; assert currentSteps() == [0,0,2,0]
-        doAction B_FINISHES  ; assert currentSteps() == [0,0,1,1]
-        doAction B_FINISHES  ; assert currentSteps() == [0,0,0,2]
-        doAction END_ACTION  ; assert currentSteps() == [0,0,0,1]
+        doAction B_FINISHES  ; assert currentSteps() == [0,0,1,0]
+        doAction B_FINISHES  ; assert currentSteps() == [0,0,0,1]
         doAction END_ACTION  ; assert currentSteps() == [0,0,0,0]
 
-        assert historySteps() == 8 + 2
+        assert historySteps() == 7 + 1
         assert done()
     }
     
@@ -135,12 +119,11 @@ class LoopBackTest {
         doAction B_REPEATS   ; assert currentSteps() == [1,1,0,0]
         doAction ENTER_SPLIT ; assert currentSteps() == [0,2,1,0]
         doAction B_FINISHES  ; assert currentSteps() == [0,2,0,0]
-        doAction A_FINISHES  ; assert currentSteps() == [0,1,0,1]
-        doAction A_FINISHES  ; assert currentSteps() == [0,0,0,2]
-        doAction END_ACTION  ; assert currentSteps() == [0,0,0,1]
+        doAction A_FINISHES  ; assert currentSteps() == [0,1,0,0]
+        doAction A_FINISHES  ; assert currentSteps() == [0,0,0,1]
         doAction END_ACTION  ; assert currentSteps() == [0,0,0,0]
 
-        assert historySteps() == 8 + 2
+        assert historySteps() == 7 + 1
         assert done()
     }
  
@@ -237,18 +220,15 @@ class LoopBackTest {
         doAction B_FINISHES  ; assert currentSteps() == [0,4,0,0]
 
         // Finish all A, each creates an END step        
-        doAction A_FINISHES  ; assert currentSteps() == [0,3,0,1]
-        doAction A_FINISHES  ; assert currentSteps() == [0,2,0,2]
-        doAction A_FINISHES  ; assert currentSteps() == [0,1,0,3]
-        doAction A_FINISHES  ; assert currentSteps() == [0,0,0,4]
+        doAction A_FINISHES  ; assert currentSteps() == [0,3,0,0]
+        doAction A_FINISHES  ; assert currentSteps() == [0,2,0,0]
+        doAction A_FINISHES  ; assert currentSteps() == [0,1,0,0]
+        doAction A_FINISHES  ; assert currentSteps() == [0,0,0,1]
 
-        // Complete all END steps
-        doAction END_ACTION  ; assert currentSteps() == [0,0,0,3]
-        doAction END_ACTION  ; assert currentSteps() == [0,0,0,2]
-        doAction END_ACTION  ; assert currentSteps() == [0,0,0,1]
+        // Complete the END step
         doAction END_ACTION  ; assert currentSteps() == [0,0,0,0]
 
-        assert historySteps() == 25 + 4
+        assert historySteps() == 22 + 1
         assert done()
     }
 
@@ -282,18 +262,15 @@ class LoopBackTest {
         doAction A_FINISHES  ; assert currentSteps() == [0,0,4,0]
 
         // Finish all B, each creates an END step        
-        doAction B_FINISHES  ; assert currentSteps() == [0,0,3,1]
-        doAction B_FINISHES  ; assert currentSteps() == [0,0,2,2]
-        doAction B_FINISHES  ; assert currentSteps() == [0,0,1,3]
-        doAction B_FINISHES  ; assert currentSteps() == [0,0,0,4]
+        doAction B_FINISHES  ; assert currentSteps() == [0,0,3,0]
+        doAction B_FINISHES  ; assert currentSteps() == [0,0,2,0]
+        doAction B_FINISHES  ; assert currentSteps() == [0,0,1,0]
+        doAction B_FINISHES  ; assert currentSteps() == [0,0,0,1]
 
-        // Complete all END steps
-        doAction END_ACTION  ; assert currentSteps() == [0,0,0,3]
-        doAction END_ACTION  ; assert currentSteps() == [0,0,0,2]
-        doAction END_ACTION  ; assert currentSteps() == [0,0,0,1]
+        // Complete the END step
         doAction END_ACTION  ; assert currentSteps() == [0,0,0,0]
 
-        assert historySteps() == 25 + 4
+        assert historySteps() == 22 + 1
         assert done()
     }
 
@@ -321,22 +298,19 @@ class LoopBackTest {
         doAction ENTER_SPLIT ; assert currentSteps() == [1,3,3,0]
         doAction ENTER_SPLIT ; assert currentSteps() == [0,4,4,0]
 
-        // Finish all A        
-        doAction A_FINISHES  ; assert currentSteps() == [0,3,4,0] //? Need to re-evaluate how the join works
-        doAction B_FINISHES  ; assert currentSteps() == [0,3,3,0] //? S/B [0,3,3,1]
-        doAction A_FINISHES  ; assert currentSteps() == [0,2,3,0] //? S/B [0,2,3,1]
-        doAction B_FINISHES  ; assert currentSteps() == [0,2,2,0] //? S/B [0,2,2,2]
+        // Finish all A steps  
+        doAction A_FINISHES  ; assert currentSteps() == [0,3,4,0]
+        doAction B_FINISHES  ; assert currentSteps() == [0,3,3,0] 
+        doAction A_FINISHES  ; assert currentSteps() == [0,2,3,0] 
+        doAction B_FINISHES  ; assert currentSteps() == [0,2,2,0] 
 
-        // Finish all B, each creates an END step        
-        doAction A_FINISHES  ; assert currentSteps() == [0,1,2,0] //? S/B [0,1,2,2]
-        doAction B_FINISHES  ; assert currentSteps() == [0,1,1,0] //? S/B [0,1,1,3]
-        doAction A_FINISHES  ; assert currentSteps() == [0,0,1,0] //? S/B [0,0,1,3]
-        doAction B_FINISHES  ; assert currentSteps() == [0,0,0,1] //? S/B [0,0,0,4]
+        // Finish all B steps        
+        doAction A_FINISHES  ; assert currentSteps() == [0,1,2,0] 
+        doAction B_FINISHES  ; assert currentSteps() == [0,1,1,0] 
+        doAction A_FINISHES  ; assert currentSteps() == [0,0,1,0] 
+        doAction B_FINISHES  ; assert currentSteps() == [0,0,0,1] 
 
         // Complete the END step
-        // doAction END_ACTION  ; assert currentSteps() == [0,0,0,3]
-        // doAction END_ACTION  ; assert currentSteps() == [0,0,0,2]
-        // doAction END_ACTION  ; assert currentSteps() == [0,0,0,1]
         doAction END_ACTION  ; assert currentSteps() == [0,0,0,0]
 
         assert historySteps() == 22 + 1
