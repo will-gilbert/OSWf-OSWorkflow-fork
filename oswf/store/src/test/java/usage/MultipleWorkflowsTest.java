@@ -64,7 +64,7 @@ public class MultipleWorkflowsTest extends OSWfHibernateTestCase implements Cons
     @Before
     public void setUp() throws Exception {
     
-        wfEngine = new DefaultOSWfEngine("MultipleWorkflowsTest")
+        wfEngine = new DefaultOSWfEngine()
             .setConfiguration(new DefaultOSWfConfiguration()
                 .load(getClass().getResource("/oswf-hibernate.xml"))
                 .addPersistenceArg("sessionFactory", getSessionFactory())

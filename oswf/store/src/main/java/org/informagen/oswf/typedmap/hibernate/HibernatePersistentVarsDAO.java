@@ -18,6 +18,9 @@ import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.HibernateException;
 
+import javax.persistence.criteria.Root;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import javax.transaction.UserTransaction;
 
 
@@ -254,6 +257,18 @@ public class HibernatePersistentVarsDAO  {
 
         if( piid == null || key == null)
             return null;
+
+        // CriteriaBuilder builder = session.getCriteriaBuilder();
+        // CriteriaQuery criteria = builder.createCriteria();
+
+        // Root<HibernatePersistentVarsItem> root = criteria.from(HibernatePersistentVarsItem.class);
+
+        // criteria.select(root).where (
+        //     builder.and(
+        //         builder.equal(root.get("processInstanceId"), piid),
+        //         builder.equal(root.get("key"), key)
+        //     )
+        // );
 
         return (HibernatePersistentVarsItem) session.createCriteria(getPersistentClass())
             .add(Restrictions.eq("processInstanceId", piid))

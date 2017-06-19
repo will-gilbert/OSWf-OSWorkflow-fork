@@ -16,7 +16,7 @@
         <workflow name="Holiday"             type="resource" location="usage/holiday.oswf.xml"/>
         <workflow name="StepConditions"      type="resource" location="usage/step-conditions.oswf.xml"/>
         <workflow name="Step Ownership"      type="resource" location="usage/StepOwnership.oswf.xml"/>
-        <workflow name="Join Nodes"          type="resource" location="usage/joinnodes.oswf.xml"/>
+        <workflow name="Join Nodes"          type="resource" location="core/joinnodes.oswf.xml"/>
 	</loader>
 
     <propertysets>

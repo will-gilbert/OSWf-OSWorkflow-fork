@@ -147,21 +147,7 @@ test {
    // Display the test results as HTML if any test fails; 'ignoreFailure'
    //   must ge set to false in order for the 'doLast' to be executed 
    ignoreFailures = true
-   def showReport = false
-   afterTest { descr, result -> 
-        if (result.resultType.toString() =='FAILURE') 
-            showReport = true
-   }
-   
-   // Display the report in the users favorite browser
-   //     'defaultBrowser' definded in ~/.gradle/gradle.properties file
-   def defaultBrowser = findProperty('defaultBrowser') ?: 'safari'
-   
-   // NB: 'open' is only available on MacOSX
-   doLast {
-        if(showReport)
-            exec {commandLine "/usr/bin/open", "-a", defaultBrowser, "$testReportDir/index.html"}
-   }
+     
    
 }
 

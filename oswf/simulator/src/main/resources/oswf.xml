@@ -32,7 +32,6 @@
         <workflow name="Early-Join"           type="resource" location="core/earlyjoin.oswf.xml"/>
         <workflow name="Join-Order"           type="resource" location="core/joinorder.oswf.xml"/>
         <workflow name="Join-Split"           type="resource" location="core/joinsplit.oswf.xml"/>
-        <workflow name="Re-enter Split"       type="resource" location="core/reenter-split.oswf.xml"/>
         <workflow name="Step-Post"            type="resource" location="core/step-post.oswf.xml"/>
         <workflow name="Step-Pre"             type="resource" location="core/step-pre.oswf.xml"/>
         <workflow name="Previous Ids"         type="resource" location="core/PreviousId.oswf.xml"/>

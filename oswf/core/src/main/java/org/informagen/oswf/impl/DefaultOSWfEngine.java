@@ -1501,6 +1501,7 @@ public class DefaultOSWfEngine implements OSWfEngine {
             //  for possible evaluation in a script
             
             transientVars.put("jn", joinSteps);
+            transientVars.put("joinSteps", joinSteps);
 
             // TODO: Verify that 0 is the right value for currentstep here
 

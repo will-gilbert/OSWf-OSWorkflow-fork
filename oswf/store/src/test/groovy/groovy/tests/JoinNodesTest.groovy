@@ -2,8 +2,9 @@ package usage;
 
 import support.OSWfHibernateTestCase;
 
-import org.informagen.oswf.OSWfEngine;
-import org.informagen.oswf.impl.DefaultOSWfEngine;
+import org.informagen.oswf.OSWfEngine
+import org.informagen.oswf.PersistentVars
+import org.informagen.oswf.impl.DefaultOSWfEngine
 
 import org.informagen.oswf.OSWfConfiguration;
 import org.informagen.oswf.impl.DefaultOSWfConfiguration;
@@ -60,6 +61,15 @@ public class JoinNodesTest extends OSWfHibernateTestCase {
 
     public static final String RDBMS_CONFIGURATION = System.getProperty("rdbms-configuration");
 
+    static private final int START_WORKFLOW   =   1
+    static private final int EMPLOYEE_REQUEST = 101
+    static private final int MANAGER_APPROVES = 201
+    static private final int MANAGER_DENIES   = 202
+    static private final int HR_APPROVES      = 301
+    static private final int HR_DENIES        = 302
+    static private final int NOTIFY_EMPLOYEE  = 401
+
+
     private OSWfEngine wfEngine;
     private Logger logger;
 
@@ -73,7 +83,7 @@ public class JoinNodesTest extends OSWfHibernateTestCase {
     @Before
     public void setup() throws Exception {
         
-        wfEngine = new DefaultOSWfEngine("JoinNodesTest")
+        wfEngine = new DefaultOSWfEngine()
             .setConfiguration(new DefaultOSWfConfiguration()
                 .load(getClass().getResource("/oswf-hibernate.xml"))
                 .addPersistenceArg("sessionFactory", getSessionFactory())
@@ -88,60 +98,76 @@ public class JoinNodesTest extends OSWfHibernateTestCase {
     @Test
     public void route_LM_Approve__HR_Approve()  {
         logger.debug("LM Approve, HR Approve");
-        checkRoute(new int[] {101, 201, 301, 401});
+        checkRoute([EMPLOYEE_REQUEST, MANAGER_APPROVES, HR_APPROVES, NOTIFY_EMPLOYEE], true, true, true)
     }
 
     @Test
     public void route_LM_Deny__HR_Deny()  {
         logger.debug("LM Deny, HR Deny");
-        checkRoute(new int[] {101, 202, 302, 401});
+        checkRoute([EMPLOYEE_REQUEST, MANAGER_DENIES, HR_DENIES, NOTIFY_EMPLOYEE], false, false, false)
     }
 
     @Test
     public void route_LM_Approve__HR_Deny()  {
         logger.debug("LM Approve, HR Deny");
-        checkRoute(new int[] {101, 201, 302, 401});
+        checkRoute([EMPLOYEE_REQUEST, MANAGER_APPROVES, HR_DENIES, NOTIFY_EMPLOYEE], true, false, false)
     }
     
     @Test
     public void route_LM_Deny__HR_Approve()  {
         logger.debug("LM Deny, HR Approve");
-        checkRoute(new int[] {101, 202, 301, 401});
+        checkRoute([EMPLOYEE_REQUEST, MANAGER_DENIES, HR_APPROVES, NOTIFY_EMPLOYEE], false, true, false)
     }
     
+    // For 'store' the history steps are not being added to JoinSteps in DefaultOSWfEngine.java:1467
+
     @Test
     public void route_HR_Approve__LM_Approve()  {
         logger.debug("HR Approve, LM Approve");
-        checkRoute(new int[] {101, 301, 201, 401});
+        checkRoute([EMPLOYEE_REQUEST, HR_APPROVES, MANAGER_APPROVES, NOTIFY_EMPLOYEE], true, true, true)
     }
     
     @Test
     public void route_HR_Deny__LM_Deny()  {
         logger.debug("HR Deny, LM Deny");
-        checkRoute(new int[] {101, 302, 202, 401});
+        checkRoute([EMPLOYEE_REQUEST, HR_DENIES, MANAGER_DENIES, NOTIFY_EMPLOYEE], false, false, false)
     }
     
     @Test
     public void route_HR_Approve__LM_Deny()  {
         logger.debug("HR Approve, LM Deny");
-        checkRoute(new int[] {101, 301, 202, 401});
+        checkRoute([EMPLOYEE_REQUEST, HR_APPROVES, MANAGER_DENIES, NOTIFY_EMPLOYEE], false, true, false)
     }
     
     @Test
     public void route_HR_Deny__LM_Approve()  {
         logger.debug("HR Deny, LM Approve");
-        checkRoute(new int[] {101, 302, 201, 401});
+        checkRoute([EMPLOYEE_REQUEST, HR_DENIES, MANAGER_APPROVES, NOTIFY_EMPLOYEE], true, false, false)
     }
 
-
-    private void checkRoute(int[] actions)  {
+    private void checkRoute(actions, boolean manager, boolean hr, boolean requestApproved)  {
         
-
         try {
-            long workflowId = wfEngine.initialize("Join Nodes", 1);
-            assertRoute(wfEngine, workflowId, actions);
+            long piid = wfEngine.initialize("Join Nodes", START_WORKFLOW)
+            assertRoute(wfEngine, piid, actions as int[])
+
+            PersistentVars persistentVars = wfEngine.getPersistentVars(piid)
+            assert manager == persistentVars.getBoolean('Manager Result')
+            assert hr == persistentVars.getBoolean('HR Result')
+            assert requestApproved == persistentVars.getBoolean('Request Approved')
+
         } catch (Exception exception) {
-            fail(exception.getMessage());
+            fail(exception.getMessage())
         }
     }
+    // private void checkRoute(int[] actions)  {
+        
+
+    //     try {
+    //         long workflowId = wfEngine.initialize("Join Nodes", 1);
+    //         assertRoute(wfEngine, workflowId, actions);
+    //     } catch (Exception exception) {
+    //         fail(exception.getMessage());
+    //     }
+    // }
 }
