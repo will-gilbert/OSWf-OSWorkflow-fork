@@ -4,6 +4,8 @@ import org.informagen.oswf.Step;
 
 import java.lang.Iterable;
 
+import java.util.Set;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -16,22 +18,20 @@ public class JoinSteps implements Iterable<Step> {
 
     // I N S T A N C E   F I E L D S  ---------------------------------------------------------
 
-    private final Map<Integer,Step> steps = new HashMap<Integer,Step>();
+    private final Set<Step> steps = new HashSet<>();
 
     // M E T H O D S  -------------------------------------------------------------------------
 
     public Iterator<Step> iterator() {
-        return steps.values().iterator();
+        return steps.iterator();
     }
 
     public int size() {
-        return steps.size();
+         return steps.size();
     }
 
     public void add(Step step) {
-
-        if(steps.containsKey(step.getStepId()) == false)
-            steps.put(step.getStepId(), step);
+        steps.add(step);
     }
 
     /**
@@ -42,7 +42,25 @@ public class JoinSteps implements Iterable<Step> {
     */
 
     public Step get(int stepId) {
-        return steps.get(stepId);         
+
+        for( Step step : steps ) {
+            if(step.getStepId() == stepId)
+                return step;
+        }
+
+        return null;
+    }
+
+    public Set<Step> getAll(int stepId) {
+
+        Set<Step> theSet = new HashSet();
+
+        for( Step step : steps ) {
+            if( step.getStepId() == stepId )
+                theSet.add(step);
+        }
+
+        return theSet;
     }
 
 }

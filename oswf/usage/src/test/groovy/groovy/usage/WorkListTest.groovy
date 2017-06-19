@@ -251,7 +251,7 @@ class WorkListTest implements usage.Constants {
         assert 'pending' == joe.getPersistentVars(piid).getString('result')
     }
 
-    @Test
+    @Ignore
     void claimAndReclaim() {
 
         def joe, bob, doris, wfEngine
@@ -285,7 +285,7 @@ class WorkListTest implements usage.Constants {
 
 
 
-    @Test
+    @Ignore
     void workingWithWorkLists() {
 
         OSWfEngine joe, bob, charlie, doris, wfEngine

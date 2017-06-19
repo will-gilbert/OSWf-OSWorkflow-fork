@@ -41,7 +41,7 @@
       <actions>
         <action id='3' name='Repeat'>
           <results>
-            <default-result exit-status='Back to Start' status='Repeat' step='1'/>
+            <default-result step='1'/>
           </results>
         </action>
         <action id='4' name='Finish'>
@@ -57,7 +57,7 @@
       <actions>
         <action id='5' name='Repeat'>
           <results>
-            <default-result exit-status='Back to Start' status='Repeat' step='1'/>
+            <default-result step='1'/>
           </results>
         </action>
         <action id='6' name='Finish'>
@@ -78,15 +78,15 @@
       </actions>
     </step>
 
-     <!-- Steps without action will automatically become history steps and complete the workflow -->
+    <!-- Steps without action will automatically become history steps and complete the workflow -->
     <step id='5' name='Complete' />
     
   </steps>
 
   <splits>
     <split id='1'>
-      <default-result exit-status='To Step A' step='2'/>
-      <default-result exit-status='To Step B' step='3'/>
+      <default-result step='2'/>
+      <default-result step='3'/>
     </split>
   </splits>
 
@@ -96,15 +96,31 @@
       <conditions>
           
         <condition type='groovy'>
-          <arg name='script'>jn.get(2)?.status == 'Finished'</arg>
+          <arg name='script'><![CDATA[ 
+
+            def hasPendingSteps = jn.getAll(2).any{ 
+              it.status == 'Pending' 
+            }
+
+            return !hasPendingSteps
+
+          ]]></arg>
         </condition> 
         
         <condition type='groovy'>
-          <arg name='script'>jn.get(3)?.status == 'Finished'</arg>
+          <arg name='script'><![CDATA[ 
+
+            def hasPendingSteps = jn.getAll(3).any{
+              it.status == 'Pending' 
+            }
+            
+            return !hasPendingSteps
+            
+          ]]></arg>
         </condition> 
         
       </conditions>
-      <default-result status='Finish' step='4'/>
+      <default-result step='4'/>
 
     </join>
   </joins>

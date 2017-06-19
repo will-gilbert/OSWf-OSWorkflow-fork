@@ -1231,6 +1231,7 @@ public class DefaultOSWfEngine implements OSWfEngine {
             
             // If for any condition we get a 'false' return 'false' for AND tests now.
             // If for any condition we get a 'true' return 'true' for OR tests now.
+
             if (and && !result) 
                 return false;
             else if (or && result)
@@ -1472,12 +1473,8 @@ public class DefaultOSWfEngine implements OSWfEngine {
             JoinDescriptor joinDesc = wf.getJoin(theResult.getJoin());
             
             store.moveToHistory(step, action.getId(), new Date(), theResult.getExitStatus(), context.getActor());
-            
-            // Create a Collection of Steps associated with this Join so that they can
-            //  be passed via the 'transientVars' for evaluation 
 
-            // Add this step, first
-            
+            // Add this step; JoinSteps behaves as a Set, if a step exists it will not be overwritten
             joinSteps.add(step);
 
             //  Add any other Current Steps which transition into this Join 
@@ -1488,6 +1485,8 @@ public class DefaultOSWfEngine implements OSWfEngine {
                     joinSteps.add(currentStep);
             }
 
+            // Create a Collection of Steps associated with this Join so that they can
+            //  be passed via the 'transientVars' for evaluation 
             // Add any History Steps which are waiting at the join 
             
             List<Step> historySteps = store.findHistorySteps(pi.getProcessInstanceId());
@@ -1505,12 +1504,12 @@ public class DefaultOSWfEngine implements OSWfEngine {
 
             // TODO: Verify that 0 is the right value for currentstep here
 
-            if ( passesConditions(null, joinDesc.getConditions(), Collections.unmodifiableMap(transientVars), persistentVars, 0)) {
+            if ( passesConditions(null, joinDesc.getConditions(), Collections.unmodifiableMap(transientVars), persistentVars, step.getStepId())) {
 
                 // (?) Move the rest without creating a new step ...
                 ResultDescriptor joinResult = joinDesc.getResult();
 
-                if (joinResult.getValidators().size() > 0) 
+                if ( joinResult.getValidators().size() > 0 ) 
                     verifyInputs(pi, joinResult.getValidators(), Collections.unmodifiableMap(transientVars), persistentVars);
 
                 // Execute the Pre-functions
