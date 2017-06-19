@@ -49,6 +49,7 @@ public class BeanShell implements Condition {
             interpreter.set("transientVars", transientVars);
             interpreter.set("persistentVars", persistentVars);
             interpreter.set("jn", transientVars.get("jn"));
+            interpreter.set("joinSteps", transientVars.get("joinSteps"));
 
             Object object = interpreter.eval(script);
 

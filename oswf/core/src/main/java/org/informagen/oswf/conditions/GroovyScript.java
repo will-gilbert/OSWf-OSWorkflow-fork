@@ -50,7 +50,9 @@ public class GroovyScript implements Condition {
             binding.setVariable("transientVars", transientVars);
             binding.setVariable("persistentVars", persistentVars);
             binding.setVariable("args", args);
+            
             binding.setVariable("jn", transientVars.get("jn"));
+            binding.setVariable("joinSteps", transientVars.get("joinSteps"));
 
             shell = new GroovyShell(loader, binding);
 
