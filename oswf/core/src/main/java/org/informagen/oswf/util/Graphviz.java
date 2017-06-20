@@ -263,19 +263,31 @@ public class Graphviz {
             buffer.append("\n\n");
 
             List<ActionDescriptor> actions = step.getActions();
-            for(ActionDescriptor action : actions) {
-                buffer.append("Action").append(action.getId());
-                buffer.append(" [label=<")
-                      .append("<table border='0'><tr><td><font point-size='8.0'>")
-                      .append(action.isCommon() ? "Common Action: " : "Action: ")
-                      .append(action.getId())
-                      .append("</font></td></tr><tr><td>")
-                      .append(action.getName())
-                      .append("</td></tr></table>")
-                      .append(">\n   shape=box\n   fontsize=9\n   ");
-                buffer.append("fillcolor=\"").append(GRAY).append("\"]");
-                buffer.append("\n");
+
+            // When a step has no actions, the process instance completes
+            if(actions.size() == 0) {
+
+                int finishId = writeFinishNode();
+                buffer.append("Step").append(step.getId()).append("->");
+                writeFinishEdge(finishId, 1);
+
+            } else {
+
+                for(ActionDescriptor action : actions) {
+                    buffer.append("Action").append(action.getId());
+                    buffer.append(" [label=<")
+                          .append("<table border='0'><tr><td><font point-size='8.0'>")
+                          .append(action.isCommon() ? "Common Action: " : "Action: ")
+                          .append(action.getId())
+                          .append("</font></td></tr><tr><td>")
+                          .append(action.getName())
+                          .append("</td></tr></table>")
+                          .append(">\n   shape=box\n   fontsize=9\n   ");
+                    buffer.append("fillcolor=\"").append(GRAY).append("\"]");
+                    buffer.append("\n");
+                }
             }
+
             buffer.append("\n\n");
 
         }
@@ -375,7 +387,7 @@ public class Graphviz {
     private void writeActionResultEdge(String prefix, ActionDescriptor action, ResultDescriptor result, int weight) {
     
         if(action.isFinish()) {
-            int finishId = writeFinishNode(action.getName());
+            int finishId = writeFinishNode();
             buffer.append(prefix).append(action.getId()).append("->");
             writeFinishEdge(finishId, weight);
             return;
@@ -460,7 +472,7 @@ public class Graphviz {
     }
 
 
-    private int writeFinishNode(String actionName) {
+    private int writeFinishNode() {
         finish++;
         
         buffer.append("Finish").append(finish);
