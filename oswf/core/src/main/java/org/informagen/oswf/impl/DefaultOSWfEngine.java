@@ -1474,7 +1474,10 @@ public class DefaultOSWfEngine implements OSWfEngine {
             
             store.moveToHistory(step, action.getId(), new Date(), theResult.getExitStatus(), context.getActor());
 
-            // Add this step; JoinSteps behaves as a Set, if a step exists it will not be overwritten
+            // Add this step; JoinSteps behaves as a Set, if a step has been added to the set
+            //   it will not be overwritten. Hence, we add this step, currentSteps and historyStep
+            //   in this order.
+
             joinSteps.add(step);
 
             //  Add any other Current Steps which transition into this Join 
@@ -1501,6 +1504,8 @@ public class DefaultOSWfEngine implements OSWfEngine {
             //  for possible evaluation in a script
             
             transientVars.put("joinSteps", joinSteps);
+            transientVars.put("historySteps", historySteps);
+            transientVars.put("currentSteps", currentSteps);
 
             // TODO: Verify that 0 is the right value for currentstep here
 

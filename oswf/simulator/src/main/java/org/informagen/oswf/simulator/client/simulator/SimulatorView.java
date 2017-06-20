@@ -202,13 +202,15 @@ public class SimulatorView implements SimulatorPresenter.View {
                   
         commonGridSettings(currentStepsGrid);
         
+        ListGridField idField = new ListGridField("id", "ID", 60);
         ListGridField nameField = new ListGridField("name", "Current Steps");
         ListGridField statusField = new ListGridField("status", "Step Status", 120);
         ListGridField ownerField = new ListGridField("owner", "Owner", 120);
         ListGridField createdField = new ListGridField("created", "DateCreated", 120);
         ListGridField dueField = new ListGridField("due","Date Due", 120);
 
-        currentStepsGrid.setFields(new ListGridField[] { 
+        currentStepsGrid.setFields(new ListGridField[] {
+            integerField(idField), 
             leftField(nameField), 
             leftField(statusField), 
             leftField(ownerField), 
@@ -223,6 +225,7 @@ public class SimulatorView implements SimulatorPresenter.View {
                   
         commonGridSettings(historyStepsGrid);
         
+        ListGridField idField = new ListGridField("id", "ID", 60);
         ListGridField nameField = new ListGridField("name", "History Steps");
         ListGridField statusField = new ListGridField("status", "Step Status", 120);
         ListGridField actorField = new ListGridField("actor", "Actor", 120);
@@ -230,6 +233,7 @@ public class SimulatorView implements SimulatorPresenter.View {
         ListGridField finishedField = new ListGridField("finished","Date Finished", 120);
 
         historyStepsGrid.setFields(new ListGridField[] { 
+            integerField(idField), 
             leftField(nameField), 
             leftField(statusField), 
             leftField(actorField), 

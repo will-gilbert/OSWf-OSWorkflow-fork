@@ -1,4 +1,4 @@
-package groovy.tests
+package groovy.core
 
 import org.informagen.oswf.OSWfEngine
 import org.informagen.oswf.OSWfLogging
@@ -26,16 +26,15 @@ import org.junit.Test
  *   of creating additional current steps for the other step pending in the
  *   the split.
  *
- * The workflow behaves as it should, each waiting step must have its 'Finish'
- *   action applied, only when the both steps finish is the process allowed
- *   to proceed through the join. No matter how much work is created for A and
- *   B, there will only be one 'End' step create after all A and B work is finished.
+ * The workflow behaves as it should, neither 'A' or 'B' can be pending, also
+ *   step 'Start' cannot be current as this could create more 'A' and 'B' steps.
+ *   Only when all 'A'  and 'B' steps have entered the join and no futher work
+ *   is coming along the workflow can the join proceed.
  *
- * This will requires the 'JoinSteps' class to be modified to behave like a Set and
- *   add the method, "getAll(int stepId)"
- *
- * What is needed is a real world use case which can be used to better explain 
- *   this behavior.
+ * There will only be one 'End' step create after all A and B work is finished.
+ * 
+ * What is needed is a 'real world' use case which can be used to better illustrate 
+ *   this rarely used behavior.
  */
 
 
@@ -65,7 +64,7 @@ class LoopBackTest {
     private def piid
 
     @Before
-    void setup() throws Exception {
+    void setup() {
         wfEngine = new DefaultOSWfEngine();
         def resource = getClass().getResource("/core/LoopBack.oswf.xml")
         piid = wfEngine.initialize(resource.toString(), INITIAL_ACTION);
@@ -74,7 +73,7 @@ class LoopBackTest {
     // M E T H O D S  -------------------------------------------------------------------------
 
     @Test
-    void noLoopback_Finish_AB() throws Exception {
+    void noLoopback_Finish_AB() {
 
         doAction ENTER_SPLIT ; assert currentSteps() == [0,1,1,0]
         doAction A_FINISHES  ; assert currentSteps() == [0,0,1,0]
@@ -86,7 +85,7 @@ class LoopBackTest {
     }
     
     @Test
-    void noLoopback_Finish_BA() throws Exception {
+    void noLoopback_Finish_BA() {
 
         doAction ENTER_SPLIT ; assert currentSteps() == [0,1,1,0]
         doAction B_FINISHES  ; assert currentSteps() == [0,1,0,0]
@@ -97,8 +96,24 @@ class LoopBackTest {
         assert done()
     }
 
+    
     @Test
-    void loopback_Via_A_Finish_ABB() throws Exception {
+    void loopback_Via_A_then_B_Finishes_before_the_split() {
+
+        doAction ENTER_SPLIT ; assert currentSteps() == [0,1,1,0]
+        doAction A_REPEATS   ; assert currentSteps() == [1,0,1,0]
+        doAction B_FINISHES  ; assert currentSteps() == [1,0,0,0]
+        doAction ENTER_SPLIT ; assert currentSteps() == [0,1,1,0]
+        doAction A_FINISHES  ; assert currentSteps() == [0,0,1,0]
+        doAction B_FINISHES  ; assert currentSteps() == [0,0,0,1]
+        doAction END_ACTION  ; assert currentSteps() == [0,0,0,0]
+
+        assert historySteps() == 7 + 1
+        assert done()
+    }
+
+    @Test
+    void loopback_Via_A_Finish_ABB() {
 
         doAction ENTER_SPLIT ; assert currentSteps() == [0,1,1,0]
         doAction A_REPEATS   ; assert currentSteps() == [1,0,1,0]
@@ -113,7 +128,7 @@ class LoopBackTest {
     }
     
     @Test
-    void loopback_Via_B_Finish_BAA() throws Exception {
+    void loopback_Via_B_Finish_BAA() {
 
         doAction ENTER_SPLIT ; assert currentSteps() == [0,1,1,0]
         doAction B_REPEATS   ; assert currentSteps() == [1,1,0,0]
@@ -128,7 +143,7 @@ class LoopBackTest {
     }
  
     @Test
-    void Loopback_Via_A_Finish_BAB() throws Exception {
+    void Loopback_Via_A_Finish_BAB() {
  
         doAction ENTER_SPLIT ; assert currentSteps() == [0,1,1,0]
         doAction A_REPEATS   ; assert currentSteps() == [1,0,1,0]
@@ -143,7 +158,7 @@ class LoopBackTest {
     }
  
     @Test
-    void Loopback_Via_B_Finish_ABA() throws Exception {
+    void Loopback_Via_B_Finish_ABA() {
 
         doAction ENTER_SPLIT ; assert currentSteps() == [0,1,1,0]
         doAction B_REPEATS   ; assert currentSteps() == [1,1,0,0]
@@ -158,7 +173,7 @@ class LoopBackTest {
     }
  
     @Test
-    void loopback_Both_Finish_ABAB() throws Exception {
+    void loopback_Both_Finish_ABAB() {
 
         doAction ENTER_SPLIT ; assert currentSteps() == [0,1,1,0]
         doAction A_REPEATS   ; assert currentSteps() == [1,0,1,0]
@@ -176,7 +191,7 @@ class LoopBackTest {
     }
    
     @Test
-    void finish_B_loopback_A_Finish_BA() throws Exception {
+    void finish_B_loopback_A_Finish_BA() {
 
         doAction ENTER_SPLIT ; assert currentSteps() == [0,1,1,0]
         doAction B_FINISHES  ; assert currentSteps() == [0,1,0,0]
@@ -191,7 +206,7 @@ class LoopBackTest {
     }
 
     @Test
-    void threeLoopBacks_BA() throws Exception {
+    void threeLoopBacks_BA() {
 
         doAction ENTER_SPLIT ; assert currentSteps() == [0,1,1,0]
         
@@ -233,7 +248,7 @@ class LoopBackTest {
     }
 
     @Test
-    void threeLoopBacks_AB() throws Exception {
+    void threeLoopBacks_AB() {
 
         doAction ENTER_SPLIT ; assert currentSteps() == [0,1,1,0]
         
@@ -276,7 +291,7 @@ class LoopBackTest {
 
 
     @Test
-    void threeLoopBacks_Alternate() throws Exception {
+    void threeLoopBacks_Alternate() {
 
         doAction ENTER_SPLIT ; assert currentSteps() == [0,1,1,0]
         
@@ -319,9 +334,6 @@ class LoopBackTest {
 
     //==============================================================
 
-    private def done() {
-         ProcessInstanceState.COMPLETED == wfEngine.getProcessInstanceState(piid)
-    }
 
     private def doAction(action) {
          wfEngine.doAction(piid, action)
@@ -330,7 +342,7 @@ class LoopBackTest {
     /**
     **  Get the size of current steps in the steps 'Start', 'A', 'B', 'End'
     **  
-    ** returns a list of count of current steps for each step
+    ** returns a list of count of current steps for each step as an array
     */
 
     private def currentSteps() {
@@ -355,10 +367,8 @@ class LoopBackTest {
         wfEngine.getHistorySteps(piid).size()    
     }
 
-    
-    private void checkRoute(actions) throws Exception {
-        actions.each { action ->
-            wfEngine.doAction(piid, action);
-        }
+    private def done() {
+         ProcessInstanceState.COMPLETED == wfEngine.getProcessInstanceState(piid)
     }
+
 }
