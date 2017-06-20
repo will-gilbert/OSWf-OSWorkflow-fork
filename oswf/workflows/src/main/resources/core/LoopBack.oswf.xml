@@ -98,6 +98,7 @@
         <condition type='groovy'>
           <arg name='script'><![CDATA[ 
 
+            // There are 'A' steps waiting
             def hasPendingSteps = joinSteps.getAll(2).any{ 
               it.status == 'Pending' 
             }
@@ -110,11 +111,26 @@
         <condition type='groovy'>
           <arg name='script'><![CDATA[ 
 
+            // There are 'B' steps waiting
             def hasPendingSteps = joinSteps.getAll(3).any{
               it.status == 'Pending' 
             }
             
             return !hasPendingSteps
+            
+          ]]></arg>
+        </condition> 
+
+        <condition type='groovy'>
+          <arg name='script'><![CDATA[ 
+
+            // There are 'Start' steps to be executed which
+            //   will create 'A' and 'B' steps.  So we can't let
+            //   the process go to the 'End' step
+
+            def hasCurrentSteps = currentSteps.any{ it.stepId=1 }
+            
+            return !hasCurrentSteps
             
           ]]></arg>
         </condition> 

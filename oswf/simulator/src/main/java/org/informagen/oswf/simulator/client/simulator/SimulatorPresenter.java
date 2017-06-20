@@ -352,6 +352,7 @@ public class SimulatorPresenter implements ContentPresenter, Constants {
 
             ListGridRecord listGridRecord = new ListGridRecord();
 
+            listGridRecord.setAttribute("id", step.id);
             listGridRecord.setAttribute("name", step.name);
             listGridRecord.setAttribute("status", step.status);
             listGridRecord.setAttribute("owner", step.owner);
@@ -373,6 +374,7 @@ public class SimulatorPresenter implements ContentPresenter, Constants {
 
             ListGridRecord listGridRecord = new ListGridRecord();
 
+            listGridRecord.setAttribute("id", step.id);
             listGridRecord.setAttribute("name", step.name);
             listGridRecord.setAttribute("status", step.status);
             listGridRecord.setAttribute("actor", step.actor);
