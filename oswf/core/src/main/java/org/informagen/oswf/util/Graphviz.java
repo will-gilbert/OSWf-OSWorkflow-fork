@@ -14,6 +14,12 @@ import org.informagen.oswf.descriptors.JoinDescriptor;
 import org.informagen.oswf.descriptors.ResultDescriptor;
 import org.informagen.oswf.descriptors.ConditionsDescriptor;
  
+// Nidi Graphviz For Java
+import guru.nidi.graphviz.model.MutableGraph;
+import guru.nidi.graphviz.parse.Parser;
+import guru.nidi.graphviz.engine.Format;
+
+
  // Java - Lang
 import java.lang.StringBuffer;
 
@@ -42,11 +48,19 @@ public class Graphviz {
     public static void main(String[] args)  { 
                 
         try {
-            
+
+            int argCount = args.length;
+            String workflowLocation = args[0];
+            String outputDir = args[1];
+            String format = "svg";
+            if(args.length > 2)
+                format = args[2];        // svg or png
+
             // Convert the filename (arg[0]) into a 'File://' url and
             //   use the URLLoader. 
 
-            File workflowFile = new File(args[0]);
+            File workflowFile = new File(workflowLocation);
+            File outputFile = new File(outputDir, workflowFile.getName() + "." + format.toLowerCase());
             
             if(workflowFile.exists() == false) {
                 logger.error(fatal, "Workflow file does not exist: " + args[0]);
@@ -65,12 +79,21 @@ public class Graphviz {
 
             // Write the 'dot' file out to the local directory
             
-            File dotFile = new File(workflowFile.getName() + ".dot");
-            Writer output = new BufferedWriter(new FileWriter(dotFile));
+            //File dotFile = new File("/Volumes/Transcend/GitHub/OSWf-OSWorkflow-fork/oswf/oswf.svg");
+            // File dotFile = new File(workflowFile.getName() + ".png");
+            // Writer output = new BufferedWriter(new FileWriter(dotFile));
             String dot = new Graphviz(wfd).create();
 
-            output.write(dot);
-            output.close();
+            // output.write(dot);
+            // output.close();
+            //System.out.println(dotFile);
+
+
+            Format renderFormat = Format.valueOf(format.toUpperCase());
+
+            MutableGraph g = Parser.read(dot);
+            guru.nidi.graphviz.engine.Graphviz.fromGraph(g).render(renderFormat).toFile(outputFile);
+
 
          } catch (Exception exception) {
             exception.printStackTrace();
@@ -232,13 +255,13 @@ public class Graphviz {
             
         for(ActionDescriptor initialAction : initialActions) {
             buffer.append("InitialAction").append(initialAction.getId());
-            buffer.append(" [label=<")
-                  .append("<table border='0'><tr><td><font point-size='8.0'>Initial Action: ")
+            buffer.append(" [label=\"")
+                  .append("Initial Action: ")
                   .append(initialAction.getId())
-                  .append("</font></td></tr><tr><td>")
+                  .append("\n")
                   .append(initialAction.getName())
-                  .append("</td></tr></table>")
-                  .append(">\n   shape=box\n   fontsize=9\n   ");
+                  .append("\"")
+                  .append("\n  shape=box\n   fontsize=9\n   ");
             buffer.append("fillcolor=\"").append(GREEN).append("\"]");
             buffer.append("\n\n");
         }
@@ -253,29 +276,38 @@ public class Graphviz {
             
         for(StepDescriptor step : steps) {
             buffer.append("Step").append(step.getId());
-            buffer.append(" [label=<")
-                  .append("<table border='0'><tr><td><font point-size='8.0'>Step: ")
+            buffer.append(" [label=\"")
+                  .append("Step: ")
                   .append(step.getId())
-                  .append("</font></td></tr><tr><td>")
+                  .append("\n")
                   .append(step.getName())
-                  .append("</td></tr></table>")
-                  .append(">]");
+                  .append("\"]");
             buffer.append("\n\n");
 
             List<ActionDescriptor> actions = step.getActions();
-            for(ActionDescriptor action : actions) {
-                buffer.append("Action").append(action.getId());
-                buffer.append(" [label=<")
-                      .append("<table border='0'><tr><td><font point-size='8.0'>")
-                      .append(action.isCommon() ? "Common Action: " : "Action: ")
-                      .append(action.getId())
-                      .append("</font></td></tr><tr><td>")
-                      .append(action.getName())
-                      .append("</td></tr></table>")
-                      .append(">\n   shape=box\n   fontsize=9\n   ");
-                buffer.append("fillcolor=\"").append(GRAY).append("\"]");
-                buffer.append("\n");
+
+            // When a step has no actions, the process instance completes
+            if(actions.size() == 0) {
+
+                int finishId = writeFinishNode();
+                buffer.append("Step").append(step.getId()).append("->");
+                writeFinishEdge(finishId, 1);
+
+            } else {
+
+                for(ActionDescriptor action : actions) {
+                    buffer.append("Action").append(action.getId());
+                    buffer.append(" [label=\"")
+                          .append(action.isCommon() ? "Common Action: " : "Action: ")
+                          .append(action.getId())
+                          .append("\n")
+                          .append(action.getName())
+                          .append("\"\n   shape=box\n   fontsize=9\n   ");
+                    buffer.append("fillcolor=\"").append(GRAY).append("\"]");
+                    buffer.append("\n");
+                }
             }
+
             buffer.append("\n\n");
 
         }
@@ -375,7 +407,7 @@ public class Graphviz {
     private void writeActionResultEdge(String prefix, ActionDescriptor action, ResultDescriptor result, int weight) {
     
         if(action.isFinish()) {
-            int finishId = writeFinishNode(action.getName());
+            int finishId = writeFinishNode();
             buffer.append(prefix).append(action.getId()).append("->");
             writeFinishEdge(finishId, weight);
             return;
@@ -437,6 +469,9 @@ public class Graphviz {
         
         String status = result.getExitStatus();
         String owner = result.getOwner();
+
+        if(status.equals("Finished"))
+            status = "";
         
         if(!empty(status) || !empty(owner) || (weight > 1)) {
   
@@ -460,7 +495,7 @@ public class Graphviz {
     }
 
 
-    private int writeFinishNode(String actionName) {
+    private int writeFinishNode() {
         finish++;
         
         buffer.append("Finish").append(finish);

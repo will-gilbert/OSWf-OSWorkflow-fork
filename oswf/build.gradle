@@ -37,6 +37,7 @@ subprojects {
     ext.jndi      = '0.11.4.1'
     ext.wagon     = '2.12'
     ext.gretty    = '1.4.2'
+    ext.graphviz  = '0.2.1'
     
     ext.hibernate = '5.2.10.Final'
     ext.h2        = '1.4.195'

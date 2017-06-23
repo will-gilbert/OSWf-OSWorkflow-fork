@@ -92,16 +92,6 @@ public class GraphvizServiceImpl implements GraphvizService {
             //   have to rely on it being installed.
             
             byte[] imageByteArray = createImageAsByteArray(dotFile, "png");
-
-            // Encode as Base64 for delivery to the GWT client; 
-            //  Append the MIME-TYPE
-            // NB: The GWT encoding does not decode on the client
-            
-            // base64Image = new StringBuffer()
-            //     .append("data:image/png;base64,")
-            //     .append(Base64.getInstance().encodeAsString(imageByteArray))
-            //     .toString()
-            // ; 
             
             return Base64.getInstance().encodeAsString(imageByteArray);
              

@@ -64,9 +64,13 @@ dependencies {
 
         // BeanShell - used by Workflow Processes for step/action scripts
         "org.beanshell:bsh:$bsh",
+
+        // Graphviz for Java
+        "guru.nidi:graphviz-java:$graphviz",
         
         // Simple Logging Facade for Java - Used by 'OSWfTestCase'   
         "org.slf4j:slf4j-api:$slf4j",
+        "log4j:log4j:$log4j",
 
         // JUnit - Used by 'OSWfTestCase' and 'OSWfAssertions'
         "junit:junit:$junit"
@@ -86,7 +90,6 @@ dependencies {
                         
          // Use 'log4j' with the SL4J logger
          "org.slf4j:slf4j-log4j12:$slf4j",
-         "log4j:log4j:$log4j",
          
         // H2 Database driver, formerly HSQLDB
         "com.h2database:h2:$h2"
@@ -119,25 +122,23 @@ task graphviz(dependsOn: ['jar'], type:JavaExec) {
     jvmArgs = ['-Xmx256M']
     classpath = files([ 
         sourceSets.main.runtimeClasspath, 
-        configurations.graphvizRuntime.files,
+        configurations.graphvizRuntime.files
     ])
 
     // args[0] : -P  workflow="path.../name"
     def workflow = findProperty("workflow") ?: 'usage/example'
-    def inputFile = new File("../workflows/src/main/resources/${workflow}.oswf.xml")
-    def outputFile = new File("${inputFile.getName()}.dot")
+    def inputFile = new File("${projectDir.parent}/workflows/src/main/resources/${workflow}.oswf.xml")
+    def format = 'png'
 
-    args = [inputFile]
+    args = [inputFile, projectDir.parent, format]
 
-    // Mac OS X: 'open' launch Graphviz if available; Otherwize remove
+    // macOS: 'open' launch Graphviz if available; Otherwise remove
     //  this line or modify for your operating system
-    //
-    //  See also:  http://www.graphviz.org/
 
     doLast {
+      def outputFile = new File("${projectDir.parent}/${inputFile.name}.${format}")
       if ( outputFile.exists() )
-        exec { commandLine '/usr/local/bin/dot', '-Tpng', '-O', outputFile}
-        exec { commandLine  '/usr/bin/open', "${outputFile.name}.png" }
+        exec { commandLine  '/usr/bin/open', outputFile }
     }
 
 }

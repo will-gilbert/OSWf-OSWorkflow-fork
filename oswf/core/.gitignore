@@ -3,3 +3,5 @@ build/
 gradle.properties
 **.xml.dot
 **.xml.dot.png
+**.xml.png
+**.xml.svg
