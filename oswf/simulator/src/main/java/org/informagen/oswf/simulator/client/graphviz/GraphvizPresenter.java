@@ -57,12 +57,13 @@ public class GraphvizPresenter implements ContentPresenter {
     public interface Controls {
         HasClickHandlers getDOTDownloadClickable();      
         HasClickHandlers getPNGDownloadClickable();      
+        HasClickHandlers getSVGDownloadClickable();      
         void mediate();
         Widget asWidget();
     }
 
     public interface Model {
-        void renderAsGraphviz(String workflowName, Callback<String> callback);    
+        void renderWorkflowImage(String workflowName, Callback<String> callback);    
     }
         
     //=========================================================================================
@@ -107,13 +108,19 @@ public class GraphvizPresenter implements ContentPresenter {
 
         controls.getDOTDownloadClickable().addClickHandler(new ClickHandler() {
             public void onClick(ClickEvent event) {
-                eventBus.fireEvent(new RequestReSTEvent("GET", "workflows/" + workflowName + "/graphviz"));
+                eventBus.fireEvent(new RequestReSTEvent("GET", "workflows/" + workflowName + "/dot"));
             }
         });
 
         controls.getPNGDownloadClickable().addClickHandler(new ClickHandler() {
             public void onClick(ClickEvent event) {
-                eventBus.fireEvent(new RequestReSTEvent("GET", "workflows/" + workflowName + "/image"));
+                eventBus.fireEvent(new RequestReSTEvent("GET", "workflows/" + workflowName + "/png"));
+            }
+        });
+
+        controls.getSVGDownloadClickable().addClickHandler(new ClickHandler() {
+            public void onClick(ClickEvent event) {
+                eventBus.fireEvent(new RequestReSTEvent("GET", "workflows/" + workflowName + "/svg"));
             }
         });
     }
@@ -127,7 +134,7 @@ public class GraphvizPresenter implements ContentPresenter {
         
         this.workflowName = workflowName;
 
-        model.renderAsGraphviz(workflowName, new Callback<String>(){
+        model.renderWorkflowImage(workflowName, new Callback<String>(){
             public void onSuccess(String base64Image) {
                 if(base64Image != null)
                     view.displayImage(base64Image);

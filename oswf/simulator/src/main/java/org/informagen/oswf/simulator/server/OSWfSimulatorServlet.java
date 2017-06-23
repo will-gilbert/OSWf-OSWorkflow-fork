@@ -137,16 +137,39 @@ public class OSWfSimulatorServlet extends RemoteServiceServlet
 
     //--- GraphvizService ---------------------------------------------------------------------
     
-    public String renderAsGraphviz(String workflowName) throws ServiceException {
+    // public String renderAsGraphviz(String workflowName) throws ServiceException {
+    //     try {
+    //         // Add preamble so that Javascript can interpret
+    //         return new StringBuffer()
+    //             .append("data:image/png;base64,")
+    //             .append(injector.getInstance(GraphvizService.class).renderAsGraphviz(workflowName))
+    //             .toString()
+    //         ; 
+                        
+    //     } catch (Throwable throwable) { throw createServiceException(throwable); }
+    // }
+     
+    public String renderAsPNG(String workflowName) throws ServiceException {
         try {
             // Add preamble so that Javascript can interpret
             return new StringBuffer()
                 .append("data:image/png;base64,")
-                .append(injector.getInstance(GraphvizService.class).renderAsGraphviz(workflowName))
+                .append(injector.getInstance(GraphvizService.class).renderAsPNG(workflowName))
                 .toString()
             ; 
                         
-            // return injector.getInstance(GraphvizService.class).renderAsGraphviz(workflowName);
+        } catch (Throwable throwable) { throw createServiceException(throwable); }
+    }
+        
+    public String renderAsSVG(String workflowName) throws ServiceException {
+        try {
+            // Add preamble so that Javascript can interpret
+            return new StringBuffer()
+                .append("data:image/svg+xml;")
+                .append(injector.getInstance(GraphvizService.class).renderAsSVG(workflowName))
+                .toString()
+            ; 
+                        
         } catch (Throwable throwable) { throw createServiceException(throwable); }
     }
     

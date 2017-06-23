@@ -1,3 +1,5 @@
 .gradle/
 build/
 gwtBuild/
+**.xml.png
+**.xml.svg

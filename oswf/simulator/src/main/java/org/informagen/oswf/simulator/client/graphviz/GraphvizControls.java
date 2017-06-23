@@ -36,8 +36,9 @@ public class GraphvizControls implements GraphvizPresenter.Controls {
 
     private final VStack layout = new VStack(5);
 
-    private final Button dotDownloadButton = new Button("Download as 'dot'");
+    private final Button dotDownloadButton = new Button("Download as 'Graphviz'");
     private final Button pngDownloadButton = new Button("Download as 'PNG'");
+    private final Button svgDownloadButton = new Button("Download as 'SVG'");
 
     private final Widget widget;
 
@@ -55,6 +56,10 @@ public class GraphvizControls implements GraphvizPresenter.Controls {
     public HasClickHandlers getPNGDownloadClickable() {
         return pngDownloadButton;
     }
+
+    public HasClickHandlers getSVGDownloadClickable() {
+        return svgDownloadButton;
+    }
     
     public void mediate() {}
 
@@ -70,11 +75,12 @@ public class GraphvizControls implements GraphvizPresenter.Controls {
         
         layout.addMember(buildButton(dotDownloadButton));
         layout.addMember(buildButton(pngDownloadButton));
+        layout.addMember(buildButton(svgDownloadButton));
         
         return layout;
     }
 
-    Widget buildButton(Button button) {
+    private Widget buildButton(Button button) {
         button.setWidth100();
         return button;
     }

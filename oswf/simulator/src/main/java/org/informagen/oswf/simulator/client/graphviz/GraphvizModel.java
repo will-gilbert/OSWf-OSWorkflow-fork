@@ -37,18 +37,19 @@ public class GraphvizModel implements GraphvizPresenter.Model {
         
     }
 
-    public void renderAsGraphviz(final String workflowName, final Callback<String> callback) {
+    public void renderWorkflowImage(final String workflowName, final Callback<String> callback) {
 
         if(workflowName == null)
             return;
         
         currentWorkflowName = null;
         
-        service.renderAsGraphviz(workflowName, new Callback<String>(){
+        service.renderAsPNG(workflowName, new Callback<String>(){
             public void onSuccess(String base64Image) {
                 currentWorkflowName = workflowName;
                 callback.onSuccess(base64Image);
             }
         });
     }
+
 }

@@ -13,7 +13,9 @@ import java.util.List;
 @RemoteServiceRelativePath("oswfSimulatorService")
 public interface GraphvizService extends RemoteService {
 
-    String renderAsGraphviz(String workflowName) throws ServiceException;
+    String renderAsPNG(String workflowName) throws ServiceException;
+
+    String renderAsSVG(String workflowName) throws ServiceException;
     
     String createDotNotation(String workflowName) throws ServiceException;
    
