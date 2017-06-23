@@ -98,19 +98,23 @@ public class OSWfReSTServlet extends HttpServlet {
         else if(tokens.size() == 2 && tokens.get(1).endsWith(".xml"))
             downloadWorkflowDescription(response, tokens.get(1).replaceAll(".xml$",""));
         else if(tokens.size() == 2 && tokens.get(1).endsWith(".dot"))
-            downloadGraphvizFile(response, tokens.get(1).replaceAll(".dot$",""));
+            downloadDot(response, tokens.get(1).replaceAll(".dot$",""));
         else if(tokens.size() == 2 && tokens.get(1).endsWith(".png"))
-            downloadGraphvizPNG(response, tokens.get(1).replaceAll(".png$",""));
+            downloadPNG(response, tokens.get(1).replaceAll(".png$",""));
+        else if(tokens.size() == 2 && tokens.get(1).endsWith(".svg"))
+            downloadSVG(response, tokens.get(1).replaceAll(".svg$",""));
         else if("definition".equals(tokens.get(2)))
             downloadWorkflowDescription(response, tokens.get(1));
-        else if("graphviz".equals(tokens.get(2)))
-            downloadGraphvizFile(response, tokens.get(1));
-        else if("image".equals(tokens.get(2)))
-            downloadGraphvizPNG(response, tokens.get(1));
+        else if("dot".equals(tokens.get(2)))
+            downloadDot(response, tokens.get(1));
+        else if("png".equals(tokens.get(2)))
+            downloadPNG(response, tokens.get(1));
+        else if("svg".equals(tokens.get(2)))
+            downloadSVG(response, tokens.get(1));
         
     }
     
-    public void downloadWorkflowDescription(HttpServletResponse response, String workflowName) throws ServletException {
+    private void downloadWorkflowDescription(HttpServletResponse response, String workflowName) throws ServletException {
      
         try {
 
@@ -135,7 +139,7 @@ public class OSWfReSTServlet extends HttpServlet {
         
     }
 
-    public void downloadGraphvizFile(HttpServletResponse response, String workflowName) throws ServletException {
+    private void downloadDot(HttpServletResponse response, String workflowName) throws ServletException {
 
         try {
 
@@ -159,18 +163,38 @@ public class OSWfReSTServlet extends HttpServlet {
         }
     }        
 
-    public void downloadGraphvizPNG(HttpServletResponse response, String workflowName) throws ServletException {
+    private void downloadPNG(HttpServletResponse response, String workflowName) throws ServletException {
 
         try {
 
             // Base64 encoded PNG
-            String base64PNG = injector.getInstance(GraphvizService.class).renderAsGraphviz(workflowName);            
+            String base64PNG = injector.getInstance(GraphvizService.class).renderAsPNG(workflowName);            
             byte[] bytes = Base64.getInstance().decode(base64PNG);
             
             response.setContentType("application/force-download");
             response.setContentLength(bytes.length);
             response.setHeader("Content-Transfer-Encoding", "UTF-8");
             response.setHeader("Content-Disposition", "attachment; filename=\"" + workflowName + ".png\"");
+
+            response.getOutputStream().write(bytes);        
+            
+        } catch (Exception exception) {
+            throw new ServletException(exception);
+        }
+    }        
+ 
+    public void downloadSVG(HttpServletResponse response, String workflowName) throws ServletException {
+
+        try {
+
+            // Base64 encoded SVG
+            String base64PNG = injector.getInstance(GraphvizService.class).renderAsSVG(workflowName);            
+            byte[] bytes = Base64.getInstance().decode(base64PNG);
+            
+            response.setContentType("application/force-download");
+            response.setContentLength(bytes.length);
+            response.setHeader("Content-Transfer-Encoding", "UTF-8");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + workflowName + ".svg\"");
 
             response.getOutputStream().write(bytes);        
             

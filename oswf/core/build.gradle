@@ -128,7 +128,7 @@ task graphviz(dependsOn: ['jar'], type:JavaExec) {
     // args[0] : -P  workflow="path.../name"
     def workflow = findProperty("workflow") ?: 'usage/example'
     def inputFile = new File("${projectDir.parent}/workflows/src/main/resources/${workflow}.oswf.xml")
-    def format = 'png'
+    def format = 'svg'
 
     args = [inputFile, projectDir.parent, format]
 

@@ -36,10 +36,18 @@ import org.informagen.oswf.exceptions.WorkflowLoaderException;
 
 import org.informagen.oswf.util.Base64;
 
+// Nidi Graphviz For Java
+import guru.nidi.graphviz.model.MutableGraph;
+import guru.nidi.graphviz.parse.Parser;
+import guru.nidi.graphviz.engine.Format;
+
  // Java
 import java.lang.StringBuffer;
 import java.lang.Process;
 import java.lang.Runtime;
+
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
 
 // Java IO
 import java.io.File;
@@ -48,6 +56,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
 import java.io.InputStreamReader;
 import java.io.FileWriter;
 
@@ -78,6 +87,73 @@ public class GraphvizServiceImpl implements GraphvizService {
 
 
     public String renderAsGraphviz(String workflowName) throws ServiceException {
+        return renderAsPNG(workflowName);
+    }
+
+    public String renderAsPNG(String workflowName) throws ServiceException {
+
+        String base64Image = null;
+
+        try {
+            
+            String dot = createDotNotation(workflowName);
+            
+            MutableGraph g = Parser.read(dot);
+            BufferedImage bi = guru.nidi.graphviz.engine.Graphviz.fromGraph(g).render(Format.PNG).toImage();
+            
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            ImageIO.write(bi, "png", outputStream);
+
+            byte[] imageByteArray = outputStream.toByteArray();
+
+            base64Image = Base64.getInstance().encodeAsString(imageByteArray);
+             
+        } catch (Exception exception) {
+            logger.error(exception.getMessage());
+        } 
+               
+        return base64Image;
+    }
+
+    public String renderAsSVG(String workflowName) throws ServiceException {
+
+        String base64Image = null;
+
+        try {
+            
+            String dot = createDotNotation(workflowName);
+            
+            MutableGraph g = Parser.read(dot);
+            String svg = guru.nidi.graphviz.engine.Graphviz.fromGraph(g).render(Format.SVG).toString();
+            
+            byte[] imageByteArray = svg.getBytes();
+
+            base64Image = Base64.getInstance().encodeAsString(imageByteArray);
+             
+        } catch (Exception exception) {
+            logger.error(exception.getMessage());
+        } 
+               
+        return base64Image;
+    }
+
+
+    public String createDotNotation(String workflowName) throws ServiceException {
+ 
+        String dot = null;
+        
+        try {
+            WorkflowDescriptor wfd = configuration.getWorkflow(workflowName);
+            dot = new Graphviz(wfd).create();
+        } catch (Exception exception) {
+            logger.error(exception.getMessage());
+        } 
+               
+        return dot;
+    }
+
+/*
+    public String renderAsGraphviz(String workflowName) throws ServiceException {
 
         String base64Image = null;
         File dotFile = null;
@@ -105,19 +181,7 @@ public class GraphvizServiceImpl implements GraphvizService {
         return base64Image;
     }
 
-    public String createDotNotation(String workflowName) throws ServiceException {
- 
-        String dot = null;
-        
-        try {
-            WorkflowDescriptor wfd = configuration.getWorkflow(workflowName);
-            dot = new Graphviz(wfd).create();
-        } catch (Exception exception) {
-            logger.error(exception.getMessage());
-        } 
-               
-        return dot;
-    }
+
 
 
 
@@ -181,5 +245,7 @@ public class GraphvizServiceImpl implements GraphvizService {
         // Return the image as a byte array
         return outputStream.toByteArray();
     }
+*/
+
 }
 
