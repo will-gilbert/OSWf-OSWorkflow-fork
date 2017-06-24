@@ -71,6 +71,24 @@
     <link rel="stylesheet" href="app/application.css">
     <link rel="stylesheet" href="app/xml-colorizer.css">
     <link rel="stylesheet" href="app/oswf-colorizer.css">
+
+    <title>@application.name@, v@application.version@</title>
+        
+    <script>var isomorphicDir = "@gwtModule@/sc/"</script>
+    <script type="text/javascript" 
+        language="javascript" 
+             src="@gwtModule@/@gwtModule@.nocache.js">
+    </script>
+
+     <script src="@gwtModule@/sc/modules/ISC_Core.js">          </script>
+     <script src="@gwtModule@/sc/modules/ISC_Foundation.js">    </script>
+     <script src="@gwtModule@/sc/modules/ISC_Containers.js">    </script>
+     <script src="@gwtModule@/sc/modules/ISC_Grids.js">         </script>
+     <script src="@gwtModule@/sc/modules/ISC_Forms.js">         </script>
+     <script src="@gwtModule@/sc/modules/ISC_RichTextEditor.js"></script>
+     <script src="@gwtModule@/sc/modules/ISC_Calendar.js">      </script>
+     <script src="@gwtModule@/sc/modules/ISC_DataBinding.js">   </script>
+  
     
   </head>
 
@@ -104,8 +122,13 @@
     <!-- Load skin ======================================================================== -->
     <!--  Keeps DevMode happy if we load the skins here. For the WAR build it doesn't seem to matter -->
     <script type="text/javascript">document.getElementById('loadingMsg').innerHTML = 'Loading Styles...';</script>
-    <script src='app/sc/skins/Graphite/load_skin.js'></script>
-    <!-- <script src='app/sc/skins/Simplicity/load_skin.js'></script> -->
+    <script src='@gwtModule@/sc/skins/Enterprise/load_skin.js'></script>
+
+    <iframe src="javascript:''" 
+             id="__gwt_historyFrame" 
+       tabIndex='-1' 
+          style="position:absolute;width:0;height:0;border:0">
+    </iframe>
 	
   </body>
 </html>
