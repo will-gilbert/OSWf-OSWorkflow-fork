@@ -25,7 +25,7 @@ public class EntryPoint implements com.google.gwt.core.client.EntryPoint {
         RootPanel.getBodyElement().removeChild(RootPanel.get("loadingWrapper").getElement());
         
         // Create the 'Application' and inject the entire browser page as the GWT frame
-       new Application(RootLayoutPanel.get());
+        new Application(RootLayoutPanel.get());
 
 	}
 

@@ -5,7 +5,7 @@
 
 <web-app>
 
-  <display-name>@name@, v@version@</display-name>
+  <display-name>@application.name@, v@application.version@</display-name>
 
   <!--  S E R V L E T S =================================================================== -->
 
@@ -45,7 +45,7 @@
    <!-- S E R V L E T   C O N F I G U R A T I O N  ======================================== -->
   
       <welcome-file-list>
-          <welcome-file>index.html</welcome-file>
+          <welcome-file>@welcome-file@</welcome-file>
       </welcome-file-list>
 
       <session-config>

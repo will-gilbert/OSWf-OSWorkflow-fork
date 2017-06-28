@@ -126,6 +126,7 @@ ext.localityProperties = [
     'application.version'            : project.version,
     'application.name'               : applicationName,
     'gwtModule'                      : gwtModule,
+    'welcome-file'                   : gwtRunTarget,
     'project.version'                : project.version,
     'project.name'                   : applicationName,
     'user.agent'                     : (locality == 'local') ? 'safari' : 'gecko1_8,safari,ie8,ie9,opera',
@@ -155,7 +156,7 @@ dependencies {
 
     // Dependency Versions
     def gwtSDK    = '2.8.1'
-    def smartGWT  = '6.1-LPGL'   // was 3.1, 4.0 ; 4.1, 5x no go
+    def smartGWT  = '5.0-LPGL'   // was 4.1-LPGL, 5.0-LPGL, 6.0-LPGL, 6.1-LPGL
     def gin       = '1.5.0'
     def guice     = '4.1.0'
 
@@ -293,20 +294,20 @@ task devMode(dependsOn: ['compileJava', 'copyWebAppResources', 'copyLibraries'],
 // U T I L I T Y   T A S K S  =================================================================
 
 task copyWebAppResources(type:Copy) {
-    description = 'Copies resources into the "devMode" directory'
+    description = 'Copies resources into the "GWT Build" directory'
 
-    // // Modify the web.xml file to provide name and version in the Servlet display
-    // from('src/main/webapp') {
-    //     include '**/web.xml'
-    //     filter(ReplaceTokens, 
-    //            tokens:[version: project.version, name: applicationName ])
-    // }
+    // Modify the web.xml file to provide name and version in the Servlet display
+    from('src/main/webapp') {
+        include '**/web.xml'
+        include '**/index.html'
+        filter(ReplaceTokens, tokens: localityProperties)
+    }
 
-    // // Copy the other unmodified files as well
-    // from('src/main/webapp') {
-    //    exclude '**/web.xml'
-    //    filter(ReplaceTokens, tokens: localityProperties)
-    // } into gwtBuildDir
+    // Copy the other files without modification
+    from('src/main/webapp') {
+       exclude '**/web.xml'
+       exclude '**/index.html'
+    } into gwtBuildDir
 
 }    
 
