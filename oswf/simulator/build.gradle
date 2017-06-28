@@ -156,7 +156,7 @@ dependencies {
 
     // Dependency Versions
     def gwtSDK    = '2.8.1'
-    def smartGWT  = '5.0-LPGL'   // was 4.1-LPGL, 5.0-LPGL, 6.0-LPGL, 6.1-LPGL
+    def smartGWT  = '5.1-LPGL'   // was 4.1-LPGL, 5.0-LPGL, 5.1-LPGL, 6.0-LPGL, 6.1-LPGL
     def gin       = '1.5.0'
     def guice     = '4.1.0'
 
