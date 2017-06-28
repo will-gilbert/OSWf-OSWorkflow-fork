@@ -1,6 +1,7 @@
 gradle.properties
 .gradle/
 build/
-devMode/
+build-gwt/
 gwt-unitCache/
 .DS_Store
+lib/

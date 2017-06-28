@@ -75,8 +75,8 @@ public class AboutBoxView implements AboutBoxPresenter.View {
 
         String contents = "This application was built using the following Open Source technologies: " +  
                 "<ul>"+
-                "<li><a href='http://code.google.com/webtoolkit/' target='_blank'>Google Web Toolkit (GWT) v2.4.0</a></li>" +  
-                "<li><a href='http://www.smartclient.com/' target='_blank'>SmartGWT v2.5 from Isomorphic Software</a></li>" + 
+                "<li><a href='http://code.google.com/webtoolkit/' target='_blank'>Google Web Toolkit (GWT) v2.8.1</a></li>" +  
+                "<li><a href='http://www.smartclient.com/' target='_blank'>SmartGWT v5.0 from Isomorphic Software</a></li>" + 
                 "<li>Also Hibernate/EJB3, Maven and Google Guice &amp; GIN</li>" +  
                 "</ul>";  
         htmlPane.setContents(contents);       

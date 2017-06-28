@@ -45,10 +45,10 @@
         div#loadingWrapper {
             position: absolute;
             top: 50%; left: 50%;
-            height: 52px; width: 200px; 
+            height: 87px; width: 200px; 
             margin-top: -26px; margin-left: -100px; 
             border: 1px solid #ccc;
-            padding: 2px;
+            padding: 3px;
             z-index: 20001;
         }
         
@@ -62,25 +62,25 @@
     
         #loadingMsg {
             font: normal 10px arial, tahoma, sans-serif;
-
-
-
     
     </style>
 
     <link rel="stylesheet" href="app/application.css">
     <link rel="stylesheet" href="app/xml-colorizer.css">
     <link rel="stylesheet" href="app/oswf-colorizer.css">
+
+    <title>@application.name@, v@application.version@</title>         
     
   </head>
 
 <body>
+    <iframe id="__gwt_historyFrame" style="width:0;height:0;border:0"></iframe>
 
     <!-- Application Logo ================================================================= -->
         
-        <div id="logo">
-            <img src="images/OSWf.png" >
-        </div>
+    <div id="logo">
+        <img src="images/OSWf.png" >
+    </div>
 
 
     <!-- Add loading indicator while the app is being loaded ================================== -->
@@ -90,22 +90,50 @@
                <img src="images/icons/loading.gif" 
                      width="32" height="32" 
                      style="margin-right:8px; margin-left:5px; float:left; vertical-align:top;"/>
-                <span>OSWf Simulator</span><br />
+                <span>@application.name@</span><br />
                 <span id="loadingMsg"></span>
             </div>
         </div>
     </div>
 
-    <!-- Load the application JavaScript and launch ======================================= -->
-    <script>isc_css3Mode = "on";</script>
-    <script type="text/javascript">document.getElementById('loadingMsg').innerHTML = 'Loading Application...';</script>
-    <script type="text/javascript" src="app/app.nocache.js"></script>
 
-    <!-- Load skin ======================================================================== -->
-    <!--  Keeps DevMode happy if we load the skins here. For the WAR build it doesn't seem to matter -->
-    <script type="text/javascript">document.getElementById('loadingMsg').innerHTML = 'Loading Styles...';</script>
-    <script src='app/sc/skins/Graphite/load_skin.js'></script>
-    <!-- <script src='app/sc/skins/Simplicity/load_skin.js'></script> -->
+    <!-- IMPORTANT : You must set the variable isomorphicDir to [MODULE_NAME]/sc/ so that the Smart GWT
+         resource are correctly resolved -->
+
+    <script type="text/javascript">
+        var isomorphicDir = "@gwtModule@/sc/"
+        document.getElementById('loadingMsg').innerHTML = 'Loading Core API...';
+    </script>
+
+    <!--include the SC Core API-->
+    <script type="text/javascript" src='@gwtModule@/sc/modules/ISC_Core.js'></script>
+
+    <!--include SmartClient -->
+    <script type="text/javascript">document.getElementById('loadingMsg').innerHTML = 'Loading UI Components...';</script>
+ 
+    <script type="text/javascript" src='@gwtModule@/sc/modules/ISC_Foundation.js'></script>
+    <script type="text/javascript" src='@gwtModule@/sc/modules/ISC_Containers.js'></script>
+    <script type="text/javascript" src='@gwtModule@/sc/modules/ISC_Grids.js'></script>
+    <script type="text/javascript" src='@gwtModule@/sc/modules/ISC_Forms.js'></script>
+    <script type="text/javascript" src='@gwtModule@/sc/modules/ISC_RichTextEditor.js'></script>
+
+    <script type="text/javascript">document.getElementById('loadingMsg').innerHTML = 'Loading Data API...';</script>
+ 
+    <script type="text/javascript" src='@gwtModule@/sc/modules/ISC_DataBinding.js'></script>
+    <script type="text/javascript" src='@gwtModule@/sc/modules/ISC_Calendar.js'></script>
+    <script type="text/javascript" src='@gwtModule@/sc/modules/ISC_Drawing.js'></script>
+
+
+    <!--load skin-->
+    <script type="text/javascript">document.getElementById('loadingMsg').innerHTML = 'Loading skin...';</script>
+
+    <script type="text/javascript">
+    document.write("<"+"script src=@gwtModule@/sc/skins/Enterprise/load_skin.js><"+"/script>");
+    </script>
+
+    <!-- Include the application JavaScript and launch -->
+    <script type="text/javascript">document.getElementById('loadingMsg').innerHTML = 'Loading Application...';</script>
+    <script type="text/javascript" src="@gwtModule@/@gwtModule@.nocache.js"></script>
 	
   </body>
 </html>

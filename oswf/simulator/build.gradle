@@ -65,28 +65,19 @@ buildscript {
 
 // Project Configuration ----------------------------------------------------------------------
 
-group = 'net.sf.oswf'
+group = 'org.informagen.oswf'
 version = '1.0.0'
 
 ext.applicationName = "OSWf Simulator"
 
 
 // GWT Configuration
-ext.gwtModule = 'org.informagen.oswf.simulator.Application'      // Path to module descriptor
-ext.gwtModuleRenamedTo = 'app'                           // 'rename-to' within module descriptor
-ext.gwtRunTarget = 'index.html'                          // HTML launching file
-ext.gwtDevModeDir = 'devMode'                            // GWT build directory and devMode
+ext.gwtModuleXML = 'org.informagen.oswf.simulator.Application' // Path to module descriptor
+ext.gwtModule    = 'app'                                       // 'rename-to' within module descriptor
+ext.gwtRunTarget = 'index.html'                                // HTML launching file
+ext.gwtBuildDir  = "${buildDir}-gwt"                           // GWT build directory
 
 // GWT and Java Compilers Configuration -------------------------------------------------------
-
-// GWT SDK
-ext.gwtVersion = '2.6.0'
-
-// Dependency Versions
-ext.smartgwtVersion = '4.0'   // was 3.1
-ext.ginVersion   = '1.5.0'
-ext.guiceVersion = '4.1.0'
-
 
 // Dont't add Java compiled client side classes to the WAR
 ext.excludedClasses = [
@@ -98,10 +89,10 @@ ext.excludedClasses = [
 // We aren't using these skins or SmartGWT tools
 ext.excludedResources = [ 
   'WEB-INF/deploy',
-  gwtModuleRenamedTo + '/sc/skins/Enterprise',
-  gwtModuleRenamedTo + '/sc/skins/EnterpriseBlue',
-  gwtModuleRenamedTo + '/sc/skins/ToolSkin',
-  gwtModuleRenamedTo + '/tools'
+//   gwtModule + '/sc/skins/Enterprise',
+//   gwtModule + '/sc/skins/EnterpriseBlue',
+//   gwtModule + '/sc/skins/ToolSkin',
+//   gwtModule + '/tools'
 ]
 
 
@@ -132,6 +123,10 @@ ext.hibernateProperties = [
 
 
 ext.localityProperties = [
+    'application.version'            : project.version,
+    'application.name'               : applicationName,
+    'gwtModule'                      : gwtModule,
+    'welcome-file'                   : gwtRunTarget,
     'project.version'                : project.version,
     'project.name'                   : applicationName,
     'user.agent'                     : (locality == 'local') ? 'safari' : 'gecko1_8,safari,ie8,ie9,opera',
@@ -145,7 +140,7 @@ ext.localityProperties = [
 
 // R e p o s i t o r i e s   &   D e p e n d e n c i e s --------------------------------------
 
-configurations { [devMode] }
+configurations { [gwtCompile] }
 
 configurations.compile.resolutionStrategy { 
     cacheChangingModulesFor 0, 'seconds'
@@ -153,37 +148,42 @@ configurations.compile.resolutionStrategy {
 
 
 repositories {
-    
-    maven {
-        url "http://www.smartclient.com/maven2/"  // Isomorphic, SmartGWT
-    }
-
     mavenLocal()                                       // User's local
     mavenCentral()                                     // Maven Central repository; GWT
 }
 
 dependencies {
 
+    // Dependency Versions
+    def gwtSDK    = '2.8.1'
+    def smartGWT  = '5.1-LPGL'   // was 4.1-LPGL, 5.0-LPGL, 5.1-LPGL, 6.0-LPGL, 6.1-LPGL
+    def gin       = '1.5.0'
+    def guice     = '4.1.0'
+
     compile project(':core')
     compile project(':vars')
     compile project(':store')
     compile project(':workflows')
 
+    // Isomorphic SmartGWT ==========================================
+    // Download the LGPL versions from http://www.smartclient.com/product/download.jsp
+    // into the 'lib'. Specify the version using the Project version above.
+
+    compile files(
+        "lib/SmartGWT-${smartGWT}/smartgwt.jar", 
+        "lib/SmartGWT-${smartGWT}/smartgwt-skins.jar"
+    )
 
 
     compile ([
                 
         // Google GWT
-        "com.google.gwt:gwt-user:$gwtVersion",
-        "com.google.gwt:gwt-servlet:$gwtVersion",
-
-        // Isomorphic SmartGWT ==========================================
-        "com.smartgwt:smartgwt:$smartgwtVersion",
-        "com.smartgwt:smartgwt-skins:$smartgwtVersion",
+        "com.google.gwt:gwt-user:$gwtSDK",
+        "com.google.gwt:gwt-dev:$gwtSDK", 
         
         // Google Dependency Injection
-        "com.google.gwt.inject:gin:$ginVersion",
-        "com.google.inject:guice:$guiceVersion",
+        "com.google.gwt.inject:gin:$gin",
+        "com.google.inject:guice:$guice",
 
         // Hibernate 3.x
         "org.hibernate:hibernate-core:$hibernate",
@@ -192,7 +192,7 @@ dependencies {
         'org.slf4j:slf4j-api:$slf4j',
         
         // J2EE Servlet
-        "javax.servlet:servlet-api:2.4",
+        // "javax.servlet:servlet-api:2.4",
 
     ])
     
@@ -218,9 +218,9 @@ dependencies {
     ])
 
     // Libraries used by GWT DevMode and GWT Compile but not for production or testing
-    devMode([
-        "com.google.gwt:gwt-dev:$gwtVersion", 
-        "com.google.gwt:gwt-servlet:$gwtVersion"
+    gwtCompile([
+        "com.google.gwt:gwt-servlet:$gwtSDK",
+        "com.google.gwt:gwt-codeserver:$gwtSDK",
     ])
 
     testCompile([
@@ -229,7 +229,7 @@ dependencies {
 
     testRuntime([
 
-         // Use log4j for as the Logger
+         // Use log4j as the Logger
          'org.slf4j:slf4j-log4j12:1.6.4',
          'log4j:log4j:1.2.16',
     ])
@@ -251,20 +251,19 @@ task compileGWT(dependsOn: ['compileJava', 'copyWebAppResources'], type:JavaExec
 
     outputs.upToDateSpec = new org.gradle.api.specs.AndSpec()
     inputs.dir sourceSets.main.java.srcDirs
-    outputs.dir new File("${gwtDevModeDir}/${gwtModuleRenamedTo}")
+    outputs.dir new File("${gwtBuildDir}/${gwtModule}")
 
     // Define the properties for the 'JavaExec' task
     main ='com.google.gwt.dev.Compiler'
-    
-    jvmArgs = ['-Xmx512M']                 // 256M Memory, increase for larger Apps
+    jvmArgs = ['-Xmx1024M']                 // Memory, increase for larger Apps
 
     classpath = files([
         sourceSets.main.java.srcDirs,      // Contains Java sources to be compiled into JavaScript
         sourceSets.main.runtimeClasspath,  // Contains .gwt.xml file
-        configurations.devMode.files       // Contains the GWT compiler JAR
+        configurations.gwtCompile.files    // Contains the GWT compiler JAR
     ])
 
-    args = [ "-war", gwtDevModeDir,  gwtModule]
+    args = [ "-war", gwtBuildDir,  gwtModuleXML]
 
 }
 
@@ -277,17 +276,17 @@ task devMode(dependsOn: ['compileJava', 'copyWebAppResources', 'copyLibraries'],
     main ='com.google.gwt.dev.DevMode'
     
     jvmArgs = [
-      '-Xmx512M',                      // 256M Memory, increase for larger Apps
+      '-Xmx1024M',                     // Memory, increase for larger Apps
       '-Dgwt.nowarn.webapp.classpath'  // Supress DevMode console warnings
     ]  
 
     classpath = files([
         sourceSets.main.java.srcDirs,      // Contains Java sources to be compiled into JavaScript
         sourceSets.main.runtimeClasspath,  // Contains .gwt.xml file
-        configurations.devMode.files       // Contains the GWT compiler JAR
+        configurations.gwtCompile.files    // Contains the GWT compiler JAR
     ])
 
-    args = [ "-startupUrl", gwtRunTarget,  "-war", gwtDevModeDir,  gwtModule]
+    args = [ "-startupUrl", gwtRunTarget,  "-war", gwtBuildDir,  gwtModuleXML]
 }
 
 
@@ -295,41 +294,43 @@ task devMode(dependsOn: ['compileJava', 'copyWebAppResources', 'copyLibraries'],
 // U T I L I T Y   T A S K S  =================================================================
 
 task copyWebAppResources(type:Copy) {
-    description = 'Copies resources into the "devMode" directory'
+    description = 'Copies resources into the "GWT Build" directory'
 
     // Modify the web.xml file to provide name and version in the Servlet display
     from('src/main/webapp') {
         include '**/web.xml'
-        filter(ReplaceTokens, 
-               tokens:[version: project.version, name: applicationName ])
+        include '**/index.html'
+        filter(ReplaceTokens, tokens: localityProperties)
     }
 
-    // Copy the other unmodified files as well
+    // Copy the other files without modification
     from('src/main/webapp') {
        exclude '**/web.xml'
-    } into gwtDevModeDir
+       exclude '**/index.html'
+    } into gwtBuildDir
+
 }    
 
 
 task copyLibraries(type:Copy) {
     description = 'Copies server side libraries into the "devMode" WEB-INF/lib directory'
     from (sourceSets.main.runtimeClasspath) { include '**/*.jar'}
-    into "${gwtDevModeDir}/WEB-INF/lib"
+    into "${gwtBuildDir}/WEB-INF/lib"
 }
 
 
 task cleanGWT(type:Delete) {
     description = 'Cleans the \'Development Mode\' JavaScript directory; does not delete webapp resources'
     delete = [
-        "${gwtDevModeDir}/${gwtModuleRenamedTo}", 
-        "${gwtDevModeDir}/WEB-INF/deploy",
-        "${gwtDevModeDir}/WEB-INF/lib",
+        "${gwtBuildDir}/${gwtModule}", 
+        "${gwtBuildDir}/WEB-INF/deploy",
+        "${gwtBuildDir}/WEB-INF/lib",
         'gwt-unitCache'
     ]   
 }
 
 task cleanDevMode(type:Delete) {
-    delete gwtDevModeDir  
+    delete gwtBuildDir  
     delete 'gwt-unitCache'  
 }
 
@@ -341,10 +342,17 @@ task cleanDevMode(type:Delete) {
 jettyRun { dependsOn 'compileGWT' }
 jettyRun.httpPort = 9090           // Avoid potential conflicts with 8080
 jettyRun.doFirst {
-    println '=================================================================================='
-    println '|'
-    println "| Jetty running, open a browser and enter the URL->   http://localhost:${jettyRun.httpPort}/${project.name}/"
-    println '|'
+    println """
+    |==================================================================================
+    |
+    | Jetty running, open a browser and enter the URL->   
+    |
+    |      http://localhost:${jettyRun.httpPort}/${project.name}/${gwtRunTarget}
+    |
+    | macOS: Command-"Double Click" on the url
+    | Ctrl-C or Command-Period to quit
+    |
+    """.stripMargin()
 }
 
 
@@ -357,9 +365,13 @@ jettyRun.doFirst {
 
 // WAR and Jetty builds; requires results of 'compileGWT' task rather than 'src/main/webapp'
 
-webAppDirName = "${gwtDevModeDir}"
+webAppDirName = "${gwtBuildDir}"
+
 war {dependsOn 'compileGWT'}
+
 clean { dependsOn 'cleanDevMode'}
+
+
 
 // Custom build our WAR in order to remove GWT compiler and unused SmartGWT resources and skins
 
