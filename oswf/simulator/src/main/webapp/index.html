@@ -80,14 +80,18 @@
              src="@gwtModule@/@gwtModule@.nocache.js">
     </script>
 
-     <script src="@gwtModule@/sc/modules/ISC_Core.js">          </script>
-     <script src="@gwtModule@/sc/modules/ISC_Foundation.js">    </script>
-     <script src="@gwtModule@/sc/modules/ISC_Containers.js">    </script>
-     <script src="@gwtModule@/sc/modules/ISC_Grids.js">         </script>
-     <script src="@gwtModule@/sc/modules/ISC_Forms.js">         </script>
-     <script src="@gwtModule@/sc/modules/ISC_RichTextEditor.js"></script>
-     <script src="@gwtModule@/sc/modules/ISC_Calendar.js">      </script>
-     <script src="@gwtModule@/sc/modules/ISC_DataBinding.js">   </script>
+    <!--include the SC Core API-->
+    <script type="text/javascript" src='@gwtModule@/sc/modules/ISC_Core.js'></script>
+
+    <!--include SmartClient -->
+    <script type="text/javascript" src='@gwtModule@/sc/modules/ISC_Foundation.js'></script>
+    <script type="text/javascript" src='@gwtModule@/sc/modules/ISC_Containers.js'></script>
+    <script type="text/javascript" src='@gwtModule@/sc/modules/ISC_Grids.js'></script>
+    <script type="text/javascript" src='@gwtModule@/sc/modules/ISC_Forms.js'></script>
+    <script type="text/javascript" src='@gwtModule@/sc/modules/ISC_RichTextEditor.js'></script>
+    <script type="text/javascript" src='@gwtModule@/sc/modules/ISC_DataBinding.js'></script>
+    <script type="text/javascript" src='@gwtModule@/sc/modules/ISC_Calendar.js'></script>
+    <script type="text/javascript" src='@gwtModule@/sc/modules/ISC_Drawing.js'></script>
   
     
   </head>
@@ -96,9 +100,9 @@
 
     <!-- Application Logo ================================================================= -->
         
-        <div id="logo">
-            <img src="images/OSWf.png" >
-        </div>
+    <div id="logo">
+        <img src="images/OSWf.png" >
+    </div>
 
 
     <!-- Add loading indicator while the app is being loaded ================================== -->
@@ -117,7 +121,7 @@
     <!-- Load the application JavaScript and launch ======================================= -->
     <script>isc_css3Mode = "on";</script>
     <script type="text/javascript">document.getElementById('loadingMsg').innerHTML = 'Loading Application...';</script>
-    <script type="text/javascript" src="app/app.nocache.js"></script>
+    <script type="text/javascript" src="@gwtModule@/@gwtModule@.nocache.js"></script>
 
     <!-- Load skin ======================================================================== -->
     <!--  Keeps DevMode happy if we load the skins here. For the WAR build it doesn't seem to matter -->
