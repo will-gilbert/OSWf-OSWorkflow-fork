@@ -70,7 +70,6 @@ dependencies {
         
         // Simple Logging Facade for Java - Used by 'OSWfTestCase'   
         "org.slf4j:slf4j-api:$slf4j",
-        "log4j:log4j:$log4j",
 
         // JUnit - Used by 'OSWfTestCase' and 'OSWfAssertions'
         "junit:junit:$junit"
@@ -90,6 +89,7 @@ dependencies {
                         
          // Use 'log4j' with the SL4J logger
          "org.slf4j:slf4j-log4j12:$slf4j",
+        "log4j:log4j:$log4j",
          
         // H2 Database driver, formerly HSQLDB
         "com.h2database:h2:$h2"

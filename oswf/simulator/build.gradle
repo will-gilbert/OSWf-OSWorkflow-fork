@@ -155,7 +155,7 @@ repositories {
 dependencies {
 
     // Dependency Versions
-    def gwtSDK    = '2.8.1'
+    def gwtSDK    = '2.8.1'      // was 2.7.0
     def smartGWT  = '5.1-LPGL'   // was 4.1-LPGL, 5.0-LPGL, 5.1-LPGL, 6.0-LPGL, 6.1-LPGL
     def gin       = '1.5.0'
     def guice     = '4.1.0'
@@ -167,7 +167,7 @@ dependencies {
 
     // Isomorphic SmartGWT ==========================================
     // Download the LGPL versions from http://www.smartclient.com/product/download.jsp
-    // into the 'lib'. Specify the version using the Project version above.
+    // into a 'lib' directory.
 
     compile files(
         "lib/SmartGWT-${smartGWT}/smartgwt.jar", 
@@ -184,56 +184,32 @@ dependencies {
         // Google Dependency Injection
         "com.google.gwt.inject:gin:$gin",
         "com.google.inject:guice:$guice",
-
-        // Hibernate 3.x
-        "org.hibernate:hibernate-core:$hibernate",
-
-        // Simple Logging Facade for Java    
-        'org.slf4j:slf4j-api:$slf4j',
         
-        // J2EE Servlet
-        // "javax.servlet:servlet-api:2.4",
-
+        // Simple Logging Facade for Java    
+        'org.slf4j:slf4j-api:$slf4j'   
     ])
     
     runtime ([
+
+         // Logging Runtime 
+         "org.slf4j:slf4j-log4j12:$slf4j",
+         "log4j:log4j:$log4j",
     
-        // Hibernate - runtime, needs cglib v2.2.2 with Guice
-        'cglib:cglib:2.2.2',
-        
-        // BeanShell - used by Workflow Descriptions for step/action scripts
-        "bsh:bsh:$bsh",
-        
-        // Logging Runtime 
-        "org.slf4j:slf4j-log4j12:1.6.1",
-        "log4j:log4j:1.2.16",
-
-        // C3P0 - Connection Pooling  
-        "org.hibernate:hibernate-c3p0:$hibernate",
-
         // Various database drivers; Add or remove accordingly
         "mysql:mysql-connector-java:$mysql",
         "com.h2database:h2:$h2"
         
     ])
 
+    testCompile([ ])
+
+    testRuntime([ ])
+
     // Libraries used by GWT DevMode and GWT Compile but not for production or testing
     gwtCompile([
-        "com.google.gwt:gwt-servlet:$gwtSDK",
-        "com.google.gwt:gwt-codeserver:$gwtSDK",
+        // "com.google.gwt:gwt-servlet:$gwtSDK",
+        // "com.google.gwt:gwt-codeserver:$gwtSDK",
     ])
-
-    testCompile([
-        "junit:junit:4.10",
-    ])
-
-    testRuntime([
-
-         // Use log4j as the Logger
-         'org.slf4j:slf4j-log4j12:1.6.4',
-         'log4j:log4j:1.2.16',
-    ])
-
 
 }
 
@@ -343,15 +319,15 @@ jettyRun { dependsOn 'compileGWT' }
 jettyRun.httpPort = 9090           // Avoid potential conflicts with 8080
 jettyRun.doFirst {
     println """
-    |==================================================================================
-    |
-    | Jetty running, open a browser and enter the URL->   
-    |
-    |      http://localhost:${jettyRun.httpPort}/${project.name}/${gwtRunTarget}
-    |
-    | macOS: Command-"Double Click" on the url
-    | Ctrl-C or Command-Period to quit
-    |
+    |${'='*80}
+    |=
+    |= Jetty running, open a browser and enter the URL:  
+    |=
+    |=      http://localhost:${jettyRun.httpPort}/${project.name}/${gwtRunTarget}
+    |=
+    |= macOS: Command-"Double Click" on the above url
+    |= Ctrl-C or Command-Period to quit
+    |=${'='*80}
     """.stripMargin()
 }
 
