@@ -63,7 +63,7 @@ dependencies {
                         
          // Use 'log4j' with the SL4J logger
          "org.slf4j:slf4j-log4j12:$slf4j",
-         "log4j:log4j:1.2.16",
+         "log4j:log4j:$log4j",
          
         // H2 Database driver, formerly HSQLDB
         "com.h2database:h2:$h2"
